@@ -2,7 +2,7 @@
 
 ### 1.プロジェクトをclone
 ```bash
-git clone https://github.com/tahoito/cafest.git
+git clone https://github.com/tahoito/cafest_app.git
 cd cafest
 ```
 
