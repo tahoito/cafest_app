@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ja">
+<html lang="ja" class="overflow-x-hidden">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -35,9 +35,20 @@
   </script>
 </head>
 
-<body class="min-h-screen bg-base text-text">
-  <main class="mx-auto w-full max-w-7xl px-4 py-6">
+@php
+  $authBg = request()->routeIs('user.login', 'user.signup', 'store.login', 'store.signup');
+@endphp
+
+<body class="min-h-screen bg-base text-text relative overflow-x-hidden">
+
+  @if($authBg)
+    <div class="absolute -top-24 -left-24 w-56 h-56 rounded-full bg-accent"></div>
+    <div class="absolute -bottom-20 -right-20 w-64 h-64 rounded-full bg-accent"></div>
+    <div class="absolute bottom-10 left-40 w-10 h-10 rounded-full bg-accent z-[1]"></div>
+    @endif
+  <main class="relative z-10">
     @yield('content')
   </main>
+
 </body>
 </html>
