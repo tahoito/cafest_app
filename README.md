@@ -3,7 +3,7 @@
 ### 1.プロジェクトをclone
 ```bash
 git clone https://github.com/tahoito/cafest_app.git
-cd cafest
+cd cafest_app
 ```
 
 ### 2.Dockerを起動する
