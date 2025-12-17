@@ -52,9 +52,11 @@
     <div class="absolute -bottom-20 -right-20 w-64 h-64 rounded-full bg-accent"></div>
     <div class="absolute bottom-10 left-40 w-10 h-10 rounded-full bg-accent z-[1]"></div>
   @endif
-  <main class="relative z-10">
+  <main class="relative z-10 pb-20">
     @yield('content')
   </main>
+  <x-ui.BottomNav />
+
 
 </body>
 </html>
