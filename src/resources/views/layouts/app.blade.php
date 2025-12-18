@@ -49,7 +49,7 @@
   <div class="absolute bottom-[80px] left-[150px] -translate-x-1/2 w-[44px] h-[44px] rounded-full bg-accent"></div>
   @elseif($authBg)
     <div class="absolute -top-24 -left-24 w-56 h-56 rounded-full bg-accent"></div>
-    <div class="absolute -bottom-20 -right-20 w-64 h-64 rounded-full bg-accent"></div>
+    <div class="absolute -bottom-20 -right-20 w-60 h-60 rounded-full bg-accent"></div>
     <div class="absolute bottom-10 left-40 w-10 h-10 rounded-full bg-accent z-[1]"></div>
   @endif
   <main class="relative z-10">
