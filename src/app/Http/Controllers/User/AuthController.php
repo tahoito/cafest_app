@@ -18,8 +18,8 @@ class AuthController extends Controller
         if (Auth::guard('user')->attempt($credential)) {
             $request->session()->regenerate();
 
-            return redirect()->route('top');
-        }   
+            return redirect()->intended(route('top'));
+        }
 
         return back()->withErrors([
             'email' => 'メールアドレスまたはパスワードが違います。',
