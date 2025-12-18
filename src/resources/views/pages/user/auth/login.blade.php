@@ -2,11 +2,11 @@
 @section('title','ログイン')
 
 @section('content')
-<div class="min-h-screen flex items-center justify-center bg-base">
+<div class="min-h-screen flex items-center justify-center bg-base relative overflow-hidden">
     <div class="w-full max-w-md px-4">
 
-        <div class="mb-12 flex flex-col items-center">
-            <x-icons.user class="w-20 h-20 text-text mb-2"/>
+        <div class="mb-8 flex flex-col items-center">
+            <x-icons.user size="80" stroke="1" class="text-text mb-2" />
             <h1 class="text-center text-text text-2xl">
                 ログイン    
             </h1>
@@ -15,7 +15,7 @@
         <form method="POST" action="{{ route('user.login') }}">
         @csrf
 
-        <div class="space-y-8">
+        <div class="space-y-6">
             {{-- email --}}
             <div class="space-y-1">
             <x-ui.label for="email">メールアドレス</x-ui.label>
@@ -43,8 +43,8 @@
             </div>
 
             {{-- button --}}
-            <div class="flex justify-center pt-3">
-            <x-ui.button type="submit" class="w-[90%]">
+            <div class="flex justify-center pt-4">
+            <x-ui.button type="submit" class="w-full">
                 ログイン
             </x-ui.button>
             </div>
