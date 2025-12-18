@@ -3,8 +3,11 @@
 
 @section('content')
 <div class="min-h-screen flex items-center justify-center bg-base">
+    <a href="{{ route('welcome') }}" class="fixed top-4 left-4 z-50 p-2">
+        <x-icons.back class="w-5 h-5 text-text" />
+    </a>
+    
     <div class="w-full max-w-md px-4">
-
         <div class="mb-12 flex flex-col items-center">
             <x-icons.user class="w-20 h-20 text-text mb-2"/>
             <h1 class="text-center text-text text-2xl">
