@@ -35,27 +35,33 @@
             {{-- password --}}
             <div class="space-y-1">
             <x-ui.label for="password">パスワード</x-ui.label>
-            <x-ui.input
-                id="password"
-                type="password"
-                name="password"
-                placeholder="パスワードを入力"
-                required
-                autocomplete="new-password"
-            />
+            <div class="relative">
+                <x-ui.input
+                    id="password"
+                    type="password"
+                    name="password"
+                    placeholder="パスワードを入力"
+                    required
+                    class="pr-10"
+                    autocomplete="new-password"
+                />
+                <x-icons.eye target="#password" class="absolute right-3 top-1/2 -translate-y-1/2 text-placeholder w-5 h-5" />
             </div>
 
             {{-- password --}}
             <div class="space-y-1">
             <x-ui.label for="password">パスワード（確認）</x-ui.label>
-            <x-ui.input
-                id="password"
-                type="password"
-                name="password_confirmation"
-                placeholder="パスワードを入力"
-                required
-                autocomplete="new-password"
-            />
+            <div class="relative">
+                <x-ui.input
+                    id="password"
+                    type="password"
+                    name="password_confirmation"
+                    placeholder="パスワードを入力"
+                    required
+                    class="pr-10"
+                    autocomplete="new-password"
+                />
+                <x-icons.eye target="#password" class="absolute right-3 top-1/2 -translate-y-1/2 text-placeholder w-5 h-5" />
             </div>
 
             {{-- button --}}
@@ -69,7 +75,7 @@
 
         <div class="mt-4 text-center text-sm text-text">
             ログインの方は
-            <a href="#" class="text-main hover:underline">
+            <a href="{{ route('user.login') }}" class="text-main hover:underline">
                 こちら
             </a>
         </div>

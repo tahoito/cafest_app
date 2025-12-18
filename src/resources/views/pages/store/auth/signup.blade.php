@@ -4,7 +4,9 @@
 @section('content')
 <div class="min-h-screen flex items-center justify-center bg-base relative overflow-hidden">
     <div class="w-full max-w-md px-4">
-
+        <a href="{{ route('welcome') }}" class="fixed top-4 left-4 z-50 p-2">
+            <x-icons.back class="w-5 h-5 text-text" />
+        </a>
         <div class="mb-8 flex flex-col items-center">
             <x-icons.store size="80" stroke="1" class="text-text mb-2" />
             <h1 class="text-center text-text text-2xl">
@@ -66,7 +68,7 @@
 
         <div class="mt-4 text-center text-sm text-text">
             ログインの方は
-            <a href="#" class="text-main2 hover:underline">    
+            <a href="{{ route('store.login') }}"  class="text-main2 hover:underline">    
                 こちら
             </a>
         </div>
