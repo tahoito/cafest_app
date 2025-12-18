@@ -2,6 +2,7 @@
     'variant' => 'action', // action | secondary | next
     'theme' => 'user',     // user | store
     'type' => 'button',
+    'as' => 'button',
 ])
 
 @php
@@ -18,15 +19,19 @@
         'next' => 'px-4 py-2 hover:opacity-90 shadow-[0_6px_16px_rgba(0,0,0,0.16)]',
     ];
 
+    $classes = [
+        $base,
+        $themes[$theme] ?? $themes['user'],
+        $variants[$variant] ?? $variants['action'],
+    ];
 @endphp
 
-<button
-    type="{{ $type }}"
-    {{ $attributes->class([
-        $base,
-        $themes[$theme],
-        $variants[$variant],
-    ]) }}
->
-    {{ $slot }}
-</button>
+@if ($as === 'a')
+    <a {{ $attributes->class($classes) }}>
+        {{ $slot }}
+    </a>
+@else
+    <button type="{{ $type }}" {{ $attributes->class($classes) }}>
+        {{ $slot }}
+    </button>
+@endif

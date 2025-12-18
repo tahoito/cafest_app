@@ -19,12 +19,12 @@
                 </div>
                 <div class="space-y-5">
                     <div class="flex justify-center">
-                        <x-ui.button class="w-full">
+                        <x-ui.button as="a" href="{{ route('user.login') }}" class="w-full">
                             ログイン
                         </x-ui.button>
                     </div>
                     <div class="flex justify-center">
-                        <x-ui.button type="submit" class="w-full">
+                        <x-ui.button as="a" href="{{ route('user.signup') }}" type="submit" class="w-full">
                             サインアップ
                         </x-ui.button>
                     </div>
@@ -38,12 +38,12 @@
                 </div>
                 <div class="space-y-5">
                     <div class="flex justify-center">
-                        <x-ui.button type="submit" theme="store" class="w-full">
+                        <x-ui.button type="submit" as="a" href="{{ route('store.login') }}" theme="store" class="w-full">
                             ログイン
                         </x-ui.button>
                     </div>
                     <div class="flex justify-center">
-                        <x-ui.button type="submit" theme="store" class="w-full">
+                        <x-ui.button type="submit" as="a" href="{{ route('store.signup') }}" theme="store" class="w-full">
                             サインアップ
                         </x-ui.button>
                     </div>
