@@ -1,17 +1,25 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\User\AuthController as UserAuth;
+use App\Http\Controllers\Store\AuthController as StoreAuth;
 
 Route::view('/', 'welcome')->name('welcome');
 
 Route::get('/test', fn () => view('pages.test'));
 
-Route::prefix('user')->group(function () {
-    Route::get('/login', fn () => view('pages.user.auth.login'))->name('user.login');
-    Route::get('/signup', fn () => view('pages.user.auth.signup'))->name('user.signup');
+Route::prefix('user')->name('user.')->group(function () {
+    Route::get('/login', [UserAuth::class, 'showLogin'])->name('login');
+    Route::post('/login', [UserAuth::class, 'login'])->name('login.store');
+
+    Route::get('/signup', [UserAuth::class, 'showSignup'])->name('signup');
+    Route::post('/signup', [UserAuth::class, 'signup'])->name('signup.store');
 });
 
-Route::prefix('store')->group(function () {
-    Route::get('/login', fn () => view('pages.store.auth.login'))->name('store.login');
-    Route::get('/signup', fn () => view('pages.store.auth.signup'))->name('store.signup');
+Route::prefix('store')->name('store.')->group(function () {
+    Route::get('/login', [StoreAuth::class, 'showLogin'])->name('login');
+    Route::post('/login', [StoreAuth::class, 'login'])->name('login.store');
+
+    Route::get('/signup', [StoreAuth::class, 'showSignup'])->name('signup');
+    Route::post('/signup', [StoreAuth::class, 'signup'])->name('signup.store');
 });
