@@ -48,7 +48,7 @@
             </div>
         
             {{-- button --}}
-            <div class="flex justify-center pt-7">
+            <div class="flex justify-center pt-8">
             <x-ui.button type="submit" class="w-full">
                 ログイン
             </x-ui.button>

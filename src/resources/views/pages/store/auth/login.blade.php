@@ -44,13 +44,13 @@
                         required
                         autocomplete="new-password"
                     />
+                    <x-icons.eye target="#password" class="absolute right-3 top-1/2 -translate-y-1/2 text-placeholder w-5 h-5" />
                 </div>
-                <x-icons.eye class="w-5 h-5" />
             </div>
 
             {{-- button --}}
-            <div class="flex justify-center pt-7">
-            <x-ui.button type="submit" class="w-full text-main2">
+            <div class="flex justify-center pt-8">
+            <x-ui.button type="submit" theme="store" class="w-full text-form">
                 ログイン
             </x-ui.button>
             </div>
