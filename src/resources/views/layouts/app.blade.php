@@ -50,7 +50,7 @@
   @elseif($authBg)
   <div class="fixed inset-0 overflow-hidden pointer-events-none">
     <div class="absolute -top-24 -left-24 w-56 h-56 rounded-full bg-accent"></div>
-    <div class="absolute -bottom-20 -right-20 w-64 h-64 rounded-full bg-accent"></div>
+    <div class="absolute -bottom-32 -right-20 w-64 h-64 rounded-full bg-accent"></div>
     <div class="absolute bottom-10 left-40 w-10 h-10 rounded-full bg-accent"></div>
   </div>
   @endif
