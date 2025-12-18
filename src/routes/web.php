@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\AuthController as UserAuth;
 use App\Http\Controllers\Store\AuthController as StoreAuth;
+use App\Http\Controllers\User\TopController;
 
 Route::view('/', 'welcome')->name('welcome');
 
@@ -22,4 +23,8 @@ Route::prefix('store')->name('store.')->group(function () {
 
     Route::get('/signup', [StoreAuth::class, 'showSignup'])->name('signup');
     Route::post('/signup', [StoreAuth::class, 'signup'])->name('signup.store');
+});
+
+Route::middleware('auth:user')->group(function () {
+    Route::get('/top', [TopController::class, 'index'])->name('top');
 });
