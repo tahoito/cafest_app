@@ -20,7 +20,7 @@ Route::prefix('user')->name('user.')->group(function () {
 
     Route::middleware('auth:user')->group(function () {
         Route::get('/top', function () {
-            return view('pages.user.top'); // ← ここ
+            return view('pages.user.top'); 
         })->name('top');
     });
 });
