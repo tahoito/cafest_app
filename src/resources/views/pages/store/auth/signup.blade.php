@@ -14,14 +14,17 @@
             </h1>
         </div>
 
-        <form method="POST" action="{{ route('user.login') }}">
+        <form method="POST" action="{{ route('user.login') }}" autocomplete="off">
         @csrf
+        <!-- ダミー入力：ブラウザ自動補完を抑止 -->
+        <input type="text" name="__fake_user" autocomplete="username" style="position:absolute;left:-9999px;top:-9999px;" tabindex="-1" />
+        <input type="password" name="__fake_pass" autocomplete="new-password" style="position:absolute;left:-9999px;top:-9999px;" tabindex="-1" />
 
         <div class="space-y-4">
             {{-- email --}}
-            <div class="space-y-1">
+                <div class="space-y-1">
                 <x-ui.label for="email">メールアドレス</x-ui.label>
-                <x-ui.input id="email" type="email" name="email" />
+                <x-ui.input id="email" type="email" name="email" placeholder="メールアドレスを入力" autocomplete="email" />
             </div>
 
             {{-- password --}}
@@ -33,6 +36,8 @@
                     type="password"
                     name="password"
                     class="pr-10"
+                    placeholder="パスワードを入力"
+                    autocomplete="new-password"
                 />
                 <x-icons.eye target="#password"
                     class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-placeholder" />
@@ -48,6 +53,8 @@
                     type="password"
                     name="password_confirmation"
                     class="pr-10"
+                    placeholder="パスワードを入力"
+                    autocomplete="new-password"
                 />
                 <x-icons.eye target="#password_confirmation"
                     class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-placeholder" />

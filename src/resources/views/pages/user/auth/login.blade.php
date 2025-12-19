@@ -15,7 +15,7 @@
             </h1>
         </div>
 
-        <form method="POST" action="{{ route('user.login') }}">
+        <form method="POST" action="{{ route('user.login.store') }}">
         @csrf
 
         <div class="space-y-4">
