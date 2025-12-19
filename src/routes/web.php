@@ -9,12 +9,20 @@ Route::view('/', 'welcome')->name('welcome');
 
 Route::get('/test', fn () => view('pages.test'));
 
+Route::get('/login', fn () => redirect()->route('user.login'))->name('login');
+
 Route::prefix('user')->name('user.')->group(function () {
     Route::get('/login', [UserAuth::class, 'showLogin'])->name('login');
     Route::post('/login', [UserAuth::class, 'login'])->name('login.store');
 
     Route::get('/signup', [UserAuth::class, 'showSignup'])->name('signup');
     Route::post('/signup', [UserAuth::class, 'signup'])->name('signup.store');
+
+    Route::middleware('auth:user')->group(function () {
+        Route::get('/top', function () {
+            return view('pages.user.top'); // ← ここ
+        })->name('top');
+    });
 });
 
 Route::prefix('store')->name('store.')->group(function () {
@@ -25,6 +33,3 @@ Route::prefix('store')->name('store.')->group(function () {
     Route::post('/signup', [StoreAuth::class, 'signup'])->name('signup.store');
 });
 
-Route::middleware('auth:user')->group(function () {
-    Route::get('/top', [TopController::class, 'index'])->name('top');
-});

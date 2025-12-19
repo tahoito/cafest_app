@@ -24,7 +24,7 @@
             {{-- email --}}
                 <div class="space-y-1">
                 <x-ui.label for="email">メールアドレス</x-ui.label>
-                <x-ui.input id="email" type="email" name="email" autocomplete="email" />
+                <x-ui.input id="email" type="email" name="email" placeholder="メールアドレスを入力" autocomplete="email" />
             </div>
 
             {{-- password --}}
@@ -36,6 +36,7 @@
                     type="password"
                     name="password"
                     class="pr-10"
+                    placeholder="パスワードを入力"
                     autocomplete="new-password"
                 />
                 <x-icons.eye target="#password"
@@ -52,6 +53,7 @@
                     type="password"
                     name="password_confirmation"
                     class="pr-10"
+                    placeholder="パスワードを入力"
                     autocomplete="new-password"
                 />
                 <x-icons.eye target="#password_confirmation"

@@ -10,21 +10,19 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        $credential = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+        $credentials = $request->only('email', 'password');
 
-        if (Auth::guard('user')->attempt($credential)) {
+        if (Auth::guard('user')->attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->intended(route('top'));
+            return redirect()->route('user.top');
         }
 
         return back()->withErrors([
-            'email' => 'メールアドレスまたはパスワードが違います。',
-        ])->onlyInput('email');
+            'email' => 'ログイン情報が正しくありません',
+        ]);
     }
+
 
     public function showLogin()
     {
