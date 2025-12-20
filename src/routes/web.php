@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\AuthController as UserAuth;
 use App\Http\Controllers\Store\AuthController as StoreAuth;
 use App\Http\Controllers\User\TopController;
+use App\Http\Controllers\User\SettingsController;
 
 Route::view('/', 'welcome')->name('welcome');
 
@@ -20,8 +21,8 @@ Route::prefix('user')->name('user.')->group(function () {
 
     Route::middleware('auth:user')->group(function () {
         Route::get('/top', function () {
-            return view('pages.user.top'); 
-        })->name('top');
+            return view('pages.user.top'); })->name('top');
+        Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
     });
 });
 

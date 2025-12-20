@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -42,7 +43,18 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        return redirect()->route('user.login');
+        $validated = $request->only(['email', 'password', 'name']);
+
+        $user = User::create([
+            'name' => $validated['name'] ?? null,
+            'email' => $validated['email'],
+            'password' => $validated['password'],
+        ]);
+
+        Auth::guard('user')->login($user);
+        $request->session()->regenerate();
+
+        return redirect()->route('user.settings');
     }       
 
 }
