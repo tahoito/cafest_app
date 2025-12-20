@@ -11,7 +11,7 @@
         <div class="mb-12 flex flex-col items-center">
             <x-icons.user class="w-20 h-20 text-text mb-2"/>
             <h1 class="text-center text-text text-2xl">
-                サインアップ
+                新規登録
             </h1>
         </div>
 
@@ -72,7 +72,7 @@
             {{-- button --}}
             <div class="flex justify-center pt-8">
             <x-ui.button type="submit" class="w-full">
-                サインアップ
+                新規登録
             </x-ui.button>
             </div>
         </div>

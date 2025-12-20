@@ -25,7 +25,7 @@
                     </div>
                     <div class="flex justify-center">
                         <x-ui.button as="a" href="{{ route('user.signup') }}" type="submit" class="w-full">
-                            サインアップ
+                            新規登録
                         </x-ui.button>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
                     </div>
                     <div class="flex justify-center">
                         <x-ui.button type="submit" as="a" href="{{ route('store.signup') }}" theme="store" class="w-full">
-                            サインアップ
+                            新規登録
                         </x-ui.button>
                     </div>
                 </div>

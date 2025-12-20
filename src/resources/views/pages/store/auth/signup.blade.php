@@ -10,7 +10,7 @@
         <div class="mb-10 flex flex-col items-center">
             <x-icons.store size="80" stroke="1" class="text-text mb-2" />
             <h1 class="text-center text-text text-2xl">
-                ログイン    
+                新規登録   
             </h1>
         </div>
 
@@ -64,7 +64,7 @@
             {{-- button --}}
             <div class="pt-8">
                 <x-ui.button type="submit" theme="store" class="w-full text-form">
-                    サインアップ
+                    新規登録
                 </x-ui.button>
             </div>
         </form>

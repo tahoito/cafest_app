@@ -58,7 +58,7 @@
         </form>
 
         <div class="mt-4 text-center text-sm text-text">
-            サインアップは
+            新規登録の店舗は
             <a href="{{ route('store.signup') }}"  class="text-main2 hover:underline">    
                 こちら
             </a>
