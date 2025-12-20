@@ -57,7 +57,7 @@
         </form>
 
         <div class="mt-4 text-center text-sm text-text">
-            サインアップの方は
+            新規登録の方は
             <a href="{{ route('user.signup') }}" class="text-main hover:underline">    
                 こちら
             </a>
