@@ -14,7 +14,7 @@
             </h1>
         </div>
 
-        <form method="POST" action="{{ route('store.login') }}" autocomplete="off">
+        <form method="POST" action="{{ route('store.signup') }}" autocomplete="off">
         @csrf
         <!-- ダミー入力：ブラウザ自動補完を抑止 -->
         <input type="text" name="__fake_user" autocomplete="username" style="position:absolute;left:-9999px;top:-9999px;" tabindex="-1" />
@@ -68,6 +68,13 @@
                 </x-ui.button>
             </div>
         </form>
+        @if ($errors->any())
+        <div class="text-notification mb-4">
+            @foreach ($errors->all() as $error)
+            <p>{{ $error }}</p>
+            @endforeach
+        </div>
+        @endif
 
         <div class="mt-4 text-center text-sm text-text">
             ログインの方は
