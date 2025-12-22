@@ -1,21 +1,32 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 
 class AuthController extends Controller
 {
+    public function showLogin()
+    {
+        return view('pages.user.auth.login');
+    }
+
+    public function showSignup()
+    {
+        return view('pages.user.auth.signup');
+    }
+
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
         if (Auth::guard('user')->attempt($credentials)) {
             $request->session()->regenerate();
-
             return redirect()->route('user.top');
         }
 
@@ -24,37 +35,19 @@ class AuthController extends Controller
         ]);
     }
 
-
-    public function showLogin()
-    {
-        return view('pages.user.auth.login');
-    }           
-
-    public function showSignup()
-    {
-        return view('pages.user.auth.signup');
-    }  
-    
-    
     public function signup(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
+        $validated = $request->validate([
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8|confirmed',
         ]);
 
-        $validated = $request->only(['email', 'password', 'name']);
-
-        $user = User::create([
-            'name' => $validated['name'] ?? null,
+        // 仮登録（DB作らない）
+        $request->session()->put('signup', [
             'email' => $validated['email'],
-            'password' => $validated['password'],
+            'password' => $validated['password'], // 後でHash化する
         ]);
-
-        Auth::guard('user')->login($user);
-        $request->session()->regenerate();
 
         return redirect()->route('user.settings');
-    }       
-
+    }
 }

@@ -15,7 +15,7 @@
             </h1>
         </div>
 
-        <form method="POST" action="{{ route('user.login') }}" autocomplete="off">
+        <form method="POST" action="{{ route('user.signup') }}" autocomplete="off">
         @csrf
         <!-- ダミー入力：ブラウザの自動補完を回避するために先頭に置く -->
         <input type="text" name="__fake_user" autocomplete="username" style="position:absolute;left:-9999px;top:-9999px;" tabindex="-1" />
@@ -77,6 +77,14 @@
             </div>
         </div>
         </form>
+        @if ($errors->any())
+        <div class="mb-4">
+            @foreach ($errors->all() as $error)
+            <p>{{ $error }}</p>
+            @endforeach
+        </div>
+        @endif
+
 
         <div class="mt-4 text-center text-sm text-text">
             ログインの方は

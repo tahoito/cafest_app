@@ -19,10 +19,12 @@ Route::prefix('user')->name('user.')->group(function () {
     Route::get('/signup', [UserAuth::class, 'showSignup'])->name('signup');
     Route::post('/signup', [UserAuth::class, 'signup'])->name('signup.store');
 
+    Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
+    Route::post('/settings', [SettingsController::class, 'store'])->name('settings.store');
+
     Route::middleware('auth:user')->group(function () {
         Route::get('/top', function () {
             return view('pages.user.top'); })->name('top');
-        Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
     });
 });
 

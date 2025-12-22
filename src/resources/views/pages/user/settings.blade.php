@@ -23,7 +23,7 @@
 
   {{-- content --}}
     <main class="w-full max-w-md mx-auto px-4 oy-6 pb-24">
-        <form method="POST" action="{{ route('user.settings') }}">
+        <form method="POST" action="{{ route('user.settings.store') }}">
         @csrf
 
         <section class="flex justify-center pt-8">
@@ -56,7 +56,7 @@
             <x-ui.input 
                 id="username" 
                 type="text" 
-                name="username" 
+                name="name" 
                 placeholder="ユーザー名を入力"/>
         </section>
        
