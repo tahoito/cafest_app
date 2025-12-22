@@ -14,8 +14,8 @@
     ];
 
     $variants = [
-        'action' => 'px-6 py-4 text-lg hover:opacity-90 shadow-[0_6px_16px_rgba(0,0,0,0.16)]',
-        'secondary' => 'px-6 py-3 text-lg hover:opacity-90 shadow-[0_6px_16px_rgba(0,0,0,0.16)]',
+        'action' => 'px-6 py-3 text-lg hover:opacity-90 shadow-[0_6px_16px_rgba(0,0,0,0.16)]',
+        'secondary' => 'px-5 py-3 text-lg hover:opacity-90 shadow-[0_6px_16px_rgba(0,0,0,0.16)]',
     ];
 
     $themeClass = $themes[$theme] ?? $themes['user'];

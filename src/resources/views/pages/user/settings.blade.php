@@ -86,7 +86,7 @@
         </section>
 
         <div class="flex justify-center pt-8">
-            <x-ui.button type="submit" variant="secondary" class="w-full text-form">
+            <x-ui.button type="submit" class="w-full text-form">
                 確認
             </x-ui.button>
         </div>
