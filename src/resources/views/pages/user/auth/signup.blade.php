@@ -78,13 +78,12 @@
         </div>
         </form>
         @if ($errors->any())
-        <div class="mb-4">
+        <div class="text-notification mb-4">
             @foreach ($errors->all() as $error)
             <p>{{ $error }}</p>
             @endforeach
         </div>
         @endif
-
 
         <div class="mt-4 text-center text-sm text-text">
             ログインの方は
