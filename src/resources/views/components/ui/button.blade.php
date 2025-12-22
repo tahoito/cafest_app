@@ -16,14 +16,13 @@
     $variants = [
         'action' => 'px-6 py-4 text-lg hover:opacity-90 shadow-[0_6px_16px_rgba(0,0,0,0.16)]',
         'secondary' => 'px-6 py-3 text-lg hover:opacity-90 shadow-[0_6px_16px_rgba(0,0,0,0.16)]',
-        'next' => 'px-4 py-2 hover:opacity-90 shadow-[0_6px_16px_rgba(0,0,0,0.16)]',
     ];
 
-    $classes = [
-        $base,
-        $themes[$theme] ?? $themes['user'],
-        $variants[$variant] ?? $variants['action'],
-    ];
+    $themeClass = $themes[$theme] ?? $themes['user'];
+    $variantClass = $variants[$variant] ?? $variants['action'];
+
+    // Merge computed classes; `attributes->class($classes)` will combine with any passed classes.
+    $classes = trim("{$base} {$themeClass} {$variantClass}");
 @endphp
 
 @if ($as === 'a')
