@@ -48,7 +48,7 @@ return [
 
         'store' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'stores',
         ],
     ],
 
@@ -73,6 +73,11 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
+        ],
+
+        'stores' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Store::class,
         ],
 
         // 'users' => [

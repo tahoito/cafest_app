@@ -1,9 +1,10 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers\Store;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -12,28 +13,41 @@ class AuthController extends Controller
         return view('pages.store.auth.login');
     }
 
-    public function login(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-
-        return redirect()->route('welcome');
-    }
-
     public function showSignup()
     {
         return view('pages.store.auth.signup');
     }
 
-    public function signup(Request $request)
+    public function login(Request $request)
     {
-        $request->validate([
+        $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
-        return redirect()->route('store.login');
+        if (Auth::guard('store')->attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->route('store.top');
+        }
+
+        return back()->withErrors([
+            'email' => 'ログイン情報が正しくありません',
+        ]);
+    }
+
+    public function signup(Request $request)
+    {
+        $validated = $request->validate([
+            'email' => 'required|email|unique:stores,email',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        // 仮登録（DB作らない）
+        $request->session()->put('signup', [
+            'email' => $validated['email'],
+            'password' => $validated['password'], // 後でHash化する
+        ]);
+
+        return redirect()->route('store.settings');
     }
 }

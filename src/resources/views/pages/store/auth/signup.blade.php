@@ -14,7 +14,7 @@
             </h1>
         </div>
 
-        <form method="POST" action="{{ route('user.login') }}" autocomplete="off">
+        <form method="POST" action="{{ route('store.login') }}" autocomplete="off">
         @csrf
         <!-- ダミー入力：ブラウザ自動補完を抑止 -->
         <input type="text" name="__fake_user" autocomplete="username" style="position:absolute;left:-9999px;top:-9999px;" tabindex="-1" />
