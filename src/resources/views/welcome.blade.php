@@ -11,13 +11,13 @@
             </h1>
         </div>
 
-        <div class="space-y-12 mb-15">
-            <div class="space-y-4">
+        <div class="space-y-12 mb-18">
+            <div class="space-y-5">
                 <div class="flex items-center gap-3 mb-2 ml-4">
                     <x-icons.user size="40" stroke="2" class="text-main" />
                     <div class="text-2xl text-main font-medium">ユーザー</div>
                 </div>
-                <div class="space-y-5">
+                <div class="space-y-4">
                     <div class="flex justify-center">
                         <x-ui.button as="a" href="{{ route('user.login') }}" class="w-full">
                             ログイン
@@ -31,12 +31,12 @@
                 </div>
             </div>
 
-            <div class="space-y-4">
+            <div class="space-y-5">
                 <div class="flex items-center gap-3 mb-2 ml-4">
                     <x-icons.store size="40" stroke="1" class="text-main2" />
                     <div class="text-2xl text-main2 font-medium">店舗</div>
                 </div>
-                <div class="space-y-5">
+                <div class="space-y-4">
                     <div class="flex justify-center">
                         <x-ui.button type="submit" as="a" href="{{ route('store.login') }}" theme="store" class="w-full">
                             ログイン
