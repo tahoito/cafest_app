@@ -34,5 +34,10 @@ Route::prefix('store')->name('store.')->group(function () {
 
     Route::get('/signup', [StoreAuth::class, 'showSignup'])->name('signup');
     Route::post('/signup', [StoreAuth::class, 'signup'])->name('signup.store');
+
+    Route::middleware('auth:store')->group(function () {
+        Route::get('/top', function () {
+            return view('pages.store.top'); })->name('top');
+    });
 });
 
