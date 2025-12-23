@@ -2,6 +2,8 @@
 @section('title','ログイン')
 
 @section('content')
+@section('hideNavbar')
+@endsection
 <div class="min-h-screen flex items-center justify-center bg-base_color relative overflow-hidden">
     <a href="{{ route('welcome') }}" class="fixed top-4 left-4 z-50 p-2">
         <x-icons.back class="w-5 h-5 text-text" />
