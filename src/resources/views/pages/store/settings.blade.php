@@ -22,7 +22,7 @@
 
 
   {{-- content --}}
-    <main class="w-full max-w-md mx-auto px-4 oy-6 pb-24">
+    <main class="w-full max-w-md mx-auto px-4 py-6 pb-6">
         <form method="POST" action="{{ route('store.settings.store') }}"
         x-data="{
             showAllAreas: false,
@@ -36,8 +36,8 @@
         }"
         >
         @csrf
-        <input type="hidden" name="areas" :value="selectedArea ?? ''"/>
-        <input type="hidden" name="moods" :value="selectedMood ?? ''" />
+        <input type="hidden" name="area" :value="selectedArea ?? ''">
+        <input type="hidden" name="mood" :value="selectedMood ?? ''">
         <section class="space-y-2 pt-8">
             <x-ui.label for="name">店舗名（正式名称）</x-ui.label>
             <x-ui.input 

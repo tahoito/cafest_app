@@ -22,8 +22,8 @@
 
 
   {{-- content --}}
-    <main class="w-full max-w-md mx-auto px-4 oy-6 pb-24">
-        <form method="POST" action="{{ route('user.settings.store') }}"
+    <main class="w-full max-w-md mx-auto px-4 py-6 pb-6">
+        <form method="POST" action="{{ route('user.settings.store') }}" enctype="multipart/form-data"
             x-data="{
                 showAllAreas: false,
                 showAllMoods: false,
@@ -38,8 +38,10 @@
             }"
         >
         @csrf
-        <input type="hidden" name="area" x-model="JSON.stringify(selectedAreas)">
-        <input type="hidden" name="mood" x-model="JSON.stringify(selectedMoods)">
+
+        {{-- 送信用の隠しフィールド（Alpine で選択した配列を JSON にして送る） --}}
+        <input type="hidden" name="area" :value="JSON.stringify(selectedAreas)" />
+        <input type="hidden" name="mood" :value="JSON.stringify(selectedMoods)" />
         <section class="flex justify-center pt-8">
             <label class="cursor-pointer">
                 <div

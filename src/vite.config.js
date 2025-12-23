@@ -14,5 +14,10 @@ export default defineConfig({
         watch: {
             ignored: ['**/storage/framework/views/**'],
         },
+        proxy: {
+            // Proxy backend routes to the Laravel dev server (adjust port if needed)
+            '/user': 'http://127.0.0.1:8000',
+            '/store': 'http://127.0.0.1:8000',
+        },
     },
 });
