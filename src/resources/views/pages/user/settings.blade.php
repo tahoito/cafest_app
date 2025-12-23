@@ -65,7 +65,14 @@
                 x-data="{
                     open: false,
                     areas: ['栄','名駅','大須','上前津','金山','矢場町','鶴舞','星ヶ丘','八事','桜山','今池','覚王山','新瑞橋','久屋大通'],
-                    selected: []
+                    selected: [],
+                    toggle(area){
+                        if(this.selected.includes(area)){
+                            this.selected = this.selected.filter(a => a !== area)
+                        } else {
+                            this.selected.push(area)
+                        }
+                    }
                 }"
         >
             <div>
@@ -75,6 +82,15 @@
 
             {{-- チップ選択肢 --}}
             <div class="grid grid-cols-4 gap-2 mt-3">
+                <template x-for="(area, index) in areas" :key="index">
+                    <x-ui.chip
+                        variant="area"
+                        @click="toggle(area)"
+                        x-bind:class="selected.includes(area) ? 'bg-main' : 'bg-accent'"
+                    >
+                        <span x-text="area"></span>
+                    </x-ui.chip>
+                </template>
             </div>
         </section>
 

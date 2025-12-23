@@ -57,5 +57,6 @@
   <main class="relative z-10 pb-20">
     @yield('content')
   </main>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js"></script>
 </body>
 </html>
