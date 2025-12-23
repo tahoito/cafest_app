@@ -38,6 +38,8 @@ Route::prefix('store')->name('store.')->group(function () {
     Route::middleware('auth:store')->group(function () {
         Route::get('/top', function () {
             return view('pages.store.top'); })->name('top');
+        Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
+        Route::post('/settings', [SettingsController::class, 'store'])->name('settings.store');
     });
 });
 
