@@ -68,7 +68,7 @@
                     <x-ui.chip
                         variant="area"
                         @click="toggle(area)"
-                        x-bind:class="selected.includes(area) ? 'bg-main' : 'bg-accent'"
+                        x-bind:class="selected.includes(area) ? 'bg-main text-form' : 'bg-accent text-text'"
                     >
                         <span x-text="area"></span>
                     </x-ui.chip>
@@ -101,7 +101,7 @@
                     <x-ui.chip
                         variant="mood"
                         @click="toggle(mood)"
-                        x-bind:class="selected.includes(mood) ? 'bg-main' : 'bg-accent'"
+                        x-bind:class="selected.includes(mood) ? 'bg-main text-form' : 'bg-accent text-text'"
                     >
                         <span x-text="mood"></span>
                     </x-ui.chip>
