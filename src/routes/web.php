@@ -4,7 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\AuthController as UserAuth;
 use App\Http\Controllers\Store\AuthController as StoreAuth;
 use App\Http\Controllers\User\TopController;
-use App\Http\Controllers\User\SettingsController;
+use App\Http\Controllers\User\SettingsController as UserSettingsController;
+use App\Http\Controllers\Store\SettingsController as StoreSettingsController;
 
 Route::view('/', 'welcome')->name('welcome');
 
@@ -19,8 +20,8 @@ Route::prefix('user')->name('user.')->group(function () {
     Route::get('/signup', [UserAuth::class, 'showSignup'])->name('signup');
     Route::post('/signup', [UserAuth::class, 'signup'])->name('signup.store');
 
-    Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
-    Route::post('/settings', [SettingsController::class, 'store'])->name('settings.store');
+    Route::get('/settings', [UserSettingsController::class, 'index'])->name('settings');
+    Route::post('/settings', [UserSettingsController::class, 'store'])->name('settings.store');
 
     Route::middleware('auth:user')->group(function () {
         Route::get('/top', function () {
@@ -35,11 +36,12 @@ Route::prefix('store')->name('store.')->group(function () {
     Route::get('/signup', [StoreAuth::class, 'showSignup'])->name('signup');
     Route::post('/signup', [StoreAuth::class, 'signup'])->name('signup.store');
 
+    Route::get('/settings', [StoreSettingsController::class, 'index'])->name('settings');
+    Route::post('/settings', [StoreSettingsController::class, 'store'])->name('settings.store');
+
     Route::middleware('auth:store')->group(function () {
         Route::get('/top', function () {
             return view('pages.store.top'); })->name('top');
-        Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
-        Route::post('/settings', [SettingsController::class, 'store'])->name('settings.store');
     });
 });
 
