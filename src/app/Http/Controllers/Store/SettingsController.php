@@ -35,6 +35,7 @@ class SettingsController extends Controller
         ]);
 
 
+
         $user = Store::create([
             'name' => $validated['name'],
             'email' => $signup['email'],

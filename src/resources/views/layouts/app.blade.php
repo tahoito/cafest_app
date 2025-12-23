@@ -54,7 +54,7 @@
     <div class="absolute bottom-10 left-40 w-10 h-10 rounded-full bg-accent"></div>
   </div>
   @endif
-  <main class="relative z-10 pb-20">
+  <main class="relative z-10 pb-2">
     @yield('content')
   </main>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js"></script>

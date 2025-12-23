@@ -28,18 +28,21 @@ class SettingsController extends Controller
         $signup = $request->session()->get('signup');
 
         $validated = $request->validate([
-            'name' => ['required,string,max:255'],
-            'area' => ['nullable,string'],
-            'mood' => ['nullable,string'],
-            'icon' => ['nullable,image,max:2048'], // 画像アップするなら
+            'name' => ['required', 'string', 'max:255'],
+            'area' => ['nullable', 'string'],
+            'mood' => ['nullable', 'string'],
+            'icon' => ['nullable', 'image', 'max:2048'],
         ]);
+
+        
+
 
         $iconPath = null;
         if ($request->hasFile('icon')) {
             $iconPath = $request->file('icon')->store('user_icons', 'public');
         }
 
-        $areas = $validated['area'] ? json_decode($validated['areas'], true) : [];
+        $areas = $validated['area'] ? json_decode($validated['area'], true) : [];
         $moods = $validated['mood'] ? json_decode($validated['mood'], true) : [];
 
         if (!is_array($areas) || !is_array($moods)){

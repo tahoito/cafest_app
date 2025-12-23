@@ -14,6 +14,8 @@ class Store extends Authenticatable
         'email',
         'password',
         'address',
+        'area',
+        'mood',
     ];
 
     protected $hidden = [
