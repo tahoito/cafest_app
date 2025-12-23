@@ -25,9 +25,11 @@
     <main class="w-full max-w-md mx-auto px-4 oy-6 pb-24">
         <form method="POST" action="{{ route('user.settings.store') }}"
             x-data="{
-                showAll: false,
+                showAllAreas: false,
+                showAllMoods: false,
                 areas: ['栄','名駅','大須','上前津','金山','矢場町','鶴舞','星ヶ丘','八事','桜山','今池','覚王山','新瑞橋','久屋大通'],
                 moods: ['韓国風','デート向け','勉強・作業','夜カフェ','静かめ','レトロ・喫茶','ペットOK','女子向け','長居OK'],
+                selectedAreas:[],
                 selectedMoods: [],
                 toggle(list, value){
                 if(list.includes(value)) return list.splice(list.indexOf(value), 1)
@@ -36,31 +38,67 @@
             }"
         >
         @csrf
-
+        <input type="hidden" name="area" x-model="JSON.stringify(selectedAreas)">
+        <input type="hidden" name="mood" x-model="JSON.stringify(selectedMoods)">
         <section class="flex justify-center pt-8">
             <label class="cursor-pointer">
-                <div class="w-56 h-56 rounded-xl bg-base border border-accent shadow-sm flex flex-col items-center justify-center gap-3">
-                    <div class="w-16 h-16 text-placeholder">
-                        <img
-                            id="preview"
-                            class="w-full h-full object-cover rounded-lg hidden"
-                        />
+                <div
+                class="w-56 h-56 rounded-xl bg-base border border-accent shadow-sm
+                        flex items-center justify-center"
+                >
+                {{-- 内側ラッパー（余白用） --}}
+                <div class="relative w-[88%] h-[88%] rounded-lg overflow-hidden
+                            bg-base">
+
+                    {{-- プレビュー画像 --}}
+                    <img
+                    id="preview"
+                    class="absolute inset-0 w-full h-full object-cover hidden"
+                    />
+
+                    {{-- プレースホルダー --}}
+                    <div
+                    id="placeholder"
+                    class="absolute inset-0 flex flex-col items-center justify-center
+                            gap-3 text-placeholder"
+                    >
+                    <div class="w-14 h-14">
                         <x-icons.image />
                     </div>
                     <span class="text-xs text-text">アイコン</span>
+                    </div>
                 </div>
-                <input 
-                    type="file"
-                    name="icon" 
-                    accept="image/*" 
-                    class="hidden"
-                    onchange="
+            </div>
+            <input
+                type="file"
+                name="icon"
+                accept="image/*"
+                class="hidden"
+                onchange="(function(){
                     const img = document.getElementById('preview');
-                    img.src = window.URL.createObjectURL(this.files[0]);
+                    const placeholder = document.getElementById('placeholder');
+                    const file = this.files && this.files[0];
+                    if(!file) return;
+
+                    if(window.URL && typeof window.URL.createObjectURL === 'function'){
+                    img.src = window.URL.createObjectURL(file);
+                    img.onload = () => {
+                        try{ window.URL.revokeObjectURL(img.src); }catch(e){}
+                    };
+                    } else {
+                    const reader = new FileReader();
+                    reader.onload = e => img.src = e.target.result;
+                    reader.readAsDataURL(file);
+                    }
+
                     img.classList.remove('hidden');
-                " />
+                    placeholder.classList.add('hidden');
+                }).call(this)"
+                />
             </label>
         </section>
+
+
 
         <section class="space-y-2 pt-8">
             <x-ui.label for="username">ユーザー名</x-ui.label>
@@ -79,12 +117,12 @@
 
             {{-- チップ選択肢 --}}
             <div class="grid grid-cols-4 gap-2 mt-3 overflow-hidden transition-all"
-             :class="showAll ? 'max-h-[999px]' : 'max-h-[72px]'":>
+             :class="showAllAreas ? 'max-h-[999px]' : 'max-h-[72px]'">
                 <template x-for="(area, index) in areas" :key="index">
                     <x-ui.chip
                         variant="area"
-                        @click="toggle(selectedArea,area)"
-                        x-bind:class="selectedArea.includes(area) 
+                        @click="toggle(selectedAreas, area)"
+                        x-bind:class="selectedAreas.includes(area) 
                         ? 'bg-main text-form' : 'bg-accent text-text'"
                     >
                         <span x-text="area"></span>
@@ -94,9 +132,9 @@
             <button
                 type="button"
                 class="text-xs text-text ml-auto block"
-                @click="showAll = !showAll"
+                @click="showAllAreas = !showAllAreas"
             >
-                <span x-text="showAll ? '閉じる' : 'もっと見る'"></span>
+                <span x-text="showAllAreas ? '閉じる' : 'もっと見る'"></span>
             </button>
         </section>
 
@@ -108,12 +146,12 @@
 
             {{-- チップ選択肢 --}}
             <div class="grid grid-cols-3 gap-3 mt-3 overflow-hidden transition-all"
-             :class="showAll ? 'max-h-[999px]' : 'max-h-[104px]'":>
+             :class="showAllMoods ? 'max-h-[999px]' : 'max-h-[104px]'">
                 <template x-for="(mood, index) in moods" :key="index">
                     <x-ui.chip
                         variant="mood"
-                        @click="toggle(selectedMood,mood)"
-                        x-bind:class="selectedMood.includes(mood) 
+                        @click="toggle(selectedMoods, mood)"
+                        x-bind:class="selectedMoods.includes(mood) 
                         ? 'bg-main text-form' : 'bg-accent text-text'"
                     >
                         <span x-text="mood"></span>
@@ -123,9 +161,9 @@
             <button
                 type="button"
                 class="text-xs text-text ml-auto block"
-                @click="showAll = !showAll"
+                @click="showAllMoods = !showAllMoods"
             >
-                <span x-text="showAll ? '閉じる' : 'もっと見る'"></span>
+                <span x-text="showAllMoods ? '閉じる' : 'もっと見る'"></span>
             </button>
         </section>
 
