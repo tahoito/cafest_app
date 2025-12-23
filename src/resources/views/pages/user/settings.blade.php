@@ -23,7 +23,18 @@
 
   {{-- content --}}
     <main class="w-full max-w-md mx-auto px-4 oy-6 pb-24">
-        <form method="POST" action="{{ route('user.settings.store') }}">
+        <form method="POST" action="{{ route('user.settings.store') }}"
+            x-data="{
+                showAll: false,
+                areas: ['栄','名駅','大須','上前津','金山','矢場町','鶴舞','星ヶ丘','八事','桜山','今池','覚王山','新瑞橋','久屋大通'],
+                moods: ['韓国風','デート向け','勉強・作業','夜カフェ','静かめ','レトロ・喫茶','ペットOK','女子向け','長居OK'],
+                selectedMoods: [],
+                toggle(list, value){
+                if(list.includes(value)) return list.splice(list.indexOf(value), 1)
+                list.push(value)
+                }
+            }"
+        >
         @csrf
 
         <section class="flex justify-center pt-8">
@@ -60,77 +71,67 @@
                 placeholder="ユーザー名を入力"/>
         </section>
        
-        <section 
-            class="space-y-3 pt-8"
-                x-data="{
-                    open: false,
-                    areas: ['栄','名駅','大須','上前津','金山','矢場町','鶴舞','星ヶ丘','八事','桜山','今池','覚王山','新瑞橋','久屋大通'],
-                    selected: [],
-                    toggle(area){
-                        if(this.selected.includes(area)){
-                            this.selected = this.selected.filter(a => a !== area)
-                        } else {
-                            this.selected.push(area)
-                        }
-                    }
-                }"
-        >
+        <section class="space-y-3 pt-8">
             <div>
                 <div class="text-lg text-text font-medium">おすすめで出して欲しいエリア</div>
                 <div class="text-xs text-text">※複数選択可</div>
             </div>
 
             {{-- チップ選択肢 --}}
-            <div class="grid grid-cols-4 gap-2 mt-3">
+            <div class="grid grid-cols-4 gap-2 mt-3 overflow-hidden transition-all"
+             :class="showAll ? 'max-h-[999px]' : 'max-h-[72px]'":>
                 <template x-for="(area, index) in areas" :key="index">
                     <x-ui.chip
                         variant="area"
-                        @click="toggle(area)"
-                        x-bind:class="selected.includes(area) ? 'bg-main' : 'bg-accent'"
+                        @click="toggle(selectedArea,area)"
+                        x-bind:class="selectedArea.includes(area) 
+                        ? 'bg-main text-form' : 'bg-accent text-text'"
                     >
                         <span x-text="area"></span>
                     </x-ui.chip>
                 </template>
             </div>
+            <button
+                type="button"
+                class="text-xs text-text ml-auto block"
+                @click="showAll = !showAll"
+            >
+                <span x-text="showAll ? '閉じる' : 'もっと見る'"></span>
+            </button>
         </section>
 
-        <section 
-            class="space-y-3 pt-8"
-                x-data="{
-                    open: false,
-                    moods: ['韓国風','デート向け','勉強・作業','夜カフェ','静かめ','レトロ・喫茶','ペットOK','女子向け','長居OK'],
-                    selected: [],
-                    toggle(mood){
-                        if(this.selected.includes(mood)){
-                            this.selected = this.selected.filter(a => a !== mood)
-                        } else {
-                            this.selected.push(mood)
-                        }
-                    }
-                }"
-        >
+        <section class="space-y-3 pt-8">
             <div>
                 <div class="text-lg text-text font-medium">好みの雰囲気のカフェ</div>
                 <div class="text-xs text-text">※複数選択可</div>
             </div>
 
             {{-- チップ選択肢 --}}
-            <div class="grid grid-cols-3 gap-3 mt-3">
+            <div class="grid grid-cols-3 gap-3 mt-3 overflow-hidden transition-all"
+             :class="showAll ? 'max-h-[999px]' : 'max-h-[104px]'":>
                 <template x-for="(mood, index) in moods" :key="index">
                     <x-ui.chip
                         variant="mood"
-                        @click="toggle(mood)"
-                        x-bind:class="selected.includes(mood) ? 'bg-main' : 'bg-accent'"
+                        @click="toggle(selectedMood,mood)"
+                        x-bind:class="selectedMood.includes(mood) 
+                        ? 'bg-main text-form' : 'bg-accent text-text'"
                     >
                         <span x-text="mood"></span>
                     </x-ui.chip>
                 </template>
             </div>
+            <button
+                type="button"
+                class="text-xs text-text ml-auto block"
+                @click="showAll = !showAll"
+            >
+                <span x-text="showAll ? '閉じる' : 'もっと見る'"></span>
+            </button>
         </section>
 
         <div class="flex justify-center pt-8">
             <x-ui.button type="submit" class="w-full text-form">
-                確認
+                次へ
             </x-ui.button>
         </div>
         </form>

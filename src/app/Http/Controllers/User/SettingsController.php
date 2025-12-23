@@ -28,10 +28,10 @@ class SettingsController extends Controller
         $signup = $request->session()->get('signup');
 
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'area' => 'nullable|string|max:50',
-            'mood' => 'nullable|string|max:50',
-            'icon' => 'nullable|image|max:2048', // 画像アップするなら
+            'name' => ['required,string,max:255'],
+            'area' => ['nullable,string'],
+            'mood' => ['nullable,string'],
+            'icon' => ['nullable,image,max:2048'], // 画像アップするなら
         ]);
 
         $iconPath = null;
@@ -39,12 +39,22 @@ class SettingsController extends Controller
             $iconPath = $request->file('icon')->store('user_icons', 'public');
         }
 
+        $areas = $validated['area'] ? json_decode($validated['areas'], true) : [];
+        $moods = $validated['mood'] ? json_decode($validated['mood'], true) : [];
+
+        if (!is_array($areas) || !is_array($moods)){
+            return back()->withErrors([
+                'area' => 'Invalid area selection.',
+                'mood' => 'Invalid mood selection.',
+            ])->withInput();
+        }
+
         $user = User::create([
             'name' => $validated['name'],
             'email' => $signup['email'],
             'password' => Hash::make($signup['password']),
-            'area' => $validated['area'] ?? null,
-            'mood' => $validated['mood'] ?? null,
+            'favorite_areas' => $areas,
+            'favorite_moods' => $moods,
             'icon_path' => $iconPath,
         ]);
 

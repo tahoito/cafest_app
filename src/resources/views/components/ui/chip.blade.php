@@ -21,9 +21,7 @@ $state = $disabled
   ? 'opacity-50 cursor-not-allowed'
   : 'cursor-pointer hover:opacity-90 active:scale-[0.98]';
 
-$theme = $active
-  ? 'bg-main border-main text-text-color'
-  : 'bg-accent border-main text-text-color';
+$theme = "bg-accent border-main text-text-color";
 @endphp
 
 <button

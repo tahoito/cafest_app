@@ -21,6 +21,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'favorite_areas',   
+        'favorite_moods',   
+        'icon_path',
     ];
 
     /**
@@ -43,6 +46,9 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'favorite_areas' => 'array',
+            'favorite_moods' => 'array',
         ];
+        
     }
 }
