@@ -5,7 +5,7 @@
 <div class="min-h-screen bg-base relative overflow-hidden">
 
   {{-- header --}}
-    <header class="sticky top-0 z-50 bg-base">
+    <header class="sticky top-0 z-50 bg-base_color">
         <div class="pt-[env(safe-area-inset-top)]">
             <div class="grid grid-cols-[48px_1fr_48px] items-center px-4 h-16">
             <a class="p-2" href="{{ route('user.signup') }}">

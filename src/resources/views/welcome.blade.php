@@ -2,7 +2,7 @@
 @section('title','welcomeページ')
 
 @section('content')
-<div class="min-h-screen flex items-center justify-center bg-base">
+<div class="min-h-screen flex items-center justify-center bg-base_color">
     <div class="w-full max-w-md px-4">
 
         <div class="mb-20 flex flex-col items-center">
