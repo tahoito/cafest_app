@@ -1,18 +1,17 @@
 @props([
   'active' => false,
   'disabled' => false,
-  'type' => 'button', // button | submit
-  'size' => 'md',     // sm | md
+  'type' => 'button',
   'variant' => 'area', // area | mood
 ])
 
 @php
 $variants = [
   'area' => [
-    'base' => 'h-10 px-8 text-base rounded-full',
+    'base' => 'h-8 w-full px-2 text-sm rounded-full',   // ← grid用
   ],
   'mood' => [
-    'base' => 'h-14 px-8 text-base rounded-xl',
+    'base' => 'h-10 w-full px-3 text-sm rounded-lg',   // ←少し大きめ
   ],
 ];
 
@@ -22,10 +21,10 @@ $state = $disabled
   ? 'opacity-50 cursor-not-allowed'
   : 'cursor-pointer hover:opacity-90 active:scale-[0.98]';
 
-$bgColor = $active ? 'bg-main' : 'bg-accent';
-$theme = "$bgColor border-main text-text-color main-form";
+$theme = $active
+  ? 'bg-main border-main text-text-color'
+  : 'bg-accent border-main text-text-color';
 @endphp
-
 
 <button
   type="{{ $type }}"
