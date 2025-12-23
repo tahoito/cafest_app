@@ -9,6 +9,7 @@
     <div class="px-4 pt-4">
         <x-ui.search-bar />
     </div>
-
+    <x-ui.chip variant="mood">韓国風</x-ui.chip>
+    <x-ui.chip variant="area">栄</x-ui.chip>
 @endsection
 

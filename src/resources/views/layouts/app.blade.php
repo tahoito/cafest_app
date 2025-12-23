@@ -19,7 +19,7 @@
           colors: {
             main: '#8A7458',
             main2: '#46392A',
-            base: '#FFFAF5',
+            base_color: '#FFFAF5',
             text: '#201200',
             accent: '#E4C9A8',
             form: '#FFFFFF',
@@ -40,7 +40,7 @@
   $authBg = request()->routeIs('user.login', 'user.signup', 'store.login', 'store.signup');
 @endphp
 
-<body class="min-h-screen bg-base text-text relative overflow-x-hidden overflow-y-hidden">
+<body class="min-h-screen bg-base_color text-text relative overflow-x-hidden overflow-y-hidden">
   @if($welcomeBg)
   <div class="absolute top-[15px] -left-[80px] w-[180px] h-[180px] rounded-full bg-accent"></div>
   <div class="absolute top-[30px] left-[120px] -translate-x-1/2 w-[36px] h-[36px] rounded-full bg-accent"></div>

@@ -2,7 +2,7 @@
 @section('title','トップ')
 
 @section('content')
-<div class="min-h-screen flex items-center justify-center">
+<div class="min-h-screen flex items-center justify-center bg-base_color">
 	<div class="text-center">
 		<h1 class="text-2xl">ようこそ、トップページです</h1>
 		<p class="mt-4">ログインに成功しました。</p>
