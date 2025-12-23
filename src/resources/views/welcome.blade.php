@@ -2,6 +2,8 @@
 @section('title','welcomeページ')
 
 @section('content')
+@section('hideNavbar')
+@endsection
 <div class="min-h-screen flex items-center justify-center bg-base_color">
     <div class="w-full max-w-md px-4">
 

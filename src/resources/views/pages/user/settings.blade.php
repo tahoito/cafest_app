@@ -2,6 +2,8 @@
 @section('title','アカウント情報設定')
 
 @section('content')
+@section('hideNavbar')
+@endsection
 <div class="min-h-screen bg-base relative overflow-hidden">
 
   {{-- header --}}
