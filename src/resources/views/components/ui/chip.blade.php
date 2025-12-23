@@ -8,10 +8,10 @@
 @php
 $variants = [
   'area' => [
-    'base' => 'h-8 w-full px-2 text-sm rounded-full',   // ← grid用
+    'base' => 'h-8 w-full px-2 text-sm rounded-full',   
   ],
   'mood' => [
-    'base' => 'h-10 w-full px-3 text-sm rounded-lg',   // ←少し大きめ
+    'base' => 'h-10 w-full px-3 text-sm rounded-xl',   
   ],
 ];
 

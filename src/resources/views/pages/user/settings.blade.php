@@ -94,10 +94,37 @@
             </div>
         </section>
 
-        <section class="space-y-3 pt-8">
+        <section 
+            class="space-y-3 pt-8"
+                x-data="{
+                    open: false,
+                    moods: ['韓国風','デート向け','勉強・作業','夜カフェ','静かめ','レトロ・喫茶','ペットOK','女子向け','長居OK'],
+                    selected: [],
+                    toggle(mood){
+                        if(this.selected.includes(mood)){
+                            this.selected = this.selected.filter(a => a !== mood)
+                        } else {
+                            this.selected.push(mood)
+                        }
+                    }
+                }"
+        >
             <div>
-                <div class="text-lg text-text font-medium">好みのカフェの雰囲気</div>
+                <div class="text-lg text-text font-medium">好みの雰囲気のカフェ</div>
                 <div class="text-xs text-text">※複数選択可</div>
+            </div>
+
+            {{-- チップ選択肢 --}}
+            <div class="grid grid-cols-3 gap-3 mt-3">
+                <template x-for="(mood, index) in moods" :key="index">
+                    <x-ui.chip
+                        variant="mood"
+                        @click="toggle(mood)"
+                        x-bind:class="selected.includes(mood) ? 'bg-main' : 'bg-accent'"
+                    >
+                        <span x-text="mood"></span>
+                    </x-ui.chip>
+                </template>
             </div>
         </section>
 
