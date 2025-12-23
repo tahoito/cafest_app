@@ -23,8 +23,21 @@
 
   {{-- content --}}
     <main class="w-full max-w-md mx-auto px-4 oy-6 pb-24">
-        <form method="POST" action="{{ route('store.settings.store') }}">
+        <form method="POST" action="{{ route('store.settings.store') }}"
+        x-data="{
+            areas: ['栄','名駅','大須','上前津','金山','矢場町','鶴舞','星ヶ丘','八事','桜山','今池','覚王山','新瑞橋','久屋大通'],
+            moods: ['珈琲専門','紅茶','スイーツ','夜カフェ','静かめ','勉強・作業','長居OK','レトロ・喫茶','女子会向け','デート向け','韓国風','ペットOK'],
+            selectedAreas: [],
+            selectedMoods: [],
+            toggle(list, value){
+            if(list.includes(value)) return list.splice(list.indexOf(value), 1)
+            list.push(value)
+            }
+        }"
+        >
         @csrf
+        <input type="hidden" name="selected_areas" :value="JSON.stringify(selectedAreas)" />
+        <input type="hidden" name="selected_moods" :value="JSON.stringify(selectedMoods)" />
         <section class="space-y-2 pt-8">
             <x-ui.label for="name">店舗名（正式名称）</x-ui.label>
             <x-ui.input 
@@ -43,21 +56,7 @@
                 placeholder="名古屋市から入力"/>
         </section>  
 
-        <section 
-            class="space-y-3 pt-8"
-                x-data="{
-                    open: false,
-                    areas: ['栄','名駅','大須','上前津','金山','矢場町','鶴舞','星ヶ丘','八事','桜山','今池','覚王山','新瑞橋','久屋大通'],
-                    selected: [],
-                    toggle(area){
-                        if(this.selected.includes(area)){
-                            this.selected = this.selected.filter(a => a !== area)
-                        } else {
-                            this.selected.push(area)
-                        }
-                    }
-                }"
-        >
+        <section class="space-y-3 pt-8">
             <div>
                 <div class="text-lg text-text font-medium">店舗のエリア選択</div>
             </div>
@@ -67,8 +66,8 @@
                 <template x-for="(area, index) in areas" :key="index">
                     <x-ui.chip
                         variant="area"
-                        @click="toggle(area)"
-                        x-bind:class="selected.includes(area) ? 'bg-main text-form' : 'bg-accent text-text'"
+                        @click="toggle(selectedAreas,area)"
+                        x-bind:class="selectedAreas.includes(area) ? 'bg-main text-form' : 'bg-accent text-text'"
                     >
                         <span x-text="area"></span>
                     </x-ui.chip>
@@ -76,21 +75,7 @@
             </div>
         </section>
 
-        <section 
-            class="space-y-3 pt-8"
-                x-data="{
-                    open: false,
-                    moods: ['珈琲専門','紅茶','スイーツ','夜カフェ','静かめ','勉強・作業','長居OK','レトロ・喫茶','女子会向け','デート向け','韓国風','ペットOK'],
-                    selected: [],
-                    toggle(mood){
-                        if(this.selected.includes(mood)){
-                            this.selected = this.selected.filter(a => a !== mood)
-                        } else {
-                            this.selected.push(mood)
-                        }
-                    }
-                }"
-        >
+        <section class="space-y-3 pt-8">
             <div>
                 <div class="text-lg text-text font-medium">カテゴリー選択</div>
             </div>
@@ -100,8 +85,8 @@
                 <template x-for="(mood, index) in moods" :key="index">
                     <x-ui.chip
                         variant="mood"
-                        @click="toggle(mood)"
-                        x-bind:class="selected.includes(mood) ? 'bg-main text-form' : 'bg-accent text-text'"
+                        @click="toggle(selectedMoods, mood)"
+                        x-bind:class="selectedMoods.includes(mood) ? 'bg-main text-form' : 'bg-accent text-text'"
                     >
                         <span x-text="mood"></span>
                     </x-ui.chip>

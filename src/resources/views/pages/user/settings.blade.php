@@ -132,7 +132,7 @@
 
         <div class="flex justify-center pt-8">
             <x-ui.button type="submit" class="w-full text-form">
-                確認
+                次へ
             </x-ui.button>
         </div>
         </form>
