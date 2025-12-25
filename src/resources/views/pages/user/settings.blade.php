@@ -44,7 +44,8 @@
         {{-- 送信用の隠しフィールド（Alpine で選択した配列を JSON にして送る） --}}
         <input type="hidden" name="area" :value="JSON.stringify(selectedAreas)" />
         <input type="hidden" name="mood" :value="JSON.stringify(selectedMoods)" />
-        <section class="flex justify-center pt-8">
+
+        <section class="flex flex-col items-center pt-8">
             <label class="cursor-pointer">
                 <div
                 class="w-56 h-56 rounded-xl bg-base border border-accent shadow-sm
@@ -100,6 +101,9 @@
                 }).call(this)"
                 />
             </label>
+            @error('icon')
+                <p class="text-notification text-sm mt-1">{{ $message }}</p>
+            @enderror
         </section>
 
 
@@ -110,7 +114,11 @@
                 id="username" 
                 type="text" 
                 name="name" 
+                value="{{ old('name') }}"
                 placeholder="ユーザー名を入力"/>
+            @error('name')
+                <p class="text-notification text-sm mt-1">{{ $message }}</p>
+            @enderror       
         </section>
        
         <section class="space-y-3 pt-8">
@@ -118,6 +126,9 @@
                 <div class="text-lg text-text font-medium">おすすめで出して欲しいエリア</div>
                 <div class="text-xs text-text">※複数選択可</div>
             </div>
+            @error('area')
+                <p class="text-notification text-sm mt-1">{{ $message }}</p>
+            @enderror
 
             {{-- チップ選択肢 --}}
             <div class="grid grid-cols-4 gap-2 mt-3 overflow-hidden transition-all"
@@ -147,6 +158,9 @@
                 <div class="text-lg text-text font-medium">好みの雰囲気のカフェ</div>
                 <div class="text-xs text-text">※複数選択可</div>
             </div>
+            @error('mood')
+                <p class="text-notification text-sm mt-1">{{ $message }}</p>
+            @enderror
 
             {{-- チップ選択肢 --}}
             <div class="grid grid-cols-3 gap-3 mt-3 overflow-hidden transition-all"
