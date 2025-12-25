@@ -26,6 +26,9 @@
 
         <section class="px-4 space-y-3">
             <div class="text-lg text-text font-medium">みんなのレビュー</div>
+            @foreach($reviews as $review)
+                <x-ui.review-card :review="$review" />
+            @endforeach
         </section>
 
         <section class="px-4 space-y-3 pb-24">

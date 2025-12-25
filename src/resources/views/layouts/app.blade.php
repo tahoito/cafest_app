@@ -10,29 +10,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.bunny.net">
   <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            main: '#8A7458',
-            main2: '#46392A',
-            base_color: '#FFFAF5',
-            text: '#201200',
-            accent: '#E4C9A8',
-            form: '#FFFFFF',
-            placeholder: '#666666',
-            favorite: '#4F4232',
-            star: '#F6D264',
-            notification: '#FF4D4D',
-            notification2: '#F3F0ED',
-          },
-        },
-      },
-    }
-  </script>
+  <link rel="stylesheet" href="{{ asset('build/app.css') }}">
 </head>
 
 @php
@@ -40,7 +18,7 @@
   $authBg = request()->routeIs('user.login', 'user.signup', 'store.login', 'store.signup');
 @endphp
 
-<body class="min-h-screen bg-base_color text-text relative overflow-x-hidden overflow-y-hidden">
+<body class="min-h-screen bg-base_color text-text relative overflow-x-hidden">
   @if($welcomeBg)
   <div class="absolute top-[15px] -left-[80px] w-[180px] h-[180px] rounded-full bg-accent"></div>
   <div class="absolute top-[30px] left-[120px] -translate-x-1/2 w-[36px] h-[36px] rounded-full bg-accent"></div>
