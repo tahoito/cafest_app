@@ -31,8 +31,8 @@
             showAllMoods: false,
             areas: ['栄','名駅','大須','上前津','金山','矢場町','鶴舞','星ヶ丘','八事','桜山','今池','覚王山','新瑞橋','久屋大通'],
             moods: ['珈琲専門','紅茶','スイーツ','夜カフェ','静かめ','勉強・作業','長居OK','レトロ・喫茶','女子会向け','デート向け','韓国風','ペットOK'],
-            selectedArea: null,
-            selectedMood: null,
+            selectedArea: @js(old('area')),
+            selectedMood: @js(old('mood')),
             selectArea(v){ this.selectedArea = (this.selectedArea === v) ? null : v },
             selectMood(v){ this.selectedMood = (this.selectedMood === v) ? null : v }, 
         }"
@@ -46,22 +46,36 @@
                 id="name" 
                 type="text" 
                 name="name" 
+                value="{{ old('name') }}"
                 placeholder="店舗正式名称を入力"/>
+            @error('name')
+                <p class="text-notification text-sm mt-1">{{ $message }}</p>
+            @enderror
         </section>
+        
+
 
         <section class="space-y-2 pt-8">
             <x-ui.label for="address">店舗住所</x-ui.label>
             <x-ui.input 
-                id="storename" 
+                id="address" 
                 type="text" 
                 name="address" 
+                value="{{ old('address') }}"
                 placeholder="名古屋市から入力"/>
+            @error('address')
+                <p class="text-notification text-sm mt-1">{{ $message }}</p>
+            @enderror
         </section>  
 
         <section class="space-y-3 pt-8">
             <div>
                 <div class="text-lg text-text font-medium">店舗のエリア選択</div>
             </div>
+            @error('area')
+                <p class="text-notification text-sm mt-1">{{ $message }}</p>
+            @enderror
+
 
             {{-- チップ選択肢 --}}
             <div class="grid grid-cols-4 gap-2 mt-3 overflow-hidden transition-all"
@@ -89,6 +103,9 @@
             <div>
                 <div class="text-lg text-text font-medium">カテゴリー選択</div>
             </div>
+            @error('mood')
+                <p class="text-notification text-sm mt-1">{{ $message }}</p>
+            @enderror
 
             {{-- チップ選択肢 --}}
             <div class="grid grid-cols-3 gap-3 mt-3 overflow-hidden transition-all"
