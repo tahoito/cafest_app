@@ -1,10 +1,10 @@
 <nav class="fixed bottom-0 left-0 w-full z-50">
-  <div class="relative mx-auto max-w-md px-12 pt-6 pb-8">
+  <div class="relative w-full">
 
-    <!-- wave -->
+    <!-- wave（バーの上に乗る。後で active 時に少し上げる） -->
     <svg
       id="waveSvg"
-      class="pointer-events-none absolute -top-[50px] left-0 w-full h-[100px] text-main"
+      class="pointer-events-none absolute -top-[54px] left-0 w-full h-[108px] text-main z-20 transform-gpu transition-transform duration-550 ease-[cubic-bezier(.22,1,.36,1)]"
       viewBox="0 -28 100 56"
       preserveAspectRatio="none"
       shape-rendering="geometricPrecision"
@@ -12,64 +12,33 @@
       <path id="wavePath" fill="currentColor"></path>
     </svg>
 
-    <!-- bar bg -->
-    <div class="absolute inset-x-0 bottom-0 h-[78px] bg-main rounded-t-2xl"></div>
+    <!-- bar bg（フル幅） -->
+    <div class="absolute inset-x-0 bottom-0 h-[78px] bg-main rounded-t-2xl z-0"></div>
 
-    <!-- nav items -->
-    <ul class="absolute inset-x-0 bottom-0 flex items-end justify-center px-16 pb-5 gap-x-10">
+    <!-- nav items（フル幅の中で中央寄せ。アイコンを下げる） -->
+    <ul class="absolute inset-x-0 bottom-0 flex items-end justify-center gap-x-10 pb-2 z-30">
       @php
-        // 透明の器（クリック領域）
         $btnBase = "nav-item relative grid place-items-center";
         $btnSize = "h-14 w-14";
-
-        // ぬるっと上がる easing（iOSっぽい）
         $ease = "ease-[cubic-bezier(.22,1,.36,1)]";
 
-        // 白丸（Figmaのbg-base）
-        $circleBase = "nav-circle absolute inset-0 rounded-full bg-transparent transform-gpu transition-transform duration-550 {$ease}";
+        // 丸は「波より下」にしたいので z-10（waveは z-20）
+        $circleBase = "nav-circle absolute inset-0 rounded-full bg-transparent z-10 transform-gpu transition-transform duration-550 {$ease}";
 
-        // アイコン（白丸と同じだけ上げる）
-        $iconBase = "nav-icon relative z-10 grid place-items-center transform-gpu transition-transform duration-550 {$ease}";
+        // アイコンは一番上（waveより上）
+        $iconBase = "nav-icon relative z-30 grid place-items-center transform-gpu transition-transform duration-550 {$ease}";
       @endphp
 
-      <li>
-        <button class="{{ $btnBase }} {{ $btnSize }}" data-i="0" type="button" aria-label="home">
-          <span class="{{ $circleBase }}"></span>
-          <span class="{{ $iconBase }}">
-            <x-icons.home size="24" stroke="1.6" class="text-text" />
-          </span>
-        </button>
-      </li>
-
-      <li>
-        <button class="{{ $btnBase }} {{ $btnSize }}" data-i="1" type="button" aria-label="search">
-          <span class="{{ $circleBase }}"></span>
-          <span class="{{ $iconBase }}">
-            <x-icons.search size="24" stroke="1.6" class="text-text" />
-          </span>
-        </button>
-      </li>
-
-      <li>
-        <button class="{{ $btnBase }} {{ $btnSize }}" data-i="2" type="button" aria-label="reserve">
-          <span class="{{ $circleBase }}"></span>
-          <span class="{{ $iconBase }}">
-            <x-icons.reserve size="24" stroke="1.6" class="text-text" />
-          </span>
-        </button>
-      </li>
-
-      <li>
-        <button class="{{ $btnBase }} {{ $btnSize }}" data-i="3" type="button" aria-label="mycafe">
-          <span class="{{ $circleBase }}"></span>
-          <span class="{{ $iconBase }}">
-            <x-icons.mycafe size="24" stroke="1.6" class="text-text" />
-          </span>
-        </button>
-      </li>
+      <li><button class="{{ $btnBase }} {{ $btnSize }}" data-i="0" type="button"><span class="{{ $circleBase }}"></span><span class="{{ $iconBase }}"><x-icons.home size="28" stroke="2.2" class="text-text" /></span></button></li>
+      <li><button class="{{ $btnBase }} {{ $btnSize }}" data-i="1" type="button"><span class="{{ $circleBase }}"></span><span class="{{ $iconBase }}"><x-icons.search size="28" stroke="2.2" class="text-text" /></span></button></li>
+      <li><button class="{{ $btnBase }} {{ $btnSize }}" data-i="2" type="button"><span class="{{ $circleBase }}"></span><span class="{{ $iconBase }}"><x-icons.reserve size="28" stroke="2.2" class="text-text" /></span></button></li>
+      <li><button class="{{ $btnBase }} {{ $btnSize }}" data-i="3" type="button"><span class="{{ $circleBase }}"></span><span class="{{ $iconBase }}"><x-icons.mycafe size="28" stroke="2.2" class="text-text" /></span></button></li>
     </ul>
+
   </div>
 </nav>
+
+
 
 @once
 <script>
@@ -83,11 +52,11 @@
   const activeBtnRemove = ["z-0"];
 
   // ★たほ環境の白：bg-base_color
-  const activeCircleAdd = ["bg-base_color", "-translate-y-5", "shadow-lg"];
+  const activeCircleAdd = ["bg-base_color", "-translate-y-4", "shadow-lg"];
   const activeCircleRemove = ["bg-transparent", "translate-y-0", "shadow-none"];
 
   // ★アイコンも同じだけ上げる（中央に固定）
-  const activeIconAdd = ["-translate-y-5"];
+  const activeIconAdd = ["-translate-y-4"];
   const activeIconRemove = ["translate-y-0"];
 
   function setActive(index) {
