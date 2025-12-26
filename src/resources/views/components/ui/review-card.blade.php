@@ -18,7 +18,7 @@
   $date = data_get($review, 'created_at', data_get($review, 'date', null));
   $link = $href ?? ($shopId ? url("/stores/{$shopId}") : '#');
 
-  $base = "rounded-xl bg-form ring-1 ring-black/5 shadow-[0_8px_20px_rgba(0,0,0,0.08)]";
+  $base = "rounded-xl bg-form ring-1 ring-black/5 shadow-[0_2px_6px_rgba(0,0,0,0.12)]";
   $size = match ($variant) {
     'mini'    => "inline-block w-[220px]",   // ←ここでカード幅を固定
     'grid'    => "block w-full",

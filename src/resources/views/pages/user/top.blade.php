@@ -26,7 +26,7 @@
 
         <section class="px-4 space-y-3">
             <div class="text-lg text-text font-medium">みんなのレビュー</div>
-            <div class="flex flex-nowrap gap-3 overflow-x-auto pb-6 pt-3 px-2">
+            <div class="flex flex-nowrap gap-3 overflow-x-auto pb-4 pt-3 px-2">
                 @foreach($reviews as $review)
                     <x-ui.review-card :review="$review" variant="mini" class="shrink-0" />
                 @endforeach

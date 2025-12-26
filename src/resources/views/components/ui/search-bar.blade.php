@@ -7,7 +7,7 @@
 ])
 
 <form action="{{ $action ?? url()->current() }}" method="{{ $method }}" class="w-full">
-  <div class="flex items-center gap-3 rounded-full bg-form px-4 py-3 shadow-sm ring-2 ring-main">
+  <div class="flex items-center gap-3 rounded-full bg-form px-4 py-3 shadow-[0_2px_6px_rgba(0,0,0,0.12)] ring-2 ring-main">
     <button type="submit" class="shrink-0" aria-label="Search">
       <x-icons.search class="h-6 w-6 text-placeholder text-text" />
     </button>
