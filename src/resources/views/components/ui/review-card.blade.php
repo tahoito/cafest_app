@@ -18,16 +18,25 @@
   $date = data_get($review, 'created_at', data_get($review, 'date', null));
   $link = $href ?? ($shopId ? url("/stores/{$shopId}") : '#');
 
-  $base = "block rounded-lg bg-form shadow-sm overflow-hidden";
-  $wrap = match ($variant) {
-      'grid' => "p-3",
-      'compact' => "p-2",
-      default => "p-4",
+  $base = "rounded-xl bg-form ring-1 ring-black/5 shadow-[0_4px_12px_rgba(0,0,0,0.10)]";
+  $size = match ($variant) {
+    'mini'    => "inline-block w-[220px]",   // ←ここでカード幅を固定
+    'grid'    => "block w-full",
+    'compact' => "block w-full",
+    default   => "block w-full",
+  };
+
+    $wrap = match ($variant) {
+    'mini'    => "p-3 space-y-2",
+    'grid'    => "p-3 space-y-2",
+    'compact' => "p-2 space-y-1.5",
+    default   => "p-4 space-y-3",
   };
 
   $avatarSize = match ($variant) {
-      'compact' => "w-9 h-9",
-      default   => "w-11 h-11",
+    'mini'    => "w-9 h-9",
+    'compact' => "w-9 h-9",
+    default   => "w-11 h-11",
   };
 
   $dateText = '';
@@ -42,8 +51,8 @@
   $stars = max(0, min(5, (int) round($rating)));
 @endphp
 
-<a href="{{ $link }}" {{ $attributes->merge(['class' => $base]) }}>
-  <div class="{{ $wrap }} space-y-2">
+<a href="{{ $link }}" class="{{ $base }} {{ $size }}" {{ $attributes }}>
+  <div class="{{ $wrap }}">
 
     {{-- 上段：ユーザー + 日付 --}}
     <div class="flex items-start justify-between gap-3">
@@ -65,11 +74,15 @@
     </div>
 
     {{-- 星 --}}
-    <div class="flex items-center gap-1">
-      @for($i=1; $i<=5; $i++)
-        <x-icons.star class="w-4 h-4 {{ $i <= $stars ? 'text-star' : 'text-line' }}" />
-      @endfor
+    <div class="flex items-center gap-[2px]">
+        @for($i=1; $i<=5; $i++)
+            <x-icons.star
+            :size="22"
+            class="{{ $i <= $stars ? 'text-star' : 'text-line' }}"
+            />
+        @endfor
     </div>
+
 
     {{-- 本文 --}}
     <div class="text-text text-[14px] leading-snug line-clamp-3">
