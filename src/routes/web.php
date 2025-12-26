@@ -25,6 +25,8 @@ Route::prefix('user')->name('user.')->group(function () {
 
     Route::middleware('auth:user')->group(function () {
         Route::get('/top',[TopController::class, 'index'])->name('top');
+        Route::get('/search', [UserController::class, 'search'])->name('search');
+
     });
 });
 
