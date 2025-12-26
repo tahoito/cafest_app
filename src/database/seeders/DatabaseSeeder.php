@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Store;
+use App\Models\Review;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,12 +17,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => Hash::make('password1234'),
-        ]);
+        User::factory(5)->create();
+        Store::factory(5)->create();
+        Review::factory(10)->create();
     }
 }

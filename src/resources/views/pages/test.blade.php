@@ -11,5 +11,6 @@
     </div>
     <x-ui.chip variant="mood">韓国風</x-ui.chip>
     <x-ui.chip variant="area">栄</x-ui.chip>
+
 @endsection
 

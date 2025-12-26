@@ -24,8 +24,7 @@ Route::prefix('user')->name('user.')->group(function () {
     Route::post('/settings', [UserSettingsController::class, 'store'])->name('settings.store');
 
     Route::middleware('auth:user')->group(function () {
-        Route::get('/top', function () {
-            return view('pages.user.top'); })->name('top');
+        Route::get('/top',[TopController::class, 'index'])->name('top');
     });
 });
 
