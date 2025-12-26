@@ -32,16 +32,13 @@
     <div class="absolute bottom-10 left-40 w-10 h-10 rounded-full bg-accent"></div>
   </div>
   @endif
-  <main class="relative z-10 pb-2
-    @unless(View::hasSection('hideNavbar'))
-      pb-20
-   @endunless
-        ">
+  <main class="relative z-10 @unless(View::hasSection('hideNavbar')) pb-20 @else pb-2 @endunless">
     @yield('content')
   </main>
   @unless(View::hasSection('hideNavbar'))
   <x-ui.navbar />
   @endunless
+  @stack('scripts')
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js"></script>
 </body>
 </html>
