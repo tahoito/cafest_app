@@ -1,5 +1,5 @@
 @props([
-  'size' => 18,
+  'size' => 24,
   'stroke' => 0,
 ])
 

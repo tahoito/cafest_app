@@ -26,12 +26,13 @@
 
         <section class="px-4 space-y-3">
             <div class="text-lg text-text font-medium">みんなのレビュー</div>
-                <div class="flex gap-3 overflow-x-auto pb-4 pt-2 px-1">
-                    @foreach($reviews as $review)
-                        <x-ui.review-card :review="$review" variant="mini" class="shrink-0"/>
-                    @endforeach
-                </div>
+            <div class="flex flex-nowrap gap-3 overflow-x-auto pb-4 pt-2 px-1">
+                @foreach($reviews as $review)
+                    <x-ui.review-card :review="$review" variant="mini" class="shrink-0" />
+                @endforeach
+            </div>
         </section>
+
 
         <section class="px-4 space-y-3 pb-24">
             <div class="text-lg text-text font-medium">カフェ一覧</div>

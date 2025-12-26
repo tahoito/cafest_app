@@ -73,16 +73,21 @@
       @endif
     </div>
 
-    {{-- 星 --}}
-    <div class="flex items-center gap-[2px]">
-        @for($i=1; $i<=5; $i++)
-            <x-icons.star
-            :size="22"
-            class="{{ $i <= $stars ? 'text-star' : 'text-line' }}"
-            />
-        @endfor
-    </div>
+    {{-- 中段：店舗名 + 星 --}}
+    <div class="flex items-center justify-between gap-3">
+      <div class="text-text text-[14px] font-medium truncate">
+        {{ $shopName }}
+      </div>
 
+      <div class="flex items-center gap-[2px] shrink-0">
+        @for($i=1; $i<=5; $i++)
+          <x-icons.star
+            :size="15"
+            class="{{ $i <= $stars ? 'text-star' : 'text-line' }}"
+          />
+        @endfor
+      </div>
+    </div>
 
     {{-- 本文 --}}
     <div class="text-text text-[14px] leading-snug line-clamp-3">
