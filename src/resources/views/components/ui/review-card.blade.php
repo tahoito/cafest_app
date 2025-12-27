@@ -29,13 +29,13 @@
 
     $wrap = match ($variant) {
     'mini'    => "p-3 space-y-2",
-    'grid'    => "p-3 space-y-2",
+    'grid'    => "p-2 space-y-2",
     'compact' => "p-2 space-y-1.5",
     default   => "p-4 space-y-3",
   };
 
   $avatarSize = match ($variant) {
-    'mini'    => "w-9 h-9",
+    'mini'    => "w-8 h-8",
     'compact' => "w-9 h-9",
     default   => "w-11 h-11",
   };
