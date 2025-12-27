@@ -18,7 +18,8 @@
   $date = data_get($review, 'created_at', data_get($review, 'date', null));
   $link = $href ?? ($shopId ? url("/stores/{$shopId}") : '#');
 
-  $base = "rounded-xl bg-form ring-1 ring-black/5 shadow-[0_8px_20px_rgba(0,0,0,0.08)]";
+  $base = "rounded-xl bg-form ring-1 ring-black/5 shadow-[0_1px_4px_rgba(0,0,0,0.25)]";
+
   $size = match ($variant) {
     'mini'    => "inline-block w-[220px]",   // ←ここでカード幅を固定
     'grid'    => "block w-full",
@@ -28,13 +29,13 @@
 
     $wrap = match ($variant) {
     'mini'    => "p-3 space-y-2",
-    'grid'    => "p-3 space-y-2",
+    'grid'    => "p-2 space-y-2",
     'compact' => "p-2 space-y-1.5",
     default   => "p-4 space-y-3",
   };
 
   $avatarSize = match ($variant) {
-    'mini'    => "w-9 h-9",
+    'mini'    => "w-8 h-8",
     'compact' => "w-9 h-9",
     default   => "w-11 h-11",
   };

@@ -24,11 +24,26 @@
         $circleBase = "nav-circle absolute inset-0 rounded-full bg-transparent z-20 transform-gpu transition-transform duration-550 {$ease}";
 
         // アイコンは一番上（waveより上）
-        $iconBase = "nav-icon absolute inset-0 z-30 grid place-items-center transform-gpu transition-transform duration-800 {$ease} outline outline-1 outline-red-500";
+        $iconBase = "nav-icon absolute inset-0 z-30 grid place-items-center transform-gpu transition-transform duration-800 {$ease}";
+
       @endphp
 
-      <li><button class="{{ $btnBase }} {{ $btnSize }}" data-i="0" type="button"><span class="{{ $circleBase }}"></span><span class="{{ $iconBase }}"><x-icons.home size="34" stroke="2.8" class="text-text" /></span></button></li>
-      <li><button class="{{ $btnBase }} {{ $btnSize }}" data-i="1" type="button"><span class="{{ $circleBase }}"></span><span class="{{ $iconBase }}"><x-icons.search size="34" stroke="2.8" class="text-text" /></span></button></li>
+      <li>
+        <a href="{{ route('user.top') }}"
+          class="{{ $btnBase }} {{ $btnSize }}"
+          data-i="0">
+          <span class="{{ $circleBase }}"></span>
+          <span class="{{ $iconBase }}"><x-icons.home size="34" stroke="2.8" class="text-text" /></span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ route('user.search') }}"
+          class="{{ $btnBase }} {{ $btnSize }}"
+          data-i="0">
+          <span class="{{ $circleBase }}"></span>
+          <span class="{{ $iconBase }}"><x-icons.search size="34" stroke="2.8" class="text-text" /></span>
+        </a>
+      </li>
       <li><button class="{{ $btnBase }} {{ $btnSize }}" data-i="2" type="button"><span class="{{ $circleBase }}"></span><span class="{{ $iconBase }}"><x-icons.reserve size="34" stroke="2.8" class="text-text" /></span></button></li>
       <li><button class="{{ $btnBase }} {{ $btnSize }}" data-i="3" type="button"><span class="{{ $circleBase }}"></span><span class="{{ $iconBase }}"><x-icons.mycafe size="34" stroke="2.8" class="text-text" /></span></button></li>
     </ul>
