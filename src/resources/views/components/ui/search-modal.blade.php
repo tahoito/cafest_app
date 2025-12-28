@@ -7,10 +7,7 @@
   @keydown.escape.window="activeModal = null"
   style="display:none;"
 >
-  <!-- overlay -->
   <div class="absolute inset-0 bg-black/40" @click="activeModal = null"></div>
-
-  <!-- sheet -->
   <div
     x-show="activeModal === 'search'"
     x-transition:enter="transition ease-out duration-200"
@@ -22,7 +19,7 @@
     class="relative w-full max-w-[400px] rounded-t-3xl overflow-hidden shadow-xl"
     @click.stop
   >
-    <!-- header (white) -->
+
     <div class="bg-form px-5 pt-3 pb-4 rounded-t-3xl">
       <div class="mx-auto mb-2 h-1.5 w-12 rounded-full bg-line"></div>
 
