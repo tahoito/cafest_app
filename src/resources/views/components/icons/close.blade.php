@@ -15,5 +15,5 @@
   height="{{ $size }}"
   {{ $attributes->merge(['class' => 'inline-block shrink-0']) }}
 >
-  <path d="M12 19L5 12M5 12L12 5M5 12H19" />
+<path d="M18 6L6 18M6 6L18 18"/>
 </svg>

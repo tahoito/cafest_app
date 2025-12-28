@@ -41,7 +41,7 @@ class SettingsController extends Controller
             'mood' => $moods,
         ]);
 
-        Auth::guard('store')->login($user);
+        Auth::guard('store')->login($store);
         $request->session()->regenerate();
         $request->session()->forget('signup');
 
