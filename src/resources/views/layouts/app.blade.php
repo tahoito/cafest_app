@@ -18,7 +18,7 @@
   $authBg = request()->routeIs('user.login', 'user.signup', 'store.login', 'store.signup');
 @endphp
 
-<body class="min-h-screen bg-base_color text-text relative overflow-x-hidden">
+<body class="min-h-screen bg-base_color text-text_color relative overflow-x-hidden">
   @if($welcomeBg)
   <div class="absolute top-[15px] -left-[80px] w-[180px] h-[180px] rounded-full bg-accent"></div>
   <div class="absolute top-[30px] left-[120px] -translate-x-1/2 w-[36px] h-[36px] rounded-full bg-accent"></div>

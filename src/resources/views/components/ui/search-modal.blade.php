@@ -1,14 +1,14 @@
 <div
-  x-show="searchOpen"
+  x-show="search"
   x-transition.opacity
   class="fixed inset-0 z-[999] flex items-end justify-center"
   @keydown.escape.window="searchOpen = false"
   style="display: none;"
 >
   <!-- overlay -->
-  <div class="absolute inset-0 bg-black/40" @click="searchOpen = false"></div>
+  <div class="absolute inset-0 bg-black/40" @click="search = false"></div>
     <div
-    x-show="searchOpen"
+    x-show="search"
     x-transition:enter="transition ease-out duration-200"
     x-transition:enter-start="translate-y-6 opacity-0"
     x-transition:enter-end="translate-y-0 opacity-100"
@@ -32,21 +32,21 @@
             <x-icons.close class="w-8 h-8" />
         </button>
 
-        <div class="text-lg text-text">検索条件</div>
+        <div class="text-lg text-text_color_color">検索条件</div>
         </div>
     </div>
 
     <div class="bg-base_color px-5 pt-4 pb-6">
         <div class="mx-auto w-full max-w-md space-y-4">
             <section class="space-y-2">
-                <div class="flex items-center text-lg text-text">
+                <div class="flex items-center text-lg text-text_color_color">
                     <span><x-icons.area /></span><span>エリア</span>
                 </div>
 
 
                 <div class="relative">
                 <select
-                    class="w-full appearance-none rounded-xl border border-line bg-form px-4 py-3 text-base text-text shadow-sm focus:outline-none focus:ring-2 focus:ring-main-color/30"
+                    class="w-full appearance-none rounded-xl border border-line bg-form px-4 py-3 text-base text-text_color_color shadow-sm focus:outline-none focus:ring-2 focus:ring-main-color/30"
                 >
                     <option>栄</option>
                     <option>名駅</option>
@@ -58,13 +58,13 @@
 
             <!-- 予算 -->
             <section class="space-y-2">
-                <div class="flex items-center text-lg text-text">
+                <div class="flex items-center text-lg text-text_color_color">
                     <span><x-icons.wallet /></span><span>予算</span>
                 </div>
 
                 <div class="relative">
                 <select
-                    class="w-full appearance-none rounded-xl border border-line bg-form px-4 py-3 text-base text-text shadow-sm focus:outline-none focus:ring-2 focus:ring-main-color/30"
+                    class="w-full appearance-none rounded-xl border border-line bg-form px-4 py-3 text-base text-text_color_color shadow-sm focus:outline-none focus:ring-2 focus:ring-main-color/30"
                 >
                     <option>1,000円 - 2,000円</option>
                     <option>2,000円 - 3,000円</option>
@@ -75,13 +75,13 @@
             </section>
 
             <section class="space-y-2">
-                <div class="flex items-center gap-1.5 text-lg text-text">
-                    <span><x-icons.time class="w-5 h-5 text-text-color" /></span><span>営業時間</span>
+                <div class="flex items-center gap-1.5 text-lg text-text_color_color">
+                    <span><x-icons.time class="w-5 h-5 text-text_color_color" /></span><span>営業時間</span>
                 </div>
 
                 <div class="relative">
                 <select
-                    class="w-full appearance-none rounded-xl border border-line bg-form px-4 py-3 text-base text-text shadow-sm focus:outline-none focus:ring-2 focus:ring-main-color/30"
+                    class="w-full appearance-none rounded-xl border border-line bg-form px-4 py-3 text-base text-text_color_color shadow-sm focus:outline-none focus:ring-2 focus:ring-main-color/30"
                 >
                     <option>今営業中</option>
                     <option>朝から営業</option>
@@ -93,7 +93,7 @@
             </section>
 
             <section class="space-y-2">
-                <div class="flex items-center text-lg text-text">
+                <div class="flex items-center text-lg text-text_color_color">
                 <span><x-icons.review/></span><span>レビュー</span>
                 <span class="text-xs text-main">※平均値です</span>
                 </div>
@@ -107,7 +107,7 @@
 
             <!-- タグ -->
             <section class="space-y-2">
-                <div class="flex items-center text-lg text-text">
+                <div class="flex items-center text-lg text-text_color_color">
                 <span><x-icons.tag /></span><span>タグ</span>
                 </div>
 
@@ -118,7 +118,7 @@
                     <x-ui.tag>映え</x-ui.tag>
                     <x-ui.tag>映え</x-ui.tag>
                     <button type="button"
-                        class="rounded-full border-accent bg-accent px-[16px] py-[3px] text-sm text-text"
+                        class="rounded-full border-accent bg-accent px-[16px] py-[3px] text-sm text-text_color_color"
                     >すべて</button>
                 </div>
             </section>

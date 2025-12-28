@@ -1,7 +1,7 @@
 <button
   type="button"
-  @click="searchOpen = true"
-  class="shrink-0 h-7 w-12 rounded-full border border-main bg-base flex items-center justify-center text-text"
+  @click="search = true"
+  class="shrink-0 h-7 w-12 rounded-full border border-main bg-base flex items-center justify-center text-text_color_color"
 >
   <svg class="block w-6 h-3" viewBox="0 0 21 10" fill="none" xmlns="http://www.w3.org/2000/svg">
     <circle cx="4.57122" cy="7.57122" r="1.57122" fill="currentColor"/>

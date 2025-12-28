@@ -13,7 +13,7 @@ $state = $disabled
 
 $theme = $active
   ? 'bg-main border-main text-form'
-  : 'bg-base border-main text-text';
+  : 'bg-base border-main text-text_color_color';
 
 @endphp
 
