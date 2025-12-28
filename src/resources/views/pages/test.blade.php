@@ -2,15 +2,17 @@
 
 @section('content')
 
-    @php
-    $dummy = (object)[
-    'shop_name' => 'cafest',
-    'rating' => 4.5,
-    'body' => '雰囲気がとても良くて、スイーツも最高でした。',
-    'created_at' => now(),
-    ];
-    @endphp
-    <x-ui.review-card :review="$dummy" />
-    
-@endsection
 
+@php
+$store = [
+'id' => 1,
+'name' => 'wiik coffee',
+'area' => '栄',
+'rating' => 4.2,
+'mood' => '韓国風',
+'image_url' => null,
+];
+@endphp
+
+<x-ui.store-card :store="$store" variant="list" />
+@endsection
