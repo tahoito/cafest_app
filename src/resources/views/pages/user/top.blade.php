@@ -4,7 +4,6 @@
 @section('content')
 <div class="min-h-screen bg-base_color">
     <div class="w-full max-w-md mx-auto pt-6 space-y-5">
-
         <section class="px-4">
             <x-ui.search-bar />
         </section>
@@ -32,7 +31,6 @@
                 @endforeach
             </div>
         </section>
-
 
         <section class="px-4 space-y-3 pb-24">
             <div class="text-lg text-text_color font-medium">カフェ一覧</div>
