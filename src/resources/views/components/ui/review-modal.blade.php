@@ -22,17 +22,27 @@
     <div class="bg-form px-5 pt-3 pb-4 rounded-t-3xl">
       <div class="mx-auto mb-2 h-1.5 w-12 rounded-full bg-line"></div>
 
-      <div class="relative flex items-center justify-center">
+      <div class="relative flex items-center justify-between">
         <button
           type="button"
-          class="absolute left-0 grid h-9 w-9 place-items-center rounded-full hover:bg-black/5"
+          class="grid h-9 w-9 place-items-center rounded-full hover:bg-black/5"
           @click="activeModal = null"
           aria-label="閉じる"
         >
           <x-icons.close class="w-7 h-7 text-text_color" />
         </button>
+        
+        <div class="text-base font-medium text-text_color">
+          レビュー
+        </div>
 
-        <div class="text-base text-text_color">レビュー</div>
+        <button
+          type="button"
+          class="h-9 px-3 rounded-lg text-main-color font-semibold hover:bg-black/5 active:scale-95 transition"
+          @click="activeModal = null"
+        >
+          決定
+        </button>
       </div>
     </div>
 
@@ -44,13 +54,6 @@
                 <x-ui.tag><x-icons.star class="text-star w-4 h-4"/>4.5以上</x-ui.tag>
             </div>
         </section>
-
-        <div class="pt-5">
-            <div class="flex justify-center">
-            <x-ui.button as="button" type="button" class="w-[70%]" variants="secondary" @click="activeModal=null">
-                決定
-            </x-ui.button>
-        </div>
       </div>
     </div>
   </div>

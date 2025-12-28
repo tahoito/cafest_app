@@ -27,6 +27,16 @@
             </div>
         </section>
 
+        <section class="px-4 space-y-2">
+            <div class="text-lg text-text_color font-medium">カテゴリー</div>
+        </section>
+
+        <section class="px-4 space-y-2">
+            <div class="text-lg text-text_color font-medium">おすすめのカフェ</div>
+        </section>
+
+    </div>
+
     {{-- モーダル（全部ここに置いてOK） --}}
         <x-ui.search-modal />
         <x-ui.area-modal />
@@ -34,6 +44,6 @@
         <x-ui.time-modal />
         <x-ui.review-modal />
         <x-ui.tag-modal />
-    </div>
+        
 </div>
 @endsection
