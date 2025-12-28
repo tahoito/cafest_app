@@ -11,7 +11,7 @@ module.exports = {
         main: '#8A7458',
         main2: '#46392A',
         base_color: '#FFFAF5',
-        text: '#201200',
+        text_color: '#201200',
         accent: '#E4C9A8',
         form: '#FFFFFF',
         placeholder: '#666666',

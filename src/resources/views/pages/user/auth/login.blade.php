@@ -6,13 +6,13 @@
 @endsection
 <div class="min-h-screen flex items-center justify-center bg-base_color relative overflow-hidden">
     <a href="{{ route('welcome') }}" class="fixed top-4 left-4 z-50 p-2">
-        <x-icons.back class="w-5 h-5 text-text" />
+        <x-icons.back class="w-5 h-5 text-text_color" />
     </a>
 
     <div class="w-full max-w-md px-4">
         <div class="mb-12 flex flex-col items-center">
-            <x-icons.user size="80" stroke="1" class="text-text mb-2" />
-            <h1 class="text-center text-text text-2xl">
+            <x-icons.user size="80" stroke="1" class="text-text_color mb-2" />
+            <h1 class="text-center text-text_color text-2xl">
                 ログイン    
             </h1>
         </div>
@@ -65,7 +65,7 @@
         </div>
         @endif
 
-        <div class="mt-4 text-center text-sm text-text">
+        <div class="mt-4 text-center text-sm text-text_color">
             新規登録の方は
             <a href="{{ route('user.signup') }}" class="text-main hover:underline">    
                 こちら

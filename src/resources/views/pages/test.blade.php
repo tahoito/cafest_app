@@ -2,6 +2,7 @@
 
 @section('content')
 
+
 @php
 $store = [
 'id' => 1,
