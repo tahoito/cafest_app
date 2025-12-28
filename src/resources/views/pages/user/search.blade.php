@@ -43,7 +43,6 @@
         <x-ui.wallet-modal />
         <x-ui.time-modal />
         <x-ui.review-modal />
-        <x-ui.tag-modal />
-        
+        <x-ui.tag-modal />   
 </div>
 @endsection

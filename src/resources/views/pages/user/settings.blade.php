@@ -22,7 +22,6 @@
         </div>
     </header>
 
-
   {{-- content --}}
     <main class="w-full max-w-md mx-auto px-4 py-6 pb-6">
         <form method="POST" action="{{ route('user.settings.store') }}" enctype="multipart/form-data"
@@ -105,8 +104,6 @@
                 <p class="text-notification text-sm mt-1">{{ $message }}</p>
             @enderror
         </section>
-
-
 
         <section class="space-y-2 pt-8">
             <x-ui.label for="username">ユーザー名</x-ui.label>
