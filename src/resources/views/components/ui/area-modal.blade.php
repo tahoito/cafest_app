@@ -40,7 +40,7 @@
       <section class="space-y-2">
             <div class="relative">
                 <select
-                    class="w-full appearance-none rounded-xl border border-line bg-form px-4 py-3 text-base text-text_color_color shadow-sm focus:outline-none focus:ring-2 focus:ring-main-color/30"
+                    class="w-full appearance-none rounded-xl border border-line bg-form px-4 py-3 text-base text-text_color shadow-sm focus:outline-none focus:ring-2 focus:ring-main-color/30"
                 >
                     <option>栄</option>
                     <option>名駅</option>

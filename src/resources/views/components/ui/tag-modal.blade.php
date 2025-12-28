@@ -45,7 +45,7 @@
                 <x-ui.tag>映え</x-ui.tag>
                 <x-ui.tag>映え</x-ui.tag>
                 <button type="button"
-                    class="rounded-full border-accent bg-accent px-[16px] py-[3px] text-sm text-text_color_color"
+                    class="rounded-full border-accent bg-accent px-[16px] py-[3px] text-sm text-text_color"
                 >すべて</button>
             </div>
         </section>

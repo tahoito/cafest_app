@@ -12,30 +12,18 @@
         </section>
 
         <section class="px-4 space-y-2">
-            <div class="-mx-4 px-3 flex gap-1 overflow-x-auto no-scrollbar items-center">
-            <button type="button" @click="activeModal='search'">
-                <x-icons.condition/>
-            </button>
-
-            <button type="button" @click="activeModal='area'">
-                <x-ui.tag>エリア</x-ui.tag>
-            </button>
-
-            <button type="button" @click="activeModal='wallet'">
-                <x-ui.tag>予算</x-ui.tag>
-            </button>
-
-            <button type="button" @click="activeModal='time'">
-                <x-ui.tag>営業時間</x-ui.tag>
-            </button>
-
-            <button type="button" @click="activeModal='review'">
-                <x-ui.tag>レビュー</x-ui.tag>
-            </button>
-
-            <button type="button" @click="activeModal='tag'">
-                <x-ui.tag>タグ</x-ui.tag>
-            </button>
+            <div class="-px-4 flex gap-2 overflow-x-auto no-scrollbar">
+                <x-ui.search-tag
+                    @click="activeModal='search'"
+                    class="!px-0 !w-10 !h-7 !rounded-full flex items-center justify-center"
+                    >
+                    <x-icons.condition class="w-6 h-3"/>
+                </x-ui.search-tag>
+                <x-ui.search-tag @click="activeModal='area'">エリア</x-ui.search-tag>
+                <x-ui.search-tag @click="activeModal='wallet'">予算</x-ui.search-tag>
+                <x-ui.search-tag @click="activeModal='time'">営業時間</x-ui.search-tag>
+                <x-ui.search-tag @click="activeModal='review'">レビュー</x-ui.search-tag>
+                <x-ui.search-tag @click="activeModal='tag'">タグ</x-ui.search-tag>
             </div>
         </section>
 

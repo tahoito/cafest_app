@@ -8,7 +8,7 @@
     <div class="w-full max-w-md px-4">
 
         <div class="mb-20 flex flex-col items-center">
-            <h1 class="text-center text-text_color_color text-2xl">
+            <h1 class="text-center text-text_color text-2xl">
                 ようこそ
             </h1>
         </div>
