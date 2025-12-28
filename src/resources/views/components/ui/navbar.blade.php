@@ -33,7 +33,7 @@
           class="{{ $btnBase }} {{ $btnSize }}"
           data-i="0">
           <span class="{{ $circleBase }}"></span>
-          <span class="{{ $iconBase }}"><x-icons.home size="34" stroke="2.8" class="text-text" /></span>
+          <span class="{{ $iconBase }}"><x-icons.home size="34" stroke="2.8" class="text-text_color" /></span>
         </a>
       </li>
       <li>
@@ -41,11 +41,11 @@
           class="{{ $btnBase }} {{ $btnSize }}"
           data-i="0">
           <span class="{{ $circleBase }}"></span>
-          <span class="{{ $iconBase }}"><x-icons.search size="34" stroke="2.8" class="text-text" /></span>
+          <span class="{{ $iconBase }}"><x-icons.search size="34" stroke="2.8" class="text-text_color" /></span>
         </a>
       </li>
-      <li><button class="{{ $btnBase }} {{ $btnSize }}" data-i="2" type="button"><span class="{{ $circleBase }}"></span><span class="{{ $iconBase }}"><x-icons.reserve size="34" stroke="2.8" class="text-text" /></span></button></li>
-      <li><button class="{{ $btnBase }} {{ $btnSize }}" data-i="3" type="button"><span class="{{ $circleBase }}"></span><span class="{{ $iconBase }}"><x-icons.mycafe size="34" stroke="2.8" class="text-text" /></span></button></li>
+      <li><button class="{{ $btnBase }} {{ $btnSize }}" data-i="2" type="button"><span class="{{ $circleBase }}"></span><span class="{{ $iconBase }}"><x-icons.reserve size="34" stroke="2.8" class="text-text_color" /></span></button></li>
+      <li><button class="{{ $btnBase }} {{ $btnSize }}" data-i="3" type="button"><span class="{{ $circleBase }}"></span><span class="{{ $iconBase }}"><x-icons.mycafe size="34" stroke="2.8" class="text-text_color" /></span></button></li>
     </ul>
 
   </div>

@@ -11,10 +11,10 @@
         <div class="pt-[env(safe-area-inset-top)]">
             <div class="grid grid-cols-[48px_1fr_48px] items-center px-4 h-16">
             <a class="p-2" href="{{ route('user.signup') }}">
-                <x-icons.back class="w-5 h-5 text-text" />
+                <x-icons.back class="w-5 h-5 text-text_color" />
             </a>
 
-            <h1 class="text-center text-text text-2xl whitespace-nowrap overflow-hidden text-ellipsis">
+            <h1 class="text-center text-text_color text-2xl whitespace-nowrap overflow-hidden text-ellipsis">
                 アカウント情報設定
             </h1>
             <div></div>
@@ -70,7 +70,7 @@
                     <div class="w-14 h-14">
                         <x-icons.image />
                     </div>
-                    <span class="text-xs text-text">アイコン</span>
+                    <span class="text-xs text-text_color">アイコン</span>
                     </div>
                 </div>
             </div>
@@ -123,8 +123,8 @@
        
         <section class="space-y-3 pt-8">
             <div>
-                <div class="text-lg text-text font-medium">おすすめで出して欲しいエリア</div>
-                <div class="text-xs text-text">※複数選択可</div>
+                <div class="text-lg text-text_color font-medium">おすすめで出して欲しいエリア</div>
+                <div class="text-xs text-text_color">※複数選択可</div>
             </div>
             @error('area')
                 <p class="text-notification text-sm mt-1">{{ $message }}</p>
@@ -138,7 +138,7 @@
                         variant="area"
                         @click="toggle(selectedAreas, area)"
                         x-bind:class="selectedAreas.includes(area) 
-                        ? 'bg-main text-form' : 'bg-accent text-text'"
+                        ? 'bg-main text-form' : 'bg-accent text-text_color'"
                     >
                         <span x-text="area"></span>
                     </x-ui.chip>
@@ -146,7 +146,7 @@
             </div>
             <button
                 type="button"
-                class="text-xs text-text ml-auto block"
+                class="text-xs text-text_color ml-auto block"
                 @click="showAllAreas = !showAllAreas"
             >
                 <span x-text="showAllAreas ? '閉じる' : 'もっと見る'"></span>
@@ -155,8 +155,8 @@
 
         <section class="space-y-3 pt-8">
             <div>
-                <div class="text-lg text-text font-medium">好みの雰囲気のカフェ</div>
-                <div class="text-xs text-text">※複数選択可</div>
+                <div class="text-lg text-text_color font-medium">好みの雰囲気のカフェ</div>
+                <div class="text-xs text-text_color">※複数選択可</div>
             </div>
             @error('mood')
                 <p class="text-notification text-sm mt-1">{{ $message }}</p>
@@ -170,7 +170,7 @@
                         variant="mood"
                         @click="toggle(selectedMoods, mood)"
                         x-bind:class="selectedMoods.includes(mood) 
-                        ? 'bg-main text-form' : 'bg-accent text-text'"
+                        ? 'bg-main text-form' : 'bg-accent text-text_color'"
                     >
                         <span x-text="mood"></span>
                     </x-ui.chip>
@@ -178,7 +178,7 @@
             </div>
             <button
                 type="button"
-                class="text-xs text-text ml-auto block"
+                class="text-xs text-text_color ml-auto block"
                 @click="showAllMoods = !showAllMoods"
             >
                 <span x-text="showAllMoods ? '閉じる' : 'もっと見る'"></span>
