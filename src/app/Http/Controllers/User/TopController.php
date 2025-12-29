@@ -45,7 +45,7 @@ class TopController extends Controller
             [
                 'id' => 4,
                 'name' => 'cafe Lob',
-                'area' => '矢場町駅',
+                'area' => '矢場町',
                 'mood' => '女子会向け',
                 'image_url' => null,
                 'rating' => 4.5,
