@@ -23,11 +23,15 @@ Route::prefix('user')->name('user.')->group(function () {
     Route::get('/settings', [UserSettingsController::class, 'index'])->name('settings');
     Route::post('/settings', [UserSettingsController::class, 'store'])->name('settings.store');
 
+    Route::view('/search', 'pages.user.search')->name('search');
+    Route::view('/reserve', 'pages.user.reserve')->name('reserve');
+
     Route::middleware('auth:user')->group(function () {
-        Route::get('/top', function () {
-            return view('pages.user.top'); })->name('top');
+        Route::get('/top',[TopController::class, 'index'])->name('top');
     });
 });
+
+
 
 Route::prefix('store')->name('store.')->group(function () {
     Route::get('/login', [StoreAuth::class, 'showLogin'])->name('login');
