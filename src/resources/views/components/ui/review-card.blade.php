@@ -18,25 +18,25 @@
   $date = data_get($review, 'created_at', data_get($review, 'date', null));
   $link = $href ?? ($shopId ? url("/stores/{$shopId}") : '#');
 
-  $base = "rounded-xl bg-form ring-1 ring-black/5 shadow-[0_1px_4px_rgba(0,0,0,0.25)]";
+  $base = "rounded-lg bg-form ring-1 ring-black/5 shadow-[0_1px_4px_rgba(0,0,0,0.25)]";
 
   $size = match ($variant) {
-    'mini'    => "inline-block w-[220px]",   // ←ここでカード幅を固定
+    'mini'    => "inline-block w-[167px]",   // ←ここでカード幅を固定
     'grid'    => "block w-full",
     'compact' => "block w-full",
     default   => "block w-full",
   };
 
     $wrap = match ($variant) {
-    'mini'    => "p-3 space-y-2",
+    'mini'    => "p-2 space-y-1",
     'grid'    => "p-2 space-y-2",
     'compact' => "p-2 space-y-1.5",
     default   => "p-4 space-y-3",
   };
 
   $avatarSize = match ($variant) {
-    'mini'    => "w-8 h-8",
-    'compact' => "w-9 h-9",
+    'mini'    => "w-7 h-7",
+    'compact' => "w-8 h-8",
     default   => "w-11 h-11",
   };
 
@@ -80,18 +80,19 @@
         {{ $shopName }}
       </div>
 
-      <div class="flex items-center gap-[2px] shrink-0">
-        @for($i=1; $i<=5; $i++)
-          <x-icons.star
-            :size="15"
-            class="{{ $i <= $stars ? 'text-star' : 'text-line' }}"
-          />
-        @endfor
+      <div class="shrink-0">
+        <div class="flex w-[48px] h-[9px] items-center justify-between">
+          @for ($i = 1; $i <= 5; $i++)
+            <x-icons.star
+              class="h-[9px] w-[9px] {{ $i <= $stars ? 'text-star' : 'text-placeholder' }}"
+            />
+          @endfor
+        </div>
       </div>
     </div>
 
     {{-- 本文 --}}
-    <div class="text-text_color text-[14px] leading-snug line-clamp-3">
+    <div class="text-text_color text-[13px] leading-snug line-clamp-2">
       {{ $body }}
     </div>
 

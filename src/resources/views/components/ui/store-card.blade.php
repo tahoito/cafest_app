@@ -19,41 +19,38 @@
 @endphp
 
 <a href="{{ $url }}"
-   class="block w-[170px] h-[206px] rounded-lg border border-line bg-form shadow-1 overflow-hidden">
+   class="block w-[170px] h-[210px] rounded-lg bg-form ring-1 ring-black/5 shadow-[0_2px_10px_rgba(0,0,0,0.12)] overflow-hidden">
 
   {{-- image --}}
-  <div class="relative px-4 pt-4 pb-1">
+  <div class="relative px-4 pt-3 pb-2">
     <div class="w-[140px] h-[140px] overflow-hidden bg-base mx-auto">
       <img
         src="{{ $imageUrl ?: asset('images/store/card.png') }}"
         alt="{{ $name }}"
         loading="lazy"
+        class="w-full h-full object-cover"
       >
     </div>
 
-    {{-- heart --}}
     <button type="button"
-      class="absolute top-3 right-3 grid h-9 w-9 place-items-center rounded-full
-             bg-base/90 border border-line shadow-1"
+      @click.stop
+      class="absolute top-2 right-2 grid h-8 w-8 place-items-center rounded-full bg-accent"
       aria-label="お気に入り"
     >
-      <x-icons.heart class="h-5 w-5" />
+      <x-icons.heart class="w-8 h-8" />
     </button>
   </div>
 
-  {{-- body（写真と店名の間を狭く：pt-0.5相当で pt-1 を使う） --}}
-  <div class="px-4 pt-1 pb-3">
-
+  <div class="px-4 pt-1 pb-5">
     {{-- name + stars --}}
     <div class="flex items-end justify-between gap-2">
       <div class="min-w-0">
-        <div class="text-base leading-none text-text truncate">
+        <div class="text-base leading-none text-text_color truncate">
           {{ $name }}
         </div>
       </div>
 
       <div class="shrink-0">
-        {{-- 星は横並び5つ、枠48×9 --}}
         <div class="flex w-[48px] h-[9px] items-center justify-between">
           @for ($i = 1; $i <= 5; $i++)
             <x-icons.star
@@ -64,19 +61,20 @@
       </div>
     </div>
 
-    {{-- pin + area/mood --}}
-<div class="mt-1 flex items-center gap-1 text-xs leading-none font-medium text-text">
-  <x-icons.pin class="w-[15px] h-[15px] text-placeholder shrink-0" />
+    <div class="mt-1 flex items-center gap-[0.5px] text-[14px] leading-[14px] text-text_color">
+      <x-icons.pin class="w-4 h-4 shrink-0 text-text_color relative top-[1px]" />
 
-  <span class="truncate">
-    {{ trim($area) !== '' ? $area : $mood }}
-  </span>
+      @if($area !== '')
+        <span class="truncate">{{ $area }}</span>
+      @endif
 
-  @if(trim($area) !== '' && trim($mood) !== '')
-    <span class="text-placeholder mx-1">・</span>
-    <span class="truncate">{{ $mood }}</span>
-  @endif
-</div>
+      @if($area !== '' && $mood !== '')
+        <span>・</span>
+      @endif
 
+      @if($mood !== '')
+        <span class="truncate">{{ $mood }}</span>
+      @endif
+    </div>
   </div>
 </a>

@@ -21,19 +21,40 @@
 
         <section class="px-4 space-y-3">
             <div class="text-lg text-text_color font-medium">おすすめのカフェ</div>
+            <div class="grid grid-cols-2 gap-3">
+                @foreach($stores as $store)
+                <x-ui.store-card
+                    :store="$store"
+                    :href="url('/stores/' . data_get($store,'id'))"
+                    variant="list"
+                />
+                @endforeach
+            </div>
         </section>
 
         <section class="px-4 space-y-3">
             <div class="text-lg text-text_color font-medium">みんなのレビュー</div>
-            <div class="flex flex-nowrap gap-3 overflow-x-auto pb-6 pt-3 px-2">
+            <div class="flex flex-nowrap gap-3 overflow-x-auto pb-6 px-2">
                 @foreach($reviews as $review)
-                    <x-ui.review-card :review="$review" variant="mini" class="shrink-0" />
+                    <x-ui.review-card 
+                        :review="$review" 
+                        variant="mini" 
+                        class="shrink-0" />
                 @endforeach
             </div>
         </section>
 
         <section class="px-4 space-y-3 pb-24">
             <div class="text-lg text-text_color font-medium">カフェ一覧</div>
+            <div class="grid grid-cols-2 gap-3">
+                @foreach($stores as $store)
+                <x-ui.store-card
+                    :store="$store"
+                    :href="url('/stores/' . data_get($store,'id'))"
+                    variant="list"
+                />
+                @endforeach
+            </div>
         </section>
 
     </div>
