@@ -33,7 +33,7 @@
 
             <div class="flex">
                 <a href="{{ route('user.recommended') }}"
-                    class="text-[13px] text-text_color ml-auto">
+                    class="text-[14px] text-text_color ml-auto">
                     もっと見る
                 </a>
             </div>

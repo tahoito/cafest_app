@@ -16,6 +16,11 @@
   $rating = (float) data_get($store, 'rating', 0);
   $rating = max(0, min(5, $rating));
   $filled = (int) floor($rating + 0.00001);
+
+  $meta = trim($area) !== '' && trim($mood) !== ''
+    ? "{$area}・{$mood}"
+    : (trim($area) !== '' ? $area : $mood);
+
 @endphp
 
 <a href="{{ $url }}"
@@ -61,20 +66,12 @@
       </div>
     </div>
 
-    <div class="mt-1 flex items-center gap-[0.5px] text-[13px] leading-[14px] text-text_color">
+    <div class="mt-1 flex items-center text-[14px] leading-[14px] text-text_color">
       <x-icons.pin class="w-4 h-4 shrink-0 text-text_color relative top-[1px]" />
 
-      @if($area !== '')
-        <span class="truncate">{{ $area }}</span>
-      @endif
-
-      @if($area !== '' && $mood !== '')
-        <span>・</span>
-      @endif
-
-      @if($mood !== '')
-        <span class="truncate">{{ $mood }}</span>
-      @endif
+      <span class="min-w-0 line-clamp-1">
+        {{ $meta }}
+      </span>
     </div>
   </div>
 </a>
