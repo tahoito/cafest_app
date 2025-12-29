@@ -29,6 +29,23 @@
 
         <section class="px-4 space-y-2">
             <div class="text-lg text-text_color font-medium">カテゴリー</div>
+                <div class="-mx-4 px-4 flex gap-3 overflow-x-auto no-scrollbar">
+                    <x-ui.category label="珈琲専門">
+                    <x-icons.coffee class="w-7 h-7" />
+                    </x-ui.category>
+
+                    <x-ui.category label="紅茶">
+                    <x-icons.tea class="w-7 h-7" />
+                    </x-ui.category>
+
+                    <x-ui.category label="スイーツ">
+                    <x-icons.cake class="w-7 h-7" />
+                    </x-ui.category>
+
+                    <x-ui.category label="夜カフェ">
+                    <x-icons.moon class="w-7 h-7" />
+                    </x-ui.category>
+                </div>
         </section>
 
         <section class="px-4 space-y-2">
