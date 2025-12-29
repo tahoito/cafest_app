@@ -5,7 +5,7 @@
 @endsection
 @section('content')
 
-<div x-data="{ activeModal: null }" class="min-h-screen bg-base_color">
+<div class="min-h-screen bg-base_color">
     <div class="w-full max-w-md mx-auto pt-6 space-y-5">
         <section class="px-4">
             <x-ui.search-bar />
@@ -17,7 +17,7 @@
                     @click="activeModal='search'"
                     class="!px-0 !w-10 !h-7 !rounded-full flex items-center justify-center"
                     >
-                    <x-icons.condition class="w-6 h-3"/>
+                <x-icons.condition class="w-6 h-3"/>
                 </x-ui.search-tag>
                 <x-ui.search-tag @click="activeModal='area'">エリア</x-ui.search-tag>
                 <x-ui.search-tag @click="activeModal='wallet'">予算</x-ui.search-tag>

@@ -48,17 +48,13 @@
 
     <div class="bg-base_color px-5 pt-4 pb-6">
         <section class="space-y-2">
-            <div class="flex flex-wrap gap-2">
-                <x-ui.tag><x-icons.star class="text-star w-4 h-4"/>3.0以上</x-ui.tag>
-                <x-ui.tag><x-icons.star class="text-star w-4 h-4"/>4.0以上</x-ui.tag>
-                <x-ui.tag><x-icons.star class="text-star w-4 h-4"/>4.5以上</x-ui.tag>
-            </div>
-        </section>
+        <div class="flex flex-wrap gap-2">
+          <x-ui.tag><x-icons.star class="text-star w-4 h-4" />3.0以上</x-ui.tag>
+          <x-ui.tag><x-icons.star class="text-star w-4 h-4" />4.0以上</x-ui.tag>
+          <x-ui.tag><x-icons.star class="text-star w-4 h-4" />4.5以上</x-ui.tag>
+        </div>
+      </section>
       </div>
     </div>
   </div>
 </div>
-
-
-
-    

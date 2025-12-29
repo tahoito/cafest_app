@@ -48,19 +48,18 @@
 
     <div class="bg-base_color px-5 pt-4 pb-6">
         <section class="space-y-2">
-            <div class="flex flex-wrap gap-2">
-                <x-ui.tag active>映え</x-ui.tag>
-                <x-ui.tag>映え</x-ui.tag>
-                <x-ui.tag>映え</x-ui.tag>
-                <x-ui.tag>映え</x-ui.tag>
-                <x-ui.tag>映え</x-ui.tag>
-                <button type="button"
-                    class="rounded-full border-accent bg-accent px-[16px] py-[3px] text-sm text-text_color"
-                >すべて</button>
-            </div>
-        </section>
+        <x-ui.tag>推し活</x-ui.tag>
+            <x-ui.tag>作業</x-ui.tag>
+            <x-ui.tag>静か</x-ui.tag>
+            <x-ui.tag>スイーツ</x-ui.tag>
+            <x-ui.tag>コーヒー</x-ui.tag>
+            <x-ui.tag>モーニング</x-ui.tag>
+            <x-ui.tag>夜カフェ</x-ui.tag>
+            <x-ui.tag>デート</x-ui.tag>
+            <x-ui.tag>ひとり</x-ui.tag>
+            <x-ui.tag>映え</x-ui.tag>
+      </section>
       </div>
     </div>
   </div>
 </div>
-
