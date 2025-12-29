@@ -6,6 +6,7 @@ use App\Http\Controllers\Store\AuthController as StoreAuth;
 use App\Http\Controllers\User\TopController;
 use App\Http\Controllers\User\SettingsController as UserSettingsController;
 use App\Http\Controllers\Store\SettingsController as StoreSettingsController;
+use App\Http\Controllers\User\RecommendController;
 
 Route::view('/', 'welcome')->name('welcome');
 
@@ -23,12 +24,15 @@ Route::prefix('user')->name('user.')->group(function () {
     Route::get('/settings', [UserSettingsController::class, 'index'])->name('settings');
     Route::post('/settings', [UserSettingsController::class, 'store'])->name('settings.store');
 
+    Route::middleware('auth:user')->group(function () {
+        Route::get('/top',[TopController::class, 'index'])->name('top');
+        Route::get('/recommended', [RecommendController::class, 'recommended'])->name('recommended');
+    });
+
+
     Route::view('/search', 'pages.user.search')->name('search');
     Route::view('/reserve', 'pages.user.reserve')->name('reserve');
 
-    Route::middleware('auth:user')->group(function () {
-        Route::get('/top',[TopController::class, 'index'])->name('top');
-    });
 });
 
 

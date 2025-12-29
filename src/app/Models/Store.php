@@ -26,4 +26,10 @@ class Store extends Authenticatable
     protected $casts = [
         'password' => 'hashed',
     ];
+
+    public function reviews()
+    {
+        return $this->hasMany(\App\Models\Review::class);
+    }
+
 }

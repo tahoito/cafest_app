@@ -42,6 +42,15 @@ class TopController extends Controller
                 'rating' => 4.6,
                 'is_faved' => false,
             ],
+            [
+                'id' => 4,
+                'name' => 'cafe Lob',
+                'area' => '矢場町駅',
+                'mood' => '女子会向け',
+                'image_url' => null,
+                'rating' => 4.5,
+                'is_faved' => false,
+            ],
         ]);
 
         return view('pages.user.top',compact('stores','reviews'));

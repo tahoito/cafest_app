@@ -30,6 +30,13 @@
                 />
                 @endforeach
             </div>
+
+            <div class="flex">
+                <a href="{{ route('user.recommended') }}"
+                    class="text-[13px] text-text_color ml-auto">
+                    もっと見る
+                </a>
+            </div>
         </section>
 
         <section class="px-4 space-y-3">

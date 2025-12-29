@@ -61,7 +61,7 @@
       </div>
     </div>
 
-    <div class="mt-1 flex items-center gap-[0.5px] text-[14px] leading-[14px] text-text_color">
+    <div class="mt-1 flex items-center gap-[0.5px] text-[13px] leading-[14px] text-text_color">
       <x-icons.pin class="w-4 h-4 shrink-0 text-text_color relative top-[1px]" />
 
       @if($area !== '')
