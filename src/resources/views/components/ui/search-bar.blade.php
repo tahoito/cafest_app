@@ -1,6 +1,5 @@
 @props([
-  'value' => '',
-  'name' => 'q',
+  'name' => 'keyword',
   'placeholder' => 'カフェ名・エリアで検索',
   'action' => null,
   'method' => 'GET',
@@ -13,9 +12,11 @@
     </button>
 
     <input
-      type="text"
+      type="search"
       name="{{ $name }}"
-      value="{{ old($name, $value) }}"
+      value="{{ request($name) }}"
+      x-init="$store.search.keyword = $el.value"
+      x-model="$store.search.keyword"
       placeholder="{{ $placeholder }}"
       class="w-full bg-transparent placeholder:text-placeholder focus:outline-none"
     />

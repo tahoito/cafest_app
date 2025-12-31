@@ -7,7 +7,7 @@
 @php
   $tag = $href ? 'a' : 'button';
 
-  $base = "w-[75px] h-[75px] rounded-xl flex flex-col items-center justify-center gap-1";
+  $base = "w-[80px] h-[80px] rounded-xl flex flex-col items-center justify-center gap-1";
 
   $state = $active
     ? "bg-main text-form"
@@ -18,11 +18,11 @@
   @if($href) href="{{ $href }}" @else type="button" @endif
   {{ $attributes->merge(['class' => "{$base} {$state}"]) }}
 >
-  <div class="h-8 w-8 grid place-items-center">
+  <div class="h-12 w1-12 grid place-items-center pt-0.5">
     {{ $slot }}
   </div>
 
-  <div class="text-[14px] leading-none text-center">
+  <div class="mt-0.5 text-[12px] leading-none text-center">
     {{ $label }}
   </div>
 </{{ $tag }}>

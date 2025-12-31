@@ -1,6 +1,6 @@
 <button
   type="button"
-  @click="activeModal='search'"
+  @click="$store.search.activeModal='search'"
   class="shrink-0 h-7 w-12 rounded-full border border-main bg-base flex items-center justify-center text-text_color"
 >
   <svg class="block w-6 h-3 pointer-events-none" viewBox="0 0 21 10" fill="none" xmlns="http://www.w3.org/2000/svg">
