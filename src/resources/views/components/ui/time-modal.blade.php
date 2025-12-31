@@ -2,7 +2,7 @@
 <div
   x-show="activeModal === 'time'"
   x-transition.opacity
-  class="fixed inset-0 z-[999] flex items-end justify-center"
+  class="fixed inset-0 z-[9999] flex items-end justify-center"
   @keydown.escape.window="activeModal = null"
   style="display:none;"
 >
