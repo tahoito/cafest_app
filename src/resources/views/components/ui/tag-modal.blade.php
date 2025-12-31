@@ -1,3 +1,4 @@
+<template x-teleport="body">
 <div
   x-show="activeModal === 'tag'"
   x-transition.opacity
@@ -63,3 +64,4 @@
     </div>
   </div>
 </div>
+</template>

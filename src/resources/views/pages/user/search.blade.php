@@ -3,7 +3,7 @@
 
 @section('content')
 
-<div class="min-h-screen bg-base_color">
+<div x-data="{ activeModal: null }" class="min-h-screen bg-base_color">
     <div class="w-full max-w-md mx-auto pt-6 space-y-5">
         <section class="px-4">
             <x-ui.search-bar />
@@ -26,25 +26,35 @@
             </div>
         </section>
 
-        <section class="px-4 space-y-2">
+        <section x-data="{ showAll: false }" class="px-4 space-y-2">
             <div class="text-lg text-text_color font-medium">カテゴリー</div>
-                <div class="-mx-4 px-4 flex gap-3 overflow-x-auto no-scrollbar">
-                    <x-ui.category label="珈琲専門">
-                    <x-icons.coffee class="w-7 h-7" />
-                    </x-ui.category>
+                <div class="flex justify-center gap-4 flex-wrap">
+                    <x-ui.category label="珈琲専門"><x-icons.coffee class="w-7 h-7" /></x-ui.category>
+                    <x-ui.category label="紅茶"><x-icons.tea class="w-7 h-7" /></x-ui.category>
+                    <x-ui.category label="スイーツ"><x-icons.cake class="w-7 h-7" /></x-ui.category>
+                    <x-ui.category label="夜カフェ"><x-icons.moon class="w-7 h-7" /></x-ui.category>
 
-                    <x-ui.category label="紅茶">
-                    <x-icons.tea class="w-7 h-7" />
-                    </x-ui.category>
-
-                    <x-ui.category label="スイーツ">
-                    <x-icons.cake class="w-7 h-7" />
-                    </x-ui.category>
-
-                    <x-ui.category label="夜カフェ">
-                    <x-icons.moon class="w-7 h-7" />
-                    </x-ui.category>
+                    <div x-show="showAll" x-transition class="contents">
+                        <x-ui.category label="静か" />
+                        <x-ui.category label="勉強・作業" />
+                        <x-ui.category label="長居OK" />
+                        <x-ui.category label="レトロ・喫茶" />
+                        <x-ui.category label="デート" />
+                        <x-ui.category label="女子会" />
+                        <x-ui.category label="韓国風" />
+                        <x-ui.category label="ペットOK" />
+                    </div>
                 </div>
+                <div class="flex">
+                    <button
+                        @click="showAll = !showAll"
+                        class="ml-auto text-[14px] text-text_color"
+                    >
+                        <span x-show="!showAll">もっと見る</span>
+                        <span x-show="showAll">閉じる</span>
+                    </button>
+                </div>
+            </div>
         </section>
 
         <section class="px-4 space-y-2">

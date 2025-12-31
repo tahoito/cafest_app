@@ -1,3 +1,4 @@
+<template x-teleport="body">
 <div
   x-show="activeModal === 'wallet'"
   x-transition.opacity
@@ -63,5 +64,6 @@
     </div>
   </div>
 </div>
+</template>
 
 

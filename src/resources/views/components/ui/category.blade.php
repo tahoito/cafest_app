@@ -22,7 +22,7 @@
     {{ $slot }}
   </div>
 
-  <div class="text-[14px] leading-none text-center">
+  <div class="text-[12px] leading-none text-center">
     {{ $label }}
   </div>
 </{{ $tag }}>

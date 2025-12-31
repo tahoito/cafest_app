@@ -1,4 +1,5 @@
-<div
+<template x-teleport="body">
+  <div
   x-show="activeModal === 'review'"
   x-transition.opacity
   class="fixed inset-0 z-[9999] flex items-end justify-center"
@@ -58,3 +59,4 @@
     </div>
   </div>
 </div>
+</template>
