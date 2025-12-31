@@ -1,8 +1,6 @@
 @extends('layouts.app')
 @section('title', data_get($store,'name','店舗詳細'))
 
-@section('hideNavbar')
-@endsection
 
 @section('content')
 <div class="min-h-screen bg-base relative overflow-hidden">
@@ -65,7 +63,7 @@
       </div>
     </section>
 
-    <section class="px-4 space-y-2 pb-3">
+    <section class="px-4 space-y-2 pb-12">
         <div class="min-w-0 space-y-1">
           <div class="text-2xl text-text_color leading-tight">
             {{ $name }}
@@ -100,16 +98,16 @@
       </div>
     </section>
 
-    <section class="px-4 space-y-2 pb-3">
+    <section class="px-4 space-y-2 pb-12">
         <div class="text-lg text-text_color font-medium">ギャラリー</div>
         <div class="flex justify-center pt-8">
-            <x-ui.button type="submit" variants="secondary" class="w-full text-form">
+            <x-ui.button type="submit" variant="secondary" class="w-full text-form">
                 メニューを見る
             </x-ui.button>
         </div>
     </section>
 
-    <section class="px-4 space-y-2">
+    <section class="px-4 space-y-2 pb-12">
         <div class="text-lg text-text_color font-medium">みんなのレビュー(100件)</div>
         <div class="flex flex-nowrap gap-3 overflow-x-auto pb-6 px-2">
             @foreach($reviews as $review)
@@ -120,10 +118,25 @@
             @endforeach
         </div>
         <div class="text-text_color text-[14px]">みんなの写真から見る</div>
+        <div class="flex justify-center pt-8">
+            <x-ui.button type="submit" variant="secondary" class="w-full text-form">
+                レビューを投稿する
+            </x-ui.button>
+        </div>
     </section>
 
-    <section class="px-4 space-y-2 pb-3">
+    <section class="px-4 space-y-2 pb-12">
         <div class="text-lg text-text_color font-medium">店舗情報</div>
+        @if(trim(data_get($store,'description','')) !== '')
+            <div class="rounded-lg bg-base border border-main shadow-[0_2px_10px_rgba(0,0,0,0.15)] p-3 text-base text-text_color leading-relaxed">
+            {{ data_get($store,'description') }}
+            </div>
+        @endif
+        <div class="flex justify-center pt-8">
+            <x-ui.button type="submit" variant="secondary" class="w-full text-form">
+                このお店で予約する
+            </x-ui.button>
+        </div>
     </section>
   </div>
 </div>
