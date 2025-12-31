@@ -3,7 +3,7 @@
 
 @section('content')
 
-<div x-data="{ activeModal: null }" class="min-h-screen bg-base_color">
+<div x-data="searchFilter()" class="min-h-screen bg-base_color">
     <div class="w-full max-w-md mx-auto pt-6 space-y-5">
         <section class="px-4">
             <x-ui.search-bar />
@@ -29,10 +29,38 @@
         <section x-data="{ showAll: false }" class="px-4 space-y-2">
             <div class="text-lg text-text_color font-medium">カテゴリー</div>
             <div class="flex justify-center gap-3 flex-wrap">
-                <x-ui.category label="珈琲専門"><x-icons.coffee /></x-ui.category>
-                <x-ui.category label="紅茶"><x-icons.tea /></x-ui.category>
-                <x-ui.category label="スイーツ"><x-icons.cake /></x-ui.category>
-                <x-ui.category label="夜カフェ"><x-icons.moon /></x-ui.category>
+                <x-ui.category 
+                    label="珈琲専門"
+                    type="button"
+                    @click="toggleMood('珈琲専門')"
+                    x-bind:class="hasMood('珈琲専門') ? '!bg-main !text-form' : ''"
+                >
+                    <x-icons.coffee />
+                </x-ui.category> 
+                <x-ui.category 
+                    label="紅茶"
+                    type="button"
+                    @click="toggleMood('紅茶')"
+                    x-bind:class="hasMood('紅茶') ? '!bg-main !text-form' : ''"
+                >
+                    <x-icons.tea />
+                </x-ui.category> 
+                <x-ui.category 
+                    label="スイーツ"
+                    type="button"
+                    @click="toggleMood('スイーツ')"
+                    x-bind:class="hasMood('スイーツ') ? '!bg-main !text-form' : ''"
+                >
+                    <x-icons.cake />
+                </x-ui.category> 
+                <x-ui.category 
+                    label="夜カフェ"
+                    type="button"
+                    @click="toggleMood('夜カフェ')"
+                    x-bind:class="hasMood('夜カフェ') ? '!bg-main !text-form' : ''"
+                >
+                    <x-icons.moon />
+                </x-ui.category> 
 
                 <div x-show="showAll" x-transition class="contents">
                 <x-ui.category label="静か" />
@@ -57,6 +85,21 @@
             </div>
         </section>
 
+        <form id="searchForm" method="GET" action="{{ route('user.search') }}" class="hidden"
+            x-ref="searchForm"
+            >
+            <input type="hidden" name="area" :value="area">
+            <input type="hidden" name="budget" :value="budget">
+            <input type="hidden" name="open" :value="open">
+            <input type="hidden" name="rating_min" :value="ratingMin ?? ''">
+        
+            <template x-for="m in moods" :key="m">
+                <input type="hidden" name="moods[]" :value="m">
+            </template>
+            <template x-for="t in tags" :key="t">
+                <input type="hidden" name="tags[]" :value="t">
+            </template>
+        </form>
 
         <section class="px-4 space-y-2">
             <div class="text-lg text-text_color font-medium">おすすめのカフェ</div>
@@ -82,3 +125,36 @@
         <x-ui.tag-modal />   
 </div>
 @endsection
+
+<script>
+function searchFilter() {
+  return {
+    area: '',
+    budget: '',
+    open: '',
+    ratingMin: null,
+
+    moods: [],
+    tags: [],
+
+    hasMood(m){ return this.moods.includes(m); },
+    toggleMood(m){
+      this.moods = this.hasMood(m)
+        ? this.moods.filter(x => x !== m)
+        : [...this.moods, m];
+    },
+
+
+    hasTag(t){ return this.tags.includes(t); },
+    toggleTag(t){
+      this.tags = this.hasTag(t)
+        ? this.tags.filter(x => x !== t)
+        : [...this.tags, t];
+    },
+
+    submitSearch(){
+      this.$refs.searchForm.submit();
+    }
+  }
+}
+</script>
