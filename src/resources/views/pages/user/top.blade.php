@@ -25,7 +25,7 @@
                 @foreach($stores as $store)
                 <x-ui.store-card
                     :store="$store"
-                    :href="url('/stores/' . data_get($store,'id'))"
+                    :href="route('user.stores.show', ['store' => data_get($store,'id')])"
                     variant="list"
                 />
                 @endforeach
@@ -57,7 +57,7 @@
                 @foreach($stores as $store)
                 <x-ui.store-card
                     :store="$store"
-                    :href="url('/stores/' . data_get($store,'id'))"
+                    :href="route('user.stores.show', ['store' => data_get($store,'id')])"
                     variant="list"
                 />
                 @endforeach

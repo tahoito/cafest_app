@@ -15,6 +15,7 @@ class StoreRecommendService
                 'area' => '栄',
                 'mood' => '韓国風',
                 'image_url' => null,
+                'description' => '落ち着いた空間で、こだわりのコーヒーと焼き菓子を楽しめるカフェです。',
                 'rating' => 4.2,
                 'is_faved' => true,
             ],

@@ -1,4 +1,5 @@
-<nav class="fixed bottom-0 left-0 w-full z-50">
+<nav class="fixed bottom-0 left-0 w-full z-50"
+     data-current="{{ request()->routeIs('user.search') ? 1 : (request()->routeIs('user.top') ? 0 : 0) }}">
   <div class="relative w-full">
     <svg
       id="waveSvg"
@@ -13,44 +14,54 @@
     <!-- bar bg（フル幅） -->
     <div class="absolute inset-x-0 bottom-0 h-[78px] bg-main rounded-t-2xl z-0"></div>
 
-    <!-- nav items（フル幅の中で中央寄せ。アイコンを下げる） -->
+    <!-- nav items -->
     <ul class="absolute inset-x-0 bottom-0 flex items-end justify-center gap-x-10 pb-2 z-30">
       @php
         $btnBase = "nav-item relative grid place-items-center";
         $btnSize = "h-14 w-14";
         $ease = "ease-[cubic-bezier(.22,1,.36,1)]";
 
-        // 丸は「波より下」にしたいので z-10（waveは z-20）
+        // 丸（waveより上に見せたいなら z-30 / waveより下にしたいなら z-20）
         $circleBase = "nav-circle absolute inset-0 rounded-full bg-transparent z-20 transform-gpu transition-transform duration-550 {$ease}";
 
-        // アイコンは一番上（waveより上）
+        // アイコン
         $iconBase = "nav-icon absolute inset-0 z-30 grid place-items-center transform-gpu transition-transform duration-800 {$ease}";
-
       @endphp
 
       <li>
         <a href="{{ route('user.top') }}"
-          class="{{ $btnBase }} {{ $btnSize }}"
-          data-i="0">
+           class="{{ $btnBase }} {{ $btnSize }}"
+           data-i="0">
           <span class="{{ $circleBase }}"></span>
           <span class="{{ $iconBase }}"><x-icons.home size="34" stroke="2.8" class="text-text_color" /></span>
         </a>
       </li>
+
       <li>
         <a href="{{ route('user.search') }}"
-          class="{{ $btnBase }} {{ $btnSize }}"
-          data-i="0">
+           class="{{ $btnBase }} {{ $btnSize }}"
+           data-i="1">
           <span class="{{ $circleBase }}"></span>
           <span class="{{ $iconBase }}"><x-icons.search size="34" stroke="2.8" class="text-text_color" /></span>
         </a>
       </li>
-      <li><button class="{{ $btnBase }} {{ $btnSize }}" data-i="2" type="button"><span class="{{ $circleBase }}"></span><span class="{{ $iconBase }}"><x-icons.reserve size="34" stroke="2.8" class="text-text_color" /></span></button></li>
-      <li><button class="{{ $btnBase }} {{ $btnSize }}" data-i="3" type="button"><span class="{{ $circleBase }}"></span><span class="{{ $iconBase }}"><x-icons.mycafe size="34" stroke="2.8" class="text-text_color" /></span></button></li>
-    </ul>
 
+      <li>
+        <button class="{{ $btnBase }} {{ $btnSize }}" data-i="2" type="button">
+          <span class="{{ $circleBase }}"></span>
+          <span class="{{ $iconBase }}"><x-icons.reserve size="34" stroke="2.8" class="text-text_color" /></span>
+        </button>
+      </li>
+
+      <li>
+        <button class="{{ $btnBase }} {{ $btnSize }}" data-i="3" type="button">
+          <span class="{{ $circleBase }}"></span>
+          <span class="{{ $iconBase }}"><x-icons.mycafe size="34" stroke="2.8" class="text-text_color" /></span>
+        </button>
+      </li>
+    </ul>
   </div>
 </nav>
-
 
 @push('scripts')
 <script>
@@ -66,8 +77,9 @@
     const activeBtnAdd = ["z-10"];
     const activeBtnRemove = ["z-0"];
 
-    const activeCircleAdd = ["bg-base_color", "-translate-y-5", "shadow-lg"];
-    const activeCircleRemove = ["bg-transparent", "translate-y-0", "shadow-none"];
+    // ✅丸が「消えたように見える」対策で ring を追加
+    const activeCircleAdd = ["bg-base_color", "-translate-y-5", "shadow-lg", "ring-1", "ring-black/10"];
+    const activeCircleRemove = ["bg-transparent", "translate-y-0", "shadow-none", "ring-0", "ring-transparent"];
 
     const activeIconAdd = ["-translate-y-5"];
     const activeIconRemove = ["translate-y-0"];
@@ -105,11 +117,10 @@
       const svgEl = btn.querySelector("svg");
       if (!svgEl) return;
 
-      // 「生成される感」：一瞬だけ薄く＆小さく→戻す
       svgEl.style.opacity = "0";
       svgEl.style.transform = "scale(0.92)";
       svgEl.style.transition =
-      "opacity 420ms ease, transform 1600ms cubic-bezier(.22,1,.36,1)";
+        "opacity 420ms ease, transform 1600ms cubic-bezier(.22,1,.36,1)";
 
       requestAnimationFrame(() => {
         svgEl.style.opacity = "1";
@@ -170,7 +181,6 @@
       `;
     }
 
-
     function calcCx(btn) {
       if (!btn) return 50;
 
@@ -195,8 +205,8 @@
       const duration = 480;
       const startTime = performance.now();
 
-      const humpBase = 22;  // ふだんの横幅
-      const humpMax  = 28;  // 押した瞬間に横にも広がる
+      const humpBase = 22;
+      const humpMax  = 28;
 
       const tick = (t) => {
         const p = Math.min((t - startTime) / duration, 1);
@@ -204,7 +214,6 @@
         currentCx += (targetCx - currentCx) * 0.24;
 
         const bounce = Math.sin(p * Math.PI); // 0→1→0
-
         const peak = peakBase + (peakMax - peakBase) * bounce;
         const humpW = humpBase + (humpMax - humpBase) * bounce;
 
@@ -215,31 +224,41 @@
         }
       };
 
-
       rafId = requestAnimationFrame(tick);
     }
 
-    // ===== Init =====
-    setActive(0);
-    animateIconDraw(items[0]);
-    
+    // ===== Init（1回だけ）=====
+    const navEl = document.querySelector("nav[data-current]");
+    const start = navEl ? Number(navEl.dataset.current) : 0;
 
-    const initialCx = calcCx(items[0]);
+    setActive(start);
+    animateIconDraw(items[start]);
+
+    const initialCx = calcCx(items[start]);
     currentCx = initialCx;
+    targetCx = initialCx;
     path.setAttribute("d", wavePath(initialCx, peakBase, 22));
 
-
-    // Click（←1回だけ）
+    // ===== Click =====
     items.forEach((btn) => {
-      btn.addEventListener("click", () => {
+      btn.addEventListener("click", (e) => {
         const i = Number(btn.dataset.i);
+
         setActive(i);
         animateIconDraw(btn);
         moveWaveTo(calcCx(btn));
+
+        if (btn.tagName === "A") {
+          e.preventDefault();
+          const href = btn.href;
+          setTimeout(() => {
+            window.location.href = href;
+          }, 120);
+        }
       });
     });
 
-    // Resize
+    // ===== Resize =====
     window.addEventListener("resize", () => {
       const activeBtn =
         [...items].find(b => b?.querySelector(".nav-circle")?.classList.contains("bg-base_color"))
