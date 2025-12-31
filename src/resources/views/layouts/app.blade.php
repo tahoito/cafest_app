@@ -32,7 +32,7 @@
     <div class="absolute bottom-10 left-40 w-10 h-10 rounded-full bg-accent"></div>
   </div>
   @endif
-  <main x-data="{ activeModal: null }" class="relative z-10 @unless(View::hasSection('hideNavbar')) pb-20 @else pb-2 @endunless">
+  <main x-data="{ $store.search.activeModal: null }" class="relative z-10 @unless(View::hasSection('hideNavbar')) pb-20 @else pb-2 @endunless">
     @yield('content')
   </main>
   @unless(View::hasSection('hideNavbar'))

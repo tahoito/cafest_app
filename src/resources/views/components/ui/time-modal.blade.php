@@ -1,16 +1,16 @@
 <template x-teleport="body">
 <div
-  x-show="activeModal === 'time'"
+  x-show="$store.search.activeModal === 'time'"
   x-transition.opacity
   class="fixed inset-0 z-[9999] flex items-end justify-center"
-  @keydown.escape.window="activeModal = null"
+  @keydown.escape.window="$store.search.activeModal = null"
   style="display:none;"
 >
   {{-- overlay --}}
   <div class="absolute inset-0 bg-black/40" @click="activeModal = null"></div>
 
   <div
-    x-show="activeModal === 'time'"
+    x-show="$store.search.activeModal === 'time'"
     x-transition:enter="transition ease-out duration-200"
     x-transition:enter-start="translate-y-6 opacity-0"
     x-transition:enter-end="translate-y-0 opacity-100"
@@ -28,7 +28,7 @@
         <button
           type="button"
           class="grid h-9 w-9 place-items-center rounded-full hover:bg-black/5"
-          @click="activeModal = null"
+          @click="$store.search.activeModal = null"
           aria-label="閉じる"
         >
           <x-icons.close class="w-7 h-7 text-text_color" />
@@ -41,7 +41,7 @@
         <button
           type="button"
           class="h-9 px-3 rounded-lg text-main-color font-semibold hover:bg-black/5 active:scale-95 transition"
-          @click="activeModal = null"
+          @click="$store.search.activeModal = null"
         >
           決定
         </button>
@@ -52,6 +52,8 @@
       <section class="space-y-2">
           <div class="relative">
             <select
+              name="time"
+              x-model="$store.search.time"
               class="w-full appearance-none rounded-xl border border-line bg-form px-4 py-3 text-base text-text shadow-sm focus:outline-none focus:ring-2 focus:ring-main-color/30"
             >
               <option>今営業中</option>

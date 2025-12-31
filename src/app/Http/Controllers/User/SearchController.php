@@ -29,6 +29,13 @@ class SearchController extends Controller
             })-values();
         }
 
+        $min = $request->input('rating_min');
+        if ($min !== null && $min !== '') {
+            $min = (float) $min;
+            $stores = $stores->filter(fn($s) => (float) data_get($s, 'rating', 0) >= $min)->values();
+        }
+
+
         $tags = $request->input('tags', []);
         if (is_array($tags) && count($tags)) {
             $stores = $stores->filter(function ($s) use ($tags) {

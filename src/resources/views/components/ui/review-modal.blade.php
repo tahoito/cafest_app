@@ -1,26 +1,15 @@
 <template x-teleport="body">
   <div
-    x-show="activeModal === 'review'"
+    x-show="$store.search.activeModal === 'review'"
     x-transition.opacity
     class="fixed inset-0 z-[99999] flex items-end justify-center"
-    @keydown.escape.window="activeModal = null"
+    @keydown.escape.window="$store.search.activeModal = null"
     style="display:none;"
   >
-    <div class="absolute inset-0 bg-black/40" @click="activeModal = null"></div>
+    <div class="absolute inset-0 bg-black/40" @click="$store.search.activeModal = null"></div>
 
     <div
-      x-data="{
-        selected: [],
-        toggle(n){
-          const i = this.selected.indexOf(n);
-          if (i === -1) this.selected.push(n);
-          else this.selected.splice(i, 1);
-          this.selected.sort((a,b)=>a-b);
-        },
-        isOn(n){ return this.selected.includes(n); },
-        clear(){ this.selected = []; },
-      }"
-      x-show="activeModal === 'review'"
+      x-show="$store.search.activeModal === 'review'"
       x-transition:enter="transition ease-out duration-200"
       x-transition:enter-start="translate-y-6 opacity-0"
       x-transition:enter-end="translate-y-0 opacity-100"
@@ -37,7 +26,7 @@
           <button
             type="button"
             class="grid h-9 w-9 place-items-center rounded-full hover:bg-black/5"
-            @click="activeModal = null"
+            @click="$store.search.activeModal = null"
             aria-label="閉じる"
           >
             <x-icons.close class="w-7 h-7 text-text_color" />
@@ -48,7 +37,7 @@
           <button
             type="button"
             class="h-9 px-3 rounded-lg text-main-color font-semibold hover:bg-black/5 active:scale-95 transition"
-            @click="activeModal = null"
+            @click="$store.search.activeModal = null"
           >
             決定
           </button>
@@ -62,7 +51,7 @@
           <button
             type="button"
             class="text-sm text-main-color font-semibold hover:opacity-80"
-            @click="clear()"
+            @click="$store.search.clearRatings()"
           >
             クリア
           </button>
@@ -73,12 +62,12 @@
             <button
               type="button"
               class="inline-flex items-center gap-1 rounded-full border px-3 py-2 text-sm transition active:scale-95"
-              :class="isOn({{ $n }})
+              :class="$store.search.isRatingOn({{ $n }})
                 ? 'bg-main text-form border-main'
                 : 'bg-form text-text_color border-line'"
-              @click="toggle({{ $n }})"
+              @click="$store.search.toggleRating({{ $n }})"
             >
-              <span :class="isOn({{ $n }}) ? 'text-form' : 'text-star'">
+              <span :class="$store.search.isRatingOn({{ $n }}) ? 'text-form' : 'text-star'">
                 <x-icons.star class="w-4 h-4" />
               </span>
               <span>{{ number_format($n, 1) }}</span>
@@ -86,7 +75,7 @@
           @endfor
         </div>
 
-        <input type="hidden" name="ratings" :value="selected.join(',')">
+        <input type="hidden" name="ratings" :value="$store.search.selectedRatings.join(',')">
       </div>
     </div>
   </div>
