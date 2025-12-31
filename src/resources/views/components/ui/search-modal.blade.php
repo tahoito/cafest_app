@@ -21,6 +21,7 @@
 
     {{-- ===== 検索条件（メイン） ===== --}}
     <div
+      x-data="{ showAllTags:false }"
       x-show="$store.search.activeModal === 'search'"
       x-transition:enter="transition ease-out duration-200"
       x-transition:enter-start="translate-y-6 opacity-0"
@@ -164,32 +165,80 @@
           <input type="hidden" name="rating_min" :value="$store.search.ratingMin ?? ''">
 
           {{-- タグ --}}
-          <section class="space-y-2">
-            <div class="flex items-center text-lg text-text_color_color">
-              <span><x-icons.tag /></span><span>タグ</span>
+        <section class="space-y-2">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center text-lg text-text_color_color">
+                <span><x-icons.tag /></span><span>タグ</span>
+              </div>
+
+              <button
+                type="button"
+                class="text-sm text-main-color font-semibold hover:opacity-80"
+                @click="showAllTags = !showAllTags"
+              >
+                <span x-show="!showAllTags">もっと見る</span>
+                <span x-show="showAllTags">閉じる</span>
+              </button>
             </div>
 
+            {{-- まず見せるタグ（例） --}}
             <div class="flex flex-wrap gap-2">
-              <x-ui.tag
-                type="button"
+              <x-ui.tag type="button"
                 @click="$store.search.toggleTag('映え')"
                 x-bind:class="$store.search.hasTag('映え')
                   ? '!bg-main !border-main !text-form'
                   : '!bg-base !border-main !text-text_color'"
-              >
-                映え
-              </x-ui.tag>
+              >映え</x-ui.tag>
 
-              <button
-                type="button"
-                class="rounded-full border-accent bg-accent px-[16px] py-[3px] text-sm text-text_color_color"
-                @click="$store.search.activeModal='searchTag'"
-              >
-                すべて
-              </button>
+              <x-ui.tag type="button"
+                @click="$store.search.toggleTag('作業')"
+                x-bind:class="$store.search.hasTag('作業')
+                  ? '!bg-main !border-main !text-form'
+                  : '!bg-base !border-main !text-text_color'"
+              >作業</x-ui.tag>
+
+              <x-ui.tag type="button"
+                @click="$store.search.toggleTag('静か')"
+                x-bind:class="$store.search.hasTag('静か')
+                  ? '!bg-main !border-main !text-form'
+                  : '!bg-base !border-main !text-text_color'"
+              >静か</x-ui.tag>
+
+              <x-ui.tag type="button"
+                @click="$store.search.toggleTag('スイーツ')"
+                x-bind:class="$store.search.hasTag('スイーツ')
+                  ? '!bg-main !border-main !text-form'
+                  : '!bg-base !border-main !text-text_color'"
+              >スイーツ</x-ui.tag>
+            </div>
+
+            {{-- もっと見るで増える“全部のタグ” --}}
+            <div x-show="showAllTags" x-transition class="flex flex-wrap gap-2">
+              <x-ui.tag type="button" @click="$store.search.toggleTag('推し活')"
+                x-bind:class="$store.search.hasTag('推し活') ? '!bg-main !border-main !text-form' : '!bg-base !border-main !text-text_color'"
+              >推し活</x-ui.tag>
+
+              <x-ui.tag type="button" @click="$store.search.toggleTag('コーヒー')"
+                x-bind:class="$store.search.hasTag('コーヒー') ? '!bg-main !border-main !text-form' : '!bg-base !border-main !text-text_color'"
+              >コーヒー</x-ui.tag>
+
+              <x-ui.tag type="button" @click="$store.search.toggleTag('モーニング')"
+                x-bind:class="$store.search.hasTag('モーニング') ? '!bg-main !border-main !text-form' : '!bg-base !border-main !text-text_color'"
+              >モーニング</x-ui.tag>
+
+              <x-ui.tag type="button" @click="$store.search.toggleTag('夜カフェ')"
+                x-bind:class="$store.search.hasTag('夜カフェ') ? '!bg-main !border-main !text-form' : '!bg-base !border-main !text-text_color'"
+              >夜カフェ</x-ui.tag>
+
+              <x-ui.tag type="button" @click="$store.search.toggleTag('デート')"
+                x-bind:class="$store.search.hasTag('デート') ? '!bg-main !border-main !text-form' : '!bg-base !border-main !text-text_color'"
+              >デート</x-ui.tag>
+
+              <x-ui.tag type="button" @click="$store.search.toggleTag('ひとり')"
+                x-bind:class="$store.search.hasTag('ひとり') ? '!bg-main !border-main !text-form' : '!bg-base !border-main !text-text_color'"
+              >ひとり</x-ui.tag>
             </div>
           </section>
-
           {{-- ボタン --}}
           <div class="sticky bottom-0 bg-base_color pt-3 pb-6">
             <div class="flex justify-center">
@@ -202,76 +251,6 @@
         </div>
       </form>
     </div>
-
-    {{-- ===== 全タグ ===== --}}
-    <div
-      x-show="$store.search.activeModal === 'searchTag'"
-      x-transition:enter="transition ease-out duration-200"
-      x-transition:enter-start="translate-y-6 opacity-0"
-      x-transition:enter-end="translate-y-0 opacity-100"
-      x-transition:leave="transition ease-in duration-150"
-      x-transition:leave-start="translate-y-0 opacity-100"
-      x-transition:leave-end="translate-y-6 opacity-0"
-      class="relative w-full max-w-[400px] rounded-t-3xl overflow-hidden shadow-xl"
-      @click.stop
-    >
-      {{-- header --}}
-      <div class="bg-form px-5 pt-3 pb-4 rounded-t-3xl">
-        <div class="mx-auto mb-2 h-1.5 w-12 rounded-full bg-line"></div>
-
-        <div class="relative flex items-center justify-center">
-          <button
-            type="button"
-            class="absolute left-0 grid h-9 w-9 place-items-center rounded-full hover:bg-black/5"
-            @click="$store.search.activeModal='search'"
-            aria-label="戻る"
-          >
-            <x-icons.close class="w-8 h-8 text-text_color_color" />
-          </button>
-          <div class="text-lg text-text_color_color">全てのタグ</div>
-        </div>
-      </div>
-
-      <div class="bg-base_color px-5 pt-4 pb-6">
-        <div class="flex flex-wrap gap-2">
-          <x-ui.tag
-            type="button"
-            @click="$store.search.toggleTag('推し活')"
-            x-bind:class="$store.search.hasTag('推し活')
-              ? '!bg-main !border-main !text-form'
-              : '!bg-base !border-main !text-text_color'"
-          >推し活</x-ui.tag>
-
-          <x-ui.tag
-            type="button"
-            @click="$store.search.toggleTag('作業')"
-            x-bind:class="$store.search.hasTag('作業')
-              ? '!bg-main !border-main !text-form'
-              : '!bg-base !border-main !text-text_color'"
-          >作業</x-ui.tag>
-
-          <x-ui.tag
-            type="button"
-            @click="$store.search.toggleTag('静か')"
-            x-bind:class="$store.search.hasTag('静か')
-              ? '!bg-main !border-main !text-form'
-              : '!bg-base !border-main !text-text_color'"
-          >静か</x-ui.tag>
-        </div>
-
-        <div class="sticky bottom-0 pt-3">
-          <div class="flex justify-center">
-            <x-ui.button
-              type="button"
-              class="w-[70%]"
-              variants="secondary"
-              @click="$store.search.activeModal='search'"
-            >
-              決定
-            </x-ui.button>
-          </div>
-        </div>
-      </div>
     </div>
 
   </div>

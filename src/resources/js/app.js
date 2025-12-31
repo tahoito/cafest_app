@@ -10,42 +10,30 @@ document.addEventListener('alpine:init', () => {
     area: '',
     budget: '',
     time: '',
-
-    // レビュー：複数選択したいならこれ
-    selectedRatings: [],
+    ratingMin: null,
 
     tags: [],
     moods: [],
+    selectedRatings: [],
 
-    // --- tags ---
-    hasTag(t) { return this.tags.includes(t) },
-    toggleTag(t) {
-      this.tags = this.hasTag(t)
-        ? this.tags.filter(x => x !== t)
-        : [...this.tags, t]
+    hasTag(t){ return this.tags.includes(t) },
+    toggleTag(t){
+      this.tags = this.hasTag(t) ? this.tags.filter(x=>x!==t) : [...this.tags, t]
     },
 
-    // --- moods ---
-    hasMood(m) { return this.moods.includes(m) },
-    toggleMood(m) {
-      this.moods = this.hasMood(m)
-        ? this.moods.filter(x => x !== m)
-        : [...this.moods, m]
+    hasMood(m){ return this.moods.includes(m) },
+    toggleMood(m){
+      this.moods = this.hasMood(m) ? this.moods.filter(x=>x!==m) : [...this.moods, m]
     },
 
-    // --- ratings ---
-    toggleRating(n) {
+    toggleRating(n){
       const i = this.selectedRatings.indexOf(n)
       if (i === -1) this.selectedRatings.push(n)
       else this.selectedRatings.splice(i, 1)
-      this.selectedRatings.sort((a, b) => a - b)
+      this.selectedRatings.sort((a,b)=>a-b)
     },
-    isRatingOn(n) {
-      return this.selectedRatings.includes(n)
-    },
-    clearRatings() {
-      this.selectedRatings = []
-    },
+    isRatingOn(n){ return this.selectedRatings.includes(n) },
+    clearRatings(){ this.selectedRatings = [] },
   })
 })
 

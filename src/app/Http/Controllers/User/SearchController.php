@@ -5,12 +5,22 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\StoreRecommendService;
+use App\Models\User;
+use App\Models\Store;
 
 class SearchController extends Controller
 {
     public function index(Request $request, StoreRecommendService $service)
     {
         $stores = $service->recommended();
+
+        $keyword = $request->input('keyword');
+        $query = Store::query();
+
+        if ($keyword){
+            $query->where('name','like',"%{$keyword}%")
+                ->orWhere('area','like',"%{$keyword}%");
+        }
 
         if ($request->filled('area')) {
             $area = (string) $request->input('area');
