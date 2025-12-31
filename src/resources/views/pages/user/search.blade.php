@@ -1,8 +1,6 @@
 @extends('layouts.app')
 @section('title','検索')
 
-@section('hideNavbar')
-@endsection
 @section('content')
 
 <div class="min-h-screen bg-base_color">
@@ -15,7 +13,8 @@
             <div class="-px-4 flex gap-2 overflow-x-auto no-scrollbar">
                 <x-ui.search-tag
                     @click="activeModal='search'"
-                    class="!px-0 !w-10 !h-7 !rounded-full flex items-center justify-center"
+                    class="!px-0 !w-10 !h-7 !rounded-full flex items-center justify-center
+                            !border-0 !ring-0 !shadow-none before:!hidden after:!hidden"
                     >
                 <x-icons.condition class="w-6 h-3"/>
                 </x-ui.search-tag>
@@ -50,6 +49,15 @@
 
         <section class="px-4 space-y-2">
             <div class="text-lg text-text_color font-medium">おすすめのカフェ</div>
+            <div class="grid grid-cols-2 gap-3">
+                @foreach($stores as $store)
+                <x-ui.store-card
+                    :store="$store"
+                    :href="url('/stores/' . data_get($store,'id'))"
+                    variant="list"
+                />
+                @endforeach
+            </div>
         </section>
 
     </div>

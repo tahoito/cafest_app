@@ -7,6 +7,7 @@ use App\Http\Controllers\User\TopController;
 use App\Http\Controllers\User\SettingsController as UserSettingsController;
 use App\Http\Controllers\Store\SettingsController as StoreSettingsController;
 use App\Http\Controllers\User\RecommendController;
+use App\Http\Controllers\User\SearchController;
 
 Route::view('/', 'welcome')->name('welcome');
 
@@ -27,10 +28,10 @@ Route::prefix('user')->name('user.')->group(function () {
     Route::middleware('auth:user')->group(function () {
         Route::get('/top',[TopController::class, 'index'])->name('top');
         Route::get('/recommended', [RecommendController::class, 'recommended'])->name('recommended');
+        Route::get('/search',[SearchController::class,'index'])->name('search');
     });
 
 
-    Route::view('/search', 'pages.user.search')->name('search');
     Route::view('/reserve', 'pages.user.reserve')->name('reserve');
 
 });

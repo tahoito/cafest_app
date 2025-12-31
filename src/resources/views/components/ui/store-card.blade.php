@@ -28,7 +28,7 @@
 
   {{-- image --}}
   <div class="relative px-4 pt-3 pb-2">
-    <div class="w-[140px] h-[140px] overflow-hidden bg-base mx-auto">
+    <div class="w-full aspect-square max-w-[138px] mx-auto overflow-hidden bg-base">
       <img
         src="{{ $imageUrl ?: asset('images/store/card.png') }}"
         alt="{{ $name }}"
