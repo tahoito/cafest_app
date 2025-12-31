@@ -6,7 +6,6 @@ window.Alpine = Alpine
 document.addEventListener('alpine:init', () => {
   Alpine.store('search', {
     activeModal: null,
-    selectedRatings: [],
 
     area: '',
     budget: '',
@@ -26,17 +25,12 @@ document.addEventListener('alpine:init', () => {
       this.moods = this.hasMood(m) ? this.moods.filter(x=>x!==m) : [...this.moods, m]
     },
 
-    toggleRating(n){
-      const i = this.selectedRatings.indexOf(n);
-      if (i === -1) this.selectedRatings.push(n);
-      else this.selectedRatings.splice(i, 1);
-      this.selectedRatings.sort((a,b)=>a-b);
+    // ratingMin は単一選択にしとくのが自然
+    toggleRating(min){
+      this.ratingMin = (this.ratingMin === min) ? null : min
     },
-    isRatingOn(n){
-      return this.selectedRatings.includes(n);
-    },
-    clearRatings(){
-      this.selectedRatings = [];
+    isRatingOn(min){
+      return this.ratingMin === min
     },
   })
 })

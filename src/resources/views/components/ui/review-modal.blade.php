@@ -58,23 +58,20 @@
         </div>
 
         <div class="flex flex-wrap gap-2">
-          @for($n=1; $n<=5; $n++)
-            <button
+          @for($n = 1; $n <= 5; $n++)
+            <x-ui.tag
               type="button"
-              class="inline-flex items-center gap-1 rounded-full border px-3 py-2 text-sm transition active:scale-95"
-              :class="$store.search.isRatingOn({{ $n }})
-                ? 'bg-main text-form border-main'
-                : 'bg-form text-text_color border-line'"
               @click="$store.search.toggleRating({{ $n }})"
+              x-bind:class="$store.search.isRatingOn({{ $n }})
+                ? '!bg-main !border-main !text-form'
+                : '!bg-base !border-main !text-text_color'"
+              class="flex items-center gap-1"
             >
-              <span :class="$store.search.isRatingOn({{ $n }}) ? 'text-form' : 'text-star'">
-                <x-icons.star class="w-4 h-4" />
-              </span>
-              <span>{{ number_format($n, 1) }}</span>
-            </button>
+              <x-icons.star class="w-4 h-4 text-star" />
+              {{ number_format($n, 1) }}
+            </x-ui.tag>
           @endfor
         </div>
-
         <input type="hidden" name="ratings" :value="$store.search.selectedRatings.join(',')">
       </div>
     </div>

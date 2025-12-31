@@ -14,13 +14,14 @@
     <section class="px-4 space-y-2">
       <div class="flex gap-2 overflow-x-auto no-scrollbar">
         <x-ui.search-tag
-          @click="$store.search.activeModal = 'search'"
-          class="!px-0 !w-10 !h-7 !rounded-full flex items-center justify-center
-                 !border-0 !ring-0 !shadow-none before:!hidden after:!hidden"
-        >
-          <x-icons.condition class="w-6 h-3"/>
+            @click="$store.search.activeModal = 'search'"
+            class="!px-0 !w-10 !h-7 !rounded-full flex items-center justify-center
+                    !border-0 !ring-0 !shadow-none before:!hidden after:!hidden"
+            >
+            <span class="pointer-events-none">
+                <x-icons.condition class="w-6 h-3"/>
+            </span>
         </x-ui.search-tag>
-
         <x-ui.search-tag @click="$store.search.activeModal = 'area'">エリア</x-ui.search-tag>
         <x-ui.search-tag @click="$store.search.activeModal = 'budget'">予算</x-ui.search-tag>
         <x-ui.search-tag @click="$store.search.activeModal = 'time'">営業時間</x-ui.search-tag>
@@ -145,7 +146,7 @@
       <input type="hidden" name="area" :value="$store.search.area">
       <input type="hidden" name="budget" :value="$store.search.budget">
       <input type="hidden" name="time" :value="$store.search.time">
-      <input type="hidden" name="rating_min" :value="$store.search.ratingMin ?? ''">
+      <input type="hidden" name="ratings" :value="($store.search.selectedRatings || []).join(',')">
 
       <template x-for="m in $store.search.moods" :key="m">
         <input type="hidden" name="moods[]" :value="m">
