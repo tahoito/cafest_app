@@ -1,11 +1,11 @@
 @props([
-  'size' => 24,      // 表示サイズ(px)
+  'size' => 30,      // 表示サイズ(px)
   'stroke' => 2,     // 線の太さ
 ])
 
 <svg
   xmlns="http://www.w3.org/2000/svg"
-  viewBox="0 0 30 30"
+  viewBox="0 0 20 20"
   fill="none"
   stroke="currentColor"
   stroke-width="{{ $stroke }}"

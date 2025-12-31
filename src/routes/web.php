@@ -8,6 +8,8 @@ use App\Http\Controllers\User\SettingsController as UserSettingsController;
 use App\Http\Controllers\Store\SettingsController as StoreSettingsController;
 use App\Http\Controllers\User\RecommendController;
 use App\Http\Controllers\User\SearchController;
+use App\Http\Controllers\User\StoreController;
+
 
 Route::view('/', 'welcome')->name('welcome');
 
@@ -29,6 +31,7 @@ Route::prefix('user')->name('user.')->group(function () {
         Route::get('/top',[TopController::class, 'index'])->name('top');
         Route::get('/recommended', [RecommendController::class, 'recommended'])->name('recommended');
         Route::get('/search',[SearchController::class,'index'])->name('search');
+        Route::get('/stores/{store}',[StoreController::class,'show'])->name('stores.show');
     });
 
 
