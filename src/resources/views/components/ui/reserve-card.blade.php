@@ -76,19 +76,24 @@
     </div>
 
     <div class="mt-4">
-      <x-ui.button
-        as="button"
-        type="button"
-        variants="secondary"
-        class="w-full !rounded-full !py-3"
-        @if($onCancel) @click="{{ $onCancel }}" @endif
-      >
-        キャンセルする
-      </x-ui.button>
-    </div>
-  </div>
-
-  @if($href)
-    </a>
+  @if($onCancel)
+    <x-ui.button
+      as="button"
+      type="button"
+      variants="secondary"
+      class="w-full !rounded-full !py-3"
+      @click="{{ $onCancel }}"
+    >
+      キャンセルする
+    </x-ui.button>
+  @else
+    <x-ui.button
+      as="button"
+      type="button"
+      variants="secondary"
+      class="w-full !rounded-full !py-3"
+    >
+      キャンセルする
+    </x-ui.button>
   @endif
 </div>
