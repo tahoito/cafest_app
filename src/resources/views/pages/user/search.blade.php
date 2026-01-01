@@ -7,7 +7,7 @@
   <div class="w-full max-w-md mx-auto pt-6 space-y-5">
 
     <section class="px-4">
-      <x-ui.search-bar />
+      <x-ui.search-bar :tag="$tag"/>
     </section>
 
     {{-- 上の検索チップ --}}

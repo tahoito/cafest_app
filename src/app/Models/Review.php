@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Tag;
 
 class Review extends Model
 {
@@ -16,5 +17,9 @@ class Review extends Model
 
     public function store(){
         return $this->belongsTo(Store::class);
+    }
+
+    public function tags(){
+        return $this->belongsToMany(Tag::class)->withTimestamps();
     }
 }

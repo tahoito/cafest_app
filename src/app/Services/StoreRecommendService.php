@@ -24,7 +24,7 @@ class StoreRecommendService
         }
 
         if (!empty($moodIds)) {
-            $q1->whereIn('mood_id', $moodIds);
+            $q1->whereHas('mood_id', $moodIds);
         }
 
         $stores = $q1->inRandomOrder()->take($limit)->get();
