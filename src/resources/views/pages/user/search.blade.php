@@ -147,6 +147,7 @@
       <input type="hidden" name="budget" :value="$store.search.budget">
       <input type="hidden" name="time" :value="$store.search.time">
       <input type="hidden" name="ratings" :value="($store.search.selectedRatings || []).join(',')">
+      <input type="hidden" name="keyword" :value="$store.search.keyword">
 
       <template x-for="m in $store.search.moods" :key="m">
         <input type="hidden" name="moods[]" :value="m">
@@ -159,16 +160,24 @@
 
     {{-- おすすめ --}}
     <section class="px-4 space-y-2">
-      <div class="text-lg text-text_color font-medium">おすすめのカフェ</div>
-      <div class="grid grid-cols-2 gap-3">
-        @foreach($stores as $store)
-          <x-ui.store-card
-            :store="$store"
-            :href="url('/stores/' . data_get($store,'id'))"
-            variant="list"
-          />
-        @endforeach
+      <div class="text-lg text-text_color font-medium">
+        {{ $isSearching ? '検索結果' : 'おすすめのカフェ' }}
       </div>
+      @if($isSearching && $stores->isEmpty())
+      <div class="text-placeholder text-[14px]">
+        条件に合うカフェが見つかりません
+      </div>
+      @else
+        <div class="grid grid-cols-2 gap-3">
+          @foreach($stores as $store)
+            <x-ui.store-card
+              :store="$store"
+              :href="route('user.stores.show', ['store' => data_get($store,'id')])"
+              variant="list"
+            />
+          @endforeach
+        </div>
+      @endif
     </section>
 
   </div>

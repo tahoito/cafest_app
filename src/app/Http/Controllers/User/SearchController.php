@@ -50,6 +50,21 @@ class SearchController extends Controller
 
         $stores = $query->get();
 
-        return view('pages.user.search', compact('stores', 'tag'));
+        $isSearching = $request->filled('keyword')
+            || $request->filled('area')
+            || $request->filled('budget')
+            || $request->filled('time')
+            || $request->filled('ratings')
+            || $request->filled('moods')
+            || $request->filled('tags')
+            || $request->filled('tag');  
+        
+        if ($isSearching) {
+            $stores = $query->get();
+        }else{
+            $stores = app(StoreRecommendService::class)->recommended(8); 
+        }
+
+        return view('pages.user.search', compact('stores', 'tag','isSearching'));
     }
 }
