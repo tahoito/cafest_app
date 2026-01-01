@@ -1,51 +1,67 @@
 <?php
 
 namespace App\Services;
-
+use App\Models\Store;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Collection;
 
 class StoreRecommendService
 {
-    public function recommended(): Collection
+    public function recommended(int $limit = 4)
     {
-        return collect([
-            [
-                'id' => 1,
-                'name' => 'wiik coffee',
-                'area' => '栄',
-                'mood' => '韓国風',
-                'image_url' => null,
-                'description' => '落ち着いた空間で、こだわりのコーヒーと焼き菓子を楽しめるカフェです。',
-                'rating' => 4.2,
-                'is_faved' => true,
-            ],
-            [ 
-                'id' => 2, 
-                'name' => 'Cafe 宇', 
-                'area' => '大須', 
-                'mood' => '静か', 
-                'image_url' => null, 
-                'rating' => 3.8, 
-                'is_faved' => false, 
-            ],
-            [   
-                'id' => 3, 
-                'name' => 'Morning Lab',
-                'area' => '名駅', 
-                'mood' => '作業向き', 
-                'image_url' => null, 
-                'rating' => 4.6, 
-                'is_faved' => false, 
-            ],
-            [ 
-                'id' => 4, 
-                'name' => 'cafe Lob', 
-                'area' => '矢場町', 
-                'mood' => '女子会向け', 
-                'image_url' => null, 
-                'rating' => 4.5, 
-                'is_faved' => false, 
-            ],
-        ]);
+        $user = Auth::user();
+        
+        $areaIds = $user?->favorite_areas ?? [];
+        $moodIds = $user?->favorite_moods ?? [];
+
+        $base = Store::query()
+            ->withAvg('reviews as rating','rating');
+        
+        $q1 = (clone $base);
+
+        if(!empty($areaIds)){
+            $q1->whereIn('area_id',$areaIds);
+        }
+
+        if (!empty($moodIds)) {
+            $q1->whereIn('mood_id', $moodIds);
+        }
+
+        $stores = $q1->inRandomOrder()->take($limit)->get();
+        if ($stores->count() >= $limit) return $stores;
+
+        $need = $limit - $stores->count();
+        $pickedIds = $stores->pluck('id')->all();
+
+        if ($need > 0 && !empty($moodIds)) {
+            $more = (clone $base)
+                ->whereNotIn('id', $pickedIds)
+                ->whereHas('mood_id', $moodIds)
+                ->inRandomOrder()->take($need)->get();
+
+            $stores = $stores->concat($more);
+            $need = $limit - $stores->count();
+            $pickedIds = $stores->pluck('id')->all();
+        }
+        if ($need > 0 && !empty($areaIds)) {
+            $more = (clone $base)
+                ->whereNotIn('id', $pickedIds)
+                ->whereIn('area_id', $areaIds)
+                ->inRandomOrder()->take($need)->get();
+
+            $stores = $stores->concat($more);
+            $need = $limit - $stores->count();
+            $pickedIds = $stores->pluck('id')->all();
+        }
+        if ($need > 0) {
+            $more = (clone $base)
+                ->whereNotIn('id', $pickedIds)
+                ->orderByDesc('rating')
+                ->inRandomOrder()->take($need)->get();
+
+            $stores = $stores->concat($more);
+        }
+
+        return $stores->values();
     }
 }
