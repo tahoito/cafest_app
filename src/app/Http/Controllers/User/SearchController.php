@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Store;
 use App\Models\Tag;
+use App\Services\StoreRecommendService;
+
 
 class SearchController extends Controller
 {
