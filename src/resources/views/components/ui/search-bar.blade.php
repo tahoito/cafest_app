@@ -3,6 +3,7 @@
   'placeholder' => 'カフェ名・エリアで検索',
   'action' => null,
   'method' => 'GET',
+  'tag' => null,
 ])
 
 <form action="{{ $action ?? url()->current() }}" method="{{ $method }}" class="w-full">
@@ -14,7 +15,7 @@
     <input
       type="search"
       name="{{ $name }}"
-      value="{{ request($name) }}"
+      value="{{ request($name) ?: ($tag?->name ?? '') }}"
       x-init="$store.search.keyword = $el.value"
       x-model="$store.search.keyword"
       placeholder="{{ $placeholder }}"

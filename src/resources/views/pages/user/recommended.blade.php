@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','トップ')
+@section('title','おすすめのカフェ')
 
 @section('content')
 <header class="sticky top-0 z-50 bg-base_color">
@@ -16,7 +16,7 @@
         </div>
     </header>
 <div class="min-h-screen bg-base_color">
-    <div class="w-full max-w-md mx-auto pt-6 space-y-5">
+    <div class="w-full max-w-md mx-auto pt-4 space-y-5">
 
         <section class="px-4 space-y-3">
             <div class="grid grid-cols-2 gap-3">

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\User;
-
+use App\Services\StoreRecommendService; 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,15 +11,11 @@ use App\Models\Store;
 
 class RecommendController extends Controller{
 
-    public function recommended()
+    public function recommended(StoreRecommendService $service)
     {
-    $stores = Store::query()
-        ->withAvg('reviews as rating', 'rating')
-        ->orderByDesc('rating')
-        ->take(50)
-        ->get();
+        $stores = $service->recommended(limit:8);
 
-    return view('pages.user.recommended', compact('stores'));
+        return view('pages.user.recommended', compact('stores'));
     }
 }
 
