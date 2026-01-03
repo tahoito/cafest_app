@@ -46,6 +46,11 @@
             x-cloak
             src="{{ asset('images/moods/coffee.png') }}"
           >
+          <img
+            x-show="$store.search.hasMood('珈琲専門')"
+            x-cloak
+            src="{{ asset('images/moods/coffee_white.png') }}"
+          >
         </x-ui.category>
 
         <x-ui.category
@@ -58,6 +63,11 @@
             x-show="!$store.search.hasMood('紅茶')"
             x-cloak
             src="{{ asset('images/moods/tea.png') }}"
+          >
+          <img
+            x-show="$store.search.hasMood('紅茶')"
+            x-cloak
+            src="{{ asset('images/moods/tea_white.png') }}"
           >
         </x-ui.category>
 
@@ -72,6 +82,11 @@
             x-cloak
             src="{{ asset('images/moods/cake.png') }}"
           >
+          <img
+            x-show="$store.search.hasMood('スイーツ')"
+            x-cloak
+            src="{{ asset('images/moods/cake_white.png') }}"
+          >
         </x-ui.category>
 
         <x-ui.category
@@ -84,6 +99,11 @@
             x-show="!$store.search.hasMood('夜カフェ')"
             x-cloak
             src="{{ asset('images/moods/moon.png') }}"
+          >
+          <img
+            x-show="$store.search.hasMood('夜カフェ')"
+            x-cloak
+            src="{{ asset('images/moods/moon_white.png') }}"
           >
         </x-ui.category>
 
