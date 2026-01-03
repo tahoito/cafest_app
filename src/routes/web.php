@@ -32,6 +32,9 @@ Route::prefix('user')->name('user.')->group(function () {
         Route::get('/recommended', [RecommendController::class, 'recommended'])->name('recommended');
         Route::get('/search',[SearchController::class,'index'])->name('search');
         Route::get('/stores/{store}',[StoreController::class,'show'])->name('stores.show');
+
+        Route::get('/stores/{store}/reserve/confirm', [StoreController::class, 'reserveConfirm'])->name('stores.reserve.confirm');
+        Route::post('/stores/{store}/reserve', [StoreController::class, 'reserveStore'])->name('stores.reserve.store');
     });
 
 

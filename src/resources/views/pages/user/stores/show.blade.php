@@ -3,7 +3,9 @@
 
 
 @section('content')
-<div class="min-h-screen bg-base relative overflow-hidden">
+<div
+    x-data="{ reserveOpen:false }"
+    class="min-h-screen bg-base relative overflow-hidden">
 
   {{-- header --}}
   <header class="sticky top-0 z-50 bg-base_color">
@@ -226,9 +228,13 @@
                 </div>
             </div>
         <div class="flex justify-center pt-8">
-            <x-ui.button type="submit" variant="secondary" class="text-form">
+            <x-ui.button :type="'button'" variant="secondary" class="text-form" @click="reserveOpen=true">
                 このお店で予約する
             </x-ui.button>
+            <x-ui.reserve-modal
+            :store="$store"
+            :action="route('user.stores.reserve.confirm', $store)"
+            />
         </div>
     </section>
   </div>
