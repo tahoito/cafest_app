@@ -41,7 +41,7 @@
           @click="$store.search.toggleMood('珈琲専門')"
           x-bind:class="$store.search.hasMood('珈琲専門') ? '!bg-main !text-form' : ''"
         >
-          <x-icons.coffee />
+          <x-icons.moods.coffee />
         </x-ui.category>
 
         <x-ui.category
@@ -50,7 +50,7 @@
           @click="$store.search.toggleMood('紅茶')"
           x-bind:class="$store.search.hasMood('紅茶') ? '!bg-main !text-form' : ''"
         >
-          <x-icons.tea />
+          <x-icons.moods.tea />
         </x-ui.category>
 
         <x-ui.category
@@ -59,7 +59,7 @@
           @click="$store.search.toggleMood('スイーツ')"
           x-bind:class="$store.search.hasMood('スイーツ') ? '!bg-main !text-form' : ''"
         >
-          <x-icons.cake />
+          <x-icons.moods.cake />
         </x-ui.category>
 
         <x-ui.category
@@ -68,7 +68,7 @@
           @click="$store.search.toggleMood('夜カフェ')"
           x-bind:class="$store.search.hasMood('夜カフェ') ? '!bg-main !text-form' : ''"
         >
-          <x-icons.moon />
+          <x-icons.moods.moon />
         </x-ui.category>
 
         <div x-show="showAll" x-transition class="contents">
@@ -77,49 +77,72 @@
             type="button"
             @click="$store.search.toggleMood('静か')"
             x-bind:class="$store.search.hasMood('静か') ? '!bg-main !text-form' : ''"
-          />
+          >
+            <x-icons.moods.book />
+          </x-ui.category>
+
           <x-ui.category
             label="勉強・作業"
             type="button"
             @click="$store.search.toggleMood('勉強・作業')"
             x-bind:class="$store.search.hasMood('勉強・作業') ? '!bg-main !text-form' : ''"
-          />
+          >
+            <x-icons.moods.study />
+          </x-ui.category>
+
           <x-ui.category
             label="長居OK"
             type="button"
             @click="$store.search.toggleMood('長居OK')"
             x-bind:class="$store.search.hasMood('長居OK') ? '!bg-main !text-form' : ''"
-          />
+          >
+            <x-icons.moods.sofa />
+          </x-ui.category>
+
           <x-ui.category
             label="レトロ・喫茶"
             type="button"
             @click="$store.search.toggleMood('レトロ・喫茶')"
             x-bind:class="$store.search.hasMood('レトロ・喫茶') ? '!bg-main !text-form' : ''"
-          />
+          >
+            <x-icons.moods.retro />
+          </x-ui.category>
+
           <x-ui.category
             label="デート"
             type="button"
             @click="$store.search.toggleMood('デート')"
             x-bind:class="$store.search.hasMood('デート') ? '!bg-main !text-form' : ''"
-          />
+          >
+            <x-icons.moods.love />
+          </x-ui.category>
+
           <x-ui.category
             label="女子会"
             type="button"
             @click="$store.search.toggleMood('女子会')"
             x-bind:class="$store.search.hasMood('女子会') ? '!bg-main !text-form' : ''"
-          />
+          >
+            <x-icons.moods.girl />
+          </x-ui.category>
+
           <x-ui.category
             label="韓国風"
             type="button"
             @click="$store.search.toggleMood('韓国風')"
             x-bind:class="$store.search.hasMood('韓国風') ? '!bg-main !text-form' : ''"
-          />
+          >
+            <x-icons.moods.korea />
+          </x-ui.category>
+
           <x-ui.category
             label="ペットOK"
             type="button"
             @click="$store.search.toggleMood('ペットOK')"
             x-bind:class="$store.search.hasMood('ペットOK') ? '!bg-main !text-form' : ''"
-          />
+          >
+            <x-icons.moods.pets />
+          </x-ui.category>
         </div>
       </div>
 
@@ -135,7 +158,6 @@
       </div>
     </section>
 
-    {{-- ✅ 検索フォーム（hidden） --}}
     <form
       id="searchForm"
       method="GET"
