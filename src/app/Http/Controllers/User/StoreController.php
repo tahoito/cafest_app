@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Store;
 use App\Models\Review;
 use App\Services\StoreRecommendService;
+use Illuminate\Http\Request;
+
 
 class StoreController extends Controller
 {
@@ -26,20 +28,20 @@ class StoreController extends Controller
         ]);
     }
 
-    public function reserveConfirm(\Illuminate\Http\Request $request, \App\Models\Store $store)
+    public function reserveConfirm(Store $store, Request $request)
     {
-        // モーダルから来た値をそのまま確認画面に渡す
-        $data = $request->only(['date', 'time', 'people', 'note']);
+        $data = $request->only(['date', 'start_time', 'end_time', 'people']);
 
-        return view('pages.user.reserve-confirm', compact('store', 'data'));
+        return view('pages.user.reserve-confirm', [
+            'store' => $store,
+            'data' => $data,
+        ]);
     }
-
-    public function reserveStore(\Illuminate\Http\Request $request, \App\Models\Store $store)
+    public function reserveStore(Request $request, Store $store)
     {
-        // ここは後でDB保存（今は仮でOK）
-        // $request->validate([...]);
-
-        return redirect()->route('user.stores.show', $store)->with('success', '予約完了！');
+        return redirect()
+            ->route('user.stores.show', $store)
+            ->with('success', '予約完了！');
     }
 
 }

@@ -95,7 +95,8 @@
         <div class="space-y-2">
           <div class="text-text_color text-lg font-medium">時間</div>
           <div class="flex items-center gap-3 text-placeholder text-[14px]">
-            <select name="start_time" x-model="startTime" required class="w-full rounded-xl bg-base px-4 py-3 ring-1 ring-black/10">
+            <select name="start_time" x-model="startTime" required class="w-full rounded-xl bg-base px-4 py-3 ring-1 ring-black/10"
+              :class="startTime ? 'text-text_color' : 'text-placeholder text-[14px]'">
               <option value="" disabled selected>開始</option>
               <option>09:00</option><option>10:00</option><option>11:00</option>
               <option>12:00</option><option>13:00</option><option>14:00</option>
@@ -104,7 +105,8 @@
 
             <div class="text-text_color">ー</div>
 
-            <select name="end_time" x-model="endTime" required class="w-full rounded-xl bg-base px-4 py-3 ring-1 ring-black/10 text-placeholder text-[14px]">
+            <select name="end_time" x-model="endTime" required class="w-full rounded-xl bg-base px-4 py-3 ring-1 ring-black/10"
+              :class="startTime ? 'text-text_color' : 'text-placeholder text-[14px]'">
               <option value="" disabled selected>終了</option>
               <option>10:00</option><option>11:00</option><option>12:00</option>
               <option>13:00</option><option>14:00</option><option>15:00</option>
