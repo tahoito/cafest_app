@@ -115,10 +115,15 @@
             x-bind:class="$store.search.hasMood('静か') ? '!bg-main !text-form' : ''"
           >
             <img
-            x-show="!$store.search.hasMood('静か')"
-            x-cloak
-            src="{{ asset('images/moods/book.png') }}"
-          >
+              x-show="!$store.search.hasMood('静か')"
+              x-cloak
+              src="{{ asset('images/moods/book.png') }}"
+            >
+            <img
+              x-show="$store.search.hasMood('静か')"
+              x-cloak
+              src="{{ asset('images/moods/book_white.png') }}"
+            >
           </x-ui.category>
 
           <x-ui.category
@@ -128,10 +133,15 @@
             x-bind:class="$store.search.hasMood('勉強・作業') ? '!bg-main !text-form' : ''"
           >
             <img
-            x-show="!$store.search.hasMood('勉強・作業')"
-            x-cloak
-            src="{{ asset('images/moods/study.png') }}"
-          >
+              x-show="!$store.search.hasMood('勉強・作業')"
+              x-cloak
+              src="{{ asset('images/moods/study.png') }}"
+            >
+            <img
+              x-show="$store.search.hasMood('勉強・作業')"
+              x-cloak
+              src="{{ asset('images/moods/study_white.png') }}"
+            >
           </x-ui.category>
 
           <x-ui.category
@@ -145,6 +155,11 @@
               x-cloak
               src="{{ asset('images/moods/sofa.png') }}"
             >
+            <img
+              x-show="$store.search.hasMood('長居OK')"
+              x-cloak
+              src="{{ asset('images/moods/sofa_white.png') }}"
+            >
           </x-ui.category>
 
           <x-ui.category
@@ -154,10 +169,15 @@
             x-bind:class="$store.search.hasMood('レトロ・喫茶') ? '!bg-main !text-form' : ''"
           >
             <img
-            x-show="!$store.search.hasMood('レトロ・喫茶')"
-            x-cloak
-            src="{{ asset('images/moods/retro.png') }}"
-          >
+              x-show="!$store.search.hasMood('レトロ・喫茶')"
+              x-cloak
+              src="{{ asset('images/moods/retro.png') }}"
+            >
+            <img
+              x-show="$store.search.hasMood('レトロ・喫茶')"
+              x-cloak
+              src="{{ asset('images/moods/retro_white.png') }}"
+            >
           </x-ui.category>
 
           <x-ui.category
@@ -167,10 +187,15 @@
             x-bind:class="$store.search.hasMood('デート') ? '!bg-main !text-form' : ''"
           >
             <img
-            x-show="!$store.search.hasMood('デート')"
-            x-cloak
-            src="{{ asset('images/moods/love.png') }}"
-          >
+              x-show="!$store.search.hasMood('デート')"
+              x-cloak
+              src="{{ asset('images/moods/love.png') }}"
+            >
+            <img
+              x-show="$store.search.hasMood('デート')"
+              x-cloak
+              src="{{ asset('images/moods/love_white.png') }}"
+            >
           </x-ui.category>
 
           <x-ui.category
@@ -180,10 +205,15 @@
             x-bind:class="$store.search.hasMood('女子会') ? '!bg-main !text-form' : ''"
           >
             <img
-            x-show="!$store.search.hasMood('女子会')"
-            x-cloak
-            src="{{ asset('images/moods/girl.png') }}"
-          >
+              x-show="!$store.search.hasMood('女子会')"
+              x-cloak
+              src="{{ asset('images/moods/girl.png') }}"
+            >
+            <img
+              x-show="$store.search.hasMood('女子会')"
+              x-cloak
+              src="{{ asset('images/moods/girl_white.png') }}"
+            >
           </x-ui.category>
 
           <x-ui.category
@@ -193,10 +223,15 @@
             x-bind:class="$store.search.hasMood('韓国風') ? '!bg-main !text-form' : ''"
           >
             <img
-            x-show="!$store.search.hasMood('韓国風')"
-            x-cloak
-            src="{{ asset('images/moods/korean.png') }}"
-          >
+              x-show="!$store.search.hasMood('韓国風')"
+              x-cloak
+              src="{{ asset('images/moods/korean.png') }}"
+            >
+            <img
+              x-show="$store.search.hasMood('韓国風')"
+              x-cloak
+              src="{{ asset('images/moods/korean_white.png') }}"
+            >
           </x-ui.category>
 
           <x-ui.category
@@ -206,10 +241,15 @@
             x-bind:class="$store.search.hasMood('ペットOK') ? '!bg-main !text-form' : ''"
           >
             <img
-            x-show="!$store.search.hasMood('ペットOK')"
-            x-cloak
-            src="{{ asset('images/moods/pets.png') }}"
-          >
+              x-show="!$store.search.hasMood('ペットOK')"
+              x-cloak
+              src="{{ asset('images/moods/pets.png') }}"
+            >
+            <img
+              x-show="$store.search.hasMood('ペットOK')"
+              x-cloak
+              src="{{ asset('images/moods/pets_white.png') }}"
+            >
           </x-ui.category>
         </div>
       </div>
