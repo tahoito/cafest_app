@@ -1,24 +1,113 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-md mx-auto p-4 space-y-4">
-  <div class="text-xl font-semibold">予約確認</div>
+@section('hideNavbar')
+@section('content')
+  <div class="min-h-dvh bg-base_color flex flex-col overflow-hidden">
+    <header class="sticky top-0 z-50 bg-base_color">
+      <div class="pt-[env(safe-area-inset-top)]">
+        <div class="grid grid-cols-[48px_1fr_48px] items-center px-4 h-16">
+          <a class="p-2" href="{{ route('user.stores.show', $store) }}">
+            <x-icons.back class="w-5 h-5 text-text_color" />
+          </a>
 
-  <div class="rounded-lg bg-white p-4">
-    <div class="font-medium">{{ $store->name }}</div>
-    <div>日付：{{ data_get($data, 'date') }}</div>
-    <div>時間：{{ data_get($data, 'time') }}</div>
-    <div>人数：{{ data_get($data, 'people') }}</div>
-    <div>要望：{{ data_get($data, 'note') }}</div>
+          <h1 class="text-center text-text_color text-2xl whitespace-nowrap overflow-hidden text-ellipsis">
+            予約情報確認
+          </h1>
+
+          <div></div>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-1 overflow-hidden">
+      <div class="w-full max-w-md mx-auto px-3 pt-6 space-y-8">
+
+        <section class="rounded-2xl border border-main bg-base px-5 py-4 shadow-[0_2px_10px_rgba(0,0,0,0.10)]">
+          <div class="grid grid-cols-[120px_1fr] gap-y-3 items-center">
+
+            {{-- 店舗名 --}}
+            <div class="grid grid-cols-[24px_auto] items-center gap-2 text-text_color">
+              <x-icons.store stroke="2" class="h-6 w-6 shrink-0 text-text_color" />
+              <div class="text-base font-medium">店舗名</div>
+            </div>
+            <div class="text-base text-text_color">
+              {{ $store->name }}
+            </div>
+
+            {{-- 日付 --}}
+            <div class="grid grid-cols-[24px_auto] items-center gap-2 text-text_color">
+              <x-icons.date class="h-7 w-7 shrink-0 text-text_color" />
+              <div class="text-base font-medium">日付</div>
+            </div>
+            <div class="text-base text-text_color">
+              {{ data_get($data, 'date') }}
+            </div>
+
+            {{-- 時間 --}}
+            <div class="grid grid-cols-[24px_auto] items-center gap-2 text-text_color">
+              <x-icons.time class="h-6 w-6 shrink-0 text-text_color" />
+              <div class="text-base font-medium">時間</div>
+            </div>
+            <div class="text-base text-text_color">
+              {{ data_get($data, 'start_time') }}-{{ data_get($data, 'end_time') }}
+            </div>
+
+            {{-- 人数 --}}
+            <div class="grid grid-cols-[24px_auto] items-center gap-2 text-text_color">
+              <x-icons.number class="h-7 w-7 shrink-0 text-text_color" />
+              <div class="text-base font-medium">人数</div>
+            </div>
+            <div class="text-base text-text_color">
+              {{ data_get($data, 'people') }}名
+            </div>
+
+          </div>
+        </section>
+
+        <form method="POST" action="{{ route('user.stores.reserve.store', $store) }}" class="space-y-8">
+          @csrf
+          @foreach($data as $k => $v)
+            <input type="hidden" name="{{ $k }}" value="{{ $v }}">
+          @endforeach
+
+          {{-- inputs --}}
+          <section class="space-y-8">
+            <div class="space-y-2">
+              <div class="text-text_color text-lg font-medium">名前</div>
+              <x-ui.input
+                id="name"
+                type="text"
+                name="name"
+                placeholder="名前を入力"
+                required
+                autocomplete="off"
+              />
+            </div>
+
+            <div class="space-y-2">
+              <div class="text-text_color text-lg font-medium">電話番号</div>
+              <x-ui.input
+                id="phone"
+                type="text"
+                name="phone"
+                placeholder="電話番号を入力"
+                required
+                autocomplete="off"
+              />
+            </div>
+          </section>
+
+          <div class="space-y-2">
+            <p class="text-center text-main text-[14px]">
+              10分以上ご来店がない場合、キャンセルとなります。
+            </p>
+            <x-ui.button :type="'submit'" class="w-full text-form">
+              予約確定
+            </x-ui.button>
+          </div>
+        </form>
+      </div>
+    </main>
   </div>
-
-  <form method="POST" action="{{ route('user.stores.reserve.store', $store) }}">
-    @csrf
-    @foreach($data as $k => $v)
-      <input type="hidden" name="{{ $k }}" value="{{ $v }}">
-    @endforeach
-
-    <button class="w-full py-3 rounded bg-black text-white">この内容で予約する</button>
-  </form>
-</div>
 @endsection

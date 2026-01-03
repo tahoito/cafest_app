@@ -24,7 +24,7 @@
 @endphp
 
 <a href="{{ $url }}"
-   class="block w-[170px] h-[210px] rounded-lg bg-form ring-1 ring-black/5 shadow-[0_2px_10px_rgba(0,0,0,0.12)] overflow-hidden">
+   class="block w-[170px] h-[210px] rounded-lg bg-form ring-1 ring-black/5 shadow-[0_1px_4px_rgba(0,0,0,0.20)] overflow-hidden">
 
   {{-- image --}}
   <div class="relative px-4 pt-3 pb-2">
