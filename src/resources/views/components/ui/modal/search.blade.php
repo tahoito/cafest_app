@@ -1,4 +1,3 @@
-{{-- resources/views/components/ui/search-modal.blade.php --}}
 <template x-teleport="body">
   <div
     x-show="$store.search.activeModal === 'search' || $store.search.activeModal === 'searchTag'"

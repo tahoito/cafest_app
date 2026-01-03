@@ -142,7 +142,7 @@
         </div>
         <div class="flex flex-nowrap gap-3 overflow-x-auto pb-4 px-2">
             @foreach($reviews as $review)
-                <x-ui.review-card 
+                <x-ui.card.user.review
                     :review="$review" 
                     variant="mini" 
                     class="shrink-0" />
@@ -231,7 +231,7 @@
             <x-ui.button :type="'button'" variant="secondary" class="text-form" @click="reserveOpen=true">
                 このお店で予約する
             </x-ui.button>
-            <x-ui.reserve-modal
+            <x-ui.modal.reserve
             :store="$store"
             :action="route('user.stores.reserve.confirm', $store)"
             />

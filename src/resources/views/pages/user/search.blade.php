@@ -300,7 +300,7 @@
       @else
         <div class="grid grid-cols-2 gap-3">
           @foreach($stores as $store)
-            <x-ui.store-card
+            <x-ui.card.store
               :store="$store"
               :href="route('user.stores.show', ['store' => data_get($store,'id')])"
               variant="list"
@@ -313,12 +313,12 @@
   </div>
 
   {{-- ✅ モーダル --}}
-  <x-ui.search-modal />
-  <x-ui.area-modal />
-  <x-ui.wallet-modal />
-  <x-ui.time-modal />
-  <x-ui.review-modal />
-  <x-ui.tag-modal />
+  <x-ui.modal.search />
+  <x-ui.modal.area />
+  <x-ui.modal.wallet />
+  <x-ui.modal.time />
+  <x-ui..modal.review />
+  <x-ui.modal.tag />
 </div>
 
 @endsection
