@@ -18,11 +18,17 @@
   @if($href) href="{{ $href }}" @else type="button" @endif
   {{ $attributes->merge(['class' => "{$base} {$state}"]) }}
 >
-  <div class="h-12 w1-12 grid place-items-center pt-0.5">
-    {{ $slot }}
+  <div class="h-12 w1-12 grid place-items-center -mt-1">
+    <div x-show="!{{ $active ? 'true' : 'false' }}">
+      {{ $slot }}
+    </div>
+
+    <div x-show="{{ $active ? 'true' : 'false' }}">
+      {{ $activeIcon ?? '' }}
+    </div>
   </div>
 
-  <div class="mt-0.5 text-[12px] leading-none text-center">
+  <div class="mt-0.5 text-[12px] leading-none text-center pt-2">
     {{ $label }}
   </div>
 </{{ $tag }}>

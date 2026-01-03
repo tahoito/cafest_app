@@ -23,7 +23,7 @@
             <div class="text-lg text-text_color font-medium">おすすめのカフェ</div>
             <div class="grid grid-cols-2 gap-3">
                 @foreach($stores as $store)
-                <x-ui.store-card
+                <x-ui.card.store
                     :store="$store"
                     :href="route('user.stores.show', ['store' => data_get($store,'id')])"
                     variant="list"
@@ -43,7 +43,7 @@
             <div class="text-lg text-text_color font-medium">みんなのレビュー</div>
             <div class="flex flex-nowrap gap-3 overflow-x-auto pb-6 px-2">
                 @foreach($reviews as $review)
-                    <x-ui.review-card 
+                    <x-ui.card.user.review
                         :review="$review" 
                         variant="mini" 
                         class="shrink-0" />
@@ -55,7 +55,7 @@
             <div class="text-lg text-text_color font-medium">カフェ一覧</div>
             <div class="grid grid-cols-2 gap-3">
                 @foreach($stores as $store)
-                <x-ui.store-card
+                <x-ui.card.store
                     :store="$store"
                     :href="route('user.stores.show', ['store' => data_get($store,'id')])"
                     variant="list"

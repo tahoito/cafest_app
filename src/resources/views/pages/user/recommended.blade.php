@@ -21,7 +21,7 @@
         <section class="px-4 space-y-3">
             <div class="grid grid-cols-2 gap-3">
                 @foreach($stores as $store)
-                <x-ui.store-card
+                <x-ui.card.store
                     :store="$store"
                     :href="route('user.stores.show', ['store' => data_get($store,'id')])"
                     variant="list"
