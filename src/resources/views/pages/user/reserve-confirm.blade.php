@@ -26,7 +26,6 @@
         <section class="rounded-2xl border border-main bg-base px-5 py-4 shadow-[0_2px_10px_rgba(0,0,0,0.10)]">
           <div class="grid grid-cols-[120px_1fr] gap-y-3 items-center">
 
-            {{-- 店舗名 --}}
             <div class="grid grid-cols-[24px_auto] items-center gap-2 text-text_color">
               <x-icons.store stroke="2" class="h-6 w-6 shrink-0 text-text_color" />
               <div class="text-base font-medium">店舗名</div>
@@ -35,7 +34,6 @@
               {{ $store->name }}
             </div>
 
-            {{-- 日付 --}}
             <div class="grid grid-cols-[24px_auto] items-center gap-2 text-text_color">
               <x-icons.date class="h-7 w-7 shrink-0 text-text_color" />
               <div class="text-base font-medium">日付</div>
@@ -44,7 +42,6 @@
               {{ data_get($data, 'date') }}
             </div>
 
-            {{-- 時間 --}}
             <div class="grid grid-cols-[24px_auto] items-center gap-2 text-text_color">
               <x-icons.time class="h-6 w-6 shrink-0 text-text_color" />
               <div class="text-base font-medium">時間</div>
@@ -53,7 +50,6 @@
               {{ data_get($data, 'start_time') }}-{{ data_get($data, 'end_time') }}
             </div>
 
-            {{-- 人数 --}}
             <div class="grid grid-cols-[24px_auto] items-center gap-2 text-text_color">
               <x-icons.number class="h-7 w-7 shrink-0 text-text_color" />
               <div class="text-base font-medium">人数</div>
@@ -64,6 +60,10 @@
 
           </div>
         </section>
+
+        @if($errors->has('time'))
+          <p class="text-center text-notification text-sm">{{ $errors->first('time') }}</P>
+        @endif
 
         <form method="POST" action="{{ route('user.stores.reserve.store', $store) }}" class="space-y-8">
           @csrf
@@ -82,6 +82,7 @@
                 placeholder="名前を入力"
                 required
                 autocomplete="off"
+                value="{{ old('name') }}"
               />
             </div>
 
@@ -94,12 +95,13 @@
                 placeholder="電話番号を入力"
                 required
                 autocomplete="off"
+                value="{{ old('phone') }}"
               />
             </div>
           </section>
 
           <div class="space-y-2">
-            <p class="text-center text-main text-[14px]">
+            <p class="text-center text-main text-sm">
               10分以上ご来店がない場合、キャンセルとなります。
             </p>
             <x-ui.button :type="'submit'" class="w-full text-form">
