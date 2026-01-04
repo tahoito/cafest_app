@@ -136,7 +136,7 @@
             <div class="text-lg text-text_color font-medium">みんなのレビュー(100件)</div>
 
             <a href="#"
-            class="text-[14px] text-main hover:text-text_color">
+            class="text-sm text-main hover:text-text_color">
             一覧 →
             </a>
         </div>
@@ -150,10 +150,10 @@
         </div>
 
         <div class="flex items-center justify-between pt-2">
-            <div class="text-text_color text-[14px]">みんなの写真から見る</div>
+            <div class="text-text_color text-sm">みんなの写真から見る</div>
 
             <a href="#"
-            class="text-[14px] text-main hover:text-text_color">
+            class="text-sm text-main hover:text-text_color">
             すべて →
             </a>
         </div>
@@ -232,8 +232,8 @@
                 このお店で予約する
             </x-ui.button>
             <x-ui.modal.reserve
-            :store="$store"
-            :action="route('user.stores.reserve.confirm', $store)"
+                :store="$store"
+                :action="route('user.stores.reserve.confirm', data_get($store, 'id'))"
             />
         </div>
     </section>

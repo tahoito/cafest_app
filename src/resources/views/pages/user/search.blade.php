@@ -258,7 +258,7 @@
         <button
           type="button"
           @click="showAll = !showAll"
-          class="ml-auto text-[14px] text-text_color"
+          class="ml-auto text-sm text-text_color"
         >
           <span x-show="!showAll">もっと見る</span>
           <span x-show="showAll">閉じる</span>
@@ -294,7 +294,7 @@
         {{ $isSearching ? '検索結果' : 'おすすめのカフェ' }}
       </div>
       @if($isSearching && $stores->isEmpty())
-      <div class="text-placeholder text-[14px]">
+      <div class="text-placeholder text-sm">
         条件に合うカフェが見つかりません
       </div>
       @else

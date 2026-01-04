@@ -36,8 +36,7 @@ Route::prefix('user')->name('user.')->group(function () {
         Route::get('/stores/{store}/reserve/confirm', [StoreController::class, 'reserveConfirm'])->name('stores.reserve.confirm');
         Route::post('/stores/{store}/reserve', [StoreController::class, 'reserveStore'])->name('stores.reserve.store');
     });
-
-
+    
     Route::view('/reserve', 'pages.user.reserve')->name('reserve');
 
 });

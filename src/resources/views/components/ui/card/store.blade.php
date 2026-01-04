@@ -13,7 +13,7 @@
   $mood = data_get($store, 'mood', '');
   $imageUrl = data_get($store, 'image_url');
 
-  $rating = (float) data_get($store, 'rating', 0);
+  $rating = (float) data_get($store, 'reviews_avg_rating', 0);
   $rating = max(0, min(5, $rating));
   $filled = (int) floor($rating + 0.00001);
 
@@ -66,7 +66,7 @@
       </div>
     </div>
 
-    <div class="mt-1 flex items-center text-[14px] leading-[14px] text-text_color">
+    <div class="mt-1 flex items-center text-sm leading-sm text-text_color">
       <x-icons.pin class="w-4 h-4 shrink-0 text-text_color relative top-[1px]" />
 
       <span class="min-w-0 line-clamp-1">
