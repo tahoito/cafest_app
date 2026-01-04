@@ -41,28 +41,21 @@ class StoreController extends Controller
 
     public function reserveConfirm(Store $store, Request $request)
     {
-        $validated = $request->validate([
-            'date' => ['required', 'date'],
-            'start_time'=> ['required', 'date_format:H:i'],
-            'end_time'=> ['required', 'date_format:H:i','after:start_time'],
-            'people' => ['required', 'integer', 'min:1' , 'max:20']
+        $data = $request->validate([
+            'date' => ['required','date'],
+            'start_time' => ['required'],
+            'end_time' => ['required'],
+            'people' => ['required','integer','min:1'],
         ]);
 
-        $startAt = Carbon::parse($validated['date'].' '.$validated['start_time']);
-        $endAt = Carbon::parse($validated['date'].' '.$validated['end_time']);
-
-        session([
-            'reserve.store_id' => $store->id,
-            'reserve.start_at' => $startAt->toDateTimeString(),
-            'reserve.end_at' => $endAt->toDateTimeString(),
-            'reserve.people' => (int)$validated['people'],
-        ]);
+        session(['reserve_data' => $data]);
 
         return view('pages.user.reserve-confirm', [
             'store' => $store,
-            'data' => $validated,
+            'data' => $data,
         ]);
     }
+
 
     public function reserveStore(Request $request, Store $store)
     {
@@ -77,7 +70,7 @@ class StoreController extends Controller
         $endAt = Carbon::parse(session('reserve.end_at'));
         $partySize = (int) session('reserve.people');
 
-        $exits = Reservation::where('store_id', (int)$store)
+        $exits = Reservation::where('store_id', $store->id)
             ->where('status', '!=', 'canceled')
             ->where('start_at', '<', $endAt)
             ->where('end_at', '>', $startAt)
@@ -90,7 +83,7 @@ class StoreController extends Controller
         }
 
         Reservation::create([
-            'store_id' => (int)$store,
+            'store_id' => $store->id,
             'user_id' => auth()->id(),
             'name' => $validated['name'],
             'phone' => $validated['phone'],

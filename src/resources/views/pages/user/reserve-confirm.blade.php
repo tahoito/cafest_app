@@ -68,10 +68,10 @@
         <form method="POST" action="{{ route('user.stores.reserve.store', $store) }}" class="space-y-8">
           @csrf
           @foreach($data as $k => $v)
+            @continue($k === '_token')
             <input type="hidden" name="{{ $k }}" value="{{ $v }}">
           @endforeach
 
-          {{-- inputs --}}
           <section class="space-y-8">
             <div class="space-y-2">
               <div class="text-text_color text-lg font-medium">名前</div>
@@ -87,7 +87,7 @@
             </div>
 
             <div class="space-y-2">
-              <div class="text-text_color text-lg font-medium">電話番号</div>
+              <div class="text-text_color text-lg font-medium">電話番号(ハイフンなし)</div>
               <x-ui.input
                 id="phone"
                 type="text"
