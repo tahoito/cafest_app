@@ -53,10 +53,10 @@
               x-model="$store.search.area"
               class="w-full appearance-none rounded-xl border border-line bg-form px-4 py-3 text-base text-text_color shadow-sm focus:outline-none focus:ring-2 focus:ring-main-color/30"
             >
-              <option value="">指定なし</option>
-              <option value="栄">栄</option>
-              <option value="名駅">名駅</option>
-              <option value="大須">大須</option>
+              <option value="" @selected(request('area') === null || request('area') === '')>指定しない</option>
+                @foreach(config('cafest.areas') as $key => $label)
+                  <option value="{{ $key }}" @selected(request('area') === $key)>{{ $label }}</option>
+                @endforeach
             </select>
 
             <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-placeholder-color">▾</span>

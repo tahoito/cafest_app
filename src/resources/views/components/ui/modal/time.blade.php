@@ -56,10 +56,10 @@
               x-model="$store.search.time"
               class="w-full appearance-none rounded-xl border border-line bg-form px-4 py-3 text-base text-text shadow-sm focus:outline-none focus:ring-2 focus:ring-main-color/30"
             >
-              <option>今営業中</option>
-              <option>朝から営業</option>
-              <option>夜も営業</option>
-              <option>指定なし</option>
+              <option value="" @selected(request('time') === null || request('time') === '')>指定しない</option>
+                @foreach(config('cafest.open_status') as $key => $label)
+                  <option value="{{ $key }}" @selected(request('time') === $key)>{{ $label }}</option>
+                @endforeach
             </select>
             <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-placeholder-color">▾</span>
           </div>

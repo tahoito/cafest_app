@@ -16,17 +16,33 @@ class SearchController extends Controller
         $tagId = $request->query('tag');
         $keyword = $request->input('keyword');
 
-        $tag = $tagId ? Tag::find($tagId) : null;
+        $tags = Tag::orderBy('name')->get();
 
         $query = Store::query()
-            ->withAvg('reviews as rating', 'rating');
+            ->withAvg('reviews', 'rating');
+
+
+        $isSearching =
+            $request->filled('keyword') ||
+            $request->filled('area') ||
+            $request->filled('budget') ||
+            $request->filled('time') ||
+            $request->filled('moods') ||
+            $request->filled('rating_min') ||
+            $request->filled('tag');
 
        
-        if ($tagId) {
-            $query->whereHas('reviews.tags', fn($q) => $q->where('tags.id', $tagId));
+        if ($request->filled('tags')) {
+            $tagIds = array_map('intval', (array) $request->input('tags'));
+
+            $query->whereHas('reviews', function ($q) use ($tagIds) {
+                $q->whereHas('tags', function ($tq) use ($tagIds) {
+                    $tq->whereIn('tags.id', $tagIds);
+                });
+            });
         }
 
-        
+
         if ($keyword) {
             $query->where(function ($q) use ($keyword) {
                 $q->where('name', 'like', "%{$keyword}%")
@@ -49,18 +65,6 @@ class SearchController extends Controller
             $min = (float) $request->input('rating_min');
             $query->having('rating', '>=', $min);
         }
-
-        $stores = $query->get();
-
-        $isSearching =
-            $request->filled('keyword') ||
-            $request->filled('area') ||
-            $request->filled('budget') ||
-            $request->filled('time') ||
-            $request->filled('moods') ||
-            $request->filled('rating_min') ||
-            $request->filled('tag');
-
         
         if ($isSearching) {
             $stores = $query->get();
@@ -68,23 +72,48 @@ class SearchController extends Controller
             $stores = app(StoreRecommendService::class)->recommended(8); 
         }
 
-        if ($request->time === 'morning') {
-            $query->where('open_time', '<=', '10:00');
+        if ($request->input('time')) {
+            $time = $request->input('time');
+
+            if ($time === 'morning') {
+            $query->where('open_time', '<=', '10:00:00');
+            } elseif ($time === 'night') {
+                $query->where('close_time', '>=', '20:00:00');
+            } elseif ($time === 'now') {
+                $now = now()->format('H:i:s');
+                $today = strtolower(now()->format('D')); 
+
+                $query->where('open_time', '<=', $now)
+                    ->where('close_time', '>=', $now)
+                    ->where(function ($q) use ($today) {
+                        $q->whereNull('closed_days')
+                            ->orWhereJsonDoesntContain('closed_days', $today);
+                    });
+            }
         }
 
-        if ($request->time === 'night') {
-            $query->where('close_time', '>=', '20:00');
+        if ($request->filled('budget')){
+            $key = $request->input('budget');
+            $ranges = config('cafest.budget_ranges');
+
+            if (isset($ranges[$key])){
+                [$min,$max] = $ranges[$key];
+
+                $query->where(function ($q) use ($min, $max){
+                    $q->where('budget_max', '>=', $min);
+
+                    if ($max !== null){
+                        $q->where('budget_min', '<=', $max);
+                    }
+                });
+            }
         }
 
-        if ($request->time === 'open_now') {
-            $now = now()->format('H:i');
-            $today = strtolower(now()->format('D')); // mon, tue, wed...
+        $stores = $isSearching
+            ? $query->get()
+            : app(StoreRecommendService::class)->recommended(8);
 
-            $query->where('open_time', '<=', $now)
-                ->where('close_time', '>=', $now)
-                ->whereJsonDoesntContain('closed_days', $today);
-        }
 
-        return view('pages.user.search', compact('stores', 'tag','isSearching'));
+        return view('pages.user.search', compact('stores', 'tags','isSearching'));
     }
 }

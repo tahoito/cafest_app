@@ -66,11 +66,10 @@
                 class="w-full appearance-none rounded-xl border border-line bg-form px-4 py-3 text-base text-text_color_color shadow-sm focus:outline-none focus:ring-2 focus:ring-main-color/30"
                 x-model="$store.search.area"
               >
-                <option value="">指定なし</option>
-                <option value="栄">栄</option>
-                <option value="名駅">名駅</option>
-                <option value="大須">大須</option>
-                <option value="矢場町">矢場町</option>
+                <option value="" @selected(request('area') === null || request('area') === '')>指定しない</option>
+                @foreach(config('cafest.areas') as $key => $label)
+                  <option value="{{ $key }}" @selected(request('area') === $key)>{{ $label }}</option>
+                @endforeach
               </select>
               <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-placeholder-color">▾</span>
             </div>
@@ -87,10 +86,10 @@
                 class="w-full appearance-none rounded-xl border border-line bg-form px-4 py-3 text-base text-text_color_color shadow-sm focus:outline-none focus:ring-2 focus:ring-main-color/30"
                 x-model="$store.search.budget"
               >
-                <option value="">指定なし</option>
-                <option value="1000-2000">1,000円〜2,000円</option>
-                <option value="2000-3000">2,000円〜3,000円</option>
-                <option value="3000-">3,000円〜</option>
+                <option value="" @selected(request('budget') === null || request('budget') === '')>指定しない</option>
+                @foreach(config('cafest.budgets') as $key => $label)
+                  <option value="{{ $key }}" @selected(request('budget') === $key)>{{ $label }}</option>
+                @endforeach
               </select>
               <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-placeholder-color">▾</span>
             </div>
@@ -107,10 +106,10 @@
                 class="w-full appearance-none rounded-xl border border-line bg-form px-4 py-3 text-base text-text_color_color shadow-sm focus:outline-none focus:ring-2 focus:ring-main-color/30"
                 x-model="$store.search.time"
               >
-                <option value="">指定なし</option>
-                <option value="open_now">今営業中</option>
-                <option value="morning">朝から営業</option>
-                <option value="night">夜も営業</option>
+                <option value="" @selected(request('time') === null || request('time') === '')>指定しない</option>
+                @foreach(config('cafest.open_status') as $key => $label)
+                  <option value="{{ $key }}" @selected(request('time') === $key)>{{ $label }}</option>
+                @endforeach
               </select>
               <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-placeholder-color">▾</span>
             </div>
@@ -156,11 +155,10 @@
             </div>
           </section>
 
-          {{-- tags hidden --}}
+          
           <template x-for="t in $store.search.tags" :key="t">
             <input type="hidden" name="tags[]" :value="t">
           </template>
-
           <input type="hidden" name="rating_min" :value="$store.search.ratingMin ?? ''">
 
           {{-- タグ --}}
@@ -182,60 +180,26 @@
 
             {{-- まず見せるタグ（例） --}}
             <div class="flex flex-wrap gap-2">
-              <x-ui.tag type="button"
-                @click="$store.search.toggleTag('映え')"
-                x-bind:class="$store.search.hasTag('映え')
-                  ? '!bg-main !border-main !text-form'
-                  : '!bg-base !border-main !text-text_color'"
-              >映え</x-ui.tag>
-
-              <x-ui.tag type="button"
-                @click="$store.search.toggleTag('作業')"
-                x-bind:class="$store.search.hasTag('作業')
-                  ? '!bg-main !border-main !text-form'
-                  : '!bg-base !border-main !text-text_color'"
-              >作業</x-ui.tag>
-
-              <x-ui.tag type="button"
-                @click="$store.search.toggleTag('静か')"
-                x-bind:class="$store.search.hasTag('静か')
-                  ? '!bg-main !border-main !text-form'
-                  : '!bg-base !border-main !text-text_color'"
-              >静か</x-ui.tag>
-
-              <x-ui.tag type="button"
-                @click="$store.search.toggleTag('スイーツ')"
-                x-bind:class="$store.search.hasTag('スイーツ')
-                  ? '!bg-main !border-main !text-form'
-                  : '!bg-base !border-main !text-text_color'"
-              >スイーツ</x-ui.tag>
-            </div>
+              @foreach($tags->take(6) as $tag)
+                <x-ui.tag type="button"
+                  @click="$store.search.toggleTag({{ $tag->id }})"
+                  x-bind:class="$store.search.hasTag({{ $tag->id }})
+                    ? '!bg-main !border-main !text-form'
+                    : '!bg-base !border-main !text-text_color'"
+                >{{ $tag->name }}</x-ui.tag>
+              @endforeach
+            </div>              
 
             {{-- もっと見るで増える“全部のタグ” --}}
             <div x-show="showAllTags" x-transition class="flex flex-wrap gap-2">
-              <x-ui.tag type="button" @click="$store.search.toggleTag('推し活')"
-                x-bind:class="$store.search.hasTag('推し活') ? '!bg-main !border-main !text-form' : '!bg-base !border-main !text-text_color'"
-              >推し活</x-ui.tag>
-
-              <x-ui.tag type="button" @click="$store.search.toggleTag('コーヒー')"
-                x-bind:class="$store.search.hasTag('コーヒー') ? '!bg-main !border-main !text-form' : '!bg-base !border-main !text-text_color'"
-              >コーヒー</x-ui.tag>
-
-              <x-ui.tag type="button" @click="$store.search.toggleTag('モーニング')"
-                x-bind:class="$store.search.hasTag('モーニング') ? '!bg-main !border-main !text-form' : '!bg-base !border-main !text-text_color'"
-              >モーニング</x-ui.tag>
-
-              <x-ui.tag type="button" @click="$store.search.toggleTag('夜カフェ')"
-                x-bind:class="$store.search.hasTag('夜カフェ') ? '!bg-main !border-main !text-form' : '!bg-base !border-main !text-text_color'"
-              >夜カフェ</x-ui.tag>
-
-              <x-ui.tag type="button" @click="$store.search.toggleTag('デート')"
-                x-bind:class="$store.search.hasTag('デート') ? '!bg-main !border-main !text-form' : '!bg-base !border-main !text-text_color'"
-              >デート</x-ui.tag>
-
-              <x-ui.tag type="button" @click="$store.search.toggleTag('ひとり')"
-                x-bind:class="$store.search.hasTag('ひとり') ? '!bg-main !border-main !text-form' : '!bg-base !border-main !text-text_color'"
-              >ひとり</x-ui.tag>
+              @foreach($tags->skip(6) as $tag)
+                <x-ui.tag type="button"
+                  @click="$store.search.toggleTag({{ $tag->id }})"
+                  x-bind:class="$store.search.hasTag({{ $tag->id }})
+                    ? '!bg-main !border-main !text-form'
+                    : '!bg-base !border-main !text-text_color'"
+                >{{ $tag->name }}</x-ui.tag>
+              @endforeach   
             </div>
           </section>
           {{-- ボタン --}}

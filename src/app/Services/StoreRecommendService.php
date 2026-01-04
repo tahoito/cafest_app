@@ -1,42 +1,24 @@
 <?php
 
 namespace App\Services;
+
 use App\Models\Store;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Collection;
 
 class StoreRecommendService
 {
-    private function baseQuery()
-    {
-        return Store::query()
-            ->select('stores.*')
-            ->selectSub(function($q){
-                $q->from('reviews')
-                  ->selectRaw('AVG(`reviews`.`rating`)')
-                  ->whereColumn('reviews.store_id', 'stores.id');
-            }, ' reviews_avg_rating' );
-    }
-
     public function recommended(int $limit = 4)
     {
         $user = Auth::user();
-        
+
         $areaIds = $user?->favorite_areas ?? [];
         $moodIds = $user?->favorite_moods ?? [];
 
-        $base = Store::query()
-            ->withAvg('reviews','rating');
-        
+        $base = Store::query()->withAvg('reviews', 'rating');
+
         $q1 = (clone $base);
-
-        if(!empty($areaIds)){
-            $q1->whereIn('area',$areaIds);
-        }
-
-        if (!empty($moodIds)) {
-            $q1->whereIn('mood', $moodIds);
-        }
+        if (!empty($areaIds)) $q1->whereIn('area', $areaIds);
+        if (!empty($moodIds)) $q1->whereIn('mood', $moodIds);
 
         $stores = $q1->inRandomOrder()->take($limit)->get();
         if ($stores->count() >= $limit) return $stores;
@@ -47,28 +29,36 @@ class StoreRecommendService
         if ($need > 0 && !empty($moodIds)) {
             $more = (clone $base)
                 ->whereNotIn('id', $pickedIds)
-                ->whereHas('mood', $moodIds)
-                ->inRandomOrder()->take($need)->get();
+                ->whereIn('mood', $moodIds)
+                ->inRandomOrder()
+                ->take($need)
+                ->get();
 
             $stores = $stores->concat($more);
             $need = $limit - $stores->count();
             $pickedIds = $stores->pluck('id')->all();
         }
+
         if ($need > 0 && !empty($areaIds)) {
             $more = (clone $base)
                 ->whereNotIn('id', $pickedIds)
                 ->whereIn('area', $areaIds)
-                ->inRandomOrder()->take($need)->get();
+                ->inRandomOrder()
+                ->take($need)
+                ->get();
 
             $stores = $stores->concat($more);
             $need = $limit - $stores->count();
             $pickedIds = $stores->pluck('id')->all();
         }
+
         if ($need > 0) {
             $more = (clone $base)
                 ->whereNotIn('id', $pickedIds)
-                ->orderByDesc('rating')
-                ->inRandomOrder()->take($need)->get();
+                ->orderByDesc('reviews_avg_rating')
+                ->inRandomOrder()
+                ->take($need)
+                ->get();
 
             $stores = $stores->concat($more);
         }

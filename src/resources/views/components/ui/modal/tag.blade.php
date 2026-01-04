@@ -1,3 +1,6 @@
+@props([
+  'tags' => collect(),
+])
 <template x-teleport="body">
   <div
     x-show="$store.search.activeModal === 'tag'"
@@ -47,19 +50,15 @@
 
       <div class="bg-base_color px-5 pt-4 pb-6">
         <section class="flex flex-wrap gap-2">
-          @php
-            $tags = ['推し活','作業','静か','スイーツ','コーヒー','モーニング','夜カフェ','デート','ひとり','映え'];
-          @endphp
-
-          @foreach($tags as $t)
+          @foreach($tags as $tag)
             <x-ui.tag
               type="button"
-              @click="$store.search.toggleTag('{{ $t }}')"
-              x-bind:class="$store.search.hasTag('{{ $t }}')
+              @click="$store.search.toggleTag({{ (int)$tag->id }})"
+              x-bind:class="$store.search.hasTag({{ (int)$tag->id }})
                 ? '!bg-main !border-main !text-form'
                 : '!bg-base !border-main !text-text_color'"
             >
-              {{ $t }}
+              {{ $tag->name }}
             </x-ui.tag>
           @endforeach
         </section>

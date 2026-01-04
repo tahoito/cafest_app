@@ -7,7 +7,7 @@
   <div class="w-full max-w-md mx-auto pt-6 space-y-5">
 
     <section class="px-4">
-      <x-ui.search-bar :tag="$tag"/>
+      <x-ui.search-bar />
     </section>
 
     {{-- 上の検索チップ --}}
@@ -313,12 +313,12 @@
   </div>
 
   {{-- ✅ モーダル --}}
-  <x-ui.modal.search />
+  <x-ui.modal.search :tags="$tags"/>
   <x-ui.modal.area />
   <x-ui.modal.wallet />
-  <x-ui.modal.time />
-  <x-ui..modal.review />
-  <x-ui.modal.tag />
+  <x-ui.modal.time /> 
+  <x-ui.modal.review />
+  <x-ui.modal.tag :tags="$tags" />
 </div>
 
 @endsection
