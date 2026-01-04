@@ -39,16 +39,11 @@ class StoreController extends Controller
         ]);
     }
 
-    public function reserveConfirm(Store $store, Request $request)
+    public function reserveConfirm(Store $store)
     {
-        $data = $request->validate([
-            'date' => ['required','date'],
-            'start_time' => ['required'],
-            'end_time' => ['required'],
-            'people' => ['required','integer','min:1'],
-        ]);
+        $data = session("reserve.{$store->id}");
 
-        session(['reserve_data' => $data]);
+        abort_if(!$data, 419);
 
         return view('pages.user.reserve-confirm', [
             'store' => $store,
@@ -57,18 +52,36 @@ class StoreController extends Controller
     }
 
 
+    public function reserveConfirmStore(Store $store, Request $request)
+    {
+        $data = $request->validate([
+            'date' => ['required', 'date'],
+            'start_time' => ['required'],
+            'end_time' => ['required'],
+            'people' => ['required', 'integer', 'min:1'],
+        ]);
+
+        session(["reserve.{$store->id}" => $data]);
+
+        return redirect()->route('user.stores.reserve.confirm', $store);
+    }
+
+
+
     public function reserveStore(Request $request, Store $store)
     {
-        abort_unless(session('reserve.store_id') == $store->id, 419);
+        $reserveData = session("reserve.{$store->id}");
+        abort_if(!$reserveData, 419);
 
         $validated = $request->validate([
             'name' => ['required','string','max:50'],
             'phone' => ['required', 'string', 'max:20'],
         ]);
 
-        $startAt = Carbon::parse(session('reserve.start_at'));
-        $endAt = Carbon::parse(session('reserve.end_at'));
-        $partySize = (int) session('reserve.people');
+        $phone = preg_replace('/[^0-9]/', '', $validated['phone']);
+        $startAt = Carbon::parse($reserveData['date'].' '.$reserveData['start_time']);
+        $endAt   = Carbon::parse($reserveData['date'].' '.$reserveData['end_time']);
+        $partySize = (int) $reserveData['people'];
 
         $exits = Reservation::where('store_id', $store->id)
             ->where('status', '!=', 'canceled')
@@ -84,19 +97,19 @@ class StoreController extends Controller
 
         Reservation::create([
             'store_id' => $store->id,
-            'user_id' => auth()->id(),
+            'user_id' => auth('user')->id(),
             'name' => $validated['name'],
-            'phone' => $validated['phone'],
+            'phone' => $phone,
             'start_at' => $startAt,
             'end_at' => $endAt,
             'party_size' => $partySize,
             'status' => 'confirmed',
         ]);
 
-        session()->forget('reserve');
+        session()->forget("reserve.{$store->id}");
 
         return redirect()
-            ->route('user.stores.show', (int)$store)
+            ->route('user.stores.show', $store->id)
             ->with('success', '予約完了！');
     }
 

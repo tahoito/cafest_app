@@ -5,7 +5,7 @@
 <div class="min-h-screen bg-base_color">
     <div class="w-full max-w-md mx-auto pt-6 space-y-5">
         <section class="px-4">
-            <x-ui.search-bar/>
+            <x-ui.search-bar :action="route('user.search')"/>
         </section>
 
         <section class="px-4 space-y-2">

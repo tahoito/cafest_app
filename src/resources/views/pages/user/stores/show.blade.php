@@ -180,63 +180,67 @@
 
     <section class="px-4 space-y-2 pb-12">
         <div class="text-lg text-text_color font-medium">店舗情報</div>
-            <div class="rounded-lg bg-base border border-main shadow-[0_2px_10px_rgba(0,0,0,0.15)] p-3 text-base text-text_color leading-relaxed">
-                <div class="space-y-4">
-                    <div class="mb-2 ml-4 space-y-0.5">
-                        <div class="flex items-center gap-1">
-                            <x-icons.time class="text-favorite" />
-                            <div class="text-lg text-favorite font-medium">営業時間</div>
-                        </div>
-                        <div class="text-text_color text-base space-y-0.5">
-                            <p>月・水-金 10:00〜18:00</p>
-                            <p>土・日    9:00〜19:00</p>
-                            <p>火曜日定休日</p>
-                        </div>
-                    </div>
 
-                    <div class="mb-2 ml-4 space-y-0.5">
-                        <div class="flex items-center">
-                            <x-icons.wallet stroke="1" class="text-favorite" />
-                            <div class="text-lg text-favorite font-medium">予算・支払い方法</div>
-                        </div>
-                        <div class="text-text_color text-base space-y-0.5">
-                            <p>1,000円〜2,000円</p>
-                            <p>現金・電子マネー可</p>
-                            <p>カード不可</p>
-                        </div>
-                    </div>
+            <div class="rounded-2xl bg-base border border-main shadow-[0_2px_10px_rgba(0,0,0,0.15)] p-5 text-text_color">
+                <div class="space-y-8">
 
-                    <div class="mb-2 ml-4 space-y-0.5">
-                        <div class="flex items-center">
-                            <x-icons.mail class="text-favorite" />
-                            <div class="text-lg text-favorite font-medium">メールアドレス</div>
-                        </div>
-                        <div class="text-text_color text-base space-y-0.5">
-                            <p>cafest@gmail.com</p>
-                        </div>
+                <div class="grid grid-cols-[120px_1fr] gap-x-6 items-start">
+                    <div class="text-lg font-medium text-text_color">営業時間</div>
+                    <div class="text-base leading-[1.9] space-y-2">
+                    <div>
+                        <p>月・水・木・金</p>
+                        <p>10:00—18:00</p>
                     </div>
-
-                    <div class="mb-2 ml-4 space-y-0.5">
-                        <div class="flex items-center">
-                            <x-icons.phone class="text-favorite" />
-                            <div class="text-lg text-favorite font-medium">電話番号</div>
-                        </div>
-                        <div class="text-text_color text-base space-y-0.5">
-                            <p>090-1234-5678</p>
-                        </div>
+                    <div>
+                        <p>土・日</p>
+                        <p>9:00—19:00</p>
+                    </div>
+                    <div>
+                        <p>火</p>
+                        <p>定休日</p>
+                    </div>
                     </div>
                 </div>
+
+                <div class="grid grid-cols-[120px_1fr] gap-x-6 items-start">
+                    <div class="text-lg font-medium text-text_color">予算</div>
+                    <div class="text-base leading-[1.9]">
+                    <p>1,000円 — 2,000円</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-[120px_1fr] gap-x-6 items-start">
+                    <div class="text-lg font-medium text-text_color">支払い方法</div>
+                    <div class="text-base leading-[1.9] space-y-1">
+                    <p>現金・電子マネー可</p>
+                    <p>クレジットカード不可</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-[120px_1fr] gap-x-6 items-start">
+                    <div class="text-lg font-medium text-text_color">電話番号</div>
+                    <div class="text-base leading-[1.9]">
+                    <a href="tel:09012345678" class="underline decoration-line/60">
+                        090-1234-5678
+                    </a>
+                    </div>
+                </div>
+
+                </div>
             </div>
-        <div class="flex justify-center pt-8">
-            <x-ui.button :type="'button'" variant="secondary" class="text-form" @click="reserveOpen=true">
+
+            <div class="flex justify-center pt-4">
+                <x-ui.button :type="'button'" variant="secondary" class="text-form" @click="reserveOpen=true">
                 このお店で予約する
-            </x-ui.button>
-            <x-ui.modal.reserve
+                </x-ui.button>
+
+                <x-ui.modal.reserve
                 :store="$store"
-                :action="route('user.stores.reserve.confirm', data_get($store, 'id'))"
-            />
-        </div>
-    </section>
-  </div>
+                :action="route('user.stores.reserve.confirm.store', data_get($store, 'id'))"
+                />
+            </div>
+        </section>
+
+    </div>
 </div>
 @endsection

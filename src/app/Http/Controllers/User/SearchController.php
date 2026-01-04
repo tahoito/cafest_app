@@ -52,19 +52,37 @@ class SearchController extends Controller
 
         $stores = $query->get();
 
-        $isSearching = $request->filled('keyword')
-            || $request->filled('area')
-            || $request->filled('budget')
-            || $request->filled('time')
-            || $request->filled('ratings')
-            || $request->filled('moods')
-            || $request->filled('tags')
-            || $request->filled('tag');  
+        $isSearching =
+            $request->filled('keyword') ||
+            $request->filled('area') ||
+            $request->filled('budget') ||
+            $request->filled('time') ||
+            $request->filled('moods') ||
+            $request->filled('rating_min') ||
+            $request->filled('tag');
+
         
         if ($isSearching) {
             $stores = $query->get();
         }else{
             $stores = app(StoreRecommendService::class)->recommended(8); 
+        }
+
+        if ($request->time === 'morning') {
+            $query->where('open_time', '<=', '10:00');
+        }
+
+        if ($request->time === 'night') {
+            $query->where('close_time', '>=', '20:00');
+        }
+
+        if ($request->time === 'open_now') {
+            $now = now()->format('H:i');
+            $today = strtolower(now()->format('D')); // mon, tue, wed...
+
+            $query->where('open_time', '<=', $now)
+                ->where('close_time', '>=', $now)
+                ->whereJsonDoesntContain('closed_days', $today);
         }
 
         return view('pages.user.search', compact('stores', 'tag','isSearching'));
