@@ -33,6 +33,7 @@ Route::prefix('user')->name('user.')->group(function () {
         Route::get('/search',[SearchController::class,'index'])->name('search');
         Route::get('/stores/{store}',[StoreController::class,'show'])->name('stores.show');
 
+        Route::post('/stores/{store}/reserve/confirm', [StoreController::class, 'reserveConfirmStore'])->name('stores.reserve.confirm.store');
         Route::get('/stores/{store}/reserve/confirm', [StoreController::class, 'reserveConfirm'])->name('stores.reserve.confirm');
         Route::post('/stores/{store}/reserve', [StoreController::class, 'reserveStore'])->name('stores.reserve.store');
     });
