@@ -63,7 +63,8 @@
       </div>
 
 
-      <form class="bg-base_color px-5 pt-4 pb-6 space-y-6" action="{{ $postTo }}" method="GET">
+      <form class="bg-base_color px-5 pt-4 pb-6 space-y-6" action="{{ $postTo }}" method="POST">
+        @csrf
         {{-- date --}}
         <div class="space-y-2">
           <div class="text-text_color text-lg font-medium">
@@ -106,7 +107,7 @@
             <div class="text-text_color">ー</div>
 
             <select name="end_time" x-model="endTime" required class="w-full rounded-xl bg-base px-4 py-3 ring-1 ring-black/10"
-              :class="startTime ? 'text-text_color' : 'text-placeholder text-sm'">
+              :class="endTime ? 'text-text_color' : 'text-placeholder text-sm'">
               <option value="" disabled selected>終了</option>
               <option>10:00</option><option>11:00</option><option>12:00</option>
               <option>13:00</option><option>14:00</option><option>15:00</option>
@@ -119,10 +120,17 @@
         <div class="space-y-2">
           <div class="text-text_color text-lg font-medium">人数</div>
           <div class="flex flex-wrap gap-4">
-            <template x-for="n in ['1','2','3','4','5','6〜']" :key="n">
+            <template x-for="n in [
+              {label:'1', value:1},
+              {label:'2', value:2},
+              {label:'3', value:3},
+              {label:'4', value:4},
+              {label:'5', value:5},
+              {label:'6〜', value:6}
+            ]" :key="n.label">
               <label class="flex items-center gap-2">
-                <input type="radio" name="people" :value="n" x-model="people" class="h-5 w-5 accent-main">
-                <span class="text-base" x-text="n + '名'"></span>
+                <input type="radio" name="people" :value="n.value" x-model="people" class="h-5 w-5 accent-main">
+                <span class="text-base" x-text="n.label + '名'"></span>
               </label>
             </template>
           </div>

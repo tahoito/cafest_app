@@ -232,8 +232,8 @@
                 このお店で予約する
             </x-ui.button>
             <x-ui.modal.reserve
-            :store="$store"
-            :action="route('user.stores.reserve.confirm', $storeId)"
+                :store="$store"
+                :action="route('user.stores.reserve.confirm', data_get($store, 'id'))"
             />
         </div>
     </section>

@@ -39,7 +39,7 @@ class StoreController extends Controller
         $validated = $request->validate([
             'date' => ['required', 'date'],
             'start_time'=> ['required', 'date_format:H:i'],
-            'end_time'=> ['required', 'date_format:H:i'],
+            'end_time'=> ['required', 'date_format:H:i','after:start_time'],
             'people' => ['required', 'integer', 'min:1' , 'max:20']
         ]);
 
@@ -54,7 +54,7 @@ class StoreController extends Controller
         ]);
 
         return view('pages.user.reserve-confirm', [
-            'store' => $storeDate,
+            'store' => $storeData,
             'data' => [
                 'date' => $validated['date'],
                 'start_time' => $validated['start_time'],
@@ -72,7 +72,7 @@ class StoreController extends Controller
 
         $validated = $request->validate([
             'name' => ['required','string','max:50'],
-            'people' => ['required', 'string', 'max:20'],
+            'phone' => ['required', 'string', 'max:20'],
         ]);
 
         $startAt = Carbon::parse(session('reserve.start_at'));
