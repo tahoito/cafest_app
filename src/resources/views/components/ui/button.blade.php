@@ -14,7 +14,7 @@
     ];
 
     $variants = [
-        'action' => 'px-6 py-3 text-lg hover:opacity-90 shadow-[0_6px_16px_rgba(0,0,0,0.16)]',
+        'action' => 'px-6 py-3 text-lg hover:opacity-90 shadow-[0_8px_4px_rgba(0,0,0,0.18)]',
         'secondary' => 'w-[220px] h-[40px] text-sm hover:opacity-90 shadow-[0_8px_4px_rgba(0,0,0,0.18)]',
     ];
 

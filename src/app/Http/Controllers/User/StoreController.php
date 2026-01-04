@@ -16,26 +16,31 @@ class StoreController extends Controller
 {
     public function show($store, StoreRecommendService $service)
     {
-        $storeData = $service->recommended()->firstWhere('id', (int)$store);
-        abort_if(!$storeData, 404);
+        $storeModel = Store::query()
+            ->where('id',(int)$store)
+            ->select('stores.*')
+            ->selectSub(function ($q) {
+                $q->from('reviews')
+                ->selectRaw('AVG(`reviews`.`rating`)')
+                ->whereColumn('reviews.store_id', 'stores.id'); 
+            }, 'reviews_avg_rating')
+            ->where('stores.id', (int)$store)  
+            ->firstOrFail();
 
         $reviews = Review::with(['user','store'])
-        ->where('store_id', (int)$store)
-        ->latest()
-        ->take(10)
-        ->get();
+            ->where('store_id', (int)$store)
+            ->latest()
+            ->take(10)
+            ->get();
 
         return view('pages.user.stores.show', [
-            'store' => $storeData,
-            'reviews' => $reviews, 
+            'store' => $storeModel,
+            'reviews' => $reviews,
         ]);
     }
 
-    public function reserveConfirm($store, Request $request, StoreRecommendService $service)
+    public function reserveConfirm(Store $store, Request $request)
     {
-        $storeData = $service->recommended()->firstWhere('id', (int)$store);
-        abort_if(!$storeData, 404);
-
         $validated = $request->validate([
             'date' => ['required', 'date'],
             'start_time'=> ['required', 'date_format:H:i'],
@@ -47,28 +52,21 @@ class StoreController extends Controller
         $endAt = Carbon::parse($validated['date'].' '.$validated['end_time']);
 
         session([
-            'reserve.store_id' => (int)$store,
+            'reserve.store_id' => $store->id,
             'reserve.start_at' => $startAt->toDateTimeString(),
             'reserve.end_at' => $endAt->toDateTimeString(),
             'reserve.people' => (int)$validated['people'],
         ]);
 
         return view('pages.user.reserve-confirm', [
-            'store' => $storeData,
-            'data' => [
-                'date' => $validated['date'],
-                'start_time' => $validated['start_time'],
-                'end_time' => $validated['end_time'],
-                'people' => $validated['people'],
-            ],
+            'store' => $store,
+            'data' => $validated,
         ]);
     }
-    public function reserveStore(Request $request, $store, StoreRecommendService $service)
-    {
-        $storeData = $service->recommended()->firstWhere('id', (int)$store);
-        abort_if(!$storeData, 404);
 
-        abort_unless(session('reserve.store_id') == (int)$store, 419);
+    public function reserveStore(Request $request, Store $store)
+    {
+        abort_unless(session('reserve.store_id') == $store->id, 419);
 
         $validated = $request->validate([
             'name' => ['required','string','max:50'],

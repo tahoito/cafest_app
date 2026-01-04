@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
-@section('content')
 @section('hideNavbar')
+@endsection
+
 @section('content')
   <div class="min-h-dvh bg-base_color flex flex-col overflow-hidden">
     <header class="sticky top-0 z-50 bg-base_color">
@@ -13,14 +14,13 @@
 
           <h1 class="text-center text-text_color text-2xl whitespace-nowrap overflow-hidden text-ellipsis">
             予約情報確認
-          </h1>
-
+          </h1> 
           <div></div>
         </div>
       </div>
     </header>
 
-    <main class="flex-1 overflow-hidden">
+    <main class="flex-1 overflow-y-auto">
       <div class="w-full max-w-md mx-auto px-3 pt-6 space-y-8">
 
         <section class="rounded-2xl border border-main bg-base px-5 py-4 shadow-[0_2px_10px_rgba(0,0,0,0.10)]">
@@ -100,8 +100,9 @@
             </div>
           </section>
 
-          <div class="space-y-2">
-            <p class="text-center text-main text-sm">
+          <div class="h-32"></div>
+          <div class="sticky bottom-0 left-0 w-full bg-base_color pt-4">
+            <p class="text-center text-main text-sm pb-3">
               10分以上ご来店がない場合、キャンセルとなります。
             </p>
             <x-ui.button :type="'submit'" class="w-full text-form">

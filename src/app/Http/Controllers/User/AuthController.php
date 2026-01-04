@@ -42,7 +42,6 @@ class AuthController extends Controller
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        // 仮登録（DB作らない）
         $request->session()->put('signup', [
             'email' => $validated['email'],
             'password' => $validated['password'], // 後でHash化する

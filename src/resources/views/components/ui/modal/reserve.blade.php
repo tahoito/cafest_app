@@ -16,10 +16,8 @@
     style="display:none;"
     @keydown.escape.window="reserveOpen=false"
   >
-    {{-- backdrop --}}
     <div class="absolute inset-0 bg-black/40" @click="reserveOpen=false"></div>
 
-    {{-- sheet（ここが本体） --}}
     <div
       x-data="{
         days: [
@@ -44,7 +42,6 @@
       x-transition:leave-end="translate-y-6 opacity-0"
       class="relative w-full max-w-md rounded-t-3xl bg-form shadow-[0_-10px_30px_rgba(0,0,0,0.25)]"
     >
-      {{-- grabber --}}
       <div class="pt-3 pb-2 flex justify-center">
         <div class="h-1.5 w-10 rounded-full bg-black/10"></div>
       </div>
@@ -65,7 +62,6 @@
 
       <form class="bg-base_color px-5 pt-4 pb-6 space-y-6" action="{{ $postTo }}" method="POST">
         @csrf
-        {{-- date --}}
         <div class="space-y-2">
           <div class="text-text_color text-lg font-medium">
             日付 <span class="text-text_color text-sm">(2週間後までしか予約できません)</span>
@@ -92,7 +88,6 @@
           <input type="hidden" name="date" :value="selectedDate" required>
         </div>
 
-        {{-- time --}}
         <div class="space-y-2">
           <div class="text-text_color text-lg font-medium">時間</div>
           <div class="flex items-center gap-3 text-placeholder text-sm">
@@ -116,7 +111,6 @@
           </div>
         </div>
 
-        {{-- people --}}
         <div class="space-y-2">
           <div class="text-text_color text-lg font-medium">人数</div>
           <div class="flex flex-wrap gap-4">
@@ -136,7 +130,6 @@
           </div>
         </div>
 
-        {{-- actions --}}
         <div class="flex justify-center pt-2">
           <x-ui.button :type="'submit'" variant="secondary" class="text-form">
             次へ

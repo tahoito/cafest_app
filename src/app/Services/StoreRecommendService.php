@@ -7,6 +7,17 @@ use Illuminate\Support\Collection;
 
 class StoreRecommendService
 {
+    private function baseQuery()
+    {
+        return Store::query()
+            ->select('stores.*')
+            ->selectSub(function($q){
+                $q->from('reviews')
+                  ->selectRaw('AVG(`reviews`.`rating`)')
+                  ->whereColumn('reviews.store_id', 'stores.id');
+            }, ' reviews_avg_rating' );
+    }
+
     public function recommended(int $limit = 4)
     {
         $user = Auth::user();
@@ -15,16 +26,16 @@ class StoreRecommendService
         $moodIds = $user?->favorite_moods ?? [];
 
         $base = Store::query()
-            ->withAvg('reviews as rating','rating');
+            ->withAvg('reviews','rating');
         
         $q1 = (clone $base);
 
         if(!empty($areaIds)){
-            $q1->whereIn('area_id',$areaIds);
+            $q1->whereIn('area',$areaIds);
         }
 
         if (!empty($moodIds)) {
-            $q1->whereHas('mood_id', $moodIds);
+            $q1->whereIn('mood', $moodIds);
         }
 
         $stores = $q1->inRandomOrder()->take($limit)->get();
@@ -36,7 +47,7 @@ class StoreRecommendService
         if ($need > 0 && !empty($moodIds)) {
             $more = (clone $base)
                 ->whereNotIn('id', $pickedIds)
-                ->whereHas('mood_id', $moodIds)
+                ->whereHas('mood', $moodIds)
                 ->inRandomOrder()->take($need)->get();
 
             $stores = $stores->concat($more);
@@ -46,7 +57,7 @@ class StoreRecommendService
         if ($need > 0 && !empty($areaIds)) {
             $more = (clone $base)
                 ->whereNotIn('id', $pickedIds)
-                ->whereIn('area_id', $areaIds)
+                ->whereIn('area', $areaIds)
                 ->inRandomOrder()->take($need)->get();
 
             $stores = $stores->concat($more);

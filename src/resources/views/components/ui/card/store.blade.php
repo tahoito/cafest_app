@@ -13,7 +13,7 @@
   $mood = data_get($store, 'mood', '');
   $imageUrl = data_get($store, 'image_url');
 
-  $rating = (float) data_get($store, 'rating', 0);
+  $rating = (float) data_get($store, 'reviews_avg_rating', 0);
   $rating = max(0, min(5, $rating));
   $filled = (int) floor($rating + 0.00001);
 
