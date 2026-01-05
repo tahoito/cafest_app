@@ -63,7 +63,7 @@ class SearchController extends Controller
         
         if ($request->filled('rating_min')) {
             $min = (float) $request->input('rating_min');
-            $query->having('rating', '>=', $min);
+            $query->having('reviews_avg_rating', '>=', $min);
         }
         
         if ($isSearching) {
