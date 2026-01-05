@@ -104,23 +104,27 @@
 
         init() {
           const today = new Date();
-          const w = ['日','月','火','水','木','金','土'];
+          const map = ['sun','mon','tue','wed','thu','fri','sat'];
+          const jp  = ['日','月','火','水','木','金','土'];
 
           for (let i=0; i<14; i++) {
             const d = new Date(today);
             d.setDate(today.getDate() + i);
 
             const value = this.formatDate(d);
-            const label = i === 0 ? '今日' : `${d.getMonth() + 1}/${d.getDate()}`;
-
+            const dowIndex = d.getDay();
+            const dowKey = map[dowIndex];
+            const dow = jp[dowIndex];
             const key = this.getDowKey(value);
+
             const isClosed = this.hours[key] === null;
 
             this.days.push({
-              dow: w[d.getDay()],
-              label,
+              label: i === 0 ? '今日' : `${d.getMonth() + 1}/${d.getDate()}`,
               value,
-              status: isClosed ? 'full' : 'ok', // 火曜は×にする
+              dow,       
+              dowKey,     
+              status: isClosed ? 'full' : 'ok',
             });
           }
 
@@ -169,7 +173,13 @@
             <div class="w-max">
               <div class="flex text-sm text-text_color mb-1">
                 <template x-for="d in days" :key="d.value">
-                  <div class="w-[52px] text-center" x-text="d.dow"></div>
+                  <div class="w-[52px] text-center" 
+                  :class="d.dowKey === 'sat'
+                  ? 'text-[#0190CE]'
+                  : d.dowKey === 'sun'
+                    ? 'text-notification'
+                    : 'text-text_color'"
+                  x-text="d.dow"></div>
                 </template>
               </div>
 
