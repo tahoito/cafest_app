@@ -72,7 +72,7 @@
             </x-ui.tag>
           @endfor
         </div>
-        <input type="hidden" name="ratings" :value="$store.search.selectedRatings.join(',')">
+        <input type="hidden" name="rating_min" :value="$store.search.ratingMin ?? ''">
       </div>
     </div>
   </div>

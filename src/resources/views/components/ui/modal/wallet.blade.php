@@ -53,10 +53,10 @@
               x-model="$store.search.budget"
               class="w-full appearance-none rounded-xl border border-line bg-form px-4 py-3 text-base text-text_color shadow-sm focus:outline-none focus:ring-2 focus:ring-main-color/30"
             >
-              <option value="">指定なし</option>
-              <option value="1000-2000">1,000円 - 2,000円</option>
-              <option value="2000-3000">2,000円 - 3,000円</option>
-              <option value="3000+">3,000円〜</option>
+              <option value="" @selected(request('budget') === null || request('budget') === '')>指定しない</option>
+                @foreach(config('cafest.budgets') as $key => $label)
+                  <option value="{{ $key }}" @selected(request('budget') === $key)>{{ $label }}</option>
+                @endforeach
             </select>
             <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-placeholder-color">▾</span>
           </div>

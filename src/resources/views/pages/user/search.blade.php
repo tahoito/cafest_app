@@ -7,7 +7,7 @@
   <div class="w-full max-w-md mx-auto pt-6 space-y-5">
 
     <section class="px-4">
-      <x-ui.search-bar :tag="$tag"/>
+      <x-ui.search-bar />
     </section>
 
     {{-- 上の検索チップ --}}
@@ -276,7 +276,7 @@
       <input type="hidden" name="area" :value="$store.search.area">
       <input type="hidden" name="budget" :value="$store.search.budget">
       <input type="hidden" name="time" :value="$store.search.time">
-      <input type="hidden" name="ratings" :value="($store.search.selectedRatings || []).join(',')">
+      <input type="hidden" name="rating_min" :value="$store.search.ratingMin ?? ''">
       <input type="hidden" name="keyword" :value="$store.search.keyword">
 
       <template x-for="m in $store.search.moods" :key="m">
@@ -313,12 +313,12 @@
   </div>
 
   {{-- ✅ モーダル --}}
-  <x-ui.modal.search />
+  <x-ui.modal.search :tags="$tags"/>
   <x-ui.modal.area />
   <x-ui.modal.wallet />
-  <x-ui.modal.time />
-  <x-ui..modal.review />
-  <x-ui.modal.tag />
+  <x-ui.modal.time /> 
+  <x-ui.modal.review />
+  <x-ui.modal.tag :tags="$tags" />
 </div>
 
 @endsection

@@ -22,6 +22,7 @@ class StoreFactory extends Factory
             'email' => $this->faker->unique()->safeEmail(),
             'password' => bcrypt('password'),
             'address' => $this->faker->city() . ' ' . $this->faker->streetAddress(),
+            'area' => $this->faker->randomElement($areas),
         ];
     }
 }

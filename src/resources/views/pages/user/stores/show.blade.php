@@ -33,7 +33,8 @@
 
   @php
     $name = data_get($store, 'name', 'No Name');
-    $area = (string) data_get($store, 'area', '');
+    $areaKey = (string) data_get($store, 'area', '');
+    $area = $areaKey !== '' ? (config('cafest.areas')[$areaKey] ?? $areaKey) : '';
     $mood = (string) data_get($store, 'mood', '');
     $imageUrl = data_get($store, 'image_url');
 
