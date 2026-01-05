@@ -104,6 +104,7 @@
 
         init() {
           const today = new Date();
+          const w = ['日','月','火','水','木','金','土'];
 
           for (let i=0; i<14; i++) {
             const d = new Date(today);
@@ -116,6 +117,7 @@
             const isClosed = this.hours[key] === null;
 
             this.days.push({
+              dow: w[d.getDay()],
               label,
               value,
               status: isClosed ? 'full' : 'ok', // 火曜は×にする
@@ -164,31 +166,39 @@
           </div>
 
           <div class="-mx-5 px-5 overflow-x-auto">
-            <div class="flex gap-2 w-max pb-1">
-              <template x-for="d in days" :key="d.value">
-                <button
-                  type="button"
-                  class="min-w-[52px] h-[70px] border px-2 py-2 text-center transition"
-                  :class="[
-                    selectedDate === d.value
-                      ? 'bg-main text-form border-main'
-                      : 'bg-base text-text_color border-placeholder',
+            <div class="w-max">
+              <div class="flex text-sm text-text_color mb-1">
+                <template x-for="d in days" :key="d.value">
+                  <div class="w-[52px] text-center" x-text="d.dow"></div>
+                </template>
+              </div>
 
-                    d.status === 'full'
-                      ? 'opacity-40 cursor-not-allowed'
-                      : 'hover:bg-main text-form'
-                  ].join(' ')"
-                  @click="if (d.status !== 'full') { selectedDate = d.value }"
-                >
-                  <div class="text-sm whitespace-nowrap" x-text="d.label"></div>
+              <div class="flex">
+                <template x-for="(d, idx) in days" :key="d.value">
+                  <button
+                    type="button"
+                    class="min-w-[52px] h-[70px] border px-2 py-2 text-center transition"
+                    :class="[
+                      selectedDate === d.value
+                        ? 'bg-main text-form border-main'
+                        : 'bg-base text-text_color border-placeholder',
 
-                  <div class="mt-1 text-lg leading-none flex justify-center">
-                    <span x-show="d.status === 'ok'" class="text-current"><x-icons.ok /></span>
-                    <span x-show="d.status === 'few'" class="text-current"><x-icons.triangle /></span>
-                    <span x-show="d.status === 'full'" class="text-current"><x-icons.no /></span>
-                  </div>
-                </button>
-              </template>
+                      d.status === 'full'
+                        ? 'opacity-40 cursor-not-allowed'
+                        : 'hover:bg-main text-form'
+                    ].join(' ')"
+                    @click="if (d.status !== 'full') { selectedDate = d.value }"
+                  >
+                    <div class="text-sm whitespace-nowrap" x-text="d.label"></div>
+
+                    <div class="mt-2 text-lg leading-none flex justify-center">
+                      <span x-show="d.status === 'ok'" class="text-current"><x-icons.ok /></span>
+                      <span x-show="d.status === 'few'" class="text-current"><x-icons.triangle /></span>
+                      <span x-show="d.status === 'full'" class="text-current"><x-icons.no /></span>
+                    </div>
+                  </button>
+                </template>
+              </div>
             </div>
           </div>
 
