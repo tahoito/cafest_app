@@ -20,20 +20,116 @@
 
     <div
       x-data="{
-        days: [
-          { label:'今日', value:'2026-01-03', status:'ok' },
-          { label:'12/12', value:'2026-01-12', status:'ok' },
-          { label:'13',   value:'2026-01-13', status:'ok' },
-          { label:'14',   value:'2026-01-14', status:'ok' },
-          { label:'15',   value:'2026-01-15', status:'full' },
-          { label:'16',   value:'2026-01-16', status:'few' },
-          { label:'17',   value:'2026-01-17', status:'ok' },
-        ],
+        days: [],
         selectedDate: '',
         startTime: '',
         endTime: '',
         people: '1',
+
+        hours: {
+          mon: { open: '10:00', close: '18:00' },
+          tue: null, // 定休日
+          wed: { open: '10:00', close: '18:00' },
+          thu: { open: '10:00', close: '18:00' },
+          fri: { open: '10:00', close: '18:00' },
+          sat: { open: '09:00', close: '19:00' },
+          sun: { open: '09:00', close: '19:00' },
+        },
+
+        startOptions: [],
+        endOptions: [],
+
+        formatDate(d) {
+          const y = d.getFullYear();
+          const m = String(d.getMonth() + 1).padStart(2, '0');
+          const day = String(d.getDate()).padStart(2,'0');
+          return `${y}-${m}-${day}`;
+        },
+
+        getDowKey(dateStr) {
+          const d = new Date(dateStr + 'T00:00:00');
+          const map = ['sun','mon','tue','wed','thu','fri','sat'];
+          return map[d.getDay()];
+        },
+
+        toMinutes(t) {
+          const [h,m] = t.split(':').map(Number);
+          return h*60 + m;
+        },
+
+        toTime(min) {
+          const h = String(Math.floor(min/60)).padStart(2,'0');
+          const m = String(min%60).padStart(2,'0');
+          return `${h}:${m}`;
+        },
+
+        buildTimeOptions() {
+          this.startTime = '';
+          this.endTime = '';
+          this.startOptions = [];
+          this.endOptions = [];
+
+          if (!this.selectedDate) return;
+
+          const key = this.getDowKey(this.selectedDate);
+          const rule = this.hours[key];
+
+          if (!rule) return;
+
+          const open = this.toMinutes(rule.open);
+          const close = this.toMinutes(rule.close);
+
+          for (let t = open; t <= close - 30; t += 30) {
+            this.startOptions.push(this.toTime(t));
+          }
+        },
+
+        updateEndOptions() {
+          this.endTime = '';
+          this.endOptions = [];
+
+          if (!this.selectedDate || !this.startTime) return;
+
+          const key = this.getDowKey(this.selectedDate);
+          const rule = this.hours[key];
+          if (!rule) return;
+
+          const start = this.toMinutes(this.startTime) + 30;
+          const close = this.toMinutes(rule.close);
+
+          for (let t = start; t <= close; t += 30) {
+            this.endOptions.push(this.toTime(t));
+          }
+        },
+
+        init() {
+          const today = new Date();
+
+          for (let i=0; i<14; i++) {
+            const d = new Date(today);
+            d.setDate(today.getDate() + i);
+
+            const value = this.formatDate(d);
+            const label = i === 0 ? '今日' : `${d.getMonth() + 1}/${d.getDate()}`;
+
+            const key = this.getDowKey(value);
+            const isClosed = this.hours[key] === null;
+
+            this.days.push({
+              label,
+              value,
+              status: isClosed ? 'full' : 'ok', // 火曜は×にする
+            });
+          }
+
+          this.selectedDate = this.days[0]?.value || '';
+          this.buildTimeOptions();
+          this.$watch('startTime', () => this.updateEndOptions());
+          this.$watch('selectedDate', () => this.buildTimeOptions());
+
+        },
       }"
+
       x-transition:enter="transition ease-out duration-200"
       x-transition:enter-start="translate-y-6 opacity-0"
       x-transition:enter-end="translate-y-0 opacity-100"
@@ -67,22 +163,33 @@
             日付 <span class="text-text_color text-sm">(2週間後までしか予約できません)</span>
           </div>
 
-          <div class="grid grid-cols-7 gap-2 text-center">
-            <template x-for="d in days" :key="d.value">
-              <button
-                type="button"
-                class="rounded-lg border px-2.5 py-2 bg-base"
-                :class="selectedDate === d.value ? 'border-main ring-2 ring-main/30' : 'border-black/10'"
-                @click="if (d.status !== 'full') { selectedDate = d.value }"
-              >
-                <div class="text-sm" x-text="d.label"></div>
-                <div class="mt-1 text-lg leading-none">
-                  <span x-show="d.status === 'ok'">○</span>
-                  <span x-show="d.status === 'few'">△</span>
-                  <span x-show="d.status === 'full'">×</span>
-                </div>
-              </button>
-            </template>
+          <div class="-mx-5 px-5 overflow-x-auto">
+            <div class="flex gap-2 w-max pb-1">
+              <template x-for="d in days" :key="d.value">
+                <button
+                  type="button"
+                  class="min-w-[52px] h-[70px] border px-2 py-2 text-center transition"
+                  :class="[
+                    selectedDate === d.value
+                      ? 'bg-main text-form border-main'
+                      : 'bg-base text-text_color border-placeholder',
+
+                    d.status === 'full'
+                      ? 'opacity-40 cursor-not-allowed'
+                      : 'hover:bg-main text-form'
+                  ].join(' ')"
+                  @click="if (d.status !== 'full') { selectedDate = d.value }"
+                >
+                  <div class="text-sm whitespace-nowrap" x-text="d.label"></div>
+
+                  <div class="mt-1 text-lg leading-none flex justify-center">
+                    <span x-show="d.status === 'ok'" class="text-current"><x-icons.ok /></span>
+                    <span x-show="d.status === 'few'" class="text-current"><x-icons.triangle /></span>
+                    <span x-show="d.status === 'full'" class="text-current"><x-icons.no /></span>
+                  </div>
+                </button>
+              </template>
+            </div>
           </div>
 
           <input type="hidden" name="date" :value="selectedDate" required>
@@ -91,22 +198,28 @@
         <div class="space-y-2">
           <div class="text-text_color text-lg font-medium">時間</div>
           <div class="flex items-center gap-3 text-placeholder text-sm">
-            <select name="start_time" x-model="startTime" required class="w-full rounded-xl bg-base px-4 py-3 ring-1 ring-black/10"
+            <select name="start_time" x-model="startTime" @change="updateEndOptions()" required class="w-full rounded-xl bg-base px-4 py-3 ring-1 ring-black/10"
               :class="startTime ? 'text-text_color' : 'text-placeholder text-sm'">
-              <option value="" disabled selected>開始</option>
-              <option>09:00</option><option>10:00</option><option>11:00</option>
-              <option>12:00</option><option>13:00</option><option>14:00</option>
-              <option>15:00</option><option>16:00</option><option>17:00</option>
+              <option value="" disabled>開始</option>
+              <template x-for="t in startOptions" :key="t">
+                <option :value="t" x-text="t"></option>
+              </template>
             </select>
 
-            <div class="text-text_color">ー</div>
+            <div class="text-text_color">〜</div>
 
-            <select name="end_time" x-model="endTime" required class="w-full rounded-xl bg-base px-4 py-3 ring-1 ring-black/10"
-              :class="endTime ? 'text-text_color' : 'text-placeholder text-sm'">
-              <option value="" disabled selected>終了</option>
-              <option>10:00</option><option>11:00</option><option>12:00</option>
-              <option>13:00</option><option>14:00</option><option>15:00</option>
-              <option>16:00</option><option>17:00</option><option>18:00</option>
+            <select
+              name="end_time"
+              x-model="endTime"
+              required
+              class="w-full rounded-xl bg-base px-4 py-3 ring-1 ring-black/10"
+              :disabled="endOptions.length === 0"
+              :class="endTime ? 'text-text_color' : 'text-placeholder text-sm'"
+            >
+              <option value="" disabled>終了</option>
+              <template x-for="t in endOptions" :key="t">
+                <option :value="t" x-text="t"></option>
+              </template>
             </select>
           </div>
         </div>

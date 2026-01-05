@@ -37,7 +37,11 @@
     $area = $areaKey !== '' ? (config('cafest.areas')[$areaKey] ?? $areaKey) : '';
     $mood = (string) data_get($store, 'mood', '');
     $imageUrl = data_get($store, 'image_url');
-
+    $images = [
+      $imageUrl ?: asset('images/store/card.png'),
+      $imageUrl ?: asset('images/store/card.png'),
+      $imageUrl ?: asset('images/store/card.png'),
+    ];
     $meta = trim($area) !== '' && trim($mood) !== ''
       ? "{$area}・{$mood}"
       : (trim($area) !== '' ? $area : $mood);
@@ -50,24 +54,41 @@
   <div class="w-full max-w-md mx-auto pt-6 space-y-5">
 
     {{-- image --}}
-    <section class="px-4">
-      <div class="rounded-[8px] bg-form ring-1 ring-black/5 overflow-hidden">
-        <div class="w-full aspect-[16/10] bg-base">
-          <img
-            src="{{ $imageUrl ?: asset('images/store/card.png') }}"
-            alt="{{ $name }}"
-            class="w-full h-full object-cover"
+    <section class="px-4" x-data="{ active:0 }">
+      <div class="rounded-[8px] overflow-hidden">
+        <div class="relative w-full aspect-[16/10] overflow-hidden">
+          <div 
+            class="flex h-full transition-transform duration-300 ease-out"
+            :style="`transform: translateX(-${active * 100}%);`"
           >
+            @foreach($images as $img)
+              <div class="w-full h-full flex-shrink-0">
+                <img src="{{ $img }}" class="w-full h-full object-cover" />
+              </div>
+            @endforeach
+          </div>
+        </div>
+
+        <div class="flex justify-center gap-2 py-3">
+          @foreach($images as $i => $img)
+            <button @click="active={{ $i }}"
+              class="w-[7px] h-[7px] rounded-full transition"
+              :class="active === {{ $i }} ? 'bg-main' : 'bg-accent'"></button>
+          @endforeach
         </div>
       </div>
     </section>
 
     <section class="px-4 space-y-2 pb-12">
         <div class="min-w-0 space-y-1">
-          <div class="text-2xl text-text_color leading-tight">
-            {{ $name }}
+          <div class="flex items-center gap-3">
+            <div class="text-2xl text-text_color leading-tight">
+              {{ $name }}
+            </div> 
+            <div class="h-[30px] w-[30px] flex items-center justify-center">
+              <x-icons.instagram size="30" class="text-main block" />
+            </div>
           </div>
-
           <div class="mt-1 flex items-center gap-2">
             <div class="flex items-center gap-1">
               @for ($i = 1; $i <= 5; $i++)
@@ -136,7 +157,7 @@
         <div class="flex items-center justify-between">
             <div class="text-lg text-text_color font-medium">みんなのレビュー(100件)</div>
 
-            <a href="#"
+            <a href="{{ route('user.stores.reviews', data_get($store,'id')) }}"
             class="text-sm text-main hover:text-text_color">
             一覧 →
             </a>
@@ -153,7 +174,7 @@
         <div class="flex items-center justify-between pt-2">
             <div class="text-text_color text-sm">みんなの写真から見る</div>
 
-            <a href="#"
+            <a href="{{ route('user.stores.posts', data_get($store,'id')) }}"
             class="text-sm text-main hover:text-text_color">
             すべて →
             </a>
@@ -206,7 +227,9 @@
                 <div class="grid grid-cols-[120px_1fr] gap-x-6 items-start">
                     <div class="text-lg font-medium text-text_color">予算</div>
                     <div class="text-base leading-[1.9]">
-                    <p>1,000円 — 2,000円</p>
+                    @if(data_get($store,'budget_min') && data_get($store,'budget_max'))
+                      <p>{{ number_format($store->budget_min) }}円 — {{ number_format($store->budget_max) }}円</p>
+                    @endif
                     </div>
                 </div>
 
@@ -221,9 +244,11 @@
                 <div class="grid grid-cols-[120px_1fr] gap-x-6 items-start">
                     <div class="text-lg font-medium text-text_color">電話番号</div>
                     <div class="text-base leading-[1.9]">
-                    <a href="tel:09012345678" class="underline decoration-line/60">
-                        090-1234-5678
-                    </a>
+                    @if(data_get($store,'phone'))
+                      <a href="tel:{{ preg_replace('/\D+/', '', data_get($store,'phone')) }}" class="underline decoration-line/60">
+                        {{ data_get($store,'phone') }}
+                      </a>
+                    @endif
                     </div>
                 </div>
 
