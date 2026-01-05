@@ -36,6 +36,9 @@ Route::prefix('user')->name('user.')->group(function () {
         Route::post('/stores/{store}/reserve/confirm', [StoreController::class, 'reserveConfirmStore'])->name('stores.reserve.confirm.store');
         Route::get('/stores/{store}/reserve/confirm', [StoreController::class, 'reserveConfirm'])->name('stores.reserve.confirm');
         Route::post('/stores/{store}/reserve', [StoreController::class, 'reserveStore'])->name('stores.reserve.store');
+
+        Route::get('/stores/{store}/reviews', [StoreReviewController::class, 'index'])->name('stores.reviews.index');
+        Route::get('/stores/{store}/posts', [StorePostController::class, 'index'])->name('stores.posts.index');
     });
     
     Route::view('/reserve', 'pages.user.reserve')->name('reserve');

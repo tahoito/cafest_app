@@ -136,7 +136,7 @@
         <div class="flex items-center justify-between">
             <div class="text-lg text-text_color font-medium">みんなのレビュー(100件)</div>
 
-            <a href="#"
+            <a href="{{ route('stores.reviews', data_get($store,'id')) }}"
             class="text-sm text-main hover:text-text_color">
             一覧 →
             </a>
@@ -153,7 +153,7 @@
         <div class="flex items-center justify-between pt-2">
             <div class="text-text_color text-sm">みんなの写真から見る</div>
 
-            <a href="#"
+            <a href="{{ route('stores.posts', data_get($store,'id')) }}"
             class="text-sm text-main hover:text-text_color">
             すべて →
             </a>
@@ -206,7 +206,9 @@
                 <div class="grid grid-cols-[120px_1fr] gap-x-6 items-start">
                     <div class="text-lg font-medium text-text_color">予算</div>
                     <div class="text-base leading-[1.9]">
-                    <p>1,000円 — 2,000円</p>
+                    @if(data_get($store,'budget_min') && data_get($store,'budget_max'))
+                      <p>{{ number_format($store->budget_min) }}円 — {{ number_format($store->budget_max) }}円</p>
+                    @endif
                     </div>
                 </div>
 
@@ -221,9 +223,11 @@
                 <div class="grid grid-cols-[120px_1fr] gap-x-6 items-start">
                     <div class="text-lg font-medium text-text_color">電話番号</div>
                     <div class="text-base leading-[1.9]">
-                    <a href="tel:09012345678" class="underline decoration-line/60">
-                        090-1234-5678
-                    </a>
+                    @if(data_get($store,'phone'))
+                      <a href="tel:{{ preg_replace('/\D+/', '', data_get($store,'phone')) }}" class="underline decoration-line/60">
+                        {{ data_get($store,'phone') }}
+                      </a>
+                    @endif
                     </div>
                 </div>
 
