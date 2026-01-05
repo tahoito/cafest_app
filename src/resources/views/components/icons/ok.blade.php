@@ -13,15 +13,10 @@
   stroke-linejoin="round"
   width="{{ $size }}"
   height="{{ $size }}"
-  {{ $attributes->merge(['class' => 'inline-block shrink-0']) }}
+  {{ $attributes->merge(['class' => 'block shrink-0']) }}
 >
-
-<g clip-path="url(#clip0_1730_1545)">
-<path d="M10.0003 18.3337C14.6027 18.3337 18.3337 14.6027 18.3337 10.0003C18.3337 5.39795 14.6027 1.66699 10.0003 1.66699C5.39795 1.66699 1.66699 5.39795 1.66699 10.0003C1.66699 14.6027 5.39795 18.3337 10.0003 18.3337Z" stroke="#201200" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-</g>
-<defs>
-<clipPath id="clip0_1730_1545">
-<rect width="20" height="20" fill="white"/>
-</clipPath>
-</defs>
+  <g clip-path="url(#clip0_1730_1545)">
+    <path d="M10.0003 18.3337C14.6027 18.3337 18.3337 14.6027 18.3337 10.0003C18.3337 5.39795 14.6027 1.66699 10.0003 1.66699C5.39795 1.66699 1.66699 5.39795 1.66699 10.0003C1.66699 14.6027 5.39795 18.3337 10.0003 18.3337Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
 </svg>
+

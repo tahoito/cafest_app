@@ -13,8 +13,8 @@
   stroke-linejoin="round"
   width="{{ $size }}"
   height="{{ $size }}"
-  {{ $attributes->merge(['class' => 'inline-block shrink-0']) }}
+  {{ $attributes->merge(['class' => 'block shrink-0']) }}
 >
-
-<path d="M15 5L5 15M5 5L15 15" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
+
