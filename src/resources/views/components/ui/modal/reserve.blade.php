@@ -124,6 +124,9 @@
 
           this.selectedDate = this.days[0]?.value || '';
           this.buildTimeOptions();
+          this.$watch('startTime', () => this.updateEndOptions());
+          this.$watch('selectedDate', () => this.buildTimeOptions());
+
         },
       }"
 
@@ -160,22 +163,33 @@
             日付 <span class="text-text_color text-sm">(2週間後までしか予約できません)</span>
           </div>
 
-          <div class="grid grid-cols-7 gap-2 text-center">
-            <template x-for="d in days" :key="d.value">
-              <button
-                type="button"
-                class="rounded-lg border px-2.5 py-2 bg-base"
-                :class="selectedDate === d.value ? 'border-main ring-2 ring-main/30' : 'border-black/10'"
-                @click="if (d.status !== 'full') { selectedDate = d.value; buildTimeOptions(); }"
-              >
-                <div class="text-sm" x-text="d.label"></div>
-                <div class="mt-1 text-lg leading-none">
-                  <span x-show="d.status === 'ok'">○</span>
-                  <span x-show="d.status === 'few'">△</span>
-                  <span x-show="d.status === 'full'">×</span>
-                </div>
-              </button>
-            </template>
+          <div class="-mx-5 px-5 overflow-x-auto">
+            <div class="flex gap-2 w-max pb-1">
+              <template x-for="d in days" :key="d.value">
+                <button
+                  type="button"
+                  class="min-w-[52px] h-[70px] rounded-lg border px-2 py-2 text-center transition"
+                  :class="[
+                    selectedDate === d.value
+                      ? 'bg-main text-form border-main'
+                      : 'bg-base text-text_color border-black/10',
+
+                    d.status === 'full'
+                      ? 'opacity-40 cursor-not-allowed'
+                      : 'hover:bg-main text-form'
+                  ].join(' ')"
+                  @click="if (d.status !== 'full') { selectedDate = d.value }"
+                >
+                  <div class="text-sm whitespace-nowrap" x-text="d.label"></div>
+
+                  <div class="mt-1 text-lg leading-none flex justify-center">
+                    <span x-show="d.status === 'ok'"><x-icons.ok /></span>
+                    <span x-show="d.status === 'few'"><x-icons.triangle /></span>
+                    <span x-show="d.status === 'full'"><x-icons.no /></span>
+                  </div>
+                </button>
+              </template>
+            </div>
           </div>
 
           <input type="hidden" name="date" :value="selectedDate" required>
@@ -192,10 +206,16 @@
               </template>
             </select>
 
-            <div class="text-text_color">ー</div>
+            <div class="text-text_color">〜</div>
 
-            <select name="end_time" x-model="endTime" required class="w-full rounded-xl bg-base px-4 py-3 ring-1 ring-black/10"
-              :class="endTime ? 'text-text_color' : 'text-placeholder text-sm'">
+            <select
+              name="end_time"
+              x-model="endTime"
+              required
+              class="w-full rounded-xl bg-base px-4 py-3 ring-1 ring-black/10"
+              :disabled="endOptions.length === 0"
+              :class="endTime ? 'text-text_color' : 'text-placeholder text-sm'"
+            >
               <option value="" disabled>終了</option>
               <template x-for="t in endOptions" :key="t">
                 <option :value="t" x-text="t"></option>
