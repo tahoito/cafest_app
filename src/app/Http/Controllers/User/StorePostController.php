@@ -12,7 +12,7 @@ use App\Models\Reservation;
 
 
 
-class StoreReviewController extends Controller
+class StorePostController extends Controller
 {
     public function index($storeId)
     {
@@ -33,7 +33,7 @@ class StoreReviewController extends Controller
             ];
         });
 
-        return view('user.stores.posts', compact('store', 'posts'));
+        return view('pages.user.stores.posts', compact('store', 'posts'));
     }
 
 }

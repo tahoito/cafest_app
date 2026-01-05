@@ -35,7 +35,7 @@ class StoreReviewController extends Controller
             ];
         });
 
-        return view('user.stores.reviews', compact('store', 'reviews'));
+        return view('pages.user.stores.reviews', compact('store', 'reviews'));
     }
 
 }
