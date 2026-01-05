@@ -4,60 +4,28 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Review;
-use App\Models\Store;
 use App\Models\User;
-use App\Models\Tag;
+use App\Models\Store;
 
 class ReviewSeeder extends Seeder
 {
     public function run(): void
     {
-        $user = User::first();
-        if (!$user) {
-            
-            return;
+        $userIds = User::pluck('id')->all();
+        $storeIds = Store::pluck('id')->all();
+
+        if (empty($userIds) || empty($storeIds)) {
+            return; // どっちか0なら作れないので終了
         }
 
-        $tags = Tag::pluck('id', 'name'); 
-        $stores = Store::all();
-        if ($stores->isEmpty()) return;
-
-        foreach ($stores as $store) {
-            $r1 = Review::create([
-                'user_id' => $user->id,
-                'store_id' => $store->id,
-                'rating' => 5,
-                'body' => '雰囲気が良くてまた来たいです。',
+        // 例：30件作る
+        for ($i = 0; $i < 30; $i++) {
+            Review::create([
+                'user_id' => fake()->randomElement($userIds),
+                'store_id' => fake()->randomElement($storeIds),
+                'rating' => fake()->numberBetween(1, 5),
+                'body' => fake()->realText(80),
             ]);
-
-            $attach1 = collect(['映え', 'スイーツ', '作業', '静か', 'デート', '夜カフェ', 'モーニング'])
-                ->map(fn($name) => $tags[$name] ?? null)
-                ->filter()
-                ->take(2)
-                ->values()
-                ->all();
-
-            if (!empty($attach1)) {
-                $r1->tags()->sync($attach1);
-            }
-
-            // 2個目（任意）
-            $r2 = Review::create([
-                'user_id' => $user->id,
-                'store_id' => $store->id,
-                'rating' => 4,
-                'body' => 'コーヒーが美味しかったです。',
-            ]);
-
-            $attach2 = collect(['コーヒー', 'ひとり', '推し活'])
-                ->map(fn($name) => $tags[$name] ?? null)
-                ->filter()
-                ->values()
-                ->all();
-
-            if (!empty($attach2)) {
-                $r2->tags()->sync($attach2);
-            }
         }
     }
 }

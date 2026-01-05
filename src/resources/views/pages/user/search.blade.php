@@ -276,7 +276,7 @@
       <input type="hidden" name="area" :value="$store.search.area">
       <input type="hidden" name="budget" :value="$store.search.budget">
       <input type="hidden" name="time" :value="$store.search.time">
-      <input type="hidden" name="ratings" :value="($store.search.selectedRatings || []).join(',')">
+      <input type="hidden" name="rating_min" :value="$store.search.ratingMin ?? ''">
       <input type="hidden" name="keyword" :value="$store.search.keyword">
 
       <template x-for="m in $store.search.moods" :key="m">

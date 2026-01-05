@@ -205,7 +205,8 @@
           {{-- ボタン --}}
           <div class="sticky bottom-0 bg-base_color pt-3 pb-6">
             <div class="flex justify-center">
-              <x-ui.button type="submit" class="w-[70%]" variants="secondary">
+              <x-ui.button type="button" class="w-[70%]" variants="secondary"
+                @click="document.getElementById('searchForm').submit()">
                 検索
               </x-ui.button>
             </div>

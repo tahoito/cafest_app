@@ -33,12 +33,12 @@ class SearchController extends Controller
 
        
         if ($request->filled('tags')) {
-            $tagIds = array_map('intval', (array) $request->input('tags'));
+            $tagIds = array_values(array_unique(array_map('intval', (array)$request->input('tags'))));
 
             $query->whereHas('reviews', function ($q) use ($tagIds) {
-                $q->whereHas('tags', function ($tq) use ($tagIds) {
-                    $tq->whereIn('tags.id', $tagIds);
-                });
+                foreach ($tagIds as $id) {
+                    $q->whereHas('tags', fn($tq) => $tq->where('tags.id', $id));
+                }
             });
         }
 
