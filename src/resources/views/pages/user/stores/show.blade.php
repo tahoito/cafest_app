@@ -79,7 +79,7 @@
       </div>
     </section>
 
-    <section class="px-4 space-y-2 pb-12">
+    <section class="px-4 space-y-2 pb-6">
         <div class="min-w-0 space-y-1">
           <div class="flex items-center gap-3">
             <div class="text-2xl text-text_color leading-tight">
@@ -254,6 +254,10 @@
 
                 </div>
             </div>
+
+            <section class="px-4 space-y-2 pb-6">
+              <div class=""></div>
+            </section>
 
             <div class="flex justify-center pt-4">
                 <x-ui.button :type="'button'" variant="secondary" class="text-form" @click="reserveOpen=true">
