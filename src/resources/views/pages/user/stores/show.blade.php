@@ -35,6 +35,8 @@
     $name = data_get($store, 'name', 'No Name');
     $areaKey = (string) data_get($store, 'area', '');
     $area = $areaKey !== '' ? (config('cafest.areas')[$areaKey] ?? $areaKey) : '';
+    $phone = trim((string) data_get($store,'phone',''));
+    $address = trim((string) data_get($store,'address',''));
     $mood = (string) data_get($store, 'mood', '');
     $imageUrl = data_get($store, 'image_url');
     $images = [
@@ -244,9 +246,9 @@
                 <div class="grid grid-cols-[120px_1fr] gap-x-6 items-start">
                     <div class="text-lg font-medium text-text_color">電話番号</div>
                     <div class="text-base leading-[1.9]">
-                    @if(data_get($store,'phone'))
+                    @if($phone !== '')
                       <a href="tel:{{ preg_replace('/\D+/', '', data_get($store,'phone')) }}" class="underline decoration-line/60">
-                        {{ data_get($store,'phone') }}
+                        {{ $phone }}
                       </a>
                     @endif
                     </div>
@@ -254,23 +256,28 @@
 
                 </div>
             </div>
-
-            <section class="px-4 space-y-2 pb-6">
-              <div class=""></div>
-            </section>
-
-            <div class="flex justify-center pt-4">
-                <x-ui.button :type="'button'" variant="secondary" class="text-form" @click="reserveOpen=true">
-                このお店で予約する
-                </x-ui.button>
-
-                <x-ui.modal.reserve
-                :store="$store"
-                :action="route('user.stores.reserve.confirm.store', data_get($store, 'id'))"
-                />
-            </div>
         </section>
 
+        <section class="px-4 space-y-2 flex pb-4 justify-center">
+          <div class="text-center">
+            @if($address != '')
+              <div class="text-text_color text-base leading-relaxed">
+                {{ $address }}
+              </div>
+            @endif
+          </div>
+        </section>
+
+        <div class="flex justify-center pt-4 pb-4">
+          <x-ui.button :type="'button'" variant="secondary" class="text-form" @click="reserveOpen=true">
+            このお店で予約する
+          </x-ui.button>
+
+          <x-ui.modal.reserve
+            :store="$store"
+            :action="route('user.stores.reserve.confirm.store', data_get($store, 'id'))"
+            />
+          </div>
     </div>
 </div>
 @endsection

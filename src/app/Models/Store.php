@@ -14,6 +14,7 @@ class Store extends Authenticatable
         'email',
         'password',
         'address',
+        'phone',
         'area',
         'mood',
         'budget_min',
