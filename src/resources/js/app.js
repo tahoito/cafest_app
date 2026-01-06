@@ -16,9 +16,13 @@ document.addEventListener('alpine:init', () => {
     moods: [],
     selectedRatings: [],
 
-    hasTag(t){ return this.tags.includes(t) },
+    hasTag(t){ const id = Number(t) 
+      return this.tags.includes(id)},
     toggleTag(t){
-      this.tags = this.hasTag(t) ? this.tags.filter(x=>x!==t) : [...this.tags, t]
+      const id = Number(t)
+      this.tags = this.hasTag(id)
+        ? this.tags.filter(x => x !== id)
+        : [...this.tags, id]
     },
 
     hasMood(m){ return this.moods.includes(m) },

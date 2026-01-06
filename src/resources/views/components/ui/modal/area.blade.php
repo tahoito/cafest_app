@@ -1,6 +1,6 @@
 <template x-teleport="body">
   <div
-    x-show="$store.search.activeModal === 'tag'"
+    x-show="$store.search.activeModal === 'area'"
     x-transition.opacity
     class="fixed inset-0 z-[9999] flex items-end justify-center"
     @keydown.escape.window="$store.search.activeModal = null"
@@ -10,7 +10,7 @@
     <div class="absolute inset-0 bg-black/40" @click="$store.search.activeModal = null"></div>
 
     <div
-      x-show="$store.search.activeModal === 'tag'"
+      x-show="$store.search.activeModal === 'area'"
       x-transition:enter="transition ease-out duration-200"
       x-transition:enter-start="translate-y-6 opacity-0"
       x-transition:enter-end="translate-y-0 opacity-100"
@@ -33,7 +33,7 @@
             <x-icons.close class="w-7 h-7 text-text_color" />
           </button>
 
-          <div class="text-base font-medium text-text_color">タグ</div>
+          <div class="text-base font-medium text-text_color">エリア</div>
 
           <button
             type="button"
@@ -46,22 +46,21 @@
       </div>
 
       <div class="bg-base_color px-5 pt-4 pb-6">
-        <section class="flex flex-wrap gap-2">
-          @php
-            $tags = ['推し活','作業','静か','スイーツ','コーヒー','モーニング','夜カフェ','デート','ひとり','映え'];
-          @endphp
-
-          @foreach($tags as $t)
-            <x-ui.tag
-              type="button"
-              @click="$store.search.toggleTag('{{ $t }}')"
-              x-bind:class="$store.search.hasTag('{{ $t }}')
-                ? '!bg-main !border-main !text-form'
-                : '!bg-base !border-main !text-text_color'"
+        <section class="space-y-2">
+          <div class="relative">
+            <select
+              name="area"
+              x-model="$store.search.area"
+              class="w-full appearance-none rounded-xl border border-line bg-form px-4 py-3 text-base text-text_color shadow-sm focus:outline-none focus:ring-2 focus:ring-main-color/30"
             >
-              {{ $t }}
-            </x-ui.tag>
-          @endforeach
+              <option value="" @selected(request('area') === null || request('area') === '')>指定しない</option>
+                @foreach(config('cafest.areas') as $key => $label)
+                  <option value="{{ $key }}" @selected(request('area') === $key)>{{ $label }}</option>
+                @endforeach
+            </select>
+
+            <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-placeholder-color">▾</span>
+          </div>
         </section>
       </div>
     </div>

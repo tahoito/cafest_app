@@ -7,7 +7,7 @@
   <div class="w-full max-w-md mx-auto pt-6 space-y-5">
 
     <section class="px-4">
-      <x-ui.search-bar :tag="$tag"/>
+      <x-ui.search-bar />
     </section>
 
     {{-- 上の検索チップ --}}
@@ -41,7 +41,16 @@
           @click="$store.search.toggleMood('珈琲専門')"
           x-bind:class="$store.search.hasMood('珈琲専門') ? '!bg-main !text-form' : ''"
         >
-          <x-icons.coffee />
+          <img
+            x-show="!$store.search.hasMood('珈琲専門')"
+            x-cloak
+            src="{{ asset('images/moods/coffee.png') }}"
+          >
+          <img
+            x-show="$store.search.hasMood('珈琲専門')"
+            x-cloak
+            src="{{ asset('images/moods/coffee_white.png') }}"
+          >
         </x-ui.category>
 
         <x-ui.category
@@ -50,7 +59,16 @@
           @click="$store.search.toggleMood('紅茶')"
           x-bind:class="$store.search.hasMood('紅茶') ? '!bg-main !text-form' : ''"
         >
-          <x-icons.tea />
+          <img
+            x-show="!$store.search.hasMood('紅茶')"
+            x-cloak
+            src="{{ asset('images/moods/tea.png') }}"
+          >
+          <img
+            x-show="$store.search.hasMood('紅茶')"
+            x-cloak
+            src="{{ asset('images/moods/tea_white.png') }}"
+          >
         </x-ui.category>
 
         <x-ui.category
@@ -59,7 +77,16 @@
           @click="$store.search.toggleMood('スイーツ')"
           x-bind:class="$store.search.hasMood('スイーツ') ? '!bg-main !text-form' : ''"
         >
-          <x-icons.cake />
+          <img
+            x-show="!$store.search.hasMood('スイーツ')"
+            x-cloak
+            src="{{ asset('images/moods/cake.png') }}"
+          >
+          <img
+            x-show="$store.search.hasMood('スイーツ')"
+            x-cloak
+            src="{{ asset('images/moods/cake_white.png') }}"
+          >
         </x-ui.category>
 
         <x-ui.category
@@ -68,7 +95,16 @@
           @click="$store.search.toggleMood('夜カフェ')"
           x-bind:class="$store.search.hasMood('夜カフェ') ? '!bg-main !text-form' : ''"
         >
-          <x-icons.moon />
+          <img
+            x-show="!$store.search.hasMood('夜カフェ')"
+            x-cloak
+            src="{{ asset('images/moods/moon.png') }}"
+          >
+          <img
+            x-show="$store.search.hasMood('夜カフェ')"
+            x-cloak
+            src="{{ asset('images/moods/moon_white.png') }}"
+          >
         </x-ui.category>
 
         <div x-show="showAll" x-transition class="contents">
@@ -77,49 +113,144 @@
             type="button"
             @click="$store.search.toggleMood('静か')"
             x-bind:class="$store.search.hasMood('静か') ? '!bg-main !text-form' : ''"
-          />
+          >
+            <img
+              x-show="!$store.search.hasMood('静か')"
+              x-cloak
+              src="{{ asset('images/moods/book.png') }}"
+            >
+            <img
+              x-show="$store.search.hasMood('静か')"
+              x-cloak
+              src="{{ asset('images/moods/book_white.png') }}"
+            >
+          </x-ui.category>
+
           <x-ui.category
             label="勉強・作業"
             type="button"
             @click="$store.search.toggleMood('勉強・作業')"
             x-bind:class="$store.search.hasMood('勉強・作業') ? '!bg-main !text-form' : ''"
-          />
+          >
+            <img
+              x-show="!$store.search.hasMood('勉強・作業')"
+              x-cloak
+              src="{{ asset('images/moods/study.png') }}"
+            >
+            <img
+              x-show="$store.search.hasMood('勉強・作業')"
+              x-cloak
+              src="{{ asset('images/moods/study_white.png') }}"
+            >
+          </x-ui.category>
+
           <x-ui.category
             label="長居OK"
             type="button"
             @click="$store.search.toggleMood('長居OK')"
             x-bind:class="$store.search.hasMood('長居OK') ? '!bg-main !text-form' : ''"
-          />
+          >
+            <img
+              x-show="!$store.search.hasMood('長居OK')"
+              x-cloak
+              src="{{ asset('images/moods/sofa.png') }}"
+            >
+            <img
+              x-show="$store.search.hasMood('長居OK')"
+              x-cloak
+              src="{{ asset('images/moods/sofa_white.png') }}"
+            >
+          </x-ui.category>
+
           <x-ui.category
             label="レトロ・喫茶"
             type="button"
             @click="$store.search.toggleMood('レトロ・喫茶')"
             x-bind:class="$store.search.hasMood('レトロ・喫茶') ? '!bg-main !text-form' : ''"
-          />
+          >
+            <img
+              x-show="!$store.search.hasMood('レトロ・喫茶')"
+              x-cloak
+              src="{{ asset('images/moods/retro.png') }}"
+            >
+            <img
+              x-show="$store.search.hasMood('レトロ・喫茶')"
+              x-cloak
+              src="{{ asset('images/moods/retro_white.png') }}"
+            >
+          </x-ui.category>
+
           <x-ui.category
             label="デート"
             type="button"
             @click="$store.search.toggleMood('デート')"
             x-bind:class="$store.search.hasMood('デート') ? '!bg-main !text-form' : ''"
-          />
+          >
+            <img
+              x-show="!$store.search.hasMood('デート')"
+              x-cloak
+              src="{{ asset('images/moods/love.png') }}"
+            >
+            <img
+              x-show="$store.search.hasMood('デート')"
+              x-cloak
+              src="{{ asset('images/moods/love_white.png') }}"
+            >
+          </x-ui.category>
+
           <x-ui.category
             label="女子会"
             type="button"
             @click="$store.search.toggleMood('女子会')"
             x-bind:class="$store.search.hasMood('女子会') ? '!bg-main !text-form' : ''"
-          />
+          >
+            <img
+              x-show="!$store.search.hasMood('女子会')"
+              x-cloak
+              src="{{ asset('images/moods/girl.png') }}"
+            >
+            <img
+              x-show="$store.search.hasMood('女子会')"
+              x-cloak
+              src="{{ asset('images/moods/girl_white.png') }}"
+            >
+          </x-ui.category>
+
           <x-ui.category
             label="韓国風"
             type="button"
             @click="$store.search.toggleMood('韓国風')"
             x-bind:class="$store.search.hasMood('韓国風') ? '!bg-main !text-form' : ''"
-          />
+          >
+            <img
+              x-show="!$store.search.hasMood('韓国風')"
+              x-cloak
+              src="{{ asset('images/moods/korean.png') }}"
+            >
+            <img
+              x-show="$store.search.hasMood('韓国風')"
+              x-cloak
+              src="{{ asset('images/moods/korean_white.png') }}"
+            >
+          </x-ui.category>
+
           <x-ui.category
             label="ペットOK"
             type="button"
             @click="$store.search.toggleMood('ペットOK')"
             x-bind:class="$store.search.hasMood('ペットOK') ? '!bg-main !text-form' : ''"
-          />
+          >
+            <img
+              x-show="!$store.search.hasMood('ペットOK')"
+              x-cloak
+              src="{{ asset('images/moods/pets.png') }}"
+            >
+            <img
+              x-show="$store.search.hasMood('ペットOK')"
+              x-cloak
+              src="{{ asset('images/moods/pets_white.png') }}"
+            >
+          </x-ui.category>
         </div>
       </div>
 
@@ -127,7 +258,7 @@
         <button
           type="button"
           @click="showAll = !showAll"
-          class="ml-auto text-[14px] text-text_color"
+          class="ml-auto text-sm text-text_color"
         >
           <span x-show="!showAll">もっと見る</span>
           <span x-show="showAll">閉じる</span>
@@ -135,7 +266,6 @@
       </div>
     </section>
 
-    {{-- ✅ 検索フォーム（hidden） --}}
     <form
       id="searchForm"
       method="GET"
@@ -146,7 +276,7 @@
       <input type="hidden" name="area" :value="$store.search.area">
       <input type="hidden" name="budget" :value="$store.search.budget">
       <input type="hidden" name="time" :value="$store.search.time">
-      <input type="hidden" name="ratings" :value="($store.search.selectedRatings || []).join(',')">
+      <input type="hidden" name="rating_min" :value="$store.search.ratingMin ?? ''">
       <input type="hidden" name="keyword" :value="$store.search.keyword">
 
       <template x-for="m in $store.search.moods" :key="m">
@@ -164,13 +294,13 @@
         {{ $isSearching ? '検索結果' : 'おすすめのカフェ' }}
       </div>
       @if($isSearching && $stores->isEmpty())
-      <div class="text-placeholder text-[14px]">
+      <div class="text-placeholder text-sm">
         条件に合うカフェが見つかりません
       </div>
       @else
         <div class="grid grid-cols-2 gap-3">
           @foreach($stores as $store)
-            <x-ui.store-card
+            <x-ui.card.store
               :store="$store"
               :href="route('user.stores.show', ['store' => data_get($store,'id')])"
               variant="list"
@@ -183,12 +313,12 @@
   </div>
 
   {{-- ✅ モーダル --}}
-  <x-ui.search-modal />
-  <x-ui.area-modal />
-  <x-ui.wallet-modal />
-  <x-ui.time-modal />
-  <x-ui.review-modal />
-  <x-ui.tag-modal />
+  <x-ui.modal.search :tags="$tags"/>
+  <x-ui.modal.area />
+  <x-ui.modal.wallet />
+  <x-ui.modal.time /> 
+  <x-ui.modal.review />
+  <x-ui.modal.tag :tags="$tags" />
 </div>
 
 @endsection

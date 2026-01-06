@@ -5,7 +5,7 @@
 <div class="min-h-screen bg-base_color">
     <div class="w-full max-w-md mx-auto pt-6 space-y-5">
         <section class="px-4">
-            <x-ui.search-bar/>
+            <x-ui.search-bar :action="route('user.search')"/>
         </section>
 
         <section class="px-4 space-y-2">
@@ -23,7 +23,7 @@
             <div class="text-lg text-text_color font-medium">おすすめのカフェ</div>
             <div class="grid grid-cols-2 gap-3">
                 @foreach($stores as $store)
-                <x-ui.store-card
+                <x-ui.card.store
                     :store="$store"
                     :href="route('user.stores.show', ['store' => data_get($store,'id')])"
                     variant="list"
@@ -33,7 +33,7 @@
 
             <div class="flex">
                 <a href="{{ route('user.recommended') }}"
-                    class="text-[14px] text-text_color ml-auto">
+                    class="text-sm text-text_color ml-auto">
                     もっと見る
                 </a>
             </div>
@@ -43,7 +43,7 @@
             <div class="text-lg text-text_color font-medium">みんなのレビュー</div>
             <div class="flex flex-nowrap gap-3 overflow-x-auto pb-6 px-2">
                 @foreach($reviews as $review)
-                    <x-ui.review-card 
+                    <x-ui.card.user.review
                         :review="$review" 
                         variant="mini" 
                         class="shrink-0" />
@@ -55,7 +55,7 @@
             <div class="text-lg text-text_color font-medium">カフェ一覧</div>
             <div class="grid grid-cols-2 gap-3">
                 @foreach($stores as $store)
-                <x-ui.store-card
+                <x-ui.card.store
                     :store="$store"
                     :href="route('user.stores.show', ['store' => data_get($store,'id')])"
                     variant="list"

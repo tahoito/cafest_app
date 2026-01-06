@@ -9,11 +9,12 @@
   $url = $href ?? '#';
 
   $name = data_get($store, 'name', 'No Name');
-  $area = data_get($store, 'area', '');
+  $areaKey = data_get($store, 'area', '');
+  $area = $areaKey !== '' ? (config('cafest.areas')[$areaKey] ?? $areaKey) : '';
   $mood = data_get($store, 'mood', '');
   $imageUrl = data_get($store, 'image_url');
 
-  $rating = (float) data_get($store, 'rating', 0);
+  $rating = (float) data_get($store, 'reviews_avg_rating', 0);
   $rating = max(0, min(5, $rating));
   $filled = (int) floor($rating + 0.00001);
 
@@ -24,7 +25,7 @@
 @endphp
 
 <a href="{{ $url }}"
-   class="block w-[170px] h-[210px] rounded-lg bg-form ring-1 ring-black/5 shadow-[0_2px_10px_rgba(0,0,0,0.12)] overflow-hidden">
+   class="block w-[170px] h-[210px] rounded-lg bg-form ring-1 ring-black/5 shadow-[0_1px_4px_rgba(0,0,0,0.20)] overflow-hidden">
 
   {{-- image --}}
   <div class="relative px-4 pt-3 pb-2">
@@ -66,7 +67,7 @@
       </div>
     </div>
 
-    <div class="mt-1 flex items-center text-[14px] leading-[14px] text-text_color">
+    <div class="mt-1 flex items-center text-sm leading-sm text-text_color">
       <x-icons.pin class="w-4 h-4 shrink-0 text-text_color relative top-[1px]" />
 
       <span class="min-w-0 line-clamp-1">

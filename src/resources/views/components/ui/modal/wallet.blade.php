@@ -1,6 +1,6 @@
 <template x-teleport="body">
   <div
-    x-show="$store.search.activeModal === 'area'"
+    x-show="$store.search.activeModal === 'budget'"
     x-transition.opacity
     class="fixed inset-0 z-[9999] flex items-end justify-center"
     @keydown.escape.window="$store.search.activeModal = null"
@@ -10,7 +10,7 @@
     <div class="absolute inset-0 bg-black/40" @click="$store.search.activeModal = null"></div>
 
     <div
-      x-show="$store.search.activeModal === 'area'"
+      x-show="$store.search.activeModal === 'budget'"
       x-transition:enter="transition ease-out duration-200"
       x-transition:enter-start="translate-y-6 opacity-0"
       x-transition:enter-end="translate-y-0 opacity-100"
@@ -33,7 +33,7 @@
             <x-icons.close class="w-7 h-7 text-text_color" />
           </button>
 
-          <div class="text-base font-medium text-text_color">エリア</div>
+          <div class="text-base font-medium text-text_color">予算</div>
 
           <button
             type="button"
@@ -49,16 +49,15 @@
         <section class="space-y-2">
           <div class="relative">
             <select
-              name="area"
-              x-model="$store.search.area"
+              name="budget"
+              x-model="$store.search.budget"
               class="w-full appearance-none rounded-xl border border-line bg-form px-4 py-3 text-base text-text_color shadow-sm focus:outline-none focus:ring-2 focus:ring-main-color/30"
             >
-              <option value="">指定なし</option>
-              <option value="栄">栄</option>
-              <option value="名駅">名駅</option>
-              <option value="大須">大須</option>
+              <option value="" @selected(request('budget') === null || request('budget') === '')>指定しない</option>
+                @foreach(config('cafest.budgets') as $key => $label)
+                  <option value="{{ $key }}" @selected(request('budget') === $key)>{{ $label }}</option>
+                @endforeach
             </select>
-
             <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-placeholder-color">▾</span>
           </div>
         </section>

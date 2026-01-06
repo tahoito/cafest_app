@@ -14,7 +14,7 @@ class TopController extends Controller
         TagRecommendService $tagService
     )
     {
-        $reviews = Review::with(['user','store'])->latest()->take(6)->get();
+        $reviews = Review::with(['user','store','tags'])->latest()->take(6)->get();
 
         return view('pages.user.top', [
             'stores' => $storeService->recommended(4),

@@ -16,6 +16,11 @@ class Store extends Authenticatable
         'address',
         'area',
         'mood',
+        'budget_min',
+        'budget_max',
+        'open_time',
+        'close_time',
+        'closed_days',
     ];
 
     protected $hidden = [
@@ -25,6 +30,7 @@ class Store extends Authenticatable
 
     protected $casts = [
         'password' => 'hashed',
+        'closed_days' => 'array',
     ];
 
     public function reviews()

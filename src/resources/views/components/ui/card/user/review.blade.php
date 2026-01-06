@@ -12,13 +12,13 @@
   $shopId   = data_get($shop, 'id', data_get($review, 'shop_id', null));
   $shopName = data_get($shop, 'name', data_get($review, 'shop_name', ''));
 
-  $rating = (float) data_get($review, 'rating', 0);
+  $rating = (float) data_get($review, 'reviews_avg_rating', 0);
   $body   = (string) data_get($review, 'body', data_get($review, 'comment', ''));
 
   $date = data_get($review, 'created_at', data_get($review, 'date', null));
   $link = $href ?? ($shopId ? url("/stores/{$shopId}") : '#');
 
-  $base = "rounded-lg bg-form ring-1 ring-black/5 shadow-[0_1px_4px_rgba(0,0,0,0.25)]";
+  $base = "rounded-lg bg-form ring-1 ring-black/5 shadow-[0_1px_4px_rgba(0,0,0,0.20)]";
 
   $size = match ($variant) {
     'mini'    => "inline-block w-[167px]",   // ←ここでカード幅を固定
@@ -65,7 +65,7 @@
         </div>
 
         <div class="min-w-0">
-          <div class="text-text_color text-[14px] font-semibold truncate">{{ $userName }}</div>
+          <div class="text-text_color text-sm font-semibold truncate">{{ $userName }}</div>
         </div>
       </div>
 
@@ -76,7 +76,7 @@
 
     {{-- 中段：店舗名 + 星 --}}
     <div class="flex items-center justify-between gap-3">
-      <div class="text-text_color text-[14px] font-medium truncate">
+      <div class="text-text_color text-sm font-medium truncate">
         {{ $shopName }}
       </div>
 
