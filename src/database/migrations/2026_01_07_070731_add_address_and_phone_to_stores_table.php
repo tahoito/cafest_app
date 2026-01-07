@@ -12,9 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('stores', function (Blueprint $table) {
-            $table->time('open_time')->nullable();
-            $table->time('close_time')->nullable();
-            $table->json('closed_days')->nullable();
+            $table->string('phone',30)->nullable();
         });
     }
 
@@ -24,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('stores', function (Blueprint $table) {
-            $table->dropColumn(['open_time','close_time','closed_days']);
+            $table->dropColum('phone');
         });
     }
 };
