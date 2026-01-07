@@ -1,3 +1,70 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  html {
+    --bgColorMenu: #8A7458;   /* bg-main */
+    --duration: .7s;
+    box-sizing: border-box;
+  }
+  html *, html *::before, html *::after { box-sizing: inherit; }
+}
+
+@layer components {
+  .menu__item {
+    all: unset;
+    flex-grow: 1;
+    z-index: 100;
+    display: flex;
+    cursor: pointer;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4em;
+    will-change: transform;
+    transition: transform var(--timeOut, var(--duration));
+
+    /* アイコン常に黒 */
+    color: #201200; /* text_color */
+  }
+
+  /* 白い丸（非active時は見えない） */
+  .menu__item::before{
+    content: "";
+    z-index: -1;
+
+    width: 56px;
+    height: 56px;
+    border-radius: 9999px;
+    background: #ffffff;
+
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform var(--duration);
+  }
+
+  .menu__item.active {
+    /* 黒のまま */
+    color: #201200;
+    transform: translate3d(0, -.35em, 0);
+  }
+
+  .menu__item.active::before{
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  .menu__border{
+    left: 0;
+    bottom: 99%;
+    width: 10.9em;
+    height: 2.4em;
+    position: absolute;
+    clip-path: url(#menu);
+    will-change: transform;
+    background-color: var(--bgColorMenu);
+    transition: transform var(--timeOut , var(--duration));
+  }
+}

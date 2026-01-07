@@ -45,7 +45,7 @@ Route::prefix('user')->name('user.')->group(function () {
 
         Route::get('/stores/{store}/reviews/create', [ReviewController::class, 'create'])->name('stores.reviews.create');
 
-        Route::post('/stores/{store}/reviews', [ReviewController::class, 'store'])>name('stores.reviews.store');
+        Route::post('/stores/{store}/reviews', [ReviewController::class, 'store'])->name('stores.reviews.store');
         
     });
     
