@@ -19,14 +19,9 @@ class StoreSeeder extends Seeder
                 'name' => 'Cafe Lumiere',
                 'email' => 'lumiere@example.com',
                 'password' => Hash::make('password'),
-<<<<<<< HEAD
-                'address' => '名古屋市中区〇〇',
-                'area' => 'sakae',
-=======
                 'address' => '名古屋市中区栄1-24-38 エムズハウス栄 2F',
                 'phone' => '052-123-4567',
                 'area' => '栄',
->>>>>>> main
                 'mood' => '静か',
                 'description' => '落ち着いた空間で、こだわりのコーヒーと焼き菓子を楽しめるカフェです。',
                 'budget_min' => 800,
@@ -36,14 +31,9 @@ class StoreSeeder extends Seeder
                 'name' => 'Morining',
                 'email' => 'morining@example.com', // ←ユニークに
                 'password' => Hash::make('password'),
-<<<<<<< HEAD
-                'address' => '名古屋市中区〇〇',
-                'area' => 'yabatyo',
-=======
                 'address' => '名古屋市中区栄3丁目31-13',
                 'phone' => '052-234-5678',
                 'area' => '矢場町',
->>>>>>> main
                 'mood' => 'ペットOK',
                 'description' => 'モーニングが人気のカフェです。',
                 'budget_min' => 800,
@@ -53,14 +43,9 @@ class StoreSeeder extends Seeder
                 'name' => 'フラワーカフェ',
                 'email' => 'flower@example.com', // ←ユニークに
                 'password' => Hash::make('password'),
-<<<<<<< HEAD
-                'address' => '名古屋市中区〇〇',
-                'area' => 'sakurayama',
-=======
                 'address' => '名古屋市昭和区桜山町',
                 'phone' => '070-9086-54XX',
                 'area' => '桜山',
->>>>>>> main
                 'mood' => 'ペットOK',
                 'description' => '花に囲まれたカフェです。',
                 'budget_min' => 3000,
@@ -70,14 +55,9 @@ class StoreSeeder extends Seeder
                 'name' => 'cafest',
                 'email' => 'cafest@example.com',
                 'password' => Hash::make('password'),
-<<<<<<< HEAD
-                'address' => '名古屋市中区〇〇',
-                'area' => 'meieki',
-=======
                 'address' => '名古屋市中村区名駅1丁目1番',
                 'phone' => '03-0401-18XX',
                 'area' => '名駅',
->>>>>>> main
                 'mood' => '韓国風',
                 'description' => '韓国っぽい雰囲気のカフェです。',
                 'budget_min' => 1000,
@@ -87,14 +67,9 @@ class StoreSeeder extends Seeder
                 'name' => 'ミラクル',
                 'email' => 'miracle@example.com', // ←ユニークに
                 'password' => Hash::make('password'),
-<<<<<<< HEAD
-                'address' => '名古屋市中区〇〇',
-                'area' => 'kakuozan',
-=======
                 'address' => '名古屋市千種区末盛通1丁目7番地',
                 'phone' => '052-567-8903',
                 'area' => '覚王山',
->>>>>>> main
                 'mood' => '女子会',
                 'description' => '女子会に人気のカフェです。',
                 'budget_min' => 5000,
