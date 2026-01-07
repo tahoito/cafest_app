@@ -123,7 +123,7 @@
           </div>
 
           @if(trim($meta) !== '')
-            <div class="mt-2 flex items-center text-base leading-base text-text_color">
+            <div class="mt-2 flex items-center text-base leading-base text-text_color pt-2">
               <x-icons.pin class="w-5 h-5 shrink-0 text-text_color relative top-[1px]" />
               <span class="min-w-0 line-clamp-1">
                 {{ $meta }}
@@ -225,7 +225,7 @@
     <section class="px-4 space-y-2 pb-12">
         <div class="text-lg text-text_color font-medium">店舗情報</div>
             <div class="rounded-2xl bg-base border border-main shadow-[0_2px_10px_rgba(0,0,0,0.15)] p-5 text-text_color">
-                <div class="space-y-8">
+                <div class="space-y-5">
 
                 <div class="grid grid-cols-[120px_1fr] gap-x-6 items-start">
                   <div class="text-lg font-medium text-text_color">営業時間</div>
@@ -272,8 +272,9 @@
                 <div class="grid grid-cols-[120px_1fr] gap-x-6 items-start">
                     <div class="text-lg font-medium text-text_color">支払い方法</div>
                     <div class="text-base leading-[1.9] space-y-1">
-                    <p>現金・電子マネー可</p>
-                    <p>クレジットカード不可</p>
+                      @foreach($store->paymentMethods as $pm)
+                        <p>{{ $pm->name }}</p>
+                      @endforeach
                     </div>
                 </div>
 

@@ -83,6 +83,10 @@ class StoreSeeder extends Seeder
                 $data
             );
 
+            $store->paymentMethods()->sync([
+                1,3,4
+            ]);
+
             $hours = [
                 ['day_of_week' => 1, 'open_time' => '10:00', 'close_time' => '18:00', 'is_closed' => false], // Mon
                 ['day_of_week' => 2, 'open_time' => null,   'close_time' => null,   'is_closed' => true ], // Tue
