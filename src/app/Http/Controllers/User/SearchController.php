@@ -76,19 +76,28 @@ class SearchController extends Controller
             $time = $request->input('time');
 
             if ($time === 'morning') {
-            $query->where('open_time', '<=', '10:00:00');
+                $query->whereHas('hours', function ($q) {
+                $q->where('is_closed', false)
+                ->whereNotNull('open_time')
+                ->where('open_time', '<=', '10:00:00');
+            });
             } elseif ($time === 'night') {
-                $query->where('close_time', '>=', '20:00:00');
+                $query->whereHas('hours', function ($q) {
+                $q->where('is_closed', false)
+                ->whereNotNull('close_time')
+                ->where('close_time', '>=', '20:00:00');
+            });
+
             } elseif ($time === 'now') {
                 $now = now()->format('H:i:s');
-                $today = strtolower(now()->format('D')); 
+                $dow = (int) now()->dayOfWeek; // 0=Sun..6=Sat（Carbon）
 
-                $query->where('open_time', '<=', $now)
-                    ->where('close_time', '>=', $now)
-                    ->where(function ($q) use ($today) {
-                        $q->whereNull('closed_days')
-                            ->orWhereJsonDoesntContain('closed_days', $today);
-                    });
+                $query->whereHas('hours', function ($q) use ($dow, $now) {
+                    $q->where('day_of_week', $dow)
+                    ->where('is_closed', false)
+                    ->where('open_time', '<=', $now)
+                    ->where('close_time', '>=', $now);
+                });
             }
         }
 

@@ -23,6 +23,9 @@ class StoreFactory extends Factory
             'password' => bcrypt('password'),
             'address' => $this->faker->city() . ' ' . $this->faker->streetAddress(),
             'area' => $this->faker->randomElement($areas),
+            'rating' => $this->faker->randomFloat(1, 3.0, 5.0),
+            'description' => $this->faker->realText(80),
+            'image_url' => null,
         ];
     }
 }

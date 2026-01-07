@@ -14,27 +14,25 @@ use App\Models\Reservation;
 
 class StoreController extends Controller
 {
-    public function show($store, StoreRecommendService $service)
+    public function show(Store $store, StoreRecommendService $service)
     {
-        $storeModel = Store::query()
-            ->where('id',(int)$store)
-            ->select('stores.*')
-            ->selectSub(function ($q) {
-                $q->from('reviews')
-                ->selectRaw('AVG(`reviews`.`rating`)')
-                ->whereColumn('reviews.store_id', 'stores.id'); 
-            }, 'reviews_avg_rating')
-            ->where('stores.id', (int)$store)  
-            ->firstOrFail();
+        $store = Store::with(['hours', 'reviews'])
+            ->withAvg('reviews','rating')
+            ->findOrFail($store->id);
 
         $reviews = Review::with(['user','store'])
-            ->where('store_id', (int)$store)
+            ->where('store_id', $store->id)
             ->latest()
             ->take(10)
             ->get();
 
+        $store->load(['slideImages','galleryImages','hours','reviews'])
+            ->loadAvg('reviews','rating')
+            ->findOrFail($store->id);
+
+
         return view('pages.user.stores.show', [
-            'store' => $storeModel,
+            'store' => $store,
             'reviews' => $reviews,
         ]);
     }

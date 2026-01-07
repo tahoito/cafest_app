@@ -1,7 +1,10 @@
 <?php
 
 namespace App\Models;
-
+use App\Models\StoreHour;
+use App\Models\PaymentMethod;
+use App\Models\StoreImage;
+use App\Models\Review;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -14,13 +17,11 @@ class Store extends Authenticatable
         'email',
         'password',
         'address',
+        'phone',
         'area',
         'mood',
         'budget_min',
         'budget_max',
-        'open_time',
-        'close_time',
-        'closed_days',
     ];
 
     protected $hidden = [
@@ -30,12 +31,32 @@ class Store extends Authenticatable
 
     protected $casts = [
         'password' => 'hashed',
-        'closed_days' => 'array',
     ];
 
     public function reviews()
     {
-        return $this->hasMany(\App\Models\Review::class);
+        return $this->hasMany(Review::class);
     }
 
+    public function hours(){
+        return $this->hasMany(StoreHour::class);
+    }
+
+    public function paymentMethods(){
+        return $this->belongsToMany(PaymentMethod::class,'store_payment_methods');
+    }
+
+    public function slideImages(){
+        return $this->hasMany(StoreImage::class)
+            ->where('type','slide')
+            ->orderBy('sort_order')
+            ->limit(5);
+    }
+
+    public function galleryImages(){
+        return $this->hasMany(StoreImage::class)
+            ->where('type','gallery')
+            ->orderBy('sort_order')
+            ->limit(6);
+    }
 }
