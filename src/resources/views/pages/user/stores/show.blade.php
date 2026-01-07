@@ -70,17 +70,64 @@
   <div class="w-full max-w-md mx-auto pt-6 space-y-5">
 
     {{-- image --}}
-    <section class="px-4" x-data="{ active:0 }">
+    <section
+      class="px-4"
+      x-data="{
+        active: 0,
+        total: {{ $store->slideImages->count() }},
+        timer: null,
+
+        showModal: false,
+        modalImage: null,
+
+        start() {
+          this.stop()
+          this.timer = setInterval(() => {
+            this.active = (this.active + 1) % this.total
+          }, 3000)
+        },
+
+        stop() {
+          if (this.timer) clearInterval(this.timer)
+          this.timer = null
+        },
+
+        go(i) {
+          this.active = i
+          this.start()
+        },
+
+        open(src) {
+          this.modalImage = src
+          this.showModal = true
+          this.stop()
+        },
+
+        close() {
+          this.showModal = false
+          this.modalImage = null
+          this.start()
+        },
+      }"
+      x-init="start()"
+      @mouseenter="stop()"
+      @mouseleave="start()"
+      @keydown.escape.window="if (showModal) close()"
+    >
       <div class="overflow-hidden bg-base">
         {{-- image --}}
-        <div class="relative w-full aspect-[16/10] overflow-hidden">
+        <div class="relative w-full aspect-[16/10] rounded-[8px] overflow-hidden">
           <div
             class="flex h-full transition-transform duration-300 ease-out"
             :style="`transform: translateX(-${active * 100}%);`"
           >
             @foreach($store->slideImages as $img)
               <div class="w-full h-full flex-shrink-0">
-                <img src="{{ $img->path }}" class="w-full h-full object-cover object-cover rounded-[8px]" />
+                <img
+                  src="{{ $img->path }}"
+                  class="w-full h-full object-cover cursor-pointer"
+                  @click="open('{{ $img->path }}')"
+                />
               </div>
             @endforeach
           </div>
@@ -89,13 +136,32 @@
         {{-- dots --}}
         <div class="flex justify-center gap-2 py-3">
           @foreach($store->slideImages as $i => $img)
-            <button @click="active={{ $i }}"
+            <button
+              @click="go({{ $i }})"
               class="w-[7px] h-[7px] rounded-full transition"
-              :class="active === {{ $i }} ? 'bg-main' : 'bg-accent'"></button>
+              :class="active === {{ $i }} ? 'bg-main' : 'bg-accent'"
+            ></button>
           @endforeach
         </div>
       </div>
+
+      {{-- modal --}}
+      <div
+        x-show="showModal"
+        x-transition.opacity
+        class="fixed inset-0 z-[9999] bg-black/80 flex items-center justify-center"
+        @click.self="close()"
+      >
+        <img :src="modalImage" class="w-[95vw] h-[95vh] object-contain" />
+
+        <button
+          class="absolute top-4 right-4 text-white text-3xl leading-none"
+          @click="close()"
+          aria-label="Close"
+        >&times;</button>
+      </div>
     </section>
+
 
     <section class="px-4 space-y-2 pb-6">
         <div class="min-w-0 space-y-1">
@@ -136,22 +202,60 @@
       </div>
     </section>
 
-    <section class="px-4 space-y-2 pb-12">
-        <div class="text-lg text-text_color font-medium">ギャラリー</div>
-        <div class="grid grid-cols-3 gap-3">
-            @foreach($store->galleryImages as $img)
-            <div class="aspect-square overflow-hidden rounded-lg bg-base">
-                <img src="{{ $img->path }}" class="w-full h-full object-cover">
-            </div>
-            @endforeach
-        </div>
-        
-        <div class="flex justify-center pt-4">
-            <x-ui.button type="submit" variant="secondary" class="text-form">
-                メニューを見る
-            </x-ui.button>
-        </div>
+    <section
+      class="px-4 space-y-2 pb-12"
+      x-data="{
+        showModal: false,
+        modalImage: null,
+
+        open(src) {
+          this.modalImage = src
+          this.showModal = true
+        },
+        close() {
+          this.showModal = false
+          this.modalImage = null
+        },
+      }"
+      @keydown.escape.window="if (showModal) close()"
+    >
+      <div class="text-lg text-text_color font-medium">ギャラリー</div>
+
+      <div class="grid grid-cols-3 gap-3">
+        @foreach($store->galleryImages as $img)
+          <div class="aspect-square overflow-hidden rounded-lg bg-base">
+            <img
+              src="{{ $img->path }}"
+              class="w-full h-full object-cover cursor-pointer"
+              @click="open('{{ $img->path }}')"
+            >
+          </div>
+        @endforeach
+      </div>
+
+      <div class="flex justify-center pt-4">
+        <x-ui.button type="submit" variant="secondary" class="text-form">
+          メニューを見る
+        </x-ui.button>
+      </div>
+
+      {{-- modal --}}
+      <div
+        x-show="showModal"
+        x-transition.opacity
+        class="fixed inset-0 z-[9999] bg-black/80 flex items-center justify-center"
+        @click.self="close()"
+      >
+        <img :src="modalImage" class="w-[95vw] h-[95vh] object-contain" />
+
+        <button
+          class="absolute top-4 right-4 text-white text-3xl leading-none"
+          @click="close()"
+          aria-label="Close"
+        >&times;</button>
+      </div>
     </section>
+
 
     <section class="px-4 space-y-2 pb-12">
         <div class="flex items-center justify-between">
