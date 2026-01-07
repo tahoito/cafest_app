@@ -3,6 +3,7 @@
 namespace App\Models;
 use App\Models\StoreHour;
 use App\Models\PaymentMethod;
+use App\Models\StoreImage;
 use App\Models\Review;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -45,4 +46,17 @@ class Store extends Authenticatable
         return $this->belongsToMany(PaymentMethod::class,'store_payment_methods');
     }
 
+    public function slideImages(){
+        return $this->hasMany(StoreImage::class)
+            ->where('type','slide')
+            ->orderBy('sort_order')
+            ->limit(5);
+    }
+
+    public function galleryImages(){
+        return $this->hasMany(StoreImage::class)
+            ->where('type','gallery')
+            ->orderBy('sort_order')
+            ->limit(6);
+    }
 }

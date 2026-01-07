@@ -26,6 +26,10 @@ class StoreController extends Controller
             ->take(10)
             ->get();
 
+        $store->load(['slideImages','galleryImages','hours','reviews'])
+            ->loadAvg('reviews','rating')
+            ->findOrFail($store->id);
+
 
         return view('pages.user.stores.show', [
             'store' => $store,

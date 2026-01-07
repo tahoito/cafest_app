@@ -38,12 +38,6 @@
     $phone = trim((string) data_get($store,'phone',''));
     $address = trim((string) data_get($store,'address',''));
     $mood = (string) data_get($store, 'mood', '');
-    $imageUrl = data_get($store, 'image_url');
-    $images = [
-      $imageUrl ?: asset('images/store/card.png'),
-      $imageUrl ?: asset('images/store/card.png'),
-      $imageUrl ?: asset('images/store/card.png'),
-    ];
     $meta = trim($area) !== '' && trim($mood) !== ''
       ? "{$area}・{$mood}"
       : (trim($area) !== '' ? $area : $mood);
@@ -77,22 +71,24 @@
 
     {{-- image --}}
     <section class="px-4" x-data="{ active:0 }">
-      <div class="rounded-[8px] overflow-hidden">
+      <div class="overflow-hidden bg-base">
+        {{-- image --}}
         <div class="relative w-full aspect-[16/10] overflow-hidden">
-          <div 
+          <div
             class="flex h-full transition-transform duration-300 ease-out"
             :style="`transform: translateX(-${active * 100}%);`"
           >
-            @foreach($images as $img)
+            @foreach($store->slideImages as $img)
               <div class="w-full h-full flex-shrink-0">
-                <img src="{{ $img }}" class="w-full h-full object-cover" />
+                <img src="{{ $img->path }}" class="w-full h-full object-cover object-cover rounded-[8px]" />
               </div>
             @endforeach
           </div>
         </div>
 
+        {{-- dots --}}
         <div class="flex justify-center gap-2 py-3">
-          @foreach($images as $i => $img)
+          @foreach($store->slideImages as $i => $img)
             <button @click="active={{ $i }}"
               class="w-[7px] h-[7px] rounded-full transition"
               :class="active === {{ $i }} ? 'bg-main' : 'bg-accent'"></button>
@@ -143,29 +139,11 @@
     <section class="px-4 space-y-2 pb-12">
         <div class="text-lg text-text_color font-medium">ギャラリー</div>
         <div class="grid grid-cols-3 gap-3">
+            @foreach($store->galleryImages as $img)
             <div class="aspect-square overflow-hidden rounded-lg bg-base">
-                <img src="/images/store/image_example.png" class="w-full h-full object-cover">
+                <img src="{{ $img->path }}" class="w-full h-full object-cover">
             </div>
-
-            <div class="aspect-square overflow-hidden rounded-lg bg-base">
-                <img src="/images/store/image_example.png" class="w-full h-full object-cover">
-            </div>
-
-            <div class="aspect-square overflow-hidden rounded-lg bg-base">
-                <img src="/images/store/image_example.png" class="w-full h-full object-cover">
-            </div>
-
-            <div class="aspect-square overflow-hidden rounded-lg bg-base">
-                <img src="/images/store/image_example.png" class="w-full h-full object-cover">
-            </div>
-
-            <div class="aspect-square overflow-hidden rounded-lg bg-base">
-                <img src="/images/store/image_example.png" class="w-full h-full object-cover">
-            </div>
-
-            <div class="aspect-square overflow-hidden rounded-lg bg-base">
-                <img src="/images/store/image_example.png" class="w-full h-full object-cover">
-            </div>
+            @endforeach
         </div>
         
         <div class="flex justify-center pt-4">
