@@ -5,7 +5,7 @@
     x-data="{ reserveOpen:false }"
     class="h-screen bg-base">
 
-  <div class="h-full overflow-y-auto">
+  <div class="h-full overflow-y-auto pt-16">
     {{-- header --}}
     <header class="fixed top-0 inset-x-0 z-50 bg-base_color">
       <div class="pt-[env(safe-area-inset-top)]">
@@ -192,9 +192,11 @@
           </div>
 
           <div class="flex justify-center pt-4">
-              <x-ui.button type="submit" variant="secondary" class="text-form">
-                  レビューを投稿する
-              </x-ui.button>
+            <a href="{{ route('user.stores.reviews.create', $store) }}">
+                <x-ui.button variant="secondary" class="text-form">
+                    レビューを書く
+                </x-ui.button>
+            </a>
           </div>
       </section>
 
