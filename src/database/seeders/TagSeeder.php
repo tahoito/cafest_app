@@ -21,8 +21,9 @@ class TagSeeder extends Seeder
 
         foreach ($names as $name) {
             Tag::firstOrCreate(
-                ['slug' => Str::slug($name) ?: md5($name)], // 日本語slug対策
-                ['name' => $name, 'is_seed' => true]
+                ['slug' => Str::slug($name) ?: md5($name)], 
+                ['name' => $name, 'is_seed' => true],
+                ['status' => 'approved', 'use_count' => 0]
             );
         }
 

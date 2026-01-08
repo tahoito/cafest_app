@@ -1,6 +1,9 @@
 @extends('layouts.app')
 @section('title', data_get($store,'name','店舗詳細'))
+
 @section('content')
+@section('hideNavbar')
+@endsection
 <div
     x-data="{ reserveOpen:false }"
     class="h-screen bg-base">

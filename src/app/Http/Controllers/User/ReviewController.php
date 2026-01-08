@@ -15,7 +15,13 @@ class ReviewController extends Controller
 {
     public function create(Store $store)
     {
-        return view('pages.user.reviews.create', compact('store'));
+        $slideImage = $store->slideImages()->first();
+        $approvedTags = Tag::where('status','approved')
+            ->orderBy('is_seed','desc')
+            ->orderBy('name')
+            ->get();
+
+        return view('pages.user.reviews.create', compact('store', 'slideImage'));
     }
 
     public function store(Request $request, Store $store)
@@ -25,7 +31,7 @@ class ReviewController extends Controller
             'body' => ['nullable', 'string', 'max:1000'],
             'tags' => ['nullable', 'string', 'max:100'],
 
-            'images' => ['nullable', 'array', 'max:6'],
+            'images' => ['nullable', 'array', 'max:8'],
             'images.*' => ['image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
         ]);
 
@@ -41,22 +47,34 @@ class ReviewController extends Controller
                 ->map(fn ($s) => trim($s))
                 ->filter()
                 ->unique()
-                ->take(6);
+                ->take(8);
 
-            $tagIds = $names->map(function ($name) {
+            $tagIds = $names->map(function ($name) use ($request) {
                 $slug = Str::slug($name, '-');
                 if ($slug === '') $slug = 'tag-' . Str::random(8);
 
                 $tag = Tag::firstOrCreate(
                     ['name' => $name],
-                    ['slug' => $slug . '-' . Str::random(4)]
+                    [   
+                        'slug' => $slug . '-' . Str::random(4),
+                        'created_by_user_id' => $request->user()->id,
+                        'is_seed' => false,
+                        'status' => 'pending',
+                        'use_count' => 0,
+                    ]
                 );
+            });
 
-                return $tag->id;
-            })->all();
+            $review->tags()->sync($tag->pluck('id')->all());
+            Tag::whereIn('id', $tag->pluck('id')->all())->increment('use_count');
 
-            $review->tags()->sync($tagIds);
+            $threshould = 4;
+            Tag::whereIn('id', $tag->pluck('id')->all())
+                ->where('use_count', '>=', $threshould)
+                ->where('status', 'pending')
+                ->update(['status' => 'approved']); 
         }
+
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $idx => $file) {
