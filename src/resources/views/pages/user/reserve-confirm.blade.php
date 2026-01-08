@@ -4,7 +4,7 @@
 @endsection
 
 @section('content')
-  <div class="min-h-dvh bg-base_color flex flex-col overflow-hidden">
+  <div class="h-screen bg-base_color flex flex-col">
     <header class="sticky top-0 z-50 bg-base_color">
       <div class="pt-[env(safe-area-inset-top)]">
         <div class="grid grid-cols-[48px_1fr_48px] items-center px-4 h-16">
@@ -20,7 +20,7 @@
       </div>
     </header>
 
-    <main class="flex-1 overflow-y-auto">
+    <main class="flex-1 overflow-y-auto overscroll-contain">
       <div class="w-full max-w-md mx-auto px-3 pt-6 space-y-8">
 
         <section class="rounded-2xl border border-main bg-base px-5 py-4 shadow-[0_2px_10px_rgba(0,0,0,0.10)]">

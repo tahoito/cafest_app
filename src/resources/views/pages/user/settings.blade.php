@@ -4,191 +4,193 @@
 @section('content')
 @section('hideNavbar')
 @endsection
-<div class="min-h-screen bg-base relative overflow-hidden">
+<div class="h-screen bg-base_color">
+    <div class="h-full overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
 
-  {{-- header --}}
-    <header class="sticky top-0 z-50 bg-base_color">
-        <div class="pt-[env(safe-area-inset-top)]">
-            <div class="grid grid-cols-[48px_1fr_48px] items-center px-4 h-16">
-            <a class="p-2" href="{{ route('user.signup') }}">
-                <x-icons.back class="w-5 h-5 text-text_color" />
-            </a>
+        <header class="fixed top-0 inset-x-0 z-50 bg-base_color">
+            <div class="pt-[env(safe-area-inset-top)]">
+                <div class="grid grid-cols-[48px_1fr_48px] items-center px-4 h-16">
+                <a class="p-2" href="{{ route('user.signup') }}">
+                    <x-icons.back class="w-5 h-5 text-text_color" />
+                </a>
 
-            <h1 class="text-center text-text_color text-2xl whitespace-nowrap overflow-hidden text-ellipsis">
-                アカウント情報設定
-            </h1>
-            <div></div>
-            </div>
-        </div>
-    </header>
-
-  {{-- content --}}
-    <main class="w-full max-w-md mx-auto px-4 py-6 pb-6">
-        <form method="POST" action="{{ route('user.settings.store') }}" enctype="multipart/form-data"
-            x-data="{
-                showAllAreas: false,
-                showAllMoods: false,
-                areas: ['栄','名駅','大須','伏見','上前津','金山','矢場町','鶴舞','星ヶ丘','八事','桜山','今池','本山','覚王山','新瑞橋','久屋大通'],
-                moods: ['韓国風','デート向け','勉強・作業','夜カフェ','静かめ','レトロ・喫茶','ペットOK','女子向け','長居OK'],
-                selectedAreas:[],
-                selectedMoods: [],
-                toggle(list, value){
-                if(list.includes(value)) return list.splice(list.indexOf(value), 1)
-                list.push(value)
-                }
-            }"
-        >
-        @csrf
-
-        {{-- 送信用の隠しフィールド（Alpine で選択した配列を JSON にして送る） --}}
-        <input type="hidden" name="area" :value="JSON.stringify(selectedAreas)" />
-        <input type="hidden" name="mood" :value="JSON.stringify(selectedMoods)" />
-
-        <section class="flex flex-col items-center pt-8">
-            <label class="cursor-pointer">
-                <div
-                class="w-56 h-56 rounded-xl bg-base border border-accent shadow-sm
-                        flex items-center justify-center"
-                >
-                {{-- 内側ラッパー（余白用） --}}
-                <div class="relative w-[88%] h-[88%] rounded-lg overflow-hidden
-                            bg-base">
-
-                    {{-- プレビュー画像 --}}
-                    <img
-                    id="preview"
-                    class="absolute inset-0 w-full h-full object-cover hidden"
-                    />
-
-                    {{-- プレースホルダー --}}
-                    <div
-                    id="placeholder"
-                    class="absolute inset-0 flex flex-col items-center justify-center
-                            gap-3 text-placeholder"
-                    >
-                    <div class="w-14 h-14">
-                        <x-icons.image />
-                    </div>
-                    <span class="text-xs text-text_color">アイコン</span>
-                    </div>
+                <h1 class="text-center text-text_color text-2xl whitespace-nowrap overflow-hidden text-ellipsis">
+                    アカウント情報設定
+                </h1>
+                <div></div>
                 </div>
             </div>
-            <input
-                type="file"
-                name="icon"
-                accept="image/*"
-                class="hidden"
-                onchange="(function(){
-                    const img = document.getElementById('preview');
-                    const placeholder = document.getElementById('placeholder');
-                    const file = this.files && this.files[0];
-                    if(!file) return;
+        </header>
 
-                    if(window.URL && typeof window.URL.createObjectURL === 'function'){
-                    img.src = window.URL.createObjectURL(file);
-                    img.onload = () => {
-                        try{ window.URL.revokeObjectURL(img.src); }catch(e){}
-                    };
-                    } else {
-                    const reader = new FileReader();
-                    reader.onload = e => img.src = e.target.result;
-                    reader.readAsDataURL(file);
+    {{-- content --}}
+        <div class="w-full max-w-md mx-auto px-4 py-6 pb-6">
+            <form method="POST" action="{{ route('user.settings.store') }}" enctype="multipart/form-data"
+                x-data="{
+                    showAllAreas: false,
+                    showAllMoods: false,
+                    areas: ['栄','名駅','大須','伏見','上前津','金山','矢場町','鶴舞','星ヶ丘','八事','桜山','今池','本山','覚王山','新瑞橋','久屋大通'],
+                    moods: ['韓国風','デート向け','勉強・作業','夜カフェ','静かめ','レトロ・喫茶','ペットOK','女子向け','長居OK'],
+                    selectedAreas:[],
+                    selectedMoods: [],
+                    toggle(list, value){
+                    if(list.includes(value)) return list.splice(list.indexOf(value), 1)
+                    list.push(value)
                     }
-
-                    img.classList.remove('hidden');
-                    placeholder.classList.add('hidden');
-                }).call(this)"
-                />
-            </label>
-            @error('icon')
-                <p class="text-notification text-sm mt-1">{{ $message }}</p>
-            @enderror
-        </section>
-
-        <section class="space-y-2 pt-8">
-            <x-ui.label for="username">ユーザー名</x-ui.label>
-            <x-ui.input 
-                id="username" 
-                type="text" 
-                name="name" 
-                value="{{ old('name') }}"
-                placeholder="ユーザー名を入力"/>
-            @error('name')
-                <p class="text-notification text-sm mt-1">{{ $message }}</p>
-            @enderror       
-        </section>
-       
-        <section class="space-y-3 pt-8">
-            <div>
-                <div class="text-lg text-text_color font-medium">おすすめで出して欲しいエリア</div>
-                <div class="text-xs text-text_color">※複数選択可</div>
-            </div>
-            @error('area')
-                <p class="text-notification text-sm mt-1">{{ $message }}</p>
-            @enderror
-
-            {{-- チップ選択肢 --}}
-            <div class="grid grid-cols-4 gap-2 mt-3 overflow-hidden transition-all"
-             :class="showAllAreas ? 'max-h-[999px]' : 'max-h-[72px]'">
-                <template x-for="(area, index) in areas" :key="index">
-                    <x-ui.chip
-                        variant="area"
-                        @click="toggle(selectedAreas, area)"
-                        x-bind:class="selectedAreas.includes(area) 
-                        ? 'bg-main text-form' : 'bg-accent text-text_color'"
-                    >
-                        <span x-text="area"></span>
-                    </x-ui.chip>
-                </template>
-            </div>
-            <button
-                type="button"
-                class="text-xs text-text_color ml-auto block"
-                @click="showAllAreas = !showAllAreas"
+                }"
             >
-                <span x-text="showAllAreas ? '閉じる' : 'もっと見る'"></span>
-            </button>
-        </section>
+            @csrf
 
-        <section class="space-y-3 pt-8">
-            <div>
-                <div class="text-lg text-text_color font-medium">好みの雰囲気のカフェ</div>
-                <div class="text-xs text-text_color">※複数選択可</div>
-            </div>
-            @error('mood')
-                <p class="text-notification text-sm mt-1">{{ $message }}</p>
-            @enderror
+            {{-- 送信用の隠しフィールド（Alpine で選択した配列を JSON にして送る） --}}
+            <input type="hidden" name="area" :value="JSON.stringify(selectedAreas)" />
+            <input type="hidden" name="mood" :value="JSON.stringify(selectedMoods)" />
 
-            {{-- チップ選択肢 --}}
-            <div class="grid grid-cols-3 gap-3 mt-3 overflow-hidden transition-all"
-             :class="showAllMoods ? 'max-h-[999px]' : 'max-h-[104px]'">
-                <template x-for="(mood, index) in moods" :key="index">
-                    <x-ui.chip
-                        variant="mood"
-                        @click="toggle(selectedMoods, mood)"
-                        x-bind:class="selectedMoods.includes(mood) 
-                        ? 'bg-main text-form' : 'bg-accent text-text_color'"
+            <section class="flex flex-col items-center pt-8">
+                <label class="cursor-pointer">
+                    <div
+                    class="w-56 h-56 rounded-xl bg-base border border-accent shadow-sm
+                            flex items-center justify-center"
                     >
-                        <span x-text="mood"></span>
-                    </x-ui.chip>
-                </template>
-            </div>
-            <button
-                type="button"
-                class="text-xs text-text_color ml-auto block"
-                @click="showAllMoods = !showAllMoods"
-            >
-                <span x-text="showAllMoods ? '閉じる' : 'もっと見る'"></span>
-            </button>
-        </section>
+                    {{-- 内側ラッパー（余白用） --}}
+                    <div class="relative w-[88%] h-[88%] rounded-lg overflow-hidden
+                                bg-base">
 
-        <div class="flex justify-center pt-8">
-            <x-ui.button type="submit" class="w-full text-form">
-                次へ
-            </x-ui.button>
+                        {{-- プレビュー画像 --}}
+                        <img
+                        id="preview"
+                        class="absolute inset-0 w-full h-full object-cover hidden"
+                        />
+
+                        {{-- プレースホルダー --}}
+                        <div
+                        id="placeholder"
+                        class="absolute inset-0 flex flex-col items-center justify-center
+                                gap-3 text-placeholder"
+                        >
+                        <div class="w-14 h-14">
+                            <x-icons.image />
+                        </div>
+                        <span class="text-xs text-text_color">アイコン</span>
+                        </div>
+                    </div>
+                </div>
+                <input
+                    type="file"
+                    name="icon"
+                    accept="image/*"
+                    class="hidden"
+                    onchange="(function(){
+                        const img = document.getElementById('preview');
+                        const placeholder = document.getElementById('placeholder');
+                        const file = this.files && this.files[0];
+                        if(!file) return;
+
+                        if(window.URL && typeof window.URL.createObjectURL === 'function'){
+                        img.src = window.URL.createObjectURL(file);
+                        img.onload = () => {
+                            try{ window.URL.revokeObjectURL(img.src); }catch(e){}
+                        };
+                        } else {
+                        const reader = new FileReader();
+                        reader.onload = e => img.src = e.target.result;
+                        reader.readAsDataURL(file);
+                        }
+
+                        img.classList.remove('hidden');
+                        placeholder.classList.add('hidden');
+                    }).call(this)"
+                    />
+                </label>
+                @error('icon')
+                    <p class="text-notification text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </section>
+
+            <section class="space-y-2 pt-8">
+                <x-ui.label for="username">ユーザー名</x-ui.label>
+                <x-ui.input 
+                    id="username" 
+                    type="text" 
+                    name="name" 
+                    value="{{ old('name') }}"
+                    placeholder="ユーザー名を入力"/>
+                @error('name')
+                    <p class="text-notification text-sm mt-1">{{ $message }}</p>
+                @enderror       
+            </section>
+        
+            <section class="space-y-3 pt-8">
+                <div>
+                    <div class="text-lg text-text_color font-medium">おすすめで出して欲しいエリア</div>
+                    <div class="text-xs text-text_color">※複数選択可</div>
+                </div>
+                @error('area')
+                    <p class="text-notification text-sm mt-1">{{ $message }}</p>
+                @enderror
+
+                {{-- チップ選択肢 --}}
+                <div class="grid grid-cols-4 gap-2 mt-3 overflow-hidden transition-all"
+                :class="showAllAreas ? 'max-h-[999px]' : 'max-h-[72px]'">
+                    <template x-for="(area, index) in areas" :key="index">
+                        <x-ui.chip
+                            variant="area"
+                            @click="toggle(selectedAreas, area)"
+                            x-bind:class="selectedAreas.includes(area) 
+                            ? 'bg-main text-form' : 'bg-accent text-text_color'"
+                        >
+                            <span x-text="area"></span>
+                        </x-ui.chip>
+                    </template>
+                </div>
+                <button
+                    type="button"
+                    class="text-xs text-text_color ml-auto block"
+                    @click="showAllAreas = !showAllAreas"
+                >
+                    <span x-text="showAllAreas ? '閉じる' : 'もっと見る'"></span>
+                </button>
+            </section>
+
+            <section class="space-y-3 pt-8">
+                <div>
+                    <div class="text-lg text-text_color font-medium">好みの雰囲気のカフェ</div>
+                    <div class="text-xs text-text_color">※複数選択可</div>
+                </div>
+                @error('mood')
+                    <p class="text-notification text-sm mt-1">{{ $message }}</p>
+                @enderror
+
+                {{-- チップ選択肢 --}}
+                <div class="grid grid-cols-3 gap-3 mt-3 overflow-hidden transition-all"
+                :class="showAllMoods ? 'max-h-[999px]' : 'max-h-[104px]'">
+                    <template x-for="(mood, index) in moods" :key="index">
+                        <x-ui.chip
+                            variant="mood"
+                            @click="toggle(selectedMoods, mood)"
+                            x-bind:class="selectedMoods.includes(mood) 
+                            ? 'bg-main text-form' : 'bg-accent text-text_color'"
+                        >
+                            <span x-text="mood"></span>
+                        </x-ui.chip>
+                    </template>
+                </div>
+                <button
+                    type="button"
+                    class="text-xs text-text_color ml-auto block"
+                    @click="showAllMoods = !showAllMoods"
+                >
+                    <span x-text="showAllMoods ? '閉じる' : 'もっと見る'"></span>
+                </button>
+            </section>
+
+            <div class="flex justify-center pt-8">
+                <x-ui.button type="submit" class="w-full text-form">
+                    次へ
+                </x-ui.button>
+            </div>
+            </form>
         </div>
-        </form>
-    </main>
+    </div>
+
 </div>
 
 @endsection
