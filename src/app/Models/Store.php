@@ -59,4 +59,5 @@ class Store extends Authenticatable
             ->orderBy('sort_order')
             ->limit(6);
     }
+
 }

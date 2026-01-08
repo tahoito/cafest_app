@@ -14,6 +14,8 @@ class Tag extends Model
         'slug',
         'created_by_user_id',
         'is_seed',
+        'status',
+        'use_count',    
     ];
 
     public function reviews()
