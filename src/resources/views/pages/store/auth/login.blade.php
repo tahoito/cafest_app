@@ -10,7 +10,7 @@
             <x-icons.back class="w-5 h-5 text-text_color" />
         </a>
         <div class="mb-12 flex flex-col items-center">
-            <x-icons.store size="80" stroke="1" class="text-text_color mb-2" />
+            <x-icons.store size="80" stroke="1.5" class="text-text_color mb-2" />
             <h1 class="text-center text-text_color text-2xl">
                 ログイン    
             </h1>
