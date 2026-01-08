@@ -1,274 +1,148 @@
-<nav class="fixed bottom-0 left-0 w-full z-50"
-     data-current="{{ request()->routeIs('user.search') ? 1 : (request()->routeIs('user.top') ? 0 : 0) }}">
-  <div class="relative w-full">
-    <svg
-      id="waveSvg"
-      class="pointer-events-none absolute -top-[54px] left-0 w-full h-[108px] text-main z-10 transform-gpu transition-transform duration-550 ease-[cubic-bezier(.22,1,.36,1)]"
-      viewBox="0 -40 100 80"
-      preserveAspectRatio="none"
-      shape-rendering="geometricPrecision"
-    >
-      <path id="wavePath" fill="currentColor"></path>
-    </svg>
+<div class="fixed inset-x-0 bottom-0 z-[100]">
+  <nav role="navigation" class="menu relative flex w-full items-center justify-around bg-main px-4 py-3">
+    <a href="{{ route('user.top') }}"
+       class="menu__item {{ request()->routeIs('user.top') ? 'active' : '' }}">
+      <span class="menu__icon">
+        <x-icons.home size="34" class="nav-draw"/>
+      </span>
+    </a>
 
-    <!-- bar bg（フル幅） -->
-    <div class="absolute inset-x-0 bottom-0 h-[78px] bg-main rounded-t-2xl z-0"></div>
+    <a href="{{ route('user.search') }}"
+       class="menu__item {{ request()->routeIs('user.search') ? 'active' : '' }}">
+      <span class="menu__icon">
+        <x-icons.search size="34" class="nav-draw"/>
+      </span>
+    </a>
 
-    <!-- nav items -->
-    <ul class="absolute inset-x-0 bottom-0 flex items-end justify-center gap-x-10 pb-2 z-30">
-      @php
-        $btnBase = "nav-item relative grid place-items-center";
-        $btnSize = "h-14 w-14";
-        $ease = "ease-[cubic-bezier(.22,1,.36,1)]";
+    <a href="#"
+       class="menu__item">
+      <span class="menu__icon">
+        <x-icons.reserve size="34" class="nav-draw"/>
+      </span>
+    </a>
 
-        // 丸（waveより上に見せたいなら z-30 / waveより下にしたいなら z-20）
-        $circleBase = "nav-circle absolute inset-0 rounded-full bg-transparent z-20 transform-gpu transition-transform duration-550 {$ease}";
+    <a href="#"
+       class="menu__item">
+      <span class="menu__icon">
+        <x-icons.mycafe size="34" class="nav-draw"/>
+      </span>
+    </a>
 
-        // アイコン
-        $iconBase = "nav-icon absolute inset-0 z-30 grid place-items-center transform-gpu transition-transform duration-800 {$ease}";
-      @endphp
+    <div class="menu__border"></div>
+  </nav>
 
-      <li>
-        <a href="{{ route('user.top') }}"
-           class="{{ $btnBase }} {{ $btnSize }}"
-           data-i="0">
-          <span class="{{ $circleBase }}"></span>
-          <span class="{{ $iconBase }}"><x-icons.home size="34" stroke="2.8" class="text-text_color" /></span>
-        </a>
-      </li>
+  {{-- clip-path --}}
+  <svg class="h-0 w-0" viewBox="0 0 202.9 45.5">
+    <clipPath id="menu" clipPathUnits="objectBoundingBox"
+              transform="scale(0.0049285362247413 0.021978021978022)">
+      <path d="M6.7,45.5c5.7,0.1,14.1-0.4,23.3-4c5.7-2.3,9.9-5,18.1-10.5c10.7-7.1,11.8-9.2,20.6-14.3c5-2.9,9.2-5.2,15.2-7
+          c7.1-2.1,13.3-2.3,17.6-2.1c4.2-0.2,10.5,0.1,17.6,2.1c6.1,1.8,10.2,4.1,15.2,7c8.8,5,9.9,7.1,20.6,14.3c8.3,5.5,12.4,8.2,18.1,10.5
+          c9.2,3.6,17.6,4.2,23.3,4H6.7z"/>
+    </clipPath>
+  </svg>
+</div>
 
-      <li>
-        <a href="{{ route('user.search') }}"
-           class="{{ $btnBase }} {{ $btnSize }}"
-           data-i="1">
-          <span class="{{ $circleBase }}"></span>
-          <span class="{{ $iconBase }}"><x-icons.search size="34" stroke="2.8" class="text-text_color" /></span>
-        </a>
-      </li>
-
-      <li>
-        <button class="{{ $btnBase }} {{ $btnSize }}" data-i="2" type="button">
-          <span class="{{ $circleBase }}"></span>
-          <span class="{{ $iconBase }}"><x-icons.reserve size="34" stroke="2.8" class="text-text_color" /></span>
-        </button>
-      </li>
-
-      <li>
-        <button class="{{ $btnBase }} {{ $btnSize }}" data-i="3" type="button">
-          <span class="{{ $circleBase }}"></span>
-          <span class="{{ $iconBase }}"><x-icons.mycafe size="34" stroke="2.8" class="text-text_color" /></span>
-        </button>
-      </li>
-    </ul>
-  </div>
-</nav>
-
-@push('scripts')
 <script>
-  const svg = document.getElementById("waveSvg");
-  const path = document.getElementById("wavePath");
-  const items = document.querySelectorAll(".nav-item");
+"use strict";
 
-  if (!svg || !path || !items || items.length === 0) {
-    // ナビが無いページは何もしない
-  } else {
+const menu = document.querySelector(".menu");
+if (menu) {
+  const menuItems = menu.querySelectorAll(".menu__item");
+  const menuBorder = menu.querySelector(".menu__border");
+  let activeItem = menu.querySelector(".active") || menuItems[0];
 
-    // ===== Active styles =====
-    const activeBtnAdd = ["z-10"];
-    const activeBtnRemove = ["z-0"];
-
-    // ✅丸が「消えたように見える」対策で ring を追加
-    const activeCircleAdd = ["bg-base_color", "-translate-y-5", "shadow-lg", "ring-1", "ring-black/10"];
-    const activeCircleRemove = ["bg-transparent", "translate-y-0", "shadow-none", "ring-0", "ring-transparent"];
-
-    const activeIconAdd = ["-translate-y-5"];
-    const activeIconRemove = ["translate-y-0"];
-
-    function setActive(index) {
-      items.forEach((btn, i) => {
-        const circle = btn.querySelector(".nav-circle");
-        const icon   = btn.querySelector(".nav-icon");
-        if (!circle || !icon) return;
-
-        if (i === index) {
-          btn.classList.add(...activeBtnAdd);
-          btn.classList.remove(...activeBtnRemove);
-
-          circle.classList.add(...activeCircleAdd);
-          circle.classList.remove(...activeCircleRemove);
-
-          icon.classList.add(...activeIconAdd);
-          icon.classList.remove(...activeIconRemove);
-        } else {
-          btn.classList.remove(...activeBtnAdd);
-          btn.classList.add(...activeBtnRemove);
-
-          circle.classList.remove(...activeCircleAdd);
-          circle.classList.add(...activeCircleRemove);
-
-          icon.classList.remove(...activeIconAdd);
-          icon.classList.add(...activeIconRemove);
-        }
-      });
-    }
-
-    // ===== icon draw animation =====
-    function animateIconDraw(btn) {
-      const svgEl = btn.querySelector("svg");
-      if (!svgEl) return;
-
-      svgEl.style.opacity = "0";
-      svgEl.style.transform = "scale(0.92)";
-      svgEl.style.transition =
-        "opacity 420ms ease, transform 1600ms cubic-bezier(.22,1,.36,1)";
-
-      requestAnimationFrame(() => {
-        svgEl.style.opacity = "1";
-        svgEl.style.transform = "scale(1)";
-      });
-
-      const els = svgEl.querySelectorAll("path, line, polyline, circle, rect");
-      if (!els.length) return;
-
-      els.forEach((el) => {
-        try {
-          const len = el.getTotalLength ? el.getTotalLength() : 0;
-
-          el.style.transition = "none";
-          el.style.strokeDasharray = `${len}`;
-          el.style.strokeDashoffset = `${len}`;
-          el.style.strokeLinecap = "round";
-          el.style.strokeLinejoin = "round";
-
-          void el.getBoundingClientRect();
-
-          el.style.transition =
-            "stroke-dashoffset 1600ms cubic-bezier(.22,1,.36,1)";
-
-          el.style.strokeDashoffset = "0";
-        } catch (e) {
-          el.style.transition = "none";
-          el.style.strokeDasharray = "200";
-          el.style.strokeDashoffset = "200";
-          void el.getBoundingClientRect();
-          el.style.transition = "stroke-dashoffset 1600ms cubic-bezier(.22,1,.36,1)";
-          el.style.strokeDashoffset = "0";
-        }
-      });
-    }
-
-    // ===== Wave =====
-    const BASE_Y = 18;
-    const BOTTOM = 28;
-
-    const peakBase = 30;
-    const peakMax  = 38;
-
-    function wavePath(cx, peak, humpW) {
-      const start = Math.max(0, cx - humpW);
-      const end   = Math.min(100, cx + humpW);
-      const h = humpW * 0.9;
-
-      return `
-        M 0 ${BOTTOM}
-        L 0 ${BASE_Y}
-        L ${start} ${BASE_Y}
-        C ${start + h} ${BASE_Y}, ${cx - h} ${peak}, ${cx} ${peak}
-        C ${cx + h} ${peak}, ${end - h} ${BASE_Y}, ${end} ${BASE_Y}
-        L 100 ${BASE_Y}
-        L 100 ${BOTTOM}
-        Z
-      `;
-    }
-
-    function calcCx(btn) {
-      if (!btn) return 50;
-
-      const svgRect = svg.getBoundingClientRect();
-      const btnRect = btn.getBoundingClientRect();
-      const centerX = (btnRect.left + btnRect.width / 2) - svgRect.left;
-
-      if (!svgRect.width) return 50;
-      return (centerX / svgRect.width) * 100;
-    }
-
-    let currentCx = null;
-    let targetCx = null;
-    let rafId = null;
-
-    function moveWaveTo(cx) {
-      targetCx = cx;
-      if (currentCx == null) currentCx = cx;
-
-      cancelAnimationFrame(rafId);
-
-      const duration = 480;
-      const startTime = performance.now();
-
-      const humpBase = 22;
-      const humpMax  = 28;
-
-      const tick = (t) => {
-        const p = Math.min((t - startTime) / duration, 1);
-
-        currentCx += (targetCx - currentCx) * 0.24;
-
-        const bounce = Math.sin(p * Math.PI); // 0→1→0
-        const peak = peakBase + (peakMax - peakBase) * bounce;
-        const humpW = humpBase + (humpMax - humpBase) * bounce;
-
-        path.setAttribute("d", wavePath(currentCx, peak, humpW));
-
-        if (Math.abs(targetCx - currentCx) > 0.08 || p < 1) {
-          rafId = requestAnimationFrame(tick);
-        }
-      };
-
-      rafId = requestAnimationFrame(tick);
-    }
-
-    // ===== Init（1回だけ）=====
-    const navEl = document.querySelector("nav[data-current]");
-    const start = navEl ? Number(navEl.dataset.current) : 0;
-
-    setActive(start);
-    animateIconDraw(items[start]);
-
-    const initialCx = calcCx(items[start]);
-    currentCx = initialCx;
-    targetCx = initialCx;
-    path.setAttribute("d", wavePath(initialCx, peakBase, 22));
-
-    // ===== Click =====
-    items.forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        const i = Number(btn.dataset.i);
-
-        setActive(i);
-        animateIconDraw(btn);
-        moveWaveTo(calcCx(btn));
-
-        if (btn.tagName === "A") {
-          e.preventDefault();
-          const href = btn.href;
-          setTimeout(() => {
-            window.location.href = href;
-          }, 120);
-        }
-      });
-    });
-
-    // ===== Resize =====
-    window.addEventListener("resize", () => {
-      const activeBtn =
-        [...items].find(b => b?.querySelector(".nav-circle")?.classList.contains("bg-base_color"))
-        || items[0];
-
-      const cx = calcCx(activeBtn);
-      currentCx = cx;
-      targetCx = cx;
-      path.setAttribute("d", wavePath(cx, peakBase, 22));
-    });
+  function offsetMenuBorder(element) {
+    if (!menuBorder || !element) return;
+    const rect = element.getBoundingClientRect();
+    const left = Math.floor(
+      rect.left - menu.offsetLeft - (menuBorder.offsetWidth - rect.width) / 2
+    ) + "px";
+    menuBorder.style.transform = `translate3d(${left}, 0 , 0)`;
   }
+
+  // ✅ “元のアイコンは消さずに” 上から線だけなぞる
+  function drawIconOverlay(item) {
+    const svg = item.querySelector("svg.nav-draw");
+    if (!svg) return;
+
+    // 前のoverlayがあれば消す
+    svg.querySelectorAll(".draw-overlay").forEach(n => n.remove());
+
+    const shapes = svg.querySelectorAll("path,circle,rect,line,polyline,polygon");
+    if (!shapes.length) return;
+
+    const overlay = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    overlay.setAttribute("class", "draw-overlay");
+    overlay.style.pointerEvents = "none";
+
+    shapes.forEach((el) => {
+      // strokeがない（=線じゃない）要素はスキップ
+      const stroke = el.getAttribute("stroke");
+      const hasStroke = stroke && stroke !== "none";
+      if (!hasStroke) return;
+
+      const clone = el.cloneNode(true);
+
+      // 線だけ描きたいのでfill消す
+      clone.setAttribute("fill", "none");
+
+      // 元のstroke色/太さを保持（ここ大事）
+      // clone.setAttribute("stroke", "currentColor"); ←やらない
+
+      if (typeof clone.getTotalLength === "function") {
+        const len = clone.getTotalLength();
+        clone.style.strokeDasharray = `${len}`;
+        clone.style.strokeDashoffset = `${len}`;
+        clone.style.transition = "none";
+        overlay.appendChild(clone);
+      }
+    });
+
+    if (!overlay.childNodes.length) return;
+
+    svg.appendChild(overlay);
+
+    // 次フレームで描き始め
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        overlay.querySelectorAll("path,circle,rect,line,polyline,polygon").forEach((el) => {
+          if (typeof el.getTotalLength !== "function") return;
+          el.style.transition = "stroke-dashoffset 520ms ease";
+          el.style.strokeDashoffset = "0";
+        });
+      });
+    });
+
+    // 終わったらoverlay消す（元のアイコンは残る）
+    setTimeout(() => overlay.remove(), 650);
+  }
+
+  // 初期位置（初期は描かない＝押した時だけ）
+  offsetMenuBorder(activeItem);
+
+  menuItems.forEach((item) => {
+    item.addEventListener("click", (e) => {
+      const href = item.getAttribute("href") || "";
+      const isRealNav = href && href !== "#" && !href.startsWith("#");
+
+      if (activeItem) activeItem.classList.remove("active");
+      item.classList.add("active");
+      activeItem = item;
+
+      offsetMenuBorder(activeItem);
+      drawIconOverlay(activeItem);
+
+      // 遷移はちょい遅らせて“描き始め”が見えるように
+      if (isRealNav) {
+        e.preventDefault();
+        setTimeout(() => { window.location.href = href; }, 220);
+      }
+    });
+  });
+
+  window.addEventListener("resize", () => {
+    offsetMenuBorder(activeItem);
+    menu.style.setProperty("--timeOut", "none");
+  });
+}
 </script>
-@endpush
