@@ -20,7 +20,7 @@
   </header>
 
   <div class="h-full overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
-    <div class="w-full max-w-md mx-auto pt-4 space-y-5 pb-24 px-4">
+    <div class="w-full max-w-md mx-auto pt-4 space-y-5 pb-4 px-4">
 
       <section class="space-y-2 pb-3">
         <div class="text-xl text-text_color font-medium">{{ $store->name }}</div>
@@ -67,7 +67,7 @@
             name="body"
             id="body"
             rows="6"
-            class="w-full rounded-lg p-3 bg-form text-text_color text-base shadow-[0_1px_4px_rgba(0,0,0,0.20)] focus:ring-0 focus:border-main"
+            class="w-full rounded-lg p-3 bg-form text-text_color text-base shadow-[0_1px_4px_rgba(0,0,0,0.20)] focus:outline-none focus:ring-1  focus:border-main"
             placeholder="お店の雰囲気やメニューについて入力"
           >{{ old('body') }}</textarea>
 
@@ -78,7 +78,7 @@
 
         <section class="space-y-1 pb-3">
           <div class="text-lg text-text_color font-medium">タグ選択</div>
-          <div class="text-sm text-main">1つ以上選択してください（最大8個）</div>
+          <div class="text-sm text-main">最大8個まで</div>
 
           <input type="hidden" name="tags" id="tags" value="{{ old('tags','') }}">
 
@@ -96,7 +96,7 @@
             <label class="text-sm text-text_color font-medium" for="tagInput">新しいタグを追加</label>
             <div class="flex gap-2">
               <input id="tagInput" type="text"
-                class="w-full rounded-lg p-3 bg-form text-text_color text-base shadow-[0_1px_4px_rgba(0,0,0,0.20)] focus:ring-0 focus:border-main"
+                class="w-full rounded-lg p-3 bg-form text-text_color text-base shadow-[0_1px_4px_rgba(0,0,0,0.20)] focus:outline-none focus:ring-1  focus:border-main"
                 placeholder="例：集中できる, 席広い"
               />
               <button
@@ -195,9 +195,11 @@
 <script>
 (function(){
   const hidden = document.getElementById('tags');
-  const tagButtons = Array.from(document.querySelectorAll('#tagArea .tag-btn'));
+  const tagArea = document.getElementById('tagArea');
   const input = document.getElementById('tagInput');
   const addBtn = document.getElementById('addTagButton');
+
+  if(!hidden || !tagArea || !input || !addBtn) return;
 
   const selected = new Set(
     (hidden.value || '').split(',').map(s => s.trim()).filter(Boolean)
@@ -208,7 +210,7 @@
   }
 
   function setVisual(btn, on){
-    const tagEl = btn.querySelector('*'); 
+    const tagEl = btn.querySelector('*');
     if (!tagEl) return;
 
     if (on) {
@@ -220,36 +222,77 @@
     }
   }
 
-  tagButtons.forEach(btn => {
-    setVisual(btn, selected.has(btn.dataset.name));
+  function attachToggle(btn){
     btn.addEventListener('click', () => {
       const name = btn.dataset.name;
+      if (!name) return;
+
       if (selected.has(name)) selected.delete(name);
       else {
         if (selected.size >= 8) return;
         selected.add(name);
       }
+
       setVisual(btn, selected.has(name));
       syncHidden();
     });
+  }
+
+  // 既存タグ（approved）にイベント付与
+  Array.from(tagArea.querySelectorAll('.tag-btn')).forEach(btn => {
+    setVisual(btn, selected.has(btn.dataset.name));
+    attachToggle(btn);
   });
+
+  function findButtonByName(name){
+    return Array.from(tagArea.querySelectorAll('.tag-btn'))
+      .find(b => (b.dataset.name || '') === name);
+  }
+
+  function createCustomChip(name){
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'tag-btn';
+    btn.dataset.name = name;
+
+    const chip = document.createElement('span');
+    chip.className = 'inline-flex items-center justify-center rounded-full border border-main px-4 py-2 text-sm !bg-base !text-text_color';
+    chip.textContent = name;
+
+    btn.appendChild(chip);
+    tagArea.appendChild(btn);
+
+    setVisual(btn, true);
+    attachToggle(btn);
+  }
 
   function addCustom(){
     const raw = (input.value || '').trim();
     if(!raw) return;
 
     raw.split(',').map(s => s.trim()).filter(Boolean).forEach(name => {
-      if (selected.size < 8) selected.add(name);
+      if (selected.size >= 8) return;
+
+      const existing = findButtonByName(name);
+      if (existing) {
+        selected.add(name);
+        setVisual(existing, true);
+        return;
+      }
+
+      if (!selected.has(name)) {
+        selected.add(name);
+        createCustomChip(name);
+      }
     });
 
     input.value = '';
-    tagButtons.forEach(btn => setVisual(btn, selected.has(btn.dataset.name)));
     syncHidden();
   }
 
   addBtn.addEventListener('click', addCustom);
   input.addEventListener('keydown', (e) => {
-    if(e.key === 'Enter'){
+    if (e.key === 'Enter') {
       e.preventDefault();
       addCustom();
     }
@@ -257,7 +300,9 @@
 
   syncHidden();
 })();
+</script>
 
+<script>
 (function(){
   const input = document.getElementById('imagesInput');
   const trigger = document.getElementById('imageTrigger');
