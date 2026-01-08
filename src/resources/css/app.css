@@ -4,8 +4,7 @@
 
 @layer base {
   html {
-    --bgColorMenu: #8A7458;   /* bg-main */
-    --bgColorItem: #8A7458;   /* 使ってないけど互換用 */
+    --bgColorMenu: #8A7458;
     --duration: .7s;
     box-sizing: border-box;
   }
@@ -25,10 +24,9 @@
     padding: 0.4em;
     will-change: transform;
     transition: transform var(--timeOut, var(--duration));
-    color: #201200; 
+    color: #201200; /* 黒 */
   }
 
-  /* アイコンのラッパー */
   .menu__icon{
     display: flex;
     align-items: center;
@@ -36,7 +34,7 @@
     transition: transform var(--duration);
   }
 
-  /* アイコンを少し上へ */
+  /* アイコンちょい浮き */
   .menu__item.active .menu__icon{
     transform: translateY(-12px);
   }
@@ -56,7 +54,6 @@
     transition: transform var(--duration);
   }
 
-  /* 白丸もアイコンと一緒に上へ */
   .menu__item.active::before{
     transform: translate(-50%, -75%) scale(1);
   }
@@ -72,5 +69,16 @@
     will-change: transform;
     background-color: var(--bgColorMenu);
     transition: transform var(--timeOut, var(--duration));
+  }
+
+  /* 線アイコンの見た目を綺麗に（任意だけどおすすめ） */
+  .nav-draw path,
+  .nav-draw circle,
+  .nav-draw rect,
+  .nav-draw line,
+  .nav-draw polyline,
+  .nav-draw polygon {
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
 }
