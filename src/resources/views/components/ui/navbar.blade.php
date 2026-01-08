@@ -3,21 +3,29 @@
        class="menu relative flex w-full items-center justify-around bg-main px-4 py-3">
 
     <a href="{{ route('user.top') }}"
-       class="menu__item {{ request()->routeIs('user.top') ? 'active' : '' }}">
-      <x-icons.home size="34"/>
+      class="menu__item {{ request()->routeIs('user.top') ? 'active' : '' }}">
+      <span class="menu__icon">
+        <x-icons.home size="34"/>
+      </span>
     </a>
 
     <a href="{{ route('user.search') }}"
-       class="menu__item {{ request()->routeIs('user.search') ? 'active' : '' }}">
-      <x-icons.search size="34"/>
+      class="menu__item {{ request()->routeIs('user.search') ? 'active' : '' }}">
+      <span class="menu__icon">
+        <x-icons.search size="34"/>
+      </span>
     </a>
 
     <a href="#" class="menu__item">
-      <x-icons.reserve size="34"/>
+      <span class="menu__icon">
+        <x-icons.reserve size="34"/>
+      </span>
     </a>
 
     <a href="#" class="menu__item">
-      <x-icons.mycafe size="34"/>
+      <span class="menu__icon">
+        <x-icons.mycafe size="34"/>
+      </span>
     </a>
 
     <div class="menu__border"></div>
