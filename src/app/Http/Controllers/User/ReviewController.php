@@ -21,7 +21,7 @@ class ReviewController extends Controller
             ->orderBy('name')
             ->get();
 
-        return view('pages.user.reviews.create', compact('store', 'slideImage'));
+        return view('pages.user.reviews.create', compact('store', 'slideImage','approvedTags'));
     }
 
     public function store(Request $request, Store $store)
@@ -41,6 +41,7 @@ class ReviewController extends Controller
             'rating' => $data['rating'],
             'body' => $data['body'] ?? null,
         ]);
+
 
         if (!empty($data['tags'])) {
             $names = collect(explode(',', $data['tags']))
@@ -63,14 +64,17 @@ class ReviewController extends Controller
                         'use_count' => 0,
                     ]
                 );
-            });
 
-            $review->tags()->sync($tag->pluck('id')->all());
-            Tag::whereIn('id', $tag->pluck('id')->all())->increment('use_count');
+                return $tag->id;
+            })->all();
 
-            $threshould = 4;
-            Tag::whereIn('id', $tag->pluck('id')->all())
-                ->where('use_count', '>=', $threshould)
+            $review->tags()->sync($tagIds);
+
+            Tag::whereIn('id', $tagIds)->increment('use_count');
+    
+            $threshold = 4;
+            Tag::whereIn('id', $tagIds)
+                ->where('use_count', '>=', $threshold)
                 ->where('status', 'pending')
                 ->update(['status' => 'approved']); 
         }

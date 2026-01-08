@@ -82,15 +82,16 @@
 
           <input type="hidden" name="tags" id="tags" value="{{ old('tags','') }}">
 
-          <div id="tagArea" class="flex flex-wrap gap-2">
+            <div id="tagArea" class="flex flex-wrap gap-2">
             @foreach(($approvedTags ?? collect()) as $tag)
-              <button type="button" class="tag-btn" data-name="{{ $tag->name }}">
-                <x-ui.tag class="!bg-base !border-main !text-text_color">
-                  {{ $tag->name }}
+                <div class="tag-item" data-name="{{ $tag->name }}">
+                <x-ui.tag class="!bg-base !border-main !text-text_color whitespace-nowrap">
+                    {{ $tag->name }}
                 </x-ui.tag>
-              </button>
+                </div>
             @endforeach
-          </div>
+            </div>
+
 
           <div class="mt-3 space-y-2">
             <label class="text-sm text-text_color font-medium" for="tagInput">新しいタグを追加</label>
@@ -191,7 +192,6 @@
 })();
 </script>
 
-
 <script>
 (function(){
   const hidden = document.getElementById('tags');
@@ -205,65 +205,75 @@
     (hidden.value || '').split(',').map(s => s.trim()).filter(Boolean)
   );
 
+  const SELECTED = ['!bg-main','!border-main','!text-form'];
+  const UNSELECTED = ['!bg-base','!border-main','!text-text_color'];
+
   function syncHidden(){
     hidden.value = Array.from(selected).slice(0, 8).join(',');
   }
 
-  function setVisual(btn, on){
-    const tagEl = btn.querySelector('*');
-    if (!tagEl) return;
+  function chipEl(item){
+    // tag-item の中にある x-ui.tag（button）を取る
+    return item.querySelector('button');
+  }
 
-    if (on) {
-      tagEl.classList.add('!bg-main','!border-main','!text-form');
-      tagEl.classList.remove('!bg-base','!text-text_color');
-    } else {
-      tagEl.classList.remove('!bg-main','!text-form');
-      tagEl.classList.add('!bg-base','!border-main','!text-text_color');
+  function setVisual(item, on){
+    const chip = chipEl(item);
+    if(!chip) return;
+
+    if(on){
+      chip.classList.add(...SELECTED);
+      chip.classList.remove(...UNSELECTED);
+    }else{
+      chip.classList.remove(...SELECTED);
+      chip.classList.add(...UNSELECTED);
     }
   }
 
-  function attachToggle(btn){
-    btn.addEventListener('click', () => {
-      const name = btn.dataset.name;
-      if (!name) return;
-
-      if (selected.has(name)) selected.delete(name);
-      else {
-        if (selected.size >= 8) return;
-        selected.add(name);
-      }
-
-      setVisual(btn, selected.has(name));
-      syncHidden();
-    });
+  function toggle(name, item){
+    if(selected.has(name)) selected.delete(name);
+    else{
+      if(selected.size >= 8) return;
+      selected.add(name);
+    }
+    setVisual(item, selected.has(name));
+    syncHidden();
   }
 
-  // 既存タグ（approved）にイベント付与
-  Array.from(tagArea.querySelectorAll('.tag-btn')).forEach(btn => {
-    setVisual(btn, selected.has(btn.dataset.name));
-    attachToggle(btn);
+  // ✅ 既存タグにイベント付与
+  Array.from(tagArea.querySelectorAll('.tag-item')).forEach(item => {
+    const name = (item.dataset.name || '').trim();
+    setVisual(item, selected.has(name));
+    item.addEventListener('click', () => toggle(name, item));
   });
 
-  function findButtonByName(name){
-    return Array.from(tagArea.querySelectorAll('.tag-btn'))
-      .find(b => (b.dataset.name || '') === name);
+  function findItemByName(name){
+    return Array.from(tagArea.querySelectorAll('.tag-item'))
+      .find(el => (el.dataset.name || '').trim() === name);
   }
 
-  function createCustomChip(name){
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'tag-btn';
-    btn.dataset.name = name;
+  // ✅ 既存のタグUIをクローンして新規タグを作る（サイズ完全一致）
+  function createNewItem(name){
+    const template = tagArea.querySelector('.tag-item');
+    if(!template) return null;
 
-    const chip = document.createElement('span');
-    chip.className = 'inline-flex items-center justify-center rounded-full border border-main px-4 py-2 text-sm !bg-base !text-text_color';
-    chip.textContent = name;
+    const newItem = template.cloneNode(true);
+    newItem.dataset.name = name;
 
-    btn.appendChild(chip);
-    tagArea.appendChild(btn);
+    const chip = chipEl(newItem);
+    if(chip){
+      chip.textContent = name;
 
-    setVisual(btn, true);
-    attachToggle(btn);
+      // 初期は未選択の見た目にしておく
+      chip.classList.remove(...SELECTED);
+      chip.classList.add(...UNSELECTED);
+    }
+
+    // 古いイベントはコピーされないので、付け直す
+    newItem.addEventListener('click', () => toggle(name, newItem));
+
+    tagArea.appendChild(newItem);
+    return newItem;
   }
 
   function addCustom(){
@@ -271,18 +281,19 @@
     if(!raw) return;
 
     raw.split(',').map(s => s.trim()).filter(Boolean).forEach(name => {
-      if (selected.size >= 8) return;
+      if(selected.size >= 8) return;
 
-      const existing = findButtonByName(name);
-      if (existing) {
+      const existing = findItemByName(name);
+      if(existing){
         selected.add(name);
         setVisual(existing, true);
         return;
       }
 
-      if (!selected.has(name)) {
+      const item = createNewItem(name);
+      if(item){
         selected.add(name);
-        createCustomChip(name);
+        setVisual(item, true);
       }
     });
 
@@ -292,7 +303,7 @@
 
   addBtn.addEventListener('click', addCustom);
   input.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
+    if(e.key === 'Enter'){
       e.preventDefault();
       addCustom();
     }
@@ -301,6 +312,7 @@
   syncHidden();
 })();
 </script>
+
 
 <script>
 (function(){
