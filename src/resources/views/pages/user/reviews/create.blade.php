@@ -117,16 +117,9 @@
         </section>
 
         <section class="space-y-2 pb-3">
-          <div class="text-lg text-text_color font-medium">写真</div>
-          <div class="text-sm text-main">最大8枚まで</div>
-          <input
-            id="imagesInput"
-            type="file"
-            name="images[]"
-            multiple
-            accept="image/jpeg,image/png,image/webp"
-            class="hidden"
-          />
+            <div class="text-lg text-text_color font-medium">写真</div>
+            <div class="text-sm text-main">最大8枚まで</div>
+            <div id="imageInputs"></div>
 
             <button type="button" id="imageTrigger" class="inline-flex items-center gap-2">
                 <x-icons.add_image class="w-12 h-12 text-placeholder" />
@@ -134,6 +127,7 @@
             </button>
 
             <p id="imageCount" class="text-sm text-text_color hidden"></p>
+            <div id="imagePreview" class="mt-3 space-y-3"></div>
 
             @error('images')
                 <p class="text-sm text-red-500">{{ $message }}</p>
@@ -213,7 +207,6 @@
   }
 
   function chipEl(item){
-    // tag-item の中にある x-ui.tag（button）を取る
     return item.querySelector('button');
   }
 
@@ -240,7 +233,6 @@
     syncHidden();
   }
 
-  // ✅ 既存タグにイベント付与
   Array.from(tagArea.querySelectorAll('.tag-item')).forEach(item => {
     const name = (item.dataset.name || '').trim();
     setVisual(item, selected.has(name));
@@ -252,8 +244,7 @@
       .find(el => (el.dataset.name || '').trim() === name);
   }
 
-  // ✅ 既存のタグUIをクローンして新規タグを作る（サイズ完全一致）
-  function createNewItem(name){
+   function createNewItem(name){
     const template = tagArea.querySelector('.tag-item');
     if(!template) return null;
 
@@ -263,13 +254,10 @@
     const chip = chipEl(newItem);
     if(chip){
       chip.textContent = name;
-
-      // 初期は未選択の見た目にしておく
       chip.classList.remove(...SELECTED);
       chip.classList.add(...UNSELECTED);
     }
 
-    // 古いイベントはコピーされないので、付け直す
     newItem.addEventListener('click', () => toggle(name, newItem));
 
     tagArea.appendChild(newItem);
@@ -313,30 +301,106 @@
 })();
 </script>
 
-
 <script>
 (function(){
-  const input = document.getElementById('imagesInput');
+  const inputsWrap = document.getElementById('imageInputs');
   const trigger = document.getElementById('imageTrigger');
   const count = document.getElementById('imageCount');
+  const preview = document.getElementById('imagePreview');
+  const triggerText = trigger?.querySelector('span');
 
-  if(!input || !trigger) return;
+  if(!inputsWrap || !trigger || !preview) return;
 
-  trigger.addEventListener('click', () => input.click());
+  const MAX = 8;
 
-  input.addEventListener('change', () => {
-    const n = input.files ? input.files.length : 0;
+  let activeInput = null;
 
-    if (n > 0) {
-      trigger.classList.add('hidden');
-      count.textContent = `${n}枚 選択中`;
-      count.classList.remove('hidden');
-    } else {
-      trigger.classList.remove('hidden');
-      count.classList.add('hidden');
-      count.textContent = '';
-    }
+  function makeInput(){
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.name = 'images[]';
+    input.accept = 'image/jpeg,image/png,image/webp';
+    input.className = 'hidden';
+    input.multiple = true; 
+
+    input.addEventListener('change', () => {
+      activeInput = makeInput();
+      render();
+    });
+
+    inputsWrap.appendChild(input);
+    return input;
+  }
+
+  // 最初の input 作成
+  activeInput = makeInput();
+
+  trigger.addEventListener('click', () => {
+    if(activeInput) activeInput.click();
   });
+
+  function clearPreview(){
+    preview.querySelectorAll('img[data-blob-url="1"]').forEach(img => {
+      URL.revokeObjectURL(img.src);
+    });
+    preview.innerHTML = '';
+  }
+
+  function allFiles(){
+    const inputs = Array.from(inputsWrap.querySelectorAll('input[type="file"]'));
+    const files = [];
+    inputs.forEach(inp => {
+      Array.from(inp.files || []).forEach(f => files.push({ file: f, input: inp }));
+    });
+    return files;
+  }
+
+  function render(){
+    clearPreview();
+
+    const items = allFiles();
+    const total = items.length;
+
+    if(total === 0){
+      if(count){
+        count.classList.add('hidden');
+        count.textContent = '';
+      }
+      if(triggerText) triggerText.textContent = 'タップして追加';
+      return;
+    }
+
+    if(total >= MAX){
+      if(triggerText) triggerText.textContent = '最大8枚まで';
+    } else {
+      if(triggerText) triggerText.textContent = '写真を追加/変更';
+    }
+
+    if(count){
+      count.textContent = `${Math.min(total, MAX)}枚 選択中`;
+      count.classList.remove('hidden');
+    }
+
+    items.slice(0, MAX).forEach(({file}) => {
+      const url = URL.createObjectURL(file);
+
+      const wrap = document.createElement('div');
+      wrap.className =
+        'w-full aspect-[16/10] overflow-hidden rounded-xl bg-form ' +
+        'shadow-[0_2px_6px_rgba(0,0,0,0.15)]';
+
+      const img = document.createElement('img');
+      img.src = url;
+      img.alt = 'selected image';
+      img.className = 'w-full h-full object-cover';
+      img.dataset.blobUrl = '1';
+
+      wrap.appendChild(img);
+      preview.appendChild(wrap);
+    });
+  }
 })();
 </script>
+
+
 @endsection
