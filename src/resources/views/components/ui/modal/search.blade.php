@@ -98,7 +98,7 @@
           {{-- 営業時間 --}}
           <section class="space-y-2">
             <div class="flex items-center gap-1.5 text-lg text-text_color_color">
-              <span><x-icons.time class="w-5 h-5 text-text_color_color" /></span><span>営業時間</span>
+              <span><x-icons.time /></span><span>営業時間</span>
             </div>
             <div class="relative">
               <select
@@ -170,7 +170,7 @@
 
               <button
                 type="button"
-                class="text-sm text-main-color font-semibold hover:opacity-80"
+                class="text-sm text-main-color hover:opacity-80"
                 @click="showAllTags = !showAllTags"
               >
                 <span x-show="!showAllTags">もっと見る</span>
@@ -178,7 +178,6 @@
               </button>
             </div>
 
-            {{-- まず見せるタグ（例） --}}
             <div class="flex flex-wrap gap-2">
               @foreach($tags->take(6) as $tag)
                 <x-ui.tag type="button"

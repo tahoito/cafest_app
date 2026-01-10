@@ -298,3 +298,61 @@
   </div>
 </div>
 @endsection
+
+@if (session('success'))
+  <div
+    x-data="{
+      open: true,
+      timer: null,
+      start() {
+        this.timer = setTimeout(() => { this.open = false }, 3000);
+      },
+      close() {
+        this.open = false;
+        if (this.timer) clearTimeout(this.timer);
+      }
+    }"
+    x-init="start()"
+    x-show="open"
+    x-transition.opacity
+    class="fixed inset-0 z-[200] flex items-center justify-center"
+  >
+  
+    <div class="absolute inset-0 bg-black/40" @click="close()"></div>
+    <button
+      type="button"
+      class="absolute left-0 grid h-9 w-9 place-items-center rounded-full hover:bg-black/5"
+      @click="$store.search.activeModal = null"
+      aria-label="閉じる"
+    >
+      <x-icons.close class="w-8 h-8 text-text_color_color" />
+    </button>
+
+
+    <div class="relative w-[353px] rounded-2xl bg-base px-6 py-5 shadow-[0_10px_30px_rgba(0,0,0,0.25)]">
+      <div class="text-center">
+        <div class="text-xl text-text_color">
+          {{ '予約が完了しました!!' }}
+        </div>
+
+        <div class="mt-2 text-sm text-text_color">
+          ご来店お待ちしております
+        </div>
+
+        <div class="mt-5 grid gap-2">
+          <a
+            href="{{ route('user.reserve') }}"
+            class="h-11 w-full rounded-full bg-main text-sm text-white
+                   flex items-center justify-center
+                   shadow-[0_4px_10px_rgba(0,0,0,0.18)]"
+            @click="close()"
+          >
+            <x-ui.button :type="'button'" variant="secondary" class="text-form">
+              予約を確認する
+            </x-ui.button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+@endif

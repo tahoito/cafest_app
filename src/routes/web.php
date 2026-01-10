@@ -9,8 +9,7 @@ use App\Http\Controllers\Store\SettingsController as StoreSettingsController;
 use App\Http\Controllers\User\RecommendController;
 use App\Http\Controllers\User\SearchController;
 use App\Http\Controllers\User\StoreController;
-use App\Models\Store;
-
+use App\Http\Controllers\User\ReserveController;
 
 Route::view('/', 'welcome')->name('welcome');
 
@@ -43,33 +42,12 @@ Route::prefix('user')->name('user.')->group(function () {
 
         Route::get('/stores/{store}/reviews/create', [ReviewController::class, 'create'])->name('stores.reviews.create');
         Route::post('/stores/{store}/reviews', [ReviewController::class, 'store'])->name('stores.reviews.store');
+
+        Route::get('/reserve', [ReserveController::class, 'index'])->name('reserve');
+        Route::delete('/reserve/{reservation}', [ReserveController::class, 'destroy'])->name('reserve.destroy');
         
     });
-
-
-Route::get('/user/reserve', function () {
-$reservations = collect([
-(object)[
-'shopName' => 'CAFEST 名駅店',
-'imageUrl' => 'https://placehold.co/600x400',
-'date' => '2026-01-12',
-'time' => '14:00',
-'people' => 2,
-],
-(object)[
-'shopName' => 'CAFEST 栄店',
-'imageUrl' => 'https://placehold.co/600x400',
-'date' => '2026-01-20',
-'time' => null,
-'people' => 1,
-],
-]);
-
-return view('pages.user.reserve', compact('reservations'));
-})->name('user.reserve');
-
 });
-
 
 
 Route::prefix('store')->name('store.')->group(function () {

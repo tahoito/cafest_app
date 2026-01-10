@@ -1,0 +1,94 @@
+@props([
+  'reservation' => null,
+  'href' => null,
+  'image' => null,
+  'shopName' => null,
+  'date' => null,
+  'time' => null,
+  'people' => null,
+  'onCancel' => null,
+])
+
+@php
+  $store = data_get($reservation, 'store');
+
+  $shopName = $shopName
+    ?? (string) data_get($reservation, 'shop_name', data_get($store, 'name', 'cafest'));
+
+  $slide0 = data_get($store, 'slideImages.0');
+  $slideUrl = data_get($slide0, 'url') ?? data_get($slide0, 'path') ?? data_get($slide0, 'image_url');
+
+  $imageUrl = (string) (
+    $image
+    ?? $slideUrl
+    ?? data_get($store, 'image_url')
+    ?? data_get($reservation, 'image_url')
+    ?? ''
+  );
+
+  $startAt = data_get($reservation, 'start_at');
+  $endAt   = data_get($reservation, 'end_at');
+
+  try { $startAt = $startAt ? \Carbon\Carbon::parse($startAt) : null; } catch (\Throwable $e) { $startAt = null; }
+  try { $endAt   = $endAt ? \Carbon\Carbon::parse($endAt) : null; } catch (\Throwable $e) { $endAt = null; }
+
+  $dateText = $date ?? ($startAt ? $startAt->format('Y/m/d') : (string) data_get($reservation, 'date', ''));
+  $timeText = $time ?? (($startAt && $endAt) ? $startAt->format('H:i').'-'.$endAt->format('H:i') : (string) data_get($reservation, 'time', ''));
+
+  $peopleText = $people ?? (string) data_get($reservation, 'party_size', data_get($reservation, 'people', ''));
+  if ($peopleText !== '' && !str_contains($peopleText, '名')) $peopleText .= '名';
+@endphp
+
+<div class="w-[344px] rounded-2xl border border-line bg-form p-5 shadow-[0_2px_10px_rgba(0,0,0,0.12)]">
+  <div class="flex gap-5">
+    <div class="shrink-0">
+      <div class="h-[130px] w-[130px] overflow-hidden rounded-xl bg-base ring-1 ring-black/5">
+        <img
+          src="{{ $imageUrl !== '' ? $imageUrl : asset('images/store/card.png') }}"
+          alt=""
+          class="h-full w-full object-cover"
+          loading="lazy"
+        />
+      </div>
+    </div>
+
+    <div class="min-w-0 flex-1">
+      <div class="flex items-center gap-1">
+        <x-icons.store stroke="1.5" class="h-6 w-6 text-text_color" />
+        <div class="truncate text-2xl text-text_color">
+          {{ $shopName }}
+        </div>
+      </div>
+
+      <div class="mt-1 text-sm text-main">予約情報</div>
+
+      <div class="mt-1 grid grid-cols-[28px_1fr] gap-x-[2px] gap-y-[3px] text-base text-text_color">
+        <x-icons.date class="h-6 w-6 place-self-center text-text_color" />
+        <span class="leading-none">{{ $dateText }}</span>
+
+        <x-icons.time class="h-6 w-6 place-self-center text-text_color" />
+        <span class="leading-none">{{ $timeText }}</span>
+
+        <x-icons.number class="h-6 w-6 place-self-center text-text_color" />
+        <span class="leading-none">{{ $peopleText }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-3 flex justify-center">
+    <form method="POST" action="{{ $onCancel ?? '#' }}" class="w-full">
+      @csrf
+      @method('DELETE')
+
+      <button
+        type="submit"
+        class="mx-auto block h-12 w-[260px]
+               rounded-full border-2 border-main bg-base
+               text-sm text-text_color
+               shadow-[0_4px_10px_rgba(0,0,0,0.18)]"
+      >
+        キャンセルする
+      </button>
+    </form>
+  </div>
+</div>

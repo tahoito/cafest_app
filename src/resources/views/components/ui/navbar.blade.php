@@ -14,8 +14,8 @@
       </span>
     </a>
 
-    <a href="#"
-       class="menu__item">
+    <a href="{{ route('user.reserve') }}"
+       class="menu__item {{ request()->routeIs('user.reserve') ? 'active' : '' }}">
       <span class="menu__icon">
         <x-icons.reserve size="34" class="nav-draw"/>
       </span>
