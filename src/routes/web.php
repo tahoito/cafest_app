@@ -33,6 +33,17 @@ Route::prefix('user')->name('user.')->group(function () {
         Route::get('/recommended', [RecommendController::class, 'recommended'])->name('recommended');
         Route::get('/search',[SearchController::class,'index'])->name('search');
         Route::get('/stores/{store}',[StoreController::class,'show'])->name('stores.show');
+
+        Route::post('/stores/{store}/reserve/confirm', [StoreController::class, 'reserveConfirmStore'])->name('stores.reserve.confirm.store');
+        Route::get('/stores/{store}/reserve/confirm', [StoreController::class, 'reserveConfirm'])->name('stores.reserve.confirm');
+        Route::post('/stores/{store}/reserve', [StoreController::class, 'reserveStore'])->name('stores.reserve.store');
+
+        Route::get('/stores/{store}/reviews', [StoreReviewController::class, 'index'])->name('stores.reviews');
+        Route::get('/stores/{store}/posts', [StorePostController::class, 'index'])->name('stores.posts');
+
+        Route::get('/stores/{store}/reviews/create', [ReviewController::class, 'create'])->name('stores.reviews.create');
+        Route::post('/stores/{store}/reviews', [ReviewController::class, 'store'])->name('stores.reviews.store');
+        
     });
 
 

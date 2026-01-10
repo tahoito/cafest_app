@@ -15,17 +15,33 @@ class SearchController extends Controller
         $tagId = $request->query('tag');
         $keyword = $request->input('keyword');
 
-        $tag = $tagId ? Tag::find($tagId) : null;
+        $tags = Tag::orderBy('name')->get();
 
         $query = Store::query()
-            ->withAvg('reviews as rating', 'rating');
+            ->withAvg('reviews', 'rating');
+
+
+        $isSearching =
+            $request->filled('keyword') ||
+            $request->filled('area') ||
+            $request->filled('budget') ||
+            $request->filled('time') ||
+            $request->filled('moods') ||
+            $request->filled('rating_min') ||
+            $request->filled('tag');
 
        
-        if ($tagId) {
-            $query->whereHas('reviews.tags', fn($q) => $q->where('tags.id', $tagId));
+        if ($request->filled('tags')) {
+            $tagIds = array_values(array_unique(array_map('intval', (array)$request->input('tags'))));
+
+            $query->whereHas('reviews', function ($q) use ($tagIds) {
+                foreach ($tagIds as $id) {
+                    $q->whereHas('tags', fn($tq) => $tq->where('tags.id', $id));
+                }
+            });
         }
 
-        
+
         if ($keyword) {
             $query->where(function ($q) use ($keyword) {
                 $q->where('name', 'like', "%{$keyword}%")
@@ -46,19 +62,8 @@ class SearchController extends Controller
         
         if ($request->filled('rating_min')) {
             $min = (float) $request->input('rating_min');
-            $query->having('rating', '>=', $min);
+            $query->having('reviews_avg_rating', '>=', $min);
         }
-
-        $stores = $query->get();
-
-        $isSearching = $request->filled('keyword')
-            || $request->filled('area')
-            || $request->filled('budget')
-            || $request->filled('time')
-            || $request->filled('ratings')
-            || $request->filled('moods')
-            || $request->filled('tags')
-            || $request->filled('tag');  
         
         if ($isSearching) {
             $stores = $query->get();
@@ -66,6 +71,57 @@ class SearchController extends Controller
             $stores = app(StoreRecommendService::class)->recommended(8); 
         }
 
-        return view('pages.user.search', compact('stores', 'tag','isSearching'));
+        if ($request->input('time')) {
+            $time = $request->input('time');
+
+            if ($time === 'morning') {
+                $query->whereHas('hours', function ($q) {
+                $q->where('is_closed', false)
+                ->whereNotNull('open_time')
+                ->where('open_time', '<=', '10:00:00');
+            });
+            } elseif ($time === 'night') {
+                $query->whereHas('hours', function ($q) {
+                $q->where('is_closed', false)
+                ->whereNotNull('close_time')
+                ->where('close_time', '>=', '20:00:00');
+            });
+
+            } elseif ($time === 'now') {
+                $now = now()->format('H:i:s');
+                $dow = (int) now()->dayOfWeek; // 0=Sun..6=Sat（Carbon）
+
+                $query->whereHas('hours', function ($q) use ($dow, $now) {
+                    $q->where('day_of_week', $dow)
+                    ->where('is_closed', false)
+                    ->where('open_time', '<=', $now)
+                    ->where('close_time', '>=', $now);
+                });
+            }
+        }
+
+        if ($request->filled('budget')){
+            $key = $request->input('budget');
+            $ranges = config('cafest.budget_ranges');
+
+            if (isset($ranges[$key])){
+                [$min,$max] = $ranges[$key];
+
+                $query->where(function ($q) use ($min, $max){
+                    $q->where('budget_max', '>=', $min);
+
+                    if ($max !== null){
+                        $q->where('budget_min', '<=', $max);
+                    }
+                });
+            }
+        }
+
+        $stores = $isSearching
+            ? $query->get()
+            : app(StoreRecommendService::class)->recommended(8);
+
+
+        return view('pages.user.search', compact('stores', 'tags','isSearching'));
     }
 }

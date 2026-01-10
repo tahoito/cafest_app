@@ -11,7 +11,7 @@
     
     <div class="w-full max-w-md px-4">
         <div class="mb-12 flex flex-col items-center">
-            <x-icons.user class="w-20 h-20 text-text_color mb-2"/>
+            <x-icons.user size="80" stroke="1.5" class="w-20 h-20 text-text_color mb-2"/>
             <h1 class="text-center text-text_color text-2xl">
                 新規登録
             </h1>

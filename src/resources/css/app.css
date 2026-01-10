@@ -1,3 +1,84 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  html {
+    --bgColorMenu: #8A7458;
+    --duration: .7s;
+    box-sizing: border-box;
+  }
+  html *, html *::before, html *::after { box-sizing: inherit; }
+}
+
+@layer components {
+  .menu__item {
+    all: unset;
+    flex-grow: 1;
+    z-index: 100;
+    display: flex;
+    cursor: pointer;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4em;
+    will-change: transform;
+    transition: transform var(--timeOut, var(--duration));
+    color: #201200; /* 黒 */
+  }
+
+  .menu__icon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform var(--duration);
+  }
+
+  /* アイコンちょい浮き */
+  .menu__item.active .menu__icon{
+    transform: translateY(-12px);
+  }
+
+  /* 白丸 */
+  .menu__item::before{
+    content: "";
+    z-index: -1;
+    width: 56px;
+    height: 56px;
+    border-radius: 9999px;
+    background: #ffffff;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform var(--duration);
+  }
+
+  .menu__item.active::before{
+    transform: translate(-50%, -75%) scale(1);
+  }
+
+  /* 波 */
+  .menu__border{
+    left: 0;
+    bottom: 99%;
+    width: 10.9em;
+    height: 2.4em;
+    position: absolute;
+    clip-path: url(#menu);
+    will-change: transform;
+    background-color: var(--bgColorMenu);
+    transition: transform var(--timeOut, var(--duration));
+  }
+
+  /* 線アイコンの見た目を綺麗に（任意だけどおすすめ） */
+  .nav-draw path,
+  .nav-draw circle,
+  .nav-draw rect,
+  .nav-draw line,
+  .nav-draw polyline,
+  .nav-draw polygon {
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+}
