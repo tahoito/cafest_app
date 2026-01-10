@@ -57,7 +57,7 @@
     <div class="min-w-0 flex-1">
       <div class="flex items-center gap-1">
         <x-icons.store stroke="1.5" class="h-6 w-6 text-text_color" />
-        <div class="truncate text-2xl text-text_color">
+        <div class="truncate text-xl text-text_color">
           {{ $shopName }}
         </div>
       </div>
