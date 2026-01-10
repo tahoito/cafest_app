@@ -9,6 +9,7 @@ use App\Http\Controllers\Store\SettingsController as StoreSettingsController;
 use App\Http\Controllers\User\RecommendController;
 use App\Http\Controllers\User\SearchController;
 use App\Http\Controllers\User\StoreController;
+use App\Models\Store;
 
 
 Route::view('/', 'welcome')->name('welcome');
@@ -35,7 +36,26 @@ Route::prefix('user')->name('user.')->group(function () {
     });
 
 
-    Route::view('/reserve', 'pages.user.reserve')->name('reserve');
+Route::get('/user/reserve', function () {
+$reservations = collect([
+(object)[
+'shopName' => 'CAFEST 名駅店',
+'imageUrl' => 'https://placehold.co/600x400',
+'date' => '2026-01-12',
+'time' => '14:00',
+'people' => 2,
+],
+(object)[
+'shopName' => 'CAFEST 栄店',
+'imageUrl' => 'https://placehold.co/600x400',
+'date' => '2026-01-20',
+'time' => null,
+'people' => 1,
+],
+]);
+
+return view('pages.user.reserve', compact('reservations'));
+})->name('user.reserve');
 
 });
 
