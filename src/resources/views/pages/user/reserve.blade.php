@@ -20,7 +20,7 @@
             <section class="px-4 space-y-3">
                 <div class="grid grid-cols-1 justify-items-center gap-5">
                 @forelse($reservations as $reservation)
-                    <x-ui.card.reserve-card 
+                    <x-ui.card.user.reserve-card 
                         :reservation="$reservation"
                         :onCancel="route('user.reserve.destroy', $reservation->id)" />
                 @empty

@@ -316,7 +316,7 @@
     <div class="absolute inset-0 bg-black/40" @click="close()"></div>
 
     {{-- カード --}}
-    <div class="relative w-[353px] rounded-2xl bg-base_color px-6 py-6">
+    <div class="relative w-[353px] rounded-lg bg-base_color px-6 py-6">
       <button
         type="button"
         class="absolute left-3 top-3 grid h-10 w-10 place-items-center rounded-full hover:bg-black/5 active:scale-95"

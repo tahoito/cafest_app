@@ -57,7 +57,7 @@
     <div class="min-w-0 flex-1">
       <div class="flex items-center gap-1">
         <x-icons.store stroke="1.5" class="h-6 w-6 text-text_color" />
-        <div class="truncate text-2xl text-text_color">
+        <div class="truncate text-xl text-text_color">
           {{ $shopName }}
         </div>
       </div>
@@ -100,7 +100,7 @@
   >
     <div class="absolute inset-0 bg-black/40" @click="confirmOpen = false"></div>
 
-    <div class="relative w-[353px] rounded-2xl bg-base_color px-6 py-6 shadow-[0_10px_30px_rgba(0,0,0,0.25)]" @click.stop>
+    <div class="relative w-[353px] rounded-lg bg-base_color px-6 py-6 shadow-[0_10px_30px_rgba(0,0,0,0.25)]" @click.stop>
       <button
         type="button"
         class="absolute left-3 top-3 grid h-10 w-10 place-items-center rounded-full hover:bg-black/5 active:scale-95"
