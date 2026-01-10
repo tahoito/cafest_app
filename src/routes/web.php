@@ -9,6 +9,7 @@ use App\Http\Controllers\Store\SettingsController as StoreSettingsController;
 use App\Http\Controllers\User\RecommendController;
 use App\Http\Controllers\User\SearchController;
 use App\Http\Controllers\User\StoreController;
+use App\Http\Controllers\User\ReviewController;
 use App\Http\Controllers\User\ReserveController;
 
 Route::view('/', 'welcome')->name('welcome');

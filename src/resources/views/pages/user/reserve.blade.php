@@ -20,7 +20,9 @@
             <section class="px-4 space-y-3">
                 <div class="grid grid-cols-1 justify-items-center gap-5">
                 @forelse($reservations as $reservation)
-                    <x-ui.card.reserve-card :reservation="$reservation" />
+                    <x-ui.card.reserve-card 
+                        :reservation="$reservation"
+                        :onCancel="route('user.reserve.destroy', $reservation->id)" />
                 @empty
                     <p class="text-center text-base text-placeholder py-10">
                     予約状況がまだありません
@@ -33,3 +35,4 @@
     </div>
 </div>
 @endsection
+

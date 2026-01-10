@@ -76,7 +76,7 @@
   </div>
 
   <div class="mt-3 flex justify-center">
-    <form method="POST" action="{{ $onCancel ?? '#' }}" class="w-full">
+    <form method="POST" action="{{ route('user.reserve.destroy', $reservation->id) }}">
       @csrf
       @method('DELETE')
 
@@ -90,5 +90,63 @@
         キャンセルする
       </button>
     </form>
+  </div>
+</div>
+
+
+<div x-data="{ confirmOpen: false }" class="mt-4">
+  <button
+    type="button"
+    class="w-full rounded-full bg-form text-text_color border border-main py-3 shadow-[0_2px_8px_rgba(0,0,0,0.12)] active:scale-[0.99]"
+    @click="confirmOpen = true"
+  >
+    キャンセルする
+  </button>
+
+  <div
+    x-show="confirmOpen"
+    x-transition.opacity
+    class="fixed inset-0 z-[300] flex items-center justify-center"
+    style="display:none;"
+    @keydown.escape.window="confirmOpen = false"
+  >
+    <div class="absolute inset-0 bg-black/40" @click="confirmOpen = false"></div>
+
+    <div class="relative w-[353px] rounded-2xl bg-base_color px-6 py-6 shadow-[0_10px_30px_rgba(0,0,0,0.25)]" @click.stop>
+      {{-- close --}}
+      <button
+        type="button"
+        class="absolute left-3 top-3 grid h-10 w-10 place-items-center rounded-full hover:bg-black/5 active:scale-95"
+        @click="confirmOpen = false"
+        aria-label="閉じる"
+      >
+        <x-icons.close class="h-7 w-7 text-text_color" />
+      </button>
+
+      <div class="text-center pt-4">
+        <div class="text-base text-text_color">
+          本当にキャンセルしますか？
+        </div>
+
+        <div class="mt-5 space-y-3">
+          <form method="POST" action="{{ $onCancel }}">
+            @csrf
+            @method('DELETE')
+
+            <x-ui.button type="submit" variant="secondary" class="w-full text-form">
+              キャンセルする
+            </x-ui.button>
+          </form>
+
+          <button
+            type="button"
+            class="w-full text-sm text-text_color"
+            @click="confirmOpen = false"
+          >
+            やめる
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

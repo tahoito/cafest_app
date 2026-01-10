@@ -4,9 +4,7 @@
 @section('content')
 @section('hideNavbar')
 @endsection
-<div
-    x-data="{ reserveOpen:false }"
-    class="h-screen bg-base">
+<div class="h-screen bg-base">
 
   <div class="h-full overflow-y-auto pt-16">
     {{-- header --}}
@@ -284,75 +282,70 @@
             </div>
           </section>
 
-          <div class="flex justify-center pt-4 pb-4">
-            <x-ui.button :type="'button'" variant="secondary" class="text-form" @click="reserveOpen=true">
+          <div x-data="{ reserveOpen:false }" class="flex justify-center pt-4 pb-4">
+            <x-ui.button type="button" variant="secondary" class="text-form" @click="reserveOpen = true">
               このお店で予約する
             </x-ui.button>
 
             <x-ui.modal.reserve
               :store="$store"
               :action="route('user.stores.reserve.confirm.store', data_get($store, 'id'))"
-              />
-            </div>
+              x-model="reserveOpen"
+            />
+          </div>
+        </div>
       </div>
   </div>
 </div>
-@endsection
+
 
 @if (session('success'))
   <div
     x-data="{
       open: true,
       timer: null,
-      start() {
-        this.timer = setTimeout(() => { this.open = false }, 3000);
-      },
-      close() {
-        this.open = false;
-        if (this.timer) clearTimeout(this.timer);
-      }
+      start() { this.timer = setTimeout(() => { this.open = false }, 3000) },
+      close() { this.open = false; if (this.timer) clearTimeout(this.timer) },
     }"
     x-init="start()"
     x-show="open"
     x-transition.opacity
     class="fixed inset-0 z-[200] flex items-center justify-center"
   >
-  
+    {{-- 背景 --}}
     <div class="absolute inset-0 bg-black/40" @click="close()"></div>
-    <button
-      type="button"
-      class="absolute left-0 grid h-9 w-9 place-items-center rounded-full hover:bg-black/5"
-      @click="$store.search.activeModal = null"
-      aria-label="閉じる"
-    >
-      <x-icons.close class="w-8 h-8 text-text_color_color" />
-    </button>
 
+    {{-- カード --}}
+    <div class="relative w-[353px] rounded-2xl bg-base_color px-6 py-6">
+      <button
+        type="button"
+        class="absolute left-3 top-3 grid h-10 w-10 place-items-center rounded-full hover:bg-black/5 active:scale-95"
+        @click="close()"
+        aria-label="閉じる"
+      >
+        <x-icons.close class="h-7 w-7 text-text_color" />
+      </button>
 
-    <div class="relative w-[353px] rounded-2xl bg-base px-6 py-5 shadow-[0_10px_30px_rgba(0,0,0,0.25)]">
-      <div class="text-center">
+      <div class="text-center pt-4">
         <div class="text-xl text-text_color">
-          {{ '予約が完了しました!!' }}
+          予約完了しました！！
         </div>
 
         <div class="mt-2 text-sm text-text_color">
-          ご来店お待ちしております
+          ご来店お待ちしています
         </div>
 
-        <div class="mt-5 grid gap-2">
-          <a
-            href="{{ route('user.reserve') }}"
-            class="h-11 w-full rounded-full bg-main text-sm text-white
-                   flex items-center justify-center
-                   shadow-[0_4px_10px_rgba(0,0,0,0.18)]"
-            @click="close()"
-          >
-            <x-ui.button :type="'button'" variant="secondary" class="text-form">
-              予約を確認する
-            </x-ui.button>
-          </a>
-        </div>
+        <x-ui.button
+          href="{{ route('user.reserve') }}"
+          variant="secondary"
+          class="mt-6 text-form"
+          @click="close()"
+        >
+          予約を確認する
+        </x-ui.button>
       </div>
     </div>
   </div>
 @endif
+
+@endsection
