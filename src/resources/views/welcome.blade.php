@@ -35,7 +35,7 @@
 
             <div class="space-y-5">
                 <div class="flex items-center gap-3 mb-2 ml-4">
-                    <x-icons.store size="40" stroke="1" class="text-main2" />
+                    <x-icons.store size="40" stroke="2" class="text-main2" />
                     <div class="text-2xl text-main2 font-medium">店舗</div>
                 </div>
                 <div class="space-y-4">

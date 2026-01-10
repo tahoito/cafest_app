@@ -27,7 +27,7 @@
           <div class="grid grid-cols-[120px_1fr] gap-y-3 items-center">
 
             <div class="grid grid-cols-[24px_auto] items-center gap-2 text-text_color">
-              <x-icons.store stroke="2" class="h-6 w-6 shrink-0 text-text_color" />
+              <x-icons.store stroke="1.5" class="h-7 w-7 shrink-0 text-text_color" />
               <div class="text-base font-medium">店舗名</div>
             </div>
             <div class="text-base text-text_color">
@@ -43,7 +43,7 @@
             </div>
 
             <div class="grid grid-cols-[24px_auto] items-center gap-2 text-text_color">
-              <x-icons.time class="h-6 w-6 shrink-0 text-text_color" />
+              <x-icons.time class="h-7 w-7 shrink-0 text-text_color" />
               <div class="text-base font-medium">時間</div>
             </div>
             <div class="text-base text-text_color">

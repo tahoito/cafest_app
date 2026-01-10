@@ -1,11 +1,11 @@
 @props([
-  'size' => 20,
-  'stroke' => 1,
+  'size' => 24,
+  'stroke' => 1.5,
 ])
 
 <svg
   xmlns="http://www.w3.org/2000/svg"
-  viewBox="0 0 15 15"
+  viewBox="0 0 30 30"
   fill="none"
   stroke="currentColor"
   stroke-width="{{ $stroke }}"
@@ -15,6 +15,6 @@
   height="{{ $size }}"
   {{ $attributes->merge(['class' => 'inline-block align-middle']) }}
 >
-  <path d="M7.5 3.75V7.5L10 8.75" />
-  <path d="M13.75 7.5C13.75 10.9518 10.9518 13.75 7.5 13.75C4.04822 13.75 1.25 10.9518 1.25 7.5C1.25 4.04822 4.04822 1.25 7.5 1.25C10.9518 1.25 13.75 4.04822 13.75 7.5Z" />
+
+<path d="M12 6V12L16 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="#201200" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
