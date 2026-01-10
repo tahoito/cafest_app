@@ -8,7 +8,6 @@ use App\Models\Store;
 use App\Models\Tag;
 use App\Services\StoreRecommendService;
 
-
 class SearchController extends Controller
 {
     public function index(Request $request)
