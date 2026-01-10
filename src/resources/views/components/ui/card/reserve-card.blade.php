@@ -37,9 +37,11 @@
 
   $peopleText = $people ?? (string) data_get($reservation, 'party_size', data_get($reservation, 'people', ''));
   if ($peopleText !== '' && !str_contains($peopleText, '名')) $peopleText .= '名';
+
+  $cancelAction = $onCancel ?: (data_get($reservation,'id') ? route('user.reserve.destroy', data_get($reservation,'id')) : '#');
 @endphp
 
-<div class="w-[344px] rounded-2xl border border-line bg-form p-5 shadow-[0_2px_10px_rgba(0,0,0,0.12)]">
+<div x-data="{ confirmOpen: false }" class="w-[344px] rounded-2xl border border-line bg-form p-5 shadow-[0_2px_10px_rgba(0,0,0,0.12)]">
   <div class="flex gap-5">
     <div class="shrink-0">
       <div class="h-[130px] w-[130px] overflow-hidden rounded-xl bg-base ring-1 ring-black/5">
@@ -75,33 +77,19 @@
     </div>
   </div>
 
+
   <div class="mt-3 flex justify-center">
-    <form method="POST" action="{{ route('user.reserve.destroy', $reservation->id) }}">
-      @csrf
-      @method('DELETE')
-
-      <button
-        type="submit"
-        class="mx-auto block h-12 w-[260px]
-               rounded-full border-2 border-main bg-base
-               text-sm text-text_color
-               shadow-[0_4px_10px_rgba(0,0,0,0.18)]"
-      >
-        キャンセルする
-      </button>
-    </form>
+    <button
+      type="button"
+      class="mx-auto block h-12 w-[260px]
+             rounded-full border-2 border-main bg-base
+             text-sm text-text_color
+             shadow-[0_4px_10px_rgba(0,0,0,0.18)]"
+      @click="confirmOpen = true"
+    >
+      キャンセルする
+    </button>
   </div>
-</div>
-
-
-<div x-data="{ confirmOpen: false }" class="mt-4">
-  <button
-    type="button"
-    class="w-full rounded-full bg-form text-text_color border border-main py-3 shadow-[0_2px_8px_rgba(0,0,0,0.12)] active:scale-[0.99]"
-    @click="confirmOpen = true"
-  >
-    キャンセルする
-  </button>
 
   <div
     x-show="confirmOpen"
@@ -113,7 +101,6 @@
     <div class="absolute inset-0 bg-black/40" @click="confirmOpen = false"></div>
 
     <div class="relative w-[353px] rounded-2xl bg-base_color px-6 py-6 shadow-[0_10px_30px_rgba(0,0,0,0.25)]" @click.stop>
-      {{-- close --}}
       <button
         type="button"
         class="absolute left-3 top-3 grid h-10 w-10 place-items-center rounded-full hover:bg-black/5 active:scale-95"
@@ -129,7 +116,7 @@
         </div>
 
         <div class="mt-5 space-y-3">
-          <form method="POST" action="{{ $onCancel }}">
+          <form method="POST" action="{{ $cancelAction }}">
             @csrf
             @method('DELETE')
 
