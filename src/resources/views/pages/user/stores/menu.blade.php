@@ -32,10 +32,13 @@
   <div class="h-full overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
     <div class="w-full max-w-md mx-auto pt-4 space-y-5 pb-4 px-4">
 
-        <section class="space-y-2 pb-3">
-            @foreach($recommendedItems as $item)
-                <x-ui.card.user.menu-item :item="$item" />
-            @endforeach
+        <section class="space-y-3">
+            <div class="text-lg text-text_color font-medium">おすすめ商品</div>
+            <div class="grid grid-cols-1 justify-items-center gap-5"> 
+                @foreach($recommendedItems as $item)
+                    <x-ui.card.user.menu-item :item="$item" />
+                @endforeach
+            </div>
         </section>
     </div>
   </div>
