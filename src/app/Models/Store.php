@@ -5,6 +5,8 @@ use App\Models\StoreHour;
 use App\Models\PaymentMethod;
 use App\Models\StoreImage;
 use App\Models\Review;
+use App\Models\MenuPhoto;
+use App\Models\RecommendedItem;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -58,6 +60,16 @@ class Store extends Authenticatable
             ->where('type','gallery')
             ->orderBy('sort_order')
             ->limit(6);
+    }
+
+    public function menuPhotos(){
+        return $this->hasMany(MenuPhoto::class)
+            ->orderBy('sort_order');    
+    }
+
+    public function recommendedItems(){
+        return $this->hasMany(RecommendedItems::class)
+            ->orderBy('sort_order');    
     }
 
 }

@@ -41,10 +41,10 @@
   $cancelAction = $onCancel ?: (data_get($reservation,'id') ? route('user.reserve.destroy', data_get($reservation,'id')) : '#');
 @endphp
 
-<div x-data="{ confirmOpen: false }" class="w-[344px] rounded-2xl border border-line bg-form p-5 shadow-[0_2px_10px_rgba(0,0,0,0.12)]">
+<div x-data="{ confirmOpen: false }" class="w-[344px] rounded-lg border border-line bg-form p-5 shadow-[0_2px_10px_rgba(0,0,0,0.12)]">
   <div class="flex gap-5">
     <div class="shrink-0">
-      <div class="h-[130px] w-[130px] overflow-hidden rounded-xl bg-base ring-1 ring-black/5">
+      <div class="h-[130px] w-[130px] overflow-hidden rounded-lg bg-base ring-1 ring-black/5">
         <img
           src="{{ $imageUrl !== '' ? $imageUrl : asset('images/store/card.png') }}"
           alt=""
