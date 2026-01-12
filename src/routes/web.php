@@ -17,6 +17,8 @@ use App\Http\Controllers\User\ReserveController;
 use App\Http\Controllers\User\FavoriteController;
 use App\Http\Controllers\User\FavoriteFolderController;
 
+use App\Http\Controllers\Store\StoreController;
+
 
 Route::view('/', 'welcome')->name('welcome');
 
@@ -73,8 +75,10 @@ Route::prefix('store')->name('store.')->group(function () {
     Route::post('/settings', [StoreSettingsController::class, 'store'])->name('settings.store');
 
     Route::middleware('auth:store')->group(function () {
-        Route::get('/top', function () {
-            return view('pages.store.top'); })->name('top');
+        Route::get('/top',[StoreController::class, 'index'])->name('top');
+
+        Route::post('/store/toggle-public', [StoreController::class, 'togglePublic'])->name('store.toggle-public');
+
     });
 });
 
