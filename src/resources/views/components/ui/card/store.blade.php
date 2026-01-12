@@ -43,7 +43,7 @@
         type="button"
         class="absolute top-2 right-2 grid h-8 w-8 place-items-center rounded-full bg-accent"
         aria-label="お気に入り"
-        @click="toggleAndOpen()"
+        @click.prevent.stop="toggleAndOpen()"
       >
         <x-icons.heart
           class="w-8 h-8 text-main transition duration-200"

@@ -18,18 +18,12 @@ class FavoriteController extends Controller
             ->first();
 
         if ($favorite) {
-            // OFF
             $favorite->delete();
-
-            // フォルダpivotからも削除（※そのユーザーのフォルダだけに絞るなら後で改善）
-            DB::table('favorite_folder_store')
-                ->where('store_id', $store->id)
-                ->delete();
 
             return response()->json(['status' => 'removed']);
         }
 
-        // ON
+
         UserFavorite::create([
             'user_id' => $userId,
             'store_id' => $store->id,
