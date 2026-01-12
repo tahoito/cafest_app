@@ -14,8 +14,9 @@ class FavoriteFolderController extends Controller
         $userId = auth('user')->id();
 
         $folders = FavoriteFolder::where('user_id', $userId)
+            ->with(['latestStore:id,image_url'])
             ->orderBy('id', 'desc')
-            ->get(['id', 'name']);
+            ->get();
 
         $selectedFolderIds = $store->favoriteFolders()
             ->where('favorite_folders.user_id', $userId)
@@ -52,4 +53,5 @@ class FavoriteFolderController extends Controller
 
         return response()->json(['ok' => true]);
     }
+
 }

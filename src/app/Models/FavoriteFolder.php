@@ -15,4 +15,9 @@ class FavoriteFolder extends Model
     {
         return $this->belongsToMany(Store::class, 'favorite_folders_store')->withTimestamps();
     }
+
+    public function latestStore() {
+        return $this->stores()->latest('favorite_folder_store.created_at');
+    }
+
 }
