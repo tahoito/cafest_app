@@ -3,40 +3,34 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Models\MenuPhoto;
 use App\Models\Store;
-use App\Models\RecommendedItems; 
 
-class RecommendedItemSeeder extends Seeder
+class MenuPhotoSeeder extends Seeder
 {
     public function run(): void
     {
         $stores = Store::pluck('id');
 
         foreach ($stores as $storeId) {
-            RecommendedItems::insert([
+            MenuPhoto::insert([
                 [
                     'store_id' => $storeId,
-                    'name' => 'カフェラテ',
-                    'price' => 550,
-                    'description' => '一番人気の定番ラテ',
+                    'photo_path' => 'images/store/menu.png',
                     'sort_order' => 1,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ],
                 [
                     'store_id' => $storeId,
-                    'name' => 'チーズケーキ',
-                    'price' => 480,
-                    'description' => 'しっとり濃厚でコーヒーと相性抜群',
+                    'photo_path' => 'images/store/menu.png',
                     'sort_order' => 2,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ],
                 [
                     'store_id' => $storeId,
-                    'name' => 'アボカドトースト',
-                    'price' => 780,
-                    'description' => 'ランチにもおすすめの一皿',
+                    'photo_path' => 'images/store/menu.png',
                     'sort_order' => 3,
                     'created_at' => now(),
                     'updated_at' => now(),
@@ -44,4 +38,5 @@ class RecommendedItemSeeder extends Seeder
             ]);
         }
     }
+
 }

@@ -34,7 +34,7 @@
 
         @if(!is_null($price))
           <div class="text-base text-text_color">
-            ¥{{ number_format((int)$price) }}
+            {{ number_format((int)$price) }}円
           </div>
         @endif
       </div>
