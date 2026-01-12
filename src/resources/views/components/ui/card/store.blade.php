@@ -38,34 +38,57 @@
       >
     </div>
 
-    <button
-      x-data="{ 
-        on: @js($faved),
-        async toggleFavorite() {
-          const response = await fetch('{{ route('user.stores.toggle_favorite', ['store' => data_get($store,'id')]) }}', {
-            method: 'POST',
-            headers: {
-              'X-CSRF-TOKEN': '{{ csrf_token() }}',
-              'Content-Type': 'application/json',
-            },
-          });
-
-          if (response.ok) {
-            this.on = !this.on;
-          } else {
-            alert('お気に入りの更新に失敗しました。');
-          }
-        }
-      }"
-      @click.prevent.stop="toggleFavorite()"
-      class="absolute top-2 right-2 grid h-8 w-8 place-items-center rounded-full bg-accent"
-      aria-label="お気に入り"
-    >
-      <x-icons.heart
-        class="w-8 h-8 text-main transition duration-200"
-        x-bind:class="on ? 'fill-main scale-110' : 'fill-transparent scale-100'"
+    <div x-data="favoriteFolderModal({{ data_get($store,'id') }})">
+      <button
+        type="button"
+        class="absolute top-2 right-2 grid h-8 w-8 place-items-center rounded-full bg-accent"
+        aria-label="お気に入り"
+        @click="toggleAndOpen()"
+      >
+        <x-icons.heart
+          class="w-8 h-8 text-main transition duration-200"
+          x-bind:class="on ? 'fill-main scale-110' : 'fill-transparent scale-100'"
+        />
+      </button>
+      <x-ui.modal.favorite 
+        :store="$store"
+        x-model="favoriteOpen"
       />
-    </button>
+    </div>
+
+    @push('scripts')
+    <script>
+      document.addEventListener('alpine:init', () => {
+        Alpine.data('favoriteFolderModal', (storeId, initialOn = false) => ({
+          storeId,
+          on: initialOn,
+          favoriteOpen: false,
+
+          async toggleAndOpen() {
+            const res = await fetch(`/store/${this.storeId}/favorite`, {
+              method: 'POST',
+              headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json',
+              },
+            })
+
+            const data = await res.json()
+
+            if (data.status === 'added') {
+              this.on = true
+              this.favoriteOpen = true
+            }
+
+            if (data.status === 'removed') {
+              this.on = false
+              this.favoriteOpen = false
+            }
+          },
+        }))
+      })
+      </script>
+    @endpush
   </div>
 
   <div class="px-4 pt-1 pb-5">

@@ -52,6 +52,11 @@ class User extends Authenticatable
         
     }
 
+    public function favoriteFolders()
+    {
+        return $this->hasMany(FavoriteFolder::class);
+    }
+
     public function favorites() {
         return $this->belongsToMany(Store::class, 'user_favorites')->withTimestamps();
     }

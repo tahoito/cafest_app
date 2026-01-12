@@ -7,6 +7,7 @@ use App\Models\StoreImage;
 use App\Models\Review;
 use App\Models\MenuPhoto;
 use App\Models\RecommendedItem;
+use App\Models\FavoriteFolder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -72,7 +73,12 @@ class Store extends Authenticatable
             ->orderBy('sort_order');    
     }
 
-    public function favoriteBy() {
+    public function favoriteFolders() {
+        return $this->belongsToMany(FavoriteFolder::class, 'favorites_folders_store')->withTimestamps();
+    }
+
+
+    public function favoriteByUsers() {
         return $this->belongsToMany(User::class, 'user_favorites');
     }
 

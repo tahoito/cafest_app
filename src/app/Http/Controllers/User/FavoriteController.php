@@ -9,14 +9,29 @@ class FavoriteController extends Controller
 {
     public function toggle(Store $store)
     {
-        $user = auth()->user();
+        $userId = auth()->id();
 
-        if ($user->favorites()->where('store_id', $store->id)->exists()) {
-            $user->favorites()->detach($store->id);
-            return response()->json(['favorited' => false]);
+        $favorite = UserFavorite::where('user_id', $userId)
+            ->where('store_id', $store->id)
+            ->first();
+
+        if ($favorite) {
+            // OFF
+            $favorite->delete();
+
+            DB::table('favorite_folder_store')
+                ->where('store_id', $store->id)
+                ->delete();
+
+            return response()->json(['status' => 'removed']);
+        } else {
+            // ON
+            UserFavorite::create([
+                'user_id' => $userId,
+                'store_id' => $store->id,
+            ]);
+
+            return response()->json(['status' => 'added']);
         }
-
-        $user->favorites()->attach($store->id);
-        return response()->json(['favorited' => true]);
     }
 }
