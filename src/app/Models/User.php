@@ -51,4 +51,8 @@ class User extends Authenticatable
         ];
         
     }
+
+    public function favorites() {
+        return $this->belongsToMany(Store::class, 'user_favorites')->withTimestamps();
+    }
 }

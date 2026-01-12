@@ -50,6 +50,8 @@ Route::prefix('user')->name('user.')->group(function () {
 
         Route::get('/reserve', [ReserveController::class, 'index'])->name('reserve');
         Route::delete('/reserve/{reservation}', [ReserveController::class, 'destroy'])->name('reserve.destroy');
+
+        Route::post('/stores/{store}/favorite', [StoreController::class, 'toggleFavorite'])->name('stores.toggle_favorite');
         
     });
 });

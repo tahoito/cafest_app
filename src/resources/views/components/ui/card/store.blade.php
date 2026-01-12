@@ -38,12 +38,33 @@
       >
     </div>
 
-    <button type="button"
-      @click.stop
+    <button
+      x-data="{ 
+        on: @js($faved),
+        async toggleFavorite() {
+          const response = await fetch('{{ route('user.stores.toggle_favorite', ['store' => data_get($store,'id')]) }}', {
+            method: 'POST',
+            headers: {
+              'X-CSRF-TOKEN': '{{ csrf_token() }}',
+              'Content-Type': 'application/json',
+            },
+          });
+
+          if (response.ok) {
+            this.on = !this.on;
+          } else {
+            alert('お気に入りの更新に失敗しました。');
+          }
+        }
+      }"
+      @click.prevent.stop="toggleFavorite()"
       class="absolute top-2 right-2 grid h-8 w-8 place-items-center rounded-full bg-accent"
       aria-label="お気に入り"
     >
-      <x-icons.heart class="w-8 h-8" />
+      <x-icons.heart
+        class="w-8 h-8 text-main transition duration-200"
+        x-bind:class="on ? 'fill-main scale-110' : 'fill-transparent scale-100'"
+      />
     </button>
   </div>
 

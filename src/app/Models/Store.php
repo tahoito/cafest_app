@@ -72,4 +72,8 @@ class Store extends Authenticatable
             ->orderBy('sort_order');    
     }
 
+    public function favoriteBy() {
+        return $this->belongsToMany(User::class, 'user_favorites');
+    }
+
 }
