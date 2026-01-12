@@ -19,7 +19,6 @@
 
         <form method="POST" action="{{ route('user.signup') }}" autocomplete="off">
         @csrf
-        <!-- ダミー入力：ブラウザの自動補完を回避するために先頭に置く -->
         <input type="text" name="__fake_user" autocomplete="username" style="position:absolute;left:-9999px;top:-9999px;" tabindex="-1" />
         <input type="password" name="__fake_pass" autocomplete="new-password" style="position:absolute;left:-9999px;top:-9999px;" tabindex="-1" />
 

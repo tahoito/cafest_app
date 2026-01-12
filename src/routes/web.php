@@ -10,6 +10,8 @@ use App\Http\Controllers\User\RecommendController;
 use App\Http\Controllers\User\SearchController;
 use App\Http\Controllers\User\StoreController;
 use App\Http\Controllers\User\StoreReviewController;
+use App\Http\Controllers\User\StorePostController;
+use App\Http\Controllers\User\StoreMenuController;
 use App\Http\Controllers\User\ReviewController;
 use App\Http\Controllers\User\ReserveController;
 
@@ -41,6 +43,7 @@ Route::prefix('user')->name('user.')->group(function () {
 
         Route::get('/stores/{store}/reviews', [StoreReviewController::class, 'index'])->name('stores.reviews');
         Route::get('/stores/{store}/posts', [StorePostController::class, 'index'])->name('stores.posts');
+        Route::get('/stores/{store}/menu', [StoreMenuController::class, 'show'])->name('stores.menu');
 
         Route::get('/stores/{store}/reviews/create', [ReviewController::class, 'create'])->name('stores.reviews.create');
         Route::post('/stores/{store}/reviews', [ReviewController::class, 'store'])->name('stores.reviews.store');

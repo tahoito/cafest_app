@@ -23,7 +23,8 @@ class DatabaseSeeder extends Seeder
             PaymentMethodSeeder::class,
             ReviewSeeder::class,
             TagSeeder::class,      
-            ReviewTagSeeder::class
+            RecommendedItemSeeder::class,
+            MenuPhotoSeeder::class,
         ]);
 
     }

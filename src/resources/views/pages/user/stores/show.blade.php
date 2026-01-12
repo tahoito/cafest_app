@@ -146,9 +146,11 @@
           </div>
           
           <div class="flex justify-center pt-4">
-              <x-ui.button type="submit" variant="secondary" class="text-form">
-                  メニューを見る
+            <a href="{{ route('user.stores.menu', $store) }}">
+              <x-ui.button variant="secondary" class="text-form">
+                メニューを見る
               </x-ui.button>
+            </a>
           </div>
       </section>
 

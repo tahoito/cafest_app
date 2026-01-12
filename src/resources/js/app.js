@@ -39,6 +39,7 @@ document.addEventListener('alpine:init', () => {
     isRatingOn(n){ return this.selectedRatings.includes(n) },
     clearRatings(){ this.selectedRatings = [] },
   })
+
 })
 
 Alpine.start()
