@@ -42,6 +42,10 @@ class FavoriteFolderController extends Controller
             ->pluck('id')
             ->all();
 
+        $store->favoriteFolders()
+            ->wherePivot('user_id', $userId)
+            ->detach();
+            
         $myFolderIds = FavoriteFolder::where('user_id', $userId)->pluck('id')->all();
         if (count($myFolderIds)) {
             $store->favoriteFolders()->detach($myFolderIds);

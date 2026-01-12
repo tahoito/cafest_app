@@ -63,33 +63,41 @@
             </div>
         </div>
 
-        <div class="px-5 pb-5 max-h-[60vh] overflow-y-auto bg-base_color">
+        {{-- body --}}
+        <div
+        class="px-5 pb-5 max-h-[60vh] overflow-y-auto bg-base_color"
+        x-data="favoriteFoldersUI({{ (int) data_get($store,'id') }}, @js(asset('images/store/card.png')))"
+        x-init="init()"
+        >
+        <div class="flex items-center justify-end pt-3">
+            <button type="button" class="text-sm text-main underline-offset-4">
+            新しいコレクション
+            </button>
+        </div>
+
+        <div class="mt-3 text-text_color">コレクション</div>
+
+        <template x-for="folder in folders" :key="folder.id">
+            <div class="flex items-center justify-between py-3">
+            <div class="flex items-center gap-3">
+                <img
+                :src="folder.latest_store?.image_url ?? defaultThumb"
+                class="w-12 h-12 rounded-lg object-cover"
+                >
+                <div class="text-text_color" x-text="folder.name"></div>
+            </div>
+
             <button
                 type="button"
-                class="text-sm text-main items-right underline-offset-4"
-                >
-                新しいコレクション
+                @click="toggleFolder(folder.id)"
+                class="grid h-8 w-8 place-items-center rounded-full border border-line"
+            >
+                <span x-text="selectedFolderIds.includes(folder.id) ? '✓' : '+'"></span>
             </button>
-
-            {{-- folders list --}}
-            <div class="mt-3 text-text_color bg-base">コレクション</div>
-            <div class="flex items-center justify-between py-3">
-                <div class="flex items-center gap-3">
-                    <img 
-                        :src="folder.latest_store?.image_url ?? '{{ asset('images/store/card.png') }}' "
-                        class="w-12 h-12 rounded-lg object-cover"
-                    >
-                    <div class="text-text_color" x-text="folder.name"></div>
-                </div>
-                
-                <button
-                    @click="toggleFolder(folder.id)"
-                    class="grid h-8 w-8 place-items-center rounded-full border border-line"
-                    >
-                    <span x-text="selectedFolderIds.includes(folder.id) ? '✓' : '+'"></span>
-                </button>
             </div>
+        </template>
         </div>
+
 
         {{-- safe area --}}
         <div class="pb-[env(safe-area-inset-bottom)]"></div>
