@@ -24,37 +24,10 @@
               </button>
 
               <button 
-                x-data="{ 
-                  on: @js($faved),
-                  busy: false,
-                  async toggle() {
-                    if (this.busy) return;
-                    this.busy = true;
-                    try {
-                      const res = await fetch('{{ route('user.stores.favorite.toggle', data_get($store,'id')) }}', {
-                        method: 'POST',
-                        headers: {
-                          'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                          'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({}),
-                      });
-                      if (res.status !== 401) {
-                        window.location.href = @js(route('user.login'));
-                        return;
-                      }
-                      const data = await res.json();
-                      this.on = data.favorited;
-                    } finally {
-                      this.busy = false;
-                    }
-                  }"
-                @click.prevent.stop="toggle()"
+                type="button"
                 class="h-8 w-8 grid place-items-center text-main" 
                 aria-label="お気に入り">
-                <x-icons.heart class="w-8 h-8 text-main transition duration-200"
-                  x-bind:class="on ? 'fill-main scale-110' : 'fill-transparent scale-100'"
-                />
+                <x-icons.heart class="w-8 h-8 text-main transition duration-200" />
               </button> 
           </div>
         </div>

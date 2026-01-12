@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class FavoriteFoler extends Model
+class FavoriteFolder extends Model
 {
     public function user()
     {
@@ -13,6 +13,6 @@ class FavoriteFoler extends Model
 
     public function stores()
     {
-        return $this->belongsToMany(Store::class, 'favorite_folers_store')->withTimestamps();
+        return $this->belongsToMany(Store::class, 'favorite_folders_store')->withTimestamps();
     }
 }

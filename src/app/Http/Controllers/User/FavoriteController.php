@@ -1,15 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\user;
+namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Store;
+use App\Models\UserFavorite;
+use Illuminate\Support\Facades\DB;
 
 class FavoriteController extends Controller
 {
     public function toggle(Store $store)
     {
-        $userId = auth()->id();
+        $userId = auth('user')->id(); // userガード
 
         $favorite = UserFavorite::where('user_id', $userId)
             ->where('store_id', $store->id)
@@ -19,19 +21,20 @@ class FavoriteController extends Controller
             // OFF
             $favorite->delete();
 
+            // フォルダpivotからも削除（※そのユーザーのフォルダだけに絞るなら後で改善）
             DB::table('favorite_folder_store')
                 ->where('store_id', $store->id)
                 ->delete();
 
             return response()->json(['status' => 'removed']);
-        } else {
-            // ON
-            UserFavorite::create([
-                'user_id' => $userId,
-                'store_id' => $store->id,
-            ]);
-
-            return response()->json(['status' => 'added']);
         }
+
+        // ON
+        UserFavorite::create([
+            'user_id' => $userId,
+            'store_id' => $store->id,
+        ]);
+
+        return response()->json(['status' => 'added']);
     }
 }

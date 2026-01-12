@@ -38,7 +38,7 @@
       >
     </div>
 
-    <div x-data="favoriteFolderModal({{ data_get($store,'id') }})">
+    <div x-data="favoriteFolderModal({{ (int) data_get($store,'id') }}, @js($faved))">
       <button
         type="button"
         class="absolute top-2 right-2 grid h-8 w-8 place-items-center rounded-full bg-accent"
@@ -55,40 +55,6 @@
         x-model="favoriteOpen"
       />
     </div>
-
-    @push('scripts')
-    <script>
-      document.addEventListener('alpine:init', () => {
-        Alpine.data('favoriteFolderModal', (storeId, initialOn = false) => ({
-          storeId,
-          on: initialOn,
-          favoriteOpen: false,
-
-          async toggleAndOpen() {
-            const res = await fetch(`/store/${this.storeId}/favorite`, {
-              method: 'POST',
-              headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                'Accept': 'application/json',
-              },
-            })
-
-            const data = await res.json()
-
-            if (data.status === 'added') {
-              this.on = true
-              this.favoriteOpen = true
-            }
-
-            if (data.status === 'removed') {
-              this.on = false
-              this.favoriteOpen = false
-            }
-          },
-        }))
-      })
-      </script>
-    @endpush
   </div>
 
   <div class="px-4 pt-1 pb-5">

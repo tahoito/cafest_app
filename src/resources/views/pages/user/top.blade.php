@@ -73,4 +73,35 @@
   </div>
 
 </div>
+
+@push('scripts')
+    <script>
+      document.addEventListener('alpine:init', () => {
+        Alpine.data('favoriteFolderModal', (storeId, initialOn = false) => ({
+          storeId,
+          on: initialOn,
+          favoriteOpen: false,
+
+          async toggleAndOpen() {
+            const res = await fetch(`/store/${this.storeId}/favorite`, {
+              method: 'POST',
+              headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json',
+              },
+            })
+            const data = await res.json()
+
+            if (data.status === 'added') {
+              this.on = true
+              this.favoriteOpen = true
+            } else if (data.status === 'removed') {
+              this.on = false
+              this.favoriteOpen = false
+            }
+          },
+        }))
+      })
+      </script>
+@endpush
 @endsection

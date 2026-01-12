@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('favorite_folers_store', function (Blueprint $table) {
+        Schema::create('favorite_folders_store', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('favorite_foler_id')->constrained()->onDelete('cascade');
+            $table->foreignId('favorite_folder_id')->constrained()->onDelete('cascade');
             $table->foreignId('store_id')->constrained()->onDelete('cascade');  
             $table->timestamps();
         });
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('favorite_folers_store');
+        Schema::dropIfExists('favorite_folders_store');
     }
 };

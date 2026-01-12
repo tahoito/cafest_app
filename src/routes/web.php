@@ -15,6 +15,8 @@ use App\Http\Controllers\User\StoreMenuController;
 use App\Http\Controllers\User\ReviewController;
 use App\Http\Controllers\User\ReserveController;
 use App\Http\Controllers\User\FavoriteController;
+use App\Http\Controllers\User\FavoriteFolderController;
+
 
 Route::view('/', 'welcome')->name('welcome');
 
@@ -52,9 +54,9 @@ Route::prefix('user')->name('user.')->group(function () {
         Route::get('/reserve', [ReserveController::class, 'index'])->name('reserve');
         Route::delete('/reserve/{reservation}', [ReserveController::class, 'destroy'])->name('reserve.destroy');
 
-        Route::post('/stores/{store}/favorite', [FavoriteController::class, 'toggleFavorite'])->name('stores.toggle_favorite');
-        Route::get('/stores/{store}/favorite/folders', [FavoriteFolderController::class, 'index'])->middleware('auth');
-        Route::post('/stores/{store}/favorite/folders', [FavoriteFolderController::class, 'sync'])->middleware('auth');
+        Route::post('/stores/{store}/favorite', [FavoriteController::class, 'toggleFavorite'])->name('stores.favorite.toggle');
+        Route::get('/stores/{store}/favorite/folders', [FavoriteFolderController::class, 'index'])->name('stores.favorite.folders.index');
+        Route::post('/stores/{store}/favorite/folders', [FavoriteFolderController::class, 'sync'])->name('stores.favorite.folders.sync');
         
     });
 });
