@@ -43,18 +43,18 @@
                 </button>
 
                 <div class="flex justify-center">
-                    <div class="flex items-center gap-11">
+                    <div class="flex items-center gap-12">
                     <img
                         src="{{ $imageUrl }}"
                         alt="{{ $name }}"
-                        class="h-[84px] w-[84px] rounded-lg object-cover ring-1 ring-black/5"
+                        class="h-[84px] w-[84px] rounded-lg object-cover shadow-[0_2px_10px_rgba(0,0,0,0.12)]"
                         loading="lazy"
                     >
                     <div class="min-w-0 text-left">
                         <div class="text-base text-text_color truncate max-w-[180px]">
                         {{ $name }}
                         </div>
-                        <div class="mt-2 text-sm text-placeholder">
+                        <div class="mt-2 text-sm text-text_color">
                         お気に入り追加済み
                         </div>
                     </div>
