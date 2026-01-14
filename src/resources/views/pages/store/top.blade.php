@@ -8,8 +8,7 @@
 <div class="min-h-screen bg-base_color">
   <div class="mx-auto w-full max-w-[393px] pt-10 pb-10">
 
-    {{-- 上部：幅353 --}}
-    <div class="mx-auto max-w-[353px]">
+    <div class="mx-auto max-w-[328px]">
       <div class="flex items-start justify-between text-text_color">
         <div>
           <h1 class="pt-4 text-2xl font-medium leading-tight">
@@ -41,14 +40,10 @@
 
         <button type="button" class="relative p-2">
           <x-icons.bell class="text-text_color" />
-          <span class="absolute -top-1 -right-2 grid h-5 w-5 place-items-center rounded-full bg-notification text-sm font-bold text-form">
-            2
-          </span>
         </button>
       </div>
     </div>
 
-    {{-- メニュー：156×2を中央固定 --}}
     <div class="mt-8 grid grid-cols-[156px_156px] gap-4 w-fit mx-auto">
       <x-ui.top-item href="#" label="店舗情報">
         <x-slot name="icon"><x-icons.info size="60" /></x-slot>
@@ -67,11 +62,11 @@
       </x-ui.top-item>
 
       <x-ui.top-item href="#" label="レビュー一覧">
-        <x-slot name="icon"><x-icons.review size="60" stroke="1" /></x-slot>
+        <x-slot name="icon"><x-icons.review size="60" stroke="1" dx="2" dy="2" /></x-slot>
       </x-ui.top-item>
 
       <x-ui.top-item href="#" label="予約状況">
-        <x-slot name="icon"><x-icons.phone size="60" /></x-slot>
+        <x-slot name="icon"><x-icons.phone size="60" stroke="1" dx="2" dy="2" /></x-slot>
       </x-ui.top-item>
     </div>
 
