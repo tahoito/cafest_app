@@ -17,11 +17,13 @@ class StoreController extends Controller
     public function togglePublic(Request $request)
     {
         $request->validate([
-            'is_public' => 'required|boolean',
+            'is_public' => ['required'],
         ]);
 
         $store = auth('store')->user();
-        $store->is_public = $request->is_public;
+        if (!$store) abort(401);
+
+        $store->is_public = $request->boolean('is_public');
         $store->save();
 
         return response()->json([

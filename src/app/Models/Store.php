@@ -34,6 +34,7 @@ class Store extends Authenticatable
 
     protected $casts = [
         'password' => 'hashed',
+        'is_public' => 'boolean',
     ];
 
     public function reviews()
