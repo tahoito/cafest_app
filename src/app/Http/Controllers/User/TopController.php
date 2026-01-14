@@ -15,11 +15,15 @@ class TopController extends Controller
     )
     {
         $reviews = Review::with(['user','store','tags'])->latest()->take(6)->get();
+        $favIds = auth()->check()
+            ? auth()->user()->favorites->pluck('stores.id')->toArray()
+            : [];
 
         return view('pages.user.top', [
             'stores' => $storeService->recommended(4),
             'reviews' => $reviews,
             'recommendedTags' => $tagService->recommended(5),
+            'favIds' => $favIds,
         ]);
     }
 }

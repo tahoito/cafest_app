@@ -23,9 +23,12 @@
               <x-icons.share class="w-8 h-8" />
               </button>
 
-              <button type="button" class="h-8 w-8 grid place-items-center text-main" aria-label="お気に入り">
-              <x-icons.heart class="w-8 h-8" />
-              </button>
+              <button 
+                type="button"
+                class="h-8 w-8 grid place-items-center text-main" 
+                aria-label="お気に入り">
+                <x-icons.heart class="w-8 h-8 text-main transition duration-200" />
+              </button> 
           </div>
         </div>
       </div>

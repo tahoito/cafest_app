@@ -8,6 +8,8 @@ class TopController extends Controller
 {
     public function index()
     {
-        return view('pages.store.top');
+        $store = auth('store')->user();
+        return view('pages.store.top',compact('store'));
     }
+
 }

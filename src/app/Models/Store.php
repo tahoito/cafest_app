@@ -7,6 +7,7 @@ use App\Models\StoreImage;
 use App\Models\Review;
 use App\Models\MenuPhoto;
 use App\Models\RecommendedItem;
+use App\Models\FavoriteFolder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -33,6 +34,7 @@ class Store extends Authenticatable
 
     protected $casts = [
         'password' => 'hashed',
+        'is_public' => 'boolean',
     ];
 
     public function reviews()
@@ -70,6 +72,18 @@ class Store extends Authenticatable
     public function recommendedItems(){
         return $this->hasMany(RecommendedItems::class)
             ->orderBy('sort_order');    
+    }
+
+    public function favoriteFolders() {
+        return $this->belongsToMany(
+            FavoriteFolder::class, 
+            'favorites_folders_store','store_id','favorite_folder_id'
+        )->withPivot('user_id')->withTimestamps();
+    }
+
+
+    public function favoriteByUsers() {
+        return $this->belongsToMany(User::class, 'user_favorites');
     }
 
 }

@@ -38,13 +38,23 @@
       >
     </div>
 
-    <button type="button"
-      @click.stop
-      class="absolute top-2 right-2 grid h-8 w-8 place-items-center rounded-full bg-accent"
-      aria-label="お気に入り"
-    >
-      <x-icons.heart class="w-8 h-8" />
-    </button>
+    <div x-data="favoriteFolderModal({{ (int) data_get($store,'id') }}, @js($faved))">
+      <button
+        type="button"
+        class="absolute top-2 right-2 grid h-8 w-8 place-items-center rounded-full bg-accent"
+        aria-label="お気に入り"
+        @click.prevent.stop="toggleAndOpen()"
+      >
+        <x-icons.heart
+          class="w-8 h-8 text-main transition duration-200"
+          x-bind:class="on ? 'fill-main scale-110' : 'fill-transparent scale-100'"
+        />
+      </button>
+      <x-ui.modal.favorite 
+        :store="$store"
+        x-model="favoriteOpen"
+      />
+    </div>
   </div>
 
   <div class="px-4 pt-1 pb-5">
