@@ -43,18 +43,15 @@ document.addEventListener('alpine:init', () => {
 
     openList(storeId){
       this.openStoreId = Number(storeId)
-      this.createStoreId = null
     },
     closeList(){
       this.openStoreId = null
     },
     openCreate(storeId){
       this.createStoreId = Number(storeId)
-      this.openStoreId = null
     },
-    closeCreate(storeId){
+    closeCreate(){
       this.createStoreId = null
-      this.openStoreId = Number(storeId)
     },
   })
 
