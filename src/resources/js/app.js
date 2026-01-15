@@ -87,6 +87,70 @@ document.addEventListener('alpine:init', () => {
       }
     },
   }))
+
+  Alpine.data('favoriteFolderCreateUI', (storeId) => ({
+    storeId,
+    name: '',
+    saving: false,
+    error: '',
+
+    async save() {
+      this.error = ''
+      const n = this.name.trim()
+      if(!n) return
+    
+      this.saving = true
+      try {
+        const res = await fetch(`/user/favorite-folders`, {
+          method : 'POST',
+          headers: {
+            'Content-Type' : 'application/json',
+            'X-CSRF-TOKEN' : document.querySelector('meta[name="csrf-token"]').content,
+            'Accept': 'application/json',
+          },
+          body: JSON.stringify({name:n}),
+        })
+
+        if (!res.ok){
+          const txt = await res.text()
+          throw new Error(txt || '作成に失敗しました')
+        }
+
+        const folder = await res.json()
+
+        window.dispatchEvent(new CustomEvent('favorite-folder-created', { detail:folder }))
+        this.name = ''
+      } catch(e) {
+        this.error = e?.message ?? 'エラーが発生しました'
+      }finally {
+        this.saving = false
+      }
+    },
+  }))
+
+  Alpine.data('favoriteFoldersUI', (storeId, defaultThumb) => ({
+    storeId,
+    defaultThumb,
+    folders: [],
+    selectedFolders: [],
+
+    async init(){
+      window.addEventListener('favorite-folder-created', (e) => {
+        this.folders = [e.detail, ...this.folders]
+      })
+      const res = await fetch(`/user/stores/${this.storeId}/favorite/folders`,{
+        headers: { 'Accept' : 'application/json' },
+      })
+      const data = await res.json()
+      this.folders = data.folders ?? []
+      this.selectedFolderIds = data.selected_folder_ids ?? []
+    },
+    toggleFolder(folderId){
+      if (this.selectedFolderIds.includes(folderId)){
+        this.selectedFolders = this.selectedFolderIds.filter(id => id !== folderId)
+      }
+    },
+  }))
 })
 
 Alpine.start()
