@@ -8,6 +8,7 @@ use App\Http\Controllers\User\SettingsController as UserSettingsController;
 use App\Http\Controllers\Store\SettingsController as StoreSettingsController;
 use App\Http\Controllers\User\RecommendController;
 use App\Http\Controllers\User\SearchController;
+use App\Http\Controllers\User\StoreController;
 use App\Http\Controllers\User\StoreReviewController;
 use App\Http\Controllers\User\StorePostController;
 use App\Http\Controllers\User\StoreMenuController;
