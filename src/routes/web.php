@@ -47,9 +47,9 @@ Route::prefix('user')->name('user.')->group(function () {
         Route::get('/stores/{store}/reserve/confirm', [UserStoreController::class, 'reserveConfirm'])->name('stores.reserve.confirm');
         Route::post('/stores/{store}/reserve', [UserStoreController::class, 'reserveStore'])->name('stores.reserve.store');
 
-        Route::get('/stores/{store}/reviews', [UserStoreReviewController::class, 'index'])->name('stores.reviews');
-        Route::get('/stores/{store}/posts', [UserStorePostController::class, 'index'])->name('stores.posts');
-        Route::get('/stores/{store}/menu', [UserStoreMenuController::class, 'show'])->name('stores.menu');
+        Route::get('/stores/{store}/reviews', [StoreReviewController::class, 'index'])->name('stores.reviews');
+        Route::get('/stores/{store}/posts', [StorePostController::class, 'index'])->name('stores.posts');
+        Route::get('/stores/{store}/menu', [StoreMenuController::class, 'show'])->name('stores.menu');
 
         Route::get('/stores/{store}/reviews/create', [UserReviewController::class, 'create'])->name('stores.reviews.create');
         Route::post('/stores/{store}/reviews', [UserReviewController::class, 'store'])->name('stores.reviews.store');
