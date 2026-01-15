@@ -76,6 +76,11 @@
         </div>
 
         <div class="mt-3 text-text_color">コレクション</div>
+        
+        <div x-show="folders && folders.length === 0" 
+            class="mt-3 rounded-2xl border border-line bg-form px-4 py-6 text-center text-sm text-placeholder">
+            コレクションがありません。
+        </div>
 
         <template x-for="folder in folders" :key="folder.id">
             <div class="flex items-center justify-between py-3">
