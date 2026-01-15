@@ -1,58 +1,62 @@
 @props([
   'review',
   'href' => null,
-  'variant' => 'compact', // list | grid | compact
+  'variant' => 'compact', // mini | grid | compact
 ])
 
 @php
-  $userName = data_get($review, 'user.name', data_get($review, 'username', ''));
+  $userName = (string) data_get($review, 'user.name', data_get($review, 'username', ''));
   $userIcon = data_get($review, 'user.icon_path', data_get($review, 'icon_path', null));
 
   $shop     = data_get($review, 'shop', data_get($review, 'store', null));
   $shopId   = data_get($shop, 'id', data_get($review, 'shop_id', null));
-  $shopName = data_get($shop, 'name', data_get($review, 'shop_name', ''));
+  $shopName = (string) data_get($shop, 'name', data_get($review, 'shop_name', ''));
 
-  $rating = (float) data_get($review, 'reviews_avg_rating', 0);
+  $rating = (float) data_get($review, 'reviews_avg_rating', data_get($review, 'rating', 0));
   $body   = (string) data_get($review, 'body', data_get($review, 'comment', ''));
 
   $date = data_get($review, 'created_at', data_get($review, 'date', null));
   $link = $href ?? ($shopId ? url("/stores/{$shopId}") : '#');
 
-  $base = "rounded-lg bg-form ring-1 ring-black/5 shadow-[0_1px_4px_rgba(0,0,0,0.20)]";
+  // スクショ寄せ：角丸 + 影 + 枠
+  $base = "rounded-xl bg-form ring-1 ring-black/5 shadow-[0_2px_10px_rgba(0,0,0,0.12)]";
 
+  // 一覧は基本 full 幅でOK
   $size = match ($variant) {
-    'mini'    => "inline-block w-[167px]",   // ←ここでカード幅を固定
-    'grid'    => "block w-full",
-    'compact' => "block w-full",
+    'mini'    => "inline-block h-[196px]",
     default   => "block w-full",
   };
 
-    $wrap = match ($variant) {
-    'mini'    => "p-2 space-y-1",
-    'grid'    => "p-2 space-y-2",
-    'compact' => "p-2 space-y-1.5",
+  // スクショ寄せ：余白は p-4
+  $wrap = match ($variant) {
+    'mini'    => "p-3 space-y-2",
     default   => "p-4 space-y-3",
   };
 
+  // スクショ寄せ：アバターは大きめ
   $avatarSize = match ($variant) {
-    'mini'    => "w-7 h-7",
-    'compact' => "w-8 h-8",
+    'mini'    => "w-8 h-8",
     default   => "w-11 h-11",
   };
 
   $dateText = '';
   if ($date) {
-      try {
-          $dateText = is_string($date) ? $date : $date->format('Y/m/d');
-      } catch (\Throwable $e) {
-          $dateText = (string) $date;
-      }
+    try {
+      $dateText = is_string($date) ? $date : $date->format('Y/m/d');
+    } catch (\Throwable $e) {
+      $dateText = (string) $date;
+    }
   }
 
   $stars = max(0, min(5, (int) round($rating)));
 @endphp
 
-<a href="{{ $link }}" class="{{ $base }} {{ $size }}" {{ $attributes }}>
+<a
+  href="{{ $link }}"
+  class="{{ $base }} {{ $size }} h-[196px]"
+  {{ $attributes }}
+>
+
   <div class="{{ $wrap }}">
 
     {{-- 上段：ユーザー + 日付 --}}
@@ -65,26 +69,30 @@
         </div>
 
         <div class="min-w-0">
-          <div class="text-text_color text-sm font-semibold truncate">{{ $userName }}</div>
+          <div class="text-text_color text-base font-semibold truncate">
+            {{ $userName }}
+          </div>
         </div>
       </div>
 
       @if($dateText !== '')
-        <div class="text-placeholder text-xs shrink-0">{{ $dateText }}</div>
+        <div class="text-placeholder text-sm shrink-0">
+          {{ $dateText }}
+        </div>
       @endif
     </div>
 
     {{-- 中段：店舗名 + 星 --}}
     <div class="flex items-center justify-between gap-3">
-      <div class="text-text_color text-sm font-medium truncate">
+      <div class="text-text_color text-base font-medium truncate">
         {{ $shopName }}
       </div>
 
       <div class="shrink-0">
-        <div class="flex w-[48px] h-[9px] items-center justify-between">
+        <div class="flex w-[72px] h-[12px] items-center justify-between">
           @for ($i = 1; $i <= 5; $i++)
             <x-icons.star
-              class="h-[9px] w-[9px] {{ $i <= $stars ? 'text-star' : 'text-placeholder' }}"
+              class="h-[12px] w-[12px] {{ $i <= $stars ? 'text-star' : 'text-placeholder' }}"
             />
           @endfor
         </div>
@@ -92,7 +100,7 @@
     </div>
 
     {{-- 本文 --}}
-    <div class="text-text_color text-[13px] leading-snug line-clamp-2">
+    <div class="text-text_color text-[15px] leading-snug line-clamp-3">
       {{ $body }}
     </div>
 
