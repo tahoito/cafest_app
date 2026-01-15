@@ -33,6 +33,6 @@ class Review extends Model
     }
 
     public function images(){
-        return $this->JasMany(ReviewImage::class);
+        return $this->hasMany(ReviewImage::class);
     }
 }
