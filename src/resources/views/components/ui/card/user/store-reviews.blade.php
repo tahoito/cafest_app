@@ -1,7 +1,7 @@
 @props([
   'review',
   'href' => null,
-  'variant' => 'compact', // list | grid | compact
+  'variant' => 'compact', 
 ])
 
 @php
