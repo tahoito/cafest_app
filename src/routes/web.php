@@ -34,25 +34,25 @@ Route::prefix('user')->name('user.')->group(function () {
     Route::get('/signup', [UserAuth::class, 'showSignup'])->name('signup');
     Route::post('/signup', [UserAuth::class, 'signup'])->name('signup.store');
 
-    Route::get('/settings', [UserSettingsController::class, 'index'])->name('settings');
-    Route::post('/settings', [UserSettingsController::class, 'store'])->name('settings.store');
+    Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
+    Route::post('/settings', [SettingsController::class, 'store'])->name('settings.store');
 
     Route::middleware('auth:user')->group(function () {
         Route::get('/top',[TopController::class, 'index'])->name('top');
         Route::get('/recommended', [RecommendController::class, 'recommended'])->name('recommended');
         Route::get('/search',[SearchController::class,'index'])->name('search');
-        Route::get('/stores/{store}',[UserStoreController::class,'show'])->name('stores.show');
+        Route::get('/stores/{store}',[StoreController::class,'show'])->name('stores.show');
 
-        Route::post('/stores/{store}/reserve/confirm', [UserStoreController::class, 'reserveConfirmStore'])->name('stores.reserve.confirm.store');
-        Route::get('/stores/{store}/reserve/confirm', [UserStoreController::class, 'reserveConfirm'])->name('stores.reserve.confirm');
-        Route::post('/stores/{store}/reserve', [UserStoreController::class, 'reserveStore'])->name('stores.reserve.store');
+        Route::post('/stores/{store}/reserve/confirm', [StoreController::class, 'reserveConfirmStore'])->name('stores.reserve.confirm.store');
+        Route::get('/stores/{store}/reserve/confirm', [StoreController::class, 'reserveConfirm'])->name('stores.reserve.confirm');
+        Route::post('/stores/{store}/reserve', [StoreController::class, 'reserveStore'])->name('stores.reserve.store');
 
         Route::get('/stores/{store}/reviews', [StoreReviewController::class, 'index'])->name('stores.reviews');
         Route::get('/stores/{store}/posts', [StorePostController::class, 'index'])->name('stores.posts');
         Route::get('/stores/{store}/menu', [StoreMenuController::class, 'show'])->name('stores.menu');
 
-        Route::get('/stores/{store}/reviews/create', [UserReviewController::class, 'create'])->name('stores.reviews.create');
-        Route::post('/stores/{store}/reviews', [UserReviewController::class, 'store'])->name('stores.reviews.store');
+        Route::get('/stores/{store}/reviews/create', [ReviewController::class, 'create'])->name('stores.reviews.create');
+        Route::post('/stores/{store}/reviews', [ReviewController::class, 'store'])->name('stores.reviews.store');
 
         Route::get('/reserve', [ReserveController::class, 'index'])->name('reserve');
         Route::delete('/reserve/{reservation}', [ReserveController::class, 'destroy'])->name('reserve.destroy');
