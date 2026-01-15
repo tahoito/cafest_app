@@ -47,9 +47,9 @@ Route::prefix('user')->name('user.')->group(function () {
         Route::get('/stores/{store}/reserve/confirm', [UserStoreController::class, 'reserveConfirm'])->name('stores.reserve.confirm');
         Route::post('/stores/{store}/reserve', [UserStoreController::class, 'reserveStore'])->name('stores.reserve.store');
 
-        Route::get('/stores/{store}/reviews', [UserStoreReviewController::class, 'index'])->name('stores.reviews');
-        Route::get('/stores/{store}/posts', [UserStorePostController::class, 'index'])->name('stores.posts');
-        Route::get('/stores/{store}/menu', [UserStoreMenuController::class, 'show'])->name('stores.menu');
+        Route::get('/stores/{store}/reviews', [StoreReviewController::class, 'index'])->name('stores.reviews');
+        Route::get('/stores/{store}/posts', [StorePostController::class, 'index'])->name('stores.posts');
+        Route::get('/stores/{store}/menu', [StoreMenuController::class, 'show'])->name('stores.menu');
 
         Route::get('/stores/{store}/reviews/create', [UserReviewController::class, 'create'])->name('stores.reviews.create');
         Route::post('/stores/{store}/reviews', [UserReviewController::class, 'store'])->name('stores.reviews.store');
@@ -60,7 +60,8 @@ Route::prefix('user')->name('user.')->group(function () {
         Route::post('/stores/{store}/favorite', [FavoriteController::class, 'toggle'])->name('stores.favorite.toggle');
         Route::get('/stores/{store}/favorite/folders', [FavoriteFolderController::class, 'index'])->name('stores.favorite.folders.index');
         Route::post('/stores/{store}/favorite/folders', [FavoriteFolderController::class, 'sync'])->name('stores.favorite.folders.sync');
-        
+        Route::post('/favorite-folders', [FavoriteFolderController::class, 'store'])->name('favorite-folders.store');
+        Route::delete('/favorite-folders/{favoriteFolder}', [FavoriteFolderController::class, 'destroy'])->name('favorite-folders.destroy');
     });
 });
 
