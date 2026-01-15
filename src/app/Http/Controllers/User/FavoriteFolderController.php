@@ -58,4 +58,23 @@ class FavoriteFolderController extends Controller
         return response()->json(['ok' => true]);
     }
 
+    public function store(Request $request) {
+        $userId = auth('user')->id();
+
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:30'],
+        ]);
+
+        $folder = FavoriteFolder::create([
+            'user_id' => $userId,
+            'name' => $validated['name'],
+        ]);
+
+        return response()->json([
+            'id' => $folder->id,
+            'name' => $folder->name,
+            'latest_store' => null,
+        ],201);
+    }
+
 }

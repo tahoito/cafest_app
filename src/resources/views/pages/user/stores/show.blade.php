@@ -182,6 +182,7 @@
               class="text-sm text-main hover:text-text_color">
               すべて →
               </a>
+
           </div>
           <div class="grid grid-cols-3 gap-3">
               <div class="aspect-square overflow-hidden rounded-lg bg-base">
@@ -200,7 +201,7 @@
           <div class="flex justify-center pt-4">
             <a href="{{ route('user.stores.reviews.create', $store) }}">
                 <x-ui.button variant="secondary" class="text-form">
-                    レビューを書く
+                    レビューを投稿する
                 </x-ui.button>
             </a>
           </div>

@@ -1,4 +1,10 @@
-<div class="fixed inset-x-0 bottom-0 z-[100]">
+<div
+  x-data
+  :class="($store.favModal?.openStoreId !== null || $store.favModal?.createStoreId !== null)
+    ? 'pointer-events-none'
+    : 'pointer-events-auto'"
+  class="fixed inset-x-0 bottom-0 z-[100]"
+>
   <nav role="navigation" class="menu relative flex w-full items-center justify-around bg-main px-4 py-3">
     <a href="{{ route('user.top') }}"
        class="menu__item {{ request()->routeIs('user.top') ? 'active' : '' }}">

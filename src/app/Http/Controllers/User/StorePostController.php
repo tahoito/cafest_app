@@ -16,24 +16,29 @@ class StorePostController extends Controller
 {
     public function index($storeId)
     {
-        $store = (object) ['id' => $storeId, 'name' => 'ダミー店舗'];
+        $store = Store::findOrFail($storeId);
 
-        $posts = collect(range(1, 10))->map(function ($i) {
-            return (object) [
-                'id' => $i,
-                'title' => "おすすめポイント {$i}",
-                'caption' => "このメニューが最高だった！ {$i}",
-                'image' => '/images/store/image_example.png',
-                'likes' => rand(10, 200),
-                'created_at' => now()->subDays($i),
-                'user' => (object)[
-                    'name' => "User {$i}",
-                    'avatar' => '/images/user/avatar.png',
-                ],
-            ];
-        });
-
+        $posts = Review::with(['user','images'])
+            ->where('store_id',$storeId)
+            ->whereHas('images')
+            ->latest()
+            ->get()
+            ->flatMap(function ($review) {
+                return $review->images->map(function ($image) use ($review){
+                    return (object) [
+                        'id' => $image->id,
+                        'image' => asset('storage/' . $image->path),
+                        'created_at' => $review->created_at,
+                        'user' => (object)[
+                            'name' => $review->user->name,
+                            'avatar' => $review->user->avatar_url,
+                        ],
+                    ];
+                });
+            });
+        
         return view('pages.user.stores.posts', compact('store', 'posts'));
+    
     }
 
 }

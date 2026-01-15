@@ -50,10 +50,7 @@
           x-bind:class="on ? 'fill-main scale-110' : 'fill-transparent scale-100'"
         />
       </button>
-      <x-ui.modal.favorite 
-        :store="$store"
-        x-model="favoriteOpen"
-      />
+      <x-ui.modal.favorite :store="$store" />
     </div>
   </div>
 

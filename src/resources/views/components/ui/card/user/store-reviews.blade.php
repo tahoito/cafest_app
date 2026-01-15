@@ -1,7 +1,11 @@
 @props([
   'review',
   'href' => null,
+<<<<<<< HEAD
   'variant' => 'compact', // mini | grid | compact
+=======
+  'variant' => 'compact', 
+>>>>>>> main
 ])
 
 @php

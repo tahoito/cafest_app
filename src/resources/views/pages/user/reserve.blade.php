@@ -6,7 +6,7 @@
   <div class="h-full overflow-y-auto">
         <header class="fixed top-0 inset-x-0 z-50 bg-base_color">
             <div class="pt-[env(safe-area-inset-top)]">
-                <div class="h-16 flex items-center justify-center px-4">
+                <div class="h-16 flex items-center pt-6 justify-center px-4">
                 <h1 class="text-center text-2xl text-text_color tracking-wide">
                     予約一覧
                 </h1>
