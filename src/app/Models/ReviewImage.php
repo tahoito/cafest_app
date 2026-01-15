@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-
+use App\Models\Review;
 use Illuminate\Database\Eloquent\Model;
 
 class ReviewImage extends Model
@@ -10,7 +10,7 @@ class ReviewImage extends Model
 
     public function review()
     {
-        return $this->belongsTo(\App\Models\Review::class);
+        return $this->belongsTo(Review::class);
     }
 
 }
