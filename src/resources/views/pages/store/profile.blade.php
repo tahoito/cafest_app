@@ -1,0 +1,121 @@
+@extends('layouts.app')
+@section('title','店舗情報')
+
+@section('hideNavbar')
+@endsection
+
+@section('content')
+<div class="h-screen bg-base_color">
+  <div class="h-full overflow-y-auto">
+        <header class="fixed top-0 inset-x-0 z-50 bg-base_color">
+            <div class="pt-[env(safe-area-inset-top)]">
+                <div class="grid grid-cols-[48px_1fr_48px] items-center px-4 h-16">
+                <a class="p-2" href="{{ route('store.top') }}">
+                    <x-icons.back class="w-5 h-5 text-text_color" />
+                </a>
+
+                <h1 class="text-center text-text_color text-2xl whitespace-nowrap overflow-hidden text-ellipsis">
+                    店舗情報
+                </h1>
+                </div>
+            </div>
+        </header>
+
+        <div class="h-full overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
+            <div class="w-full max-w-md mx-auto pt-4 space-y-5 pb-24">
+                <section class="px-4">
+                    <div class="text-lg text-text_color">基本情報</div>
+                    <div class="mt-2 rounded-lg bg-form ring-1 ring-gray-200 shadow-[0_2px_10px_rgba(0,0,0,0.10)] overflow-hidden">
+                        <div class="divide-y divide-line">
+                            <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
+                                <div class="grid grid-cols-[20px_auto] items-center gap-3 text-main2">
+                                    <x-icons.store stroke="1.5" class="h-5 w-5 shrink-0 text-main2" />
+                                    <div class="text-sm font-medium">店舗名</div>
+                                </div>
+                                <div class="text-base text-text_color">wiik coffee</div>
+                            </div>
+                            <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
+                                <div class="grid grid-cols-[20px_auto] items-center gap-1.5 text-main2">
+                                    <x-icons.access class="h-5 w-5 shrink-0 text-main2" />
+                                    <div class="text-sm font-medium">住所</div>
+                                </div>
+                                <div class="text-base text-text_color">名古屋市中区栄</div>
+                            </div>
+                            <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
+                                <div class="grid grid-cols-[20px_auto] items-center gap-1.5 text-main2">
+                                    <x-icons.pin stroke="1" class="h-5 w-5 shrink-0 text-main2" />
+                                    <div class="text-sm font-medium">エリア</div>
+                                </div>
+                                <div class="text-base text-text_color">栄</div>
+                            </div>
+                            <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
+                                <div class="grid grid-cols-[20px_auto] items-center gap-1.5 text-main2">
+                                    <x-icons.mycafe stroke="1.5" class="h-5 w-5 shrink-0 text-main2" />
+                                    <div class="text-sm font-medium">カテゴリー</div>
+                                </div>
+                                <div class="text-base text-text_color">韓国風</div>
+                            </div>
+                            <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
+                                <div class="grid grid-cols-[20px_auto] items-center gap-1.5 text-main2">
+                                    <x-icons.time stroke="1.5" class="h-5 w-5 shrink-0 text-main2" />
+                                    <div class="text-sm font-medium">営業時間</div>
+                                </div>
+                                <div class="text-base text-text_color">未設定です</div>
+                            </div>
+                            <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
+                                <div class="grid grid-cols-[20px_auto] items-center gap-1.5 text-main2">
+                                    <x-icons.wallet stroke="1.5" class="h-5 w-5 shrink-0 text-main2" />
+                                    <div class="text-sm font-medium">予算</div>
+                                </div>
+                                <div class="text-base text-text_color">未設定です</div>
+                            </div>
+                            <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
+                                <div class="grid grid-cols-[20px_auto] items-center gap-1.5 text-main2">
+                                    <x-icons.wallet stroke="1.5" class="h-5 w-5 shrink-0 text-main2" />
+                                    <div class="text-sm font-medium">支払い方法</div>
+                                </div>
+                                <div class="text-base text-text_color">未設定です</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="px-4">
+                    <div class="text-lg text-text_color">店舗紹介</div>
+                    <div class="mt-2 rounded-lg bg-form ring-1 ring-gray-200 shadow-[0_2px_10px_rgba(0,0,0,0.10)] overflow-hidden">
+                        <div class="px-4 py-4">未設定です</div>
+                    </div>
+                </section>
+
+                <section class="px-4">
+                    <div class="text-lg text-text_color">連絡情報</div>
+                    <div class="mt-2 rounded-lg bg-form ring-1 ring-gray-200 shadow-[0_2px_10px_rgba(0,0,0,0.10)] overflow-hidden">
+                        <div class="divide-y divide-line">
+                            <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
+                                <div class="grid grid-cols-[20px_auto] items-center gap-3 text-main2">
+                                    <x-icons.mail stroke="1.5" class="h-5 w-5 shrink-0 text-main2" />
+                                    <div class="text-sm font-medium">メールアドレス</div>
+                                </div>
+                                <div class="text-base text-text_color">未設定です</div>
+                            </div>
+                            <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
+                                <div class="grid grid-cols-[20px_auto] items-center gap-3 text-main2">
+                                    <x-icons.phone stroke="1.5" class="h-5 w-5 shrink-0 text-main2" />
+                                    <div class="text-sm font-medium">電話番号</div>
+                                </div>
+                                <div class="text-base text-text_color">未設定です</div>
+                            </div>
+                            <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
+                                <div class="grid grid-cols-[20px_auto] items-center gap-3 text-main2">
+                                    <x-icons.instagram stroke="1.5" class="h-5 w-5 shrink-0 text-main2" />
+                                    <div class="text-sm font-medium">SNSリンク</div>
+                                </div>
+                                <div class="text-base text-text_color">未設定です</div>
+                            </div>
+                        </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
