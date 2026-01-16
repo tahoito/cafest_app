@@ -62,13 +62,15 @@ class StoreReviewController extends Controller
             try {
                 if (method_exists($review, 'images')) {
                     $images = $review->images()
+                        ->orderBy('sort')
                         ->pluck('path')
-                        ->map(fn ($p) => asset($p))
+                        ->map(fn ($p) => asset('storage/' . ltrim($p, '/')))
                         ->values();
                 }
             } catch (\Throwable $e) {
                 $images = [];
             }
+
 
             return response()->json([
                 'id' => $review->id,

@@ -34,7 +34,7 @@ class StoreController extends Controller
             ->get()
             ->map(fn($img) => (object)[
                 'review_id' => $img->review_id,
-                'image' => asset('images/'.$img->path),
+                'image' => asset('storage/'.$img->path),
             ]);
         
         $store->load(['slideImages','galleryImages','hours','reviews'])
