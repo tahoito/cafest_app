@@ -25,6 +25,10 @@ class Store extends Authenticatable
         'mood',
         'budget_min',
         'budget_max',
+        'tiktok_url',
+        'instagram_url',
+        'x_url',
+        'website_url',
     ];
 
     protected $hidden = [

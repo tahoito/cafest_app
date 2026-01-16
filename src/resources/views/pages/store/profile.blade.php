@@ -24,6 +24,13 @@
         @php 
             $days = ['日','月','火','水','木','金','土'];
             $pm = $store->paymentMethods->pluck('name')->filter()->values();
+            $sns = [
+                'tiktok' => $store->tiktok_url, 
+                'instagram' => $store->instagram_url,
+                'x' => $store->x_url,
+                'website' => $store->website_url,
+            ];
+            $hasSns = collect($sns)->filter()->isNotEmpty();
         @endphp
 
         <div class="h-full overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
@@ -163,11 +170,24 @@
                                     <x-icons.instagram stroke="1.5" class="h-5 w-5 shrink-0 text-main2" />
                                     <div class="text-sm font-medium">SNSリンク</div>
                                 </div>
-                                <div class="text-base text-text_color">未設定です</div>
+                                <div class="flex items-center gap-3">
+                                @if($hasSns)
+                                @foreach($sns as $type => $url)
+                                    @if($url)
+                                    <a href="{{ $url }}" target="_blank"
+                                        class="text-text_color hover:text-main transition">
+                                        <x-icons.{{ $type }} class="h-6 w-6" />
+                                    </a>
+                                    @endif
+                                @endforeach
+                                @else
+                                <span class="text-placeholder text-base">未設定です</span>
+                                @endif
                             </div>
                         </div>
                     </div>
-                    <div class="mt-2 text-sm text-placeholder text-right">最終更新12/10</div>
+                </div>
+                <div class="mt-2 text-sm text-placeholder text-right">最終更新12/10</div>
                 </section>
             </div>
         </div>
