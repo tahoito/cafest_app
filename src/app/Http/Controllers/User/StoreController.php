@@ -34,7 +34,7 @@ class StoreController extends Controller
             ->get()
             ->map(fn($img) => (object)[
                 'review_id' => $img->review_id,
-                'image' => asset($img->path),
+                'image' => asset('images/'.$img->path),
             ]);
         
         $store->load(['slideImages','galleryImages','hours','reviews'])
@@ -124,7 +124,7 @@ class StoreController extends Controller
 
         return redirect()
             ->route('user.stores.show', $store->id)
-            ->with('success', '予約完了！');
+            ->with('reserve_success', '予約完了！');
     }
 
 }

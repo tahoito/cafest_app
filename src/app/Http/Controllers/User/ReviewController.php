@@ -94,6 +94,6 @@ class ReviewController extends Controller
 
         return redirect()
             ->route('user.stores.show', $store) // ← stores.show じゃなくて user. が多分必要
-            ->with('success', 'レビューを投稿しました');
+            ->with('review_success', 'レビューを投稿しました');
     }
 }

@@ -38,7 +38,7 @@
                             @click='window.dispatchEvent(new CustomEvent("review:open",{
                                 detail: {
                                     reviewId: {{ $post->id }},
-                                    endpoint: "{{ route('user.reviews.show', $post->id) }}?format=json"
+                                    endpoint: "{{ route('user.stores.reviews.show', $post->id) }}?format=json"
                                     }
                                 }))'
                         >
@@ -60,7 +60,7 @@
 
     <div class="sticky bottom-0 z-50 pb-3 bg-base_color/90 backdrop-blur px-4 pt-3 pb-[calc(env(safe-area-inset-bottom)+16px)]">
         <div class="w-full max-w-md mx-auto flex justify-center">
-            <a href="{{ route('user.stores.reviews.create', ['store' => $store->id]) }}" class="block">
+            <a href="{{ route('user.stores.reviews.create', ['store' => data_get($store,'id')]) }}">
                 <x-ui.button variant="secondary" class="text-form">
                     レビューを投稿する
                 </x-ui.button>

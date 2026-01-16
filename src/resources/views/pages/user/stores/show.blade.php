@@ -208,10 +208,10 @@
           </div>
 
           <div class="flex justify-center pt-4">
-            <a href="{{ route('user.stores.reviews.create', $store) }}">
-                <x-ui.button variant="secondary" class="text-form">
-                    レビューを投稿する
-                </x-ui.button>
+            <a href="{{ route('user.stores.reviews.create', ['store' => $store->id]) }}">
+              <x-ui.button variant="secondary" class="text-form">
+                  レビューを投稿する
+              </x-ui.button>
             </a>
           </div>
       </section>

@@ -15,24 +15,26 @@
         <div class="pb-[env(safe-area-inset-bottom)]">
 
           {{-- header 固定 --}}
-          <div class="sticky top-0 z-10 pt-4 bg-base_color">
-            <div class="h-12 flex items-center px-4">
-                <button
+            <div class="sticky top-0 z-10 pt-4 bg-base_color">
+                <div class="h-12 grid grid-cols-[48px_1fr_48px] items-center px-4">
+
+                    <button
                     type="button"
-                    class="absolute left-0 grid h-9 w-9 place-items-center rounded-full hover:bg-black/5"
-                    @click="$store.search.activeModal = null"
+                    class="grid h-9 w-9 place-items-center rounded-full hover:bg-black/5"
+                    @click="close()"
                     aria-label="閉じる"
-                >
-                    <x-icons.close class="w-8 h-8 text-text_color_color" />
-                </button>
+                    >
+                    <x-icons.close class="w-8 h-8 text-text_color" />
+                    </button>
 
-              <div class="flex-1 text-center text-text_color text-2xl truncate">
-                <span x-text="data?.store?.name ?? 'レビュー詳細'"></span>
-              </div>
+                    <div class="text-center text-text_color text-2xl truncate">
+                    <span x-text="data?.store?.name ?? 'レビュー詳細'"></span>
+                    </div>
 
-              <div class="w-10"></div>
+                    <div class="h-9 w-9"></div>
+
+                </div>
             </div>
-          </div>
 
           {{-- content スクロール --}}
           <div class="max-h-[75vh] overflow-y-auto overscroll-contain px-4 pb-6">
