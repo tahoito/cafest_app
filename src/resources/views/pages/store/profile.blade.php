@@ -21,6 +21,11 @@
             </div>
         </header>
 
+        @php 
+            $days = ['日','月','火','水','木','金','土'];
+            $pm = $store->paymentMethods->pluck('name')->filter()->values();
+        @endphp
+
         <div class="h-full overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
             <div class="w-full max-w-md mx-auto pt-5 space-y-6 pb-4">
                 <section class="px-4">
@@ -37,49 +42,80 @@
                                     <x-icons.store stroke="1.5" class="h-5 w-5 shrink-0 text-main2" />
                                     <div class="text-sm font-medium">店舗名</div>
                                 </div>
-                                <div class="text-base text-text_color">wiik coffee</div>
+                                <div class="text-base text-text_color">{{ $store->name ?? '未設定です'}}</div>
                             </div>
                             <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
                                 <div class="grid grid-cols-[20px_auto] items-center gap-1.5 text-main2">
                                     <x-icons.access class="h-5 w-5 shrink-0 text-main2" />
                                     <div class="text-sm font-medium">住所</div>
                                 </div>
-                                <div class="text-base text-text_color">名古屋市中区栄</div>
+                                <div class="text-base text-text_color">{{ $store->address ?? '未設定です'}}</div>
                             </div>
                             <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
                                 <div class="grid grid-cols-[20px_auto] items-center gap-1.5 text-main2">
                                     <x-icons.pin stroke="1" class="h-5 w-5 shrink-0 text-main2" />
                                     <div class="text-sm font-medium">エリア</div>
                                 </div>
-                                <div class="text-base text-text_color">栄</div>
+                                <div class="text-base text-text_color">{{ $store->area ?? '未設定です'}}</div>
                             </div>
                             <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
                                 <div class="grid grid-cols-[20px_auto] items-center gap-1.5 text-main2">
                                     <x-icons.mycafe stroke="1.5" class="h-5 w-5 shrink-0 text-main2" />
                                     <div class="text-sm font-medium">カテゴリー</div>
                                 </div>
-                                <div class="text-base text-text_color">韓国風</div>
+                                <div class="text-base text-text_color">{{ $store->mood ?? '未設定です'}}</div>
                             </div>
                             <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
                                 <div class="grid grid-cols-[20px_auto] items-center gap-1.5 text-main2">
                                     <x-icons.time stroke="1.5" class="h-5 w-5 shrink-0 text-main2" />
                                     <div class="text-sm font-medium">営業時間</div>
                                 </div>
-                                <div class="text-base text-text_color">未設定です</div>
+                                <div class="text-base text-text_color">
+                                    @if($store->hours->isNotEmpty())
+                                        <div class="space-y-1">
+                                            @foreach($store->hours as $h)
+                                            <div>
+                                                {{ $days[$h->day_of_week] }}：
+                                                @if($h->is_closed)
+                                                定休日
+                                                @else
+                                                {{ \Carbon\Carbon::parse($h->open_time)->format('H:i') }}
+                                                -
+                                                {{ \Carbon\Carbon::parse($h->close_time)->format('H:i') }}
+                                                @endif
+                                            </div>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                    <span class="text-placeholder">未設定です</span>
+                                    @endif
+                                </div>
                             </div>
                             <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
                                 <div class="grid grid-cols-[20px_auto] items-center gap-1.5 text-main2">
                                     <x-icons.wallet stroke="1.5" class="h-5 w-5 shrink-0 text-main2" />
                                     <div class="text-sm font-medium">予算</div>
                                 </div>
-                                <div class="text-base text-text_color">未設定です</div>
+                                <div class="text-base text-text_color">
+                                    @if($store->budget_min && $store->budget_max)
+                                        {{ $store->budget_min }}円~{{ $store->budget_max }}円
+                                    @else   
+                                        <span class="text-placeholder">未設定です</span>
+                                    @endif
+                                </div>
                             </div>
                             <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
                                 <div class="grid grid-cols-[20px_auto] items-center gap-1.5 text-main2">
                                     <x-icons.wallet stroke="1.5" class="h-5 w-5 shrink-0 text-main2" />
                                     <div class="text-sm font-medium">支払い方法</div>
                                 </div>
-                                <div class="text-base text-text_color">未設定です</div>
+                                <div class="text-base text-text_color">
+                                    @if($pm->isNotEmpty())
+                                        {{ $pm->join(' / ') }}
+                                    @else
+                                        <span class="text-placeholder">未設定です</span>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     </div>
