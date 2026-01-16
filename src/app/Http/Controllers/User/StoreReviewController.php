@@ -15,10 +15,10 @@ use Illuminate\Support\Facades\Storage;
 
 class StoreReviewController extends Controller
 {
-    public function index($storeId)
+    public function index(Store $store)
     {
-        $store = (object) ['id' => $storeId, 'name' => 'ダミー店舗'];
-
+        $storeId = $store->id;
+        
         $reviews = collect(range(1, 12))->map(function ($i) {
             return (object) [
                 'id' => $i,

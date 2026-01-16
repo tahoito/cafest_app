@@ -36,11 +36,11 @@
                     @forelse($posts as $post)
                         <button type="button" class="aspect-square overflow-hidden rounded-lg bg-base"
                             @click='window.dispatchEvent(new CustomEvent("review:open",{
-                                detail: {
-                                    reviewId: {{ $post->id }},
-                                    endpoint: "{{ route('user.stores.reviews.show', $post->id) }}?format=json"
-                                    }
-                                }))'
+                            detail: {
+                                reviewId: {{ $post->review_id }},
+                                endpoint: "{{ route('user.stores.reviews.show', ['store' => $store->id, 'review' => $post->review_id]) }}?format=json"
+                            }
+                            }))'
                         >
                             <img src="{{ $post->image }}"
                                 alt="review image"
