@@ -30,7 +30,7 @@
     </header>
 
     <div class="flex-1 overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
-        <div class="w-full max-w-md mx-auto space-y-5">
+        <div class="w-full max-w-md mx-auto px-4 space-y-5">
             <section>
                 <div class="grid grid-cols-3 gap-3">
                     @forelse($posts as $post)

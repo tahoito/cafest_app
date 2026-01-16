@@ -18,8 +18,8 @@ class StoreReviewController extends Controller
     public function index(Store $store)
     {
         $storeId = $store->id;
-        
-        $reviews = collect(range(1, 12))->map(function ($i) {
+
+        $reviews = collect(range(1, 12))->map(function ($i) use ($storeId){
             return (object) [
                 'id' => $i,
                 'user' => (object)[
