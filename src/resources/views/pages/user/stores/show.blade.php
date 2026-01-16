@@ -171,7 +171,7 @@
                   <x-ui.card.user.review
                       :review="$review" 
                       variant="mini" 
-                      class="shrink-0" />
+                      class="shrink-0 cursor-pointer" />
               @endforeach
           </div>
 

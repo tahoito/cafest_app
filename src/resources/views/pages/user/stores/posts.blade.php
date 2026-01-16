@@ -1,10 +1,11 @@
 @extends('layouts.app')
 @section('title','みんなの写真')
 
-@section('content')
 @section('hideNavbar')
 @endsection
 
+
+@section('content')
 <div class="h-screen bg-base_color flex flex-col">
     <header class="sticky top-0 z-50 bg-base_color">
         <div class="pt-[env(safe-area-inset-top)]">
@@ -33,13 +34,20 @@
             <section>
                 <div class="grid grid-cols-3 gap-3">
                     @forelse($posts as $post)
-                        <div class="aspect-square overflow-hidden rounded-lg bg-base">
+                        <button type="button" class="aspect-square overflow-hidden rounded-lg bg-base"
+                            @click='window.dispatchEvent(new CustomEvent("review:open",{
+                                detail: {
+                                    reviewId: {{ $post->id }},
+                                    endpoint: "{{ route('user.reviews.show', $post->id) }}?format=json"
+                                    }
+                                }))'
+                        >
                             <img src="{{ $post->image }}"
                                 alt="review image"
                                 class="w-full h-full object-cover"
                                 loading="lazy"
                             >
-                        </div>
+                        </button>
                     @empty
                         <div class="col-span-3 text-center text-placeholder py-10">
                             まだレビュー写真がありません

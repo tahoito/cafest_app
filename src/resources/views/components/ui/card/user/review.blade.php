@@ -1,7 +1,7 @@
 @props([
   'review',
   'href' => null,
-  'variant' => 'compact', // list | grid | compact
+  'variant' => 'compact', // list | grid | compact | mini
 ])
 
 @php
@@ -12,22 +12,24 @@
   $shopId   = data_get($shop, 'id', data_get($review, 'shop_id', null));
   $shopName = data_get($shop, 'name', data_get($review, 'shop_name', ''));
 
-  $rating = (float) data_get($review, 'reviews_avg_rating', 0);
+  $rating = (float) data_get($review, 'reviews_avg_rating', data_get($review, 'rating', 0));
   $body   = (string) data_get($review, 'body', data_get($review, 'comment', ''));
 
   $date = data_get($review, 'created_at', data_get($review, 'date', null));
-  $link = $href ?? ($shopId ? url("/stores/{$shopId}") : '#');
+
+  // ここは「押した後に開ける詳細ページ」として残しておく（モーダル内ボタンで使ってもOK）
+  $link = $href ?? ($shopId ? route('user.stores.show', $shopId) : '#');
 
   $base = "rounded-lg bg-form ring-1 ring-black/5 shadow-[0_1px_4px_rgba(0,0,0,0.20)]";
 
   $size = match ($variant) {
-    'mini'    => "inline-block w-[167px]",   // ←ここでカード幅を固定
+    'mini'    => "inline-block w-[167px]",
     'grid'    => "block w-full",
     'compact' => "block w-full",
     default   => "block w-full",
   };
 
-    $wrap = match ($variant) {
+  $wrap = match ($variant) {
     'mini'    => "p-2 space-y-1",
     'grid'    => "p-2 space-y-2",
     'compact' => "p-2 space-y-1.5",
@@ -50,9 +52,33 @@
   }
 
   $stars = max(0, min(5, (int) round($rating)));
+
+  // ✅ モーダル用：レビューID（review.id or id のどっちか）
+  $reviewId = data_get($review, 'id', data_get($review, 'review_id'));
+  $storeId  = data_get($review, 'store_id') ?? data_get($review, 'shop_id') ?? data_get($review, 'store.id') ?? data_get($review, 'shop.id');
+  $endpoint = ($storeId && $reviewId)
+  ? route('user.stores.reviews.show', ['store' => $storeId, 'review' => $reviewId]).'?format=json'
+  : null;
 @endphp
 
-<a href="{{ $link }}" class="{{ $base }} {{ $size }}" {{ $attributes }}>
+<div class="hidden">
+  id: {{ data_get($review,'id') }} / review_id: {{ data_get($review,'review_id') }} / shop_id: {{ data_get($review,'shop_id') }}
+</div>
+
+<button
+  type="button"
+  class="{{ $base }} {{ $size }} block text-left"
+  {{ $attributes }}
+  @click='window.dispatchEvent(new CustomEvent("review:open",{
+    detail: {
+      reviewId: {{ $reviewId ?? 'null' }},
+      endpoint: @json($endpoint),
+      fallback_url: @json($link),
+    }
+  }))'
+  @disabled(!$endpoint)
+  aria-label="レビュー詳細を開く"
+>
   <div class="{{ $wrap }}">
 
     {{-- 上段：ユーザー + 日付 --}}
@@ -97,4 +123,4 @@
     </div>
 
   </div>
-</a>
+</button>

@@ -49,6 +49,7 @@ Route::prefix('user')->name('user.')->group(function () {
         Route::post('/stores/{store}/reserve', [StoreController::class, 'reserveStore'])->name('stores.reserve.store');
 
         Route::get('/stores/{store}/reviews', [StoreReviewController::class, 'index'])->name('stores.reviews');
+        Route::get('/stores/{store}/reviews/{review}', [StoreReviewController::class, 'show'])->name('stores.reviews.show');
         Route::get('/stores/{store}/posts', [StorePostController::class, 'index'])->name('stores.posts');
         Route::get('/stores/{store}/menu', [StoreMenuController::class, 'show'])->name('stores.menu');
 
