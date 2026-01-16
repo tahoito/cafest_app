@@ -22,9 +22,14 @@
         </header>
 
         <div class="h-full overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
-            <div class="w-full max-w-md mx-auto pt-4 space-y-5 pb-24">
+            <div class="w-full max-w-md mx-auto pt-5 space-y-6 pb-4">
                 <section class="px-4">
-                    <div class="text-lg text-text_color">基本情報</div>
+                    <div class="flex items-center justify-between">
+                        <div class="text-lg text-text_color">基本情報</div>
+                        <a href="#"
+                            class="flex items-center gap-1 text-sm text-text_color hover:opacity-80">
+                        <x-icons.edit class="w-[15px] h-[15px] text-text_color"/>編集</a>
+                    </div>
                     <div class="mt-2 rounded-lg bg-form ring-1 ring-gray-200 shadow-[0_2px_10px_rgba(0,0,0,0.10)] overflow-hidden">
                         <div class="divide-y divide-line">
                             <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
@@ -78,17 +83,29 @@
                             </div>
                         </div>
                     </div>
+                    <div class="mt-2 text-sm text-placeholder text-right">最終更新12/10</div>
                 </section>
 
                 <section class="px-4">
-                    <div class="text-lg text-text_color">店舗紹介</div>
+                    <div class="flex items-center justify-between">
+                        <div class="text-lg text-text_color">店舗紹介</div>
+                        <a href="#"
+                            class="flex items-center gap-1 text-sm text-text_color hover:opacity-80">
+                        <x-icons.edit class="w-[15px] h-[15px] text-text_color"/>編集</a>
+                    </div>
                     <div class="mt-2 rounded-lg bg-form ring-1 ring-gray-200 shadow-[0_2px_10px_rgba(0,0,0,0.10)] overflow-hidden">
                         <div class="px-4 py-4">未設定です</div>
                     </div>
+                    <div class="mt-2 text-sm text-placeholder text-right">最終更新12/10</div>
                 </section>
 
                 <section class="px-4">
-                    <div class="text-lg text-text_color">連絡情報</div>
+                    <div class="flex items-center justify-between">
+                        <div class="text-lg text-text_color">連絡情報</div>
+                        <a href="#"
+                            class="flex items-center gap-1 text-sm text-text_color hover:opacity-80">
+                        <x-icons.edit class="w-[15px] h-[15px] text-text_color"/>編集</a>
+                    </div>
                     <div class="mt-2 rounded-lg bg-form ring-1 ring-gray-200 shadow-[0_2px_10px_rgba(0,0,0,0.10)] overflow-hidden">
                         <div class="divide-y divide-line">
                             <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
@@ -113,6 +130,8 @@
                                 <div class="text-base text-text_color">未設定です</div>
                             </div>
                         </div>
+                    </div>
+                    <div class="mt-2 text-sm text-placeholder text-right">最終更新12/10</div>
                 </section>
             </div>
         </div>
