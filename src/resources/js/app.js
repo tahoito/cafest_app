@@ -55,6 +55,20 @@ document.addEventListener('alpine:init', () => {
     },
   })
 
+  Alpine.store('reviewModal', {
+    open: false,
+    loading: false,
+    data: null,
+    error: '',
+
+    close() {
+      this.open = false
+      this.loading = false
+      this.data = null
+      this.error = ''
+    },
+  })
+
   Alpine.data('favoriteFolderModal', (storeId, initialOn = false) => ({
     storeId: Number(storeId),
     on: initialOn,

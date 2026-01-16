@@ -26,7 +26,8 @@ class StorePostController extends Controller
             ->flatMap(function ($review) {
                 return $review->images->map(function ($image) use ($review){
                     return (object) [
-                        'id' => $image->id,
+                        'review_id' => $review->id,
+                        'image_id' => $image->id,
                         'image' => asset('storage/' . $image->path),
                         'created_at' => $review->created_at,
                         'user' => (object)[

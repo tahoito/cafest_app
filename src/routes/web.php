@@ -8,6 +8,7 @@ use App\Http\Controllers\User\SettingsController as UserSettingsController;
 use App\Http\Controllers\Store\SettingsController as StoreSettingsController;
 use App\Http\Controllers\User\RecommendController;
 use App\Http\Controllers\User\SearchController;
+use App\Http\Controllers\User\StoreController;
 use App\Http\Controllers\User\StoreReviewController;
 use App\Http\Controllers\User\StorePostController;
 use App\Http\Controllers\User\StoreMenuController;
@@ -51,8 +52,9 @@ Route::prefix('user')->name('user.')->group(function () {
         Route::get('/stores/{store}/posts', [StorePostController::class, 'index'])->name('stores.posts');
         Route::get('/stores/{store}/menu', [StoreMenuController::class, 'show'])->name('stores.menu');
 
-        Route::get('/stores/{store}/reviews/create', [ReviewController::class, 'create'])->name('stores.reviews.create');
         Route::post('/stores/{store}/reviews', [ReviewController::class, 'store'])->name('stores.reviews.store');
+        Route::get('/stores/{store}/reviews/create', [ReviewController::class, 'create'])->name('stores.reviews.create');
+        Route::get('/stores/{store}/reviews/{review}', [StoreReviewController::class, 'show'])->name('stores.reviews.show');
 
         Route::get('/reserve', [ReserveController::class, 'index'])->name('reserve');
         Route::delete('/reserve/{reservation}', [ReserveController::class, 'destroy'])->name('reserve.destroy');
