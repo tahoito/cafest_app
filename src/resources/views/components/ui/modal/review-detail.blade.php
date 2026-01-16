@@ -15,11 +15,16 @@
         <div class="pb-[env(safe-area-inset-bottom)]">
 
           {{-- header 固定 --}}
-          <div class="sticky top-0 z-10 bg-base_color">
+          <div class="sticky top-0 z-10 pt-4 bg-base_color">
             <div class="h-12 flex items-center px-4">
-              <button type="button" class="p-2 -ml-2" @click="close()" aria-label="閉じる">
-                <span class="text-text_color text-2xl leading-none">×</span>
-              </button>
+                <button
+                    type="button"
+                    class="absolute left-0 grid h-9 w-9 place-items-center rounded-full hover:bg-black/5"
+                    @click="$store.search.activeModal = null"
+                    aria-label="閉じる"
+                >
+                    <x-icons.close class="w-8 h-8 text-text_color_color" />
+                </button>
 
               <div class="flex-1 text-center text-text_color text-2xl truncate">
                 <span x-text="data?.store?.name ?? 'レビュー詳細'"></span>
@@ -65,18 +70,24 @@
 
                 {{-- rating --}}
                 <div class="mt-3 flex items-center gap-1" aria-label="評価">
-                  <template x-for="i in 5" :key="i">
-                    <span
-                      class="text-xl"
-                      :class="(data.rating ?? 0) >= i ? 'text-yellow-400' : 'text-placeholder/40'"
-                    >★</span>
-                  </template>
+                    <template x-for="i in 5" :key="i">
+                        <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        class="w-5 h-5"
+                        :class="(data.rating ?? 0) >= i ? 'text-star' : 'text-placeholder'"
+                        >
+                        <path d="M11.6984 0L14.46 7.9463H23.3964L16.1667 12.8574L18.9282 20.8037L11.6984 15.8926L4.46868 20.8037L7.2302 12.8574L0.000442505 7.9463H8.93692L11.6984 0Z"/>
+                        </svg>
+                    </template>
                 </div>
+
 
                 {{-- comment --}}
                 <template x-if="data.body">
-                  <div class="mt-3 rounded-2xl border border-main/40 bg-base px-4 py-3 shadow-sm">
-                    <p class="text-text_color leading-relaxed" x-text="data.body"></p>
+                  <div class="mt-3 rounded-lg border border-main bg-base px-4 py-3 shadow-sm shadow-[0_1px_4px_rgba(0,0,0,0.20)]">
+                    <div class="text-text_color text-base leading-relaxed" x-text="data.body"></div>
                   </div>
                 </template>
 
