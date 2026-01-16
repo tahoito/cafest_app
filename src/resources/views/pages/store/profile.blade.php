@@ -42,28 +42,28 @@
                                     <x-icons.store stroke="1.5" class="h-5 w-5 shrink-0 text-main2" />
                                     <div class="text-sm font-medium">店舗名</div>
                                 </div>
-                                <div class="text-base text-text_color">{{ $store->name ?? '未設定です'}}</div>
+                                <div class="text-base {{ $store->mood ? 'text-text_color' : 'text-placeholder' }}">{{ $store->name ?? '未設定です'}}</div>
                             </div>
                             <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
                                 <div class="grid grid-cols-[20px_auto] items-center gap-1.5 text-main2">
                                     <x-icons.access class="h-5 w-5 shrink-0 text-main2" />
                                     <div class="text-sm font-medium">住所</div>
                                 </div>
-                                <div class="text-base text-text_color">{{ $store->address ?? '未設定です'}}</div>
+                                <div class="text-base {{ $store->mood ? 'text-text_color' : 'text-placeholder' }}">{{ $store->address ?? '未設定です'}}</div>
                             </div>
                             <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
                                 <div class="grid grid-cols-[20px_auto] items-center gap-1.5 text-main2">
                                     <x-icons.pin stroke="1" class="h-5 w-5 shrink-0 text-main2" />
                                     <div class="text-sm font-medium">エリア</div>
                                 </div>
-                                <div class="text-base text-text_color">{{ $store->area ?? '未設定です'}}</div>
+                                <div class="text-base {{ $store->mood ? 'text-text_color' : 'text-placeholder' }}">{{ $store->area ?? '未設定です'}}</div>
                             </div>
                             <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
                                 <div class="grid grid-cols-[20px_auto] items-center gap-1.5 text-main2">
                                     <x-icons.mycafe stroke="1.5" class="h-5 w-5 shrink-0 text-main2" />
                                     <div class="text-sm font-medium">カテゴリー</div>
                                 </div>
-                                <div class="text-base text-text_color">{{ $store->mood ?? '未設定です'}}</div>
+                                <div class="text-base {{ $store->mood ? 'text-text_color' : 'text-placeholder' }}">{{ $store->mood ?? '未設定です'}}</div>
                             </div>
                             <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
                                 <div class="grid grid-cols-[20px_auto] items-center gap-1.5 text-main2">
@@ -129,8 +129,8 @@
                             class="flex items-center gap-1 text-sm text-text_color hover:opacity-80">
                         <x-icons.edit class="w-[15px] h-[15px] text-text_color"/>編集</a>
                     </div>
-                    <div class="mt-2 rounded-lg bg-form ring-1 ring-gray-200 shadow-[0_2px_10px_rgba(0,0,0,0.10)] overflow-hidden">
-                        <div class="px-4 py-4">未設定です</div>
+                    <div class="mt-2 rounded-lg bg-form ring-1 ring-gray-200 px-4 py-4 shadow-[0_2px_10px_rgba(0,0,0,0.10)] overflow-hidden">
+                        <div class="text-base {{ $store->mood ? 'text-text_color' : 'text-placeholder' }}">{{ $store->description ?? '未設定です'}}</div>
                     </div>
                     <div class="mt-2 text-sm text-placeholder text-right">最終更新12/10</div>
                 </section>
@@ -149,14 +149,14 @@
                                     <x-icons.mail stroke="1.5" class="h-5 w-5 shrink-0 text-main2" />
                                     <div class="text-sm font-medium">メールアドレス</div>
                                 </div>
-                                <div class="text-base text-text_color">未設定です</div>
+                                <div class="text-base {{ $store->mood ? 'text-text_color' : 'text-placeholder' }}">{{ $store->email ?? '未設定です'}}</div>
                             </div>
                             <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
                                 <div class="grid grid-cols-[20px_auto] items-center gap-3 text-main2">
                                     <x-icons.phone stroke="1.5" class="h-5 w-5 shrink-0 text-main2" />
                                     <div class="text-sm font-medium">電話番号</div>
                                 </div>
-                                <div class="text-base text-text_color">未設定です</div>
+                                <div class="text-base {{ $store->mood ? 'text-text_color' : 'text-placeholder' }}">{{ $store->phone ?? '未設定です'}}</div>
                             </div>
                             <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
                                 <div class="grid grid-cols-[20px_auto] items-center gap-3 text-main2">
