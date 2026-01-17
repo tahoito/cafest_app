@@ -45,7 +45,7 @@
                     <div class="mt-2 rounded-lg bg-form ring-1 ring-gray-200 shadow-[0_2px_10px_rgba(0,0,0,0.10)] overflow-hidden">
                         <div class="divide-y divide-line">
                             <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
-                                <div class="grid grid-cols-[20px_auto] items-center gap-3 text-main2">
+                                <div class="grid grid-cols-[20px_auto] items-center gap-1.5 text-main2">
                                     <x-icons.store stroke="1.5" class="h-5 w-5 shrink-0 text-main2" />
                                     <div class="text-sm font-medium">店舗名</div>
                                 </div>
@@ -53,14 +53,14 @@
                             </div>
                             <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
                                 <div class="grid grid-cols-[20px_auto] items-center gap-1.5 text-main2">
-                                    <x-icons.access class="h-5 w-5 shrink-0 text-main2" />
+                                    <x-icons.access stroke="1.5" class="h-5 w-5 shrink-0 text-main2" />
                                     <div class="text-sm font-medium">住所</div>
                                 </div>
                                 <div class="text-base {{ $store->mood ? 'text-text_color' : 'text-placeholder' }}">{{ $store->address ?? '未設定です'}}</div>
                             </div>
                             <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
                                 <div class="grid grid-cols-[20px_auto] items-center gap-1.5 text-main2">
-                                    <x-icons.pin stroke="1" class="h-5 w-5 shrink-0 text-main2" />
+                                    <x-icons.pin stroke="1.5" class="h-5 w-5 shrink-0 text-main2" />
                                     <div class="text-sm font-medium">エリア</div>
                                 </div>
                                 <div class="text-base {{ $store->mood ? 'text-text_color' : 'text-placeholder' }}">{{ $store->area ?? '未設定です'}}</div>
@@ -100,7 +100,7 @@
                             </div>
                             <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
                                 <div class="grid grid-cols-[20px_auto] items-center gap-1.5 text-main2">
-                                    <x-icons.wallet stroke="1.5" class="h-5 w-5 shrink-0 text-main2" />
+                                    <x-icons.money stroke="1.5" class="h-5 w-5 shrink-0 text-main2" />
                                     <div class="text-sm font-medium">予算</div>
                                 </div>
                                 <div class="text-base text-text_color">
