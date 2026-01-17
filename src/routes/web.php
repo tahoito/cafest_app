@@ -83,6 +83,9 @@ Route::prefix('store')->name('store.')->group(function () {
         Route::post('/toggle-public', [StoreStoreController::class, 'togglePublic'])->name('toggle-public');
 
         Route::get('/profile',[StoreProfileController::class,'index'])->name('profile');
+        Route::get('/profile/edit/basic',[StoreProfileController::class,'editBasic'])->name('profile.edit.basic');
+        Route::get('/profile/edit/description',[StoreProfileController::class,'editDescription'])->name('profile.edit.description');
+        Route::get('/profile/edit/contact',[StoreProfileController::class,'editContact'])->name('profile.edit.contact');
     });
 });
 
