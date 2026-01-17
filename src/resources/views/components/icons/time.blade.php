@@ -5,7 +5,7 @@
 
 <svg
   xmlns="http://www.w3.org/2000/svg"
-  viewBox="0 0 30 30"
+  viewBox="0 0 24 24"
   fill="none"
   stroke="currentColor"
   stroke-width="{{ $stroke }}"
@@ -16,5 +16,12 @@
   {{ $attributes->merge(['class' => 'inline-block align-middle']) }}
 >
 
-<path d="M12 6V12L16 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="#201200" stroke-linecap="round" stroke-linejoin="round"/>
+<g clip-path="url(#clip0_2059_3295)">
+<path d="M9.99935 5.00033V10.0003L13.3327 8.33366M18.3327 10.0003C18.3327 14.6027 14.6017 18.3337 9.99935 18.3337C5.39698 18.3337 1.66602 14.6027 1.66602 10.0003C1.66602 5.39795 5.39698 1.66699 9.99935 1.66699C14.6017 1.66699 18.3327 5.39795 18.3327 10.0003Z" />
+</g>
+<defs>
+<clipPath id="clip0_2059_3295">
+<rect width="20" height="20" fill="white"/>
+</clipPath>
+</defs>
 </svg>

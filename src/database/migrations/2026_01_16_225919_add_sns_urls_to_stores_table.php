@@ -12,7 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('stores', function (Blueprint $table) {
-            $table->string('phone',30)->nullable();
+            $table->string('tiktok_url',255)->nullable();
+            $table->string('instagram_url',255)->nullable();
+            $table->string('x_url',255)->nullable();
+            $table->string('website_url',255)->nullable();
         });
     }
 
@@ -22,7 +25,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('stores', function (Blueprint $table) {
-            $table->dropColumn('phone');
+            $table->dropColumn(['tiktok_url','instagram_url','x_url','website_url']);
         });
     }
 };
