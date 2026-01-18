@@ -86,6 +86,7 @@ Route::prefix('store')->name('store.')->group(function () {
         Route::get('/profile/edit/basic',[StoreProfileController::class,'editBasic'])->name('profile.edit.basic');
         Route::patch('/profile/edit/basic',[StoreProfileController::class,'updateBasic'])->name('profile.update.basic');
         Route::get('/profile/edit/description',[StoreProfileController::class,'editDescription'])->name('profile.edit.description');
+        Route::patch('/profile/edit/description',[StoreProfileController::class,'updateDescription'])->name('profile.update.description');
         Route::get('/profile/edit/contact',[StoreProfileController::class,'editContact'])->name('profile.edit.contact');
     });
 });

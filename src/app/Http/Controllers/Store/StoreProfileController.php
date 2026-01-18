@@ -64,6 +64,14 @@ class StoreProfileController extends Controller
     }
 
     public function updateDescription (Request $request) {
+        $store = $request->user('store');
+
+        $validated = $request->validate([
+            'description' => ['required','string','max:200'],
+        ]);
+
+        $store->update(['description' => $validated['description']]);
+
         return redirect()->route('store.profile')->with('status', '店舗紹介を更新しました');
     }
 

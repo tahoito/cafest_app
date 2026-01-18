@@ -10,7 +10,7 @@
         <header class="fixed top-0 inset-x-0 z-50 bg-base_color">
             <div class="pt-[env(safe-area-inset-top)]">
                 <div class="grid grid-cols-[48px_1fr_48px] items-center px-4 h-16">
-                <a class="p-2" href="{{ route('store.top') }}">
+                <a class="p-2" href="{{ route('store.profile') }}">
                     <x-icons.back class="w-5 h-5 text-text_color" />
                 </a>
 
