@@ -125,7 +125,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="mt-2 text-sm text-placeholder text-right">最終更新12/10</div>
+                    <div class="mt-2 text-sm text-placeholder text-right">最終更新{{ optional($store->basic_updated_at)->format('n/j')}}</div>
                 </section>
 
                 <section class="px-4">
@@ -140,7 +140,7 @@
                             {{ filled($store->description) ? $store->description : '未設定です' }}
                         </div>
                     </div>
-                    <div class="mt-2 text-sm text-placeholder text-right">最終更新12/10</div>
+                    <div class="mt-2 text-sm text-placeholder text-right">最終更新{{ optional($store->description_updated_at)->format('n/j') }}</div>
                 </section>
 
                 <section class="px-4">
@@ -211,8 +211,8 @@
                             </div>
                         </div>
                     </div>
+                    <div class="mt-2 text-sm text-placeholder text-right">最終更新{{ optional($store->contact_updated_at)->format('n/j') }}</div>
                 </div>
-                <div class="mt-2 text-sm text-placeholder text-right">最終更新12/10</div>
                 </section>
             </div>
         </div>

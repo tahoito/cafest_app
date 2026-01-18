@@ -31,6 +31,9 @@ class Store extends Authenticatable
         'instagram_url',
         'x_url',
         'website_url',
+        'basic_updated_at' => 'datetime',
+        'description_updated_at' => 'datetime',
+        'contact_updated_at' => 'datetime',
     ];
 
     protected $hidden = [

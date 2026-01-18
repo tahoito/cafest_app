@@ -62,6 +62,7 @@ class StoreProfileController extends Controller
         $ids = \App\Models\PaymentMethod::whereIn('slug', $slugs)->pluck('id')->all();
         $store->paymentMethods()->sync($ids);
 
+        $store->forceFill(['basic_updated_at' => now()])->save();
         return redirect()->route('store.profile')->with('status', '基本情報を更新しました');
     }
 
@@ -78,7 +79,7 @@ class StoreProfileController extends Controller
         ]);
 
         $store->update(['description' => $validated['description']]);
-
+        $store->forceFill(['description_updated_at' => now()])->save();
         return redirect()->route('store.profile')->with('status', '店舗紹介を更新しました');
     }
 
@@ -123,6 +124,7 @@ class StoreProfileController extends Controller
                 ->delete();
             }
         }
+        $store->forceFill(['contact_updated_at' => now()])->save();
         return redirect()->route('store.profile')->with('status', '連絡情報を更新しました');
     }
     
