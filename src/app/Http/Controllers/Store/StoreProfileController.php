@@ -9,24 +9,23 @@ use App\Models\StoreSocialLink;
 
 class StoreProfileController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         $store = auth('store')->user();
+        if (!$store) abort(403);
 
-        if (!$store) {
-            abort(403);
-        }
-
-        $store->load([
+        $store = $store->fresh([
             'paymentMethods',
             'hours' => fn($q) => $q->orderBy('day_of_week'),
-            'socialLinks'
+            'socialLinks',
         ]);
 
-        $sns = $store->socialLinks->pluck('url','type')->toArray();
+        $sns = $store->socialLinks->pluck('url', 'type')->toArray();
         $hasSns = count(array_filter($sns)) > 0;
 
-        return view('pages.store.profile',compact('store','sns', 'hasSns'));
+        return view('pages.store.profile', compact('store', 'sns', 'hasSns'));
     }
+
 
     public function editBasic (Request $request) {
         $store = $request->user('store')->load(['hours','paymentMethods']);
@@ -63,6 +62,7 @@ class StoreProfileController extends Controller
         $store->paymentMethods()->sync($ids);
 
         $store->forceFill(['basic_updated_at' => now()])->save();
+        
         return redirect()->route('store.profile')->with('status', '基本情報を更新しました');
     }
 
@@ -80,6 +80,7 @@ class StoreProfileController extends Controller
 
         $store->update(['description' => $validated['description']]);
         $store->forceFill(['description_updated_at' => now()])->save();
+        
         return redirect()->route('store.profile')->with('status', '店舗紹介を更新しました');
     }
 
@@ -125,6 +126,7 @@ class StoreProfileController extends Controller
             }
         }
         $store->forceFill(['contact_updated_at' => now()])->save();
+    
         return redirect()->route('store.profile')->with('status', '連絡情報を更新しました');
     }
     
