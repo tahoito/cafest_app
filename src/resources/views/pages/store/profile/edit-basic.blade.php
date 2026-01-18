@@ -21,7 +21,18 @@
             </div>
         </header>
 
-        
+
+        @php 
+            $leftDays = [ 0 => '日', 1 => '月', 2 => '火', 3 => '水'];
+            $rightDays = [ 4 => '木', 5 => '金', 6=> '土'];
+            $hoursByDay = $store->hours->keyBy('day_of_week');
+            $openDaysDefault = $store->hours    
+                ->filter(fn($h) => !$h->is_closed)
+                ->pluck('day_of_week')
+                ->map(fn($v) => (string)$v)
+                ->toArray();
+            $openDays = old('open_days', $openDaysDefault);
+        @endphp 
 
         <div class="h-full overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
             <div class="w-full max-w-md mx-auto pt-5 space-y-6 pb-4">
@@ -106,9 +117,44 @@
                     
                         <div class="space-y-1">
                             <div class="text-lg text-text_color font-medium">営業曜日</div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="space-y-3">
+                                    @foreach($leftDays as $i => $label)
+                                    <label class="flex items-center gap-3 rounded-lg bg-form px-4 py-3 ring-1 ring-gray-200">
+                                        <input type="checkbox" name="open_days[]" value="{{ $i }}"
+                                            @checked(in_array((string)$i, array_map('strval', $openDays), true))
+                                            class="peer h-5 w-5 accent-main2"
+                                        >
+                                        <span class="text-text_color">{{ $label }}</span>
+                                    </label>
+                                    @endforeach
+                                </div>
+                                <div class="space-y-3">
+                                    @foreach($rightDays as $i => $label)
+                                    <label class="flex items-center gap-3 rounded-lg bg-form px-4 py-3 ring-1 ring-gray-200">
+                                        <input type="checkbox" name="open_days[]" value="{{ $i }}"
+                                            @checked(in_array((string)$i, array_map('strval', $openDays), true))
+                                            class="peer h-5 w-5 accent-main2"
+                                        >
+                                        <span class="text-text_color">{{ $label }}</span>
+                                    </label>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-1">
+                            <div class="text-lg text-text_color font-medium">営業時間</div>
+                        </div>
+
+                        <div class="space-y-1">
+                            <div class="text-lg text-text_color font-medium">予算</div>
+                        </div>
+
+                        <div class="space-y-1">
+                            <div class="text-lg text-text_color font-medium">支払い方法</div>
                         </div>
                         
-
                         <div class="pt-8">
                             <x-ui.button type="submit" theme="store" class="w-full text-form">
                                 保存
