@@ -23,6 +23,18 @@ class StoreProfileController extends Controller
 
     public function editBasic (Request $request) {
         $store = $request->user('store')->load(['hours','paymentMethods']);
+
+        $range = $request->input('budget_range', '');
+        if ($range === '')  {
+            $store->budget_min = null;
+            $store->budget_max = null;
+        } else {
+            [$min,$max] = array_pad(explode('-', $range,2),2,null);
+            $store->budget_min = ($min === '' ? null : (int)$min);
+            $store->budget_max = ($max === '' ? null : (int)$max);
+        }
+        $store->save();
+
         return view('pages.store.profile.edit-basic', compact('store'));
     }
 

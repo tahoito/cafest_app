@@ -40,6 +40,22 @@
                     $times[] = sprintf('%02d:%02d', $h, $m);
                 }
             }
+
+            $ranges = [
+                '' => '未設定',
+                '0-1000' => '〜1,000円',
+                '1000-2000' => '1,000~2,000円',
+                '2000-3000' => '2,000~3,000円',
+                '3000-5000' => '3,000~5,000円',
+                '5,000-' => '5,000円〜',
+            ];
+
+            $defaultRange = '';
+            if (!is_null($store->budget_min) || !is_null($store->budget_max)) {
+                $min = $store->budget_min ?? 0;
+                $max = $store->budget_max ?? '';
+                $defaultRange = "{$min}-{$max}";
+            }
         @endphp 
 
         <div class="h-full overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
@@ -232,6 +248,16 @@
     
                         <div class="space-y-1">
                             <div class="text-lg text-text_color font-medium">予算</div>
+                            <select name="budget_range"
+                                x-data="{ v: @js(old('budget_range', $defaultRange)) }"
+                                x-model="v" :class="v ? 'text-text_color' : 'text-placeholder'"
+                                class="w-full rounded-lg bg-form px-4 py-3 ring-1 ring-gray-200">
+                                @foreach($ranges as $val => $label)
+                                    <option value="{{ $val }}">
+                                        {{ $label }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <div class="space-y-1">
