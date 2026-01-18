@@ -33,6 +33,7 @@
                 ->map(fn($v) => (string)$v)
                 ->toArray();
             $openDays = old('open_days', $openDaysDefault);
+            $dayHour = $hoursByDay->get($i);
 
             $times = [];
             for ($h=0; $h<24; $h++) {
@@ -88,7 +89,7 @@
 
                         <input type="hidden" name="area" :value="selectedArea ?? ''">
                         <input type="hidden" name="mood" :value="selectedMood ?? ''">
-                        
+                       
                         <div class="space-y-4">
                             <div class="space-y-1">
                                 <x-ui.label for="name">店舗名</x-ui.label>
@@ -177,7 +178,10 @@
                             </div>
                         </div>
 
-                        <div class="space-y-3" x-data="{ hoursMode: 'same', is24h: false }">
+                        <div class="space-y-3" x-data="{ hoursMode: @js(old('hour_mode', 'same')), is24h: @js((int) old('is_24h',0)) === 1, }">
+                            <input type="hidden" name="hours_mode" :value="hoursMode">
+                            <input type="hidden" name="is_24h" :value="is24h ? 1 : 0">
+                        
                             <div class="text-lg text-text_color font-medium">営業時間</div>
 
                             <div class="space-y-2">
@@ -213,7 +217,7 @@
                                             class="w-full rounded-lg px-4 py-3 ring-1 ring-gray-200">
                                             <option value="" disabled>開店時間</option>
                                             @foreach($times as $t)
-                                                <option value="{{ $t }}">{{ $t }}</option>
+                                                <option value="{{ $t }}" @selected(old('same_open', $store->same_open) === $t)>{{ $t }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -223,7 +227,7 @@
                                             class="w-full rounded-lg px-4 py-3 ring-1 ring-gray-200">
                                             <option value="" disabled>閉店時間</option>
                                             @foreach($times as $t)
-                                                <option value="{{ $t }}">{{ $t }}</option>
+                                                <option value="{{ $t }}" @selected(old('same_close', $store->same_close) === $t)>{{ $t }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -239,7 +243,7 @@
                                             class="w-[120px] rounded-lg bg-white px-2 py-2 ring-1 ring-gray-200 text-text_color">
                                             <option value="">--:--</option>
                                             @foreach($times as $t)
-                                                <option value="{{ $t }}">{{ $t }}</option>
+                                                <option value="{{ $t }}" @selected(old("hours.$i.open", optional($dayHour)->open_time) === $t)>{{ $t }}</option>
                                             @endforeach
                                         </select>
                                     <span class="text-placeholder">-</span>
@@ -247,7 +251,7 @@
                                             class="w-[120px] rounded-lg bg-white px-2 py-2 ring-1 ring-gray-200 text-text_color">
                                             <option value="">--:--</option>
                                             @foreach($times as $t)
-                                                <option value="{{ $t }}">{{ $t }}</option>
+                                                <option value="{{ $t }}" @selected(old("hours.$i.close", optional($dayHour)->close_time) === $t)>{{ $t }}</option>
                                             @endforeach
                                         </select>
                                     </div>

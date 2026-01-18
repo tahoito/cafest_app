@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Store;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\StoreSocialLink;
-
+use App\Models\StoreHour;
 
 class StoreProfileController extends Controller
 {
@@ -41,7 +41,16 @@ class StoreProfileController extends Controller
             'mood' => ['required', 'string'],
             'budget_range' => ['required','string'],
             'payments' => ['array'],
-            'payments.*' => ['string']
+            'payments.*' => ['string'],
+            'open_days' => ['array'],
+            'open_days.*' => ['in:0,1,2,3,4,5,6'],
+            'hours_mode' => ['nullable','boolean'],
+            'is_24h' => ['nullable','boolean'],
+            'same_open' => ['nullable','date_format:H:i'],
+            'same_close' => ['nullable','date_format:H:i'],
+            'hours' => ['array'],
+            'hours.*.open' => ['nullable','date_format:H:i'],
+            'hours.*.close' => ['nullable','date_format:H:i'],
         ]);
 
         $store->fill([
@@ -55,6 +64,40 @@ class StoreProfileController extends Controller
         [$min, $max] = array_pad(explode('-', $range, 2),2,'');
         $store->budget_min = ($min === '' ? null : (int)$min);
         $store->budget_max = ($max === '' ? null : (int)$max);
+
+        $is24h = (bool)($request->input('is_24h') ?? false);
+        $mode = $request->input('hours_mode','same');
+        $openDays = collect($request->input('open_days',[]))
+            ->map(fn($d) => int($d))
+            ->all();
+        for ($dow = 0; $dow <= 6; $dow++ ){
+            $isOpen = in_array($dow, $openDays, true);
+            $open = null;
+            $close = null;
+
+            if ($is24h && $isOpen) {
+                $open = '00:00';
+                $close = '23:59';
+            }elseif($isOpen) {
+                if ($mood === 'byDay') {
+                    $open = $request->input("hours.$dow.open");
+                    $close = $request->input("hours.$dow.close");
+                }else {
+                    $open = $request->input("same_open");
+                    $open = $request->input("close_open");
+                }
+            }
+
+            StoreHour::updateOrCreate (
+                ['store_id' => $store->id, 'day_of_week' => $dow],
+                [
+                    'is_closed' => !$isOpen,
+                    'open_time' => $open,
+                    'close_time' => $close,
+                ]
+            );
+        }
+
         $store->save();
         
         $slugs = $validated['payments'] ?? [];
