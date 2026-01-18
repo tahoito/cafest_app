@@ -137,7 +137,9 @@
                         <x-icons.edit class="w-[15px] h-[15px] text-text_color"/>編集</a>
                     </div>
                     <div class="mt-2 rounded-lg bg-form ring-1 ring-gray-200 px-4 py-4 shadow-[0_2px_10px_rgba(0,0,0,0.10)] overflow-hidden">
-                        <div class="text-base {{ $store->mood ? 'text-text_color' : 'text-placeholder' }}">{{ $store->description ?? '未設定です'}}</div>
+                        <div class="text-base {{ filled($store->description) ? 'text-text_color' : 'text-placeholder' }}">
+                            {{ filled($store->description) ? $store->description : '未設定です' }}
+                        </div>
                     </div>
                     <div class="mt-2 text-sm text-placeholder text-right">最終更新12/10</div>
                 </section>

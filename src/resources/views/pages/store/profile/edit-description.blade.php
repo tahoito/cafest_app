@@ -24,13 +24,13 @@
         <div class="h-full overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
             <div class="w-full max-w-md mx-auto pt-5 space-y-6 pb-4">
                 <section class="px-4">
-                    <form method="POST" action="{{ route('store.profile.edit.description') }}"
-                        x-data="{ text: @js(old('description', $store->description ?? ''">
+                    <form method="POST" action="{{ route('store.profile.update.description') }}"
+                        x-data="{ text: @js(old('description', $store->description ?? '')), max: 200 }">
                         @csrf 
                         @method('PATCH')
 
-                        <div class="text-text_color text-lg">
-                            カフェの雰囲気が伝わる文章を書いてください
+                        <div class="text-text_color text-center text-base">
+                            お店の雰囲気が伝わる紹介文をご記入ください
                         </div>
 
                         <div class="pt-4 space-y-2">
@@ -58,3 +58,4 @@
         </div>
     </div>
 </div>
+@endsection

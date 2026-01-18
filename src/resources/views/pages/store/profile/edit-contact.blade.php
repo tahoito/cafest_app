@@ -24,7 +24,7 @@
         <div class="h-full overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
             <div class="w-full max-w-md mx-auto pt-5 space-y-6 pb-4">
                 <section class="px-4">
-                    <form method="POST" action="{{ route('store.profile.edit.description') }}">
+                    <form method="POST" action="{{ route('store.profile.update.contact') }}">
                         @csrf 
                         @method('PATCH')
 
@@ -40,3 +40,4 @@
         </div>
     </div>
 </div>
+@endsection
