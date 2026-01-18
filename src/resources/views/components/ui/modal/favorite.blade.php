@@ -73,7 +73,7 @@
                 @click="$store.favModal.closeList()"
                 aria-label="閉じる"
               >
-                <x-icons.close class="w-6 h-6 text-text_color" />
+                <x-icons.close class="w-7 h-7 text-text_color" />
               </button>
 
               <div class="flex justify-center">

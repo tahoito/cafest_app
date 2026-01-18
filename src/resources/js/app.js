@@ -136,8 +136,14 @@ document.addEventListener('alpine:init', () => {
       const id = Number(folderId)
       if (this.selectedFolderIds.includes(id)) {
         this.selectedFolderIds = this.selectedFolderIds.filter(x => x !== id)
-      } else {
-        this.selectedFolderIds = [...this.selectedFolderIds, id]
+        return 
+      } 
+      this.selectedFolderIds = [id, ...this.selectedFolderIds.filter(x => x !== id)]
+
+      const idx = this.folders.findIndex(f => Number(f.id) === id)
+      if (idx !== -1) {
+        const [picked] = this.folders.splice(idx,1)
+        this.folders.unshift(picked)
       }
     },
   }))
