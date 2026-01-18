@@ -10,7 +10,7 @@
         <header class="fixed top-0 inset-x-0 z-50 bg-base_color">
             <div class="pt-[env(safe-area-inset-top)]">
                 <div class="grid grid-cols-[48px_1fr_48px] items-center px-4 h-16">
-                <a class="p-2" href="{{ route('store.top') }}">
+                <a class="p-2" href="{{ route('store.profile') }}">
                     <x-icons.back class="w-5 h-5 text-text_color" />
                 </a>
 
@@ -71,7 +71,7 @@
         <div class="h-full overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
             <div class="w-full max-w-md mx-auto pt-5 space-y-6 pb-4">
                 <section class="px-4">
-                    <form method="POST" action="{{ route('store.profile.edit.basic') }}" class="space-y-6"
+                    <form method="POST" action="{{ route('store.profile.update.basic') }}" class="space-y-6"
                         x-data="{
                             areas: ['栄','名駅','大須','伏見','上前津','金山','矢場町','鶴舞','星ヶ丘','八事','桜山','今池','本山','覚王山','新瑞橋','久屋大通'],
                             moods: ['珈琲専門','紅茶','スイーツ','夜カフェ','静かめ','勉強・作業','長居OK','レトロ・喫茶','女子会向け','デート向け','韓国風','ペットOK'],

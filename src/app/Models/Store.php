@@ -8,6 +8,7 @@ use App\Models\Review;
 use App\Models\MenuPhoto;
 use App\Models\RecommendedItem;
 use App\Models\FavoriteFolder;
+use App\Models\StoreSocialLink;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -20,6 +21,7 @@ class Store extends Authenticatable
         'email',
         'password',
         'address',
+        'description',
         'phone',
         'area',
         'mood',
@@ -29,6 +31,9 @@ class Store extends Authenticatable
         'instagram_url',
         'x_url',
         'website_url',
+        'basic_updated_at' => 'datetime',
+        'description_updated_at' => 'datetime',
+        'contact_updated_at' => 'datetime',
     ];
 
     protected $hidden = [
@@ -39,6 +44,9 @@ class Store extends Authenticatable
     protected $casts = [
         'password' => 'hashed',
         'is_public' => 'boolean',
+        'basic_updated_at' => 'datetime',
+        'description_updated_at' => 'datetime',
+        'contact_updated_at' => 'datetime',
     ];
 
     public function reviews()
@@ -87,6 +95,10 @@ class Store extends Authenticatable
 
     public function favoriteByUsers() {
         return $this->belongsToMany(User::class, 'user_favorites');
+    }
+
+    public function socialLinks() {
+        return $this->hasMany(StoreSocialLink::class);
     }
 
 }

@@ -24,13 +24,12 @@
         @php 
             $days = ['日','月','火','水','木','金','土'];
             $pm = $store->paymentMethods->pluck('name')->filter()->values();
-            $sns = [
-                'tiktok' => $store->tiktok_url, 
-                'instagram' => $store->instagram_url,
-                'x' => $store->x_url,
-                'website' => $store->website_url,
+            $iconMap = [
+                'instagram' => 'instagram',
+                'tiktok' => 'tiktok',
+                'x' => 'x',
+                'website' => 'website',
             ];
-            $hasSns = collect($sns)->filter()->isNotEmpty();
         @endphp
 
         <div class="h-full overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
@@ -126,7 +125,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="mt-2 text-sm text-placeholder text-right">最終更新12/10</div>
+                    <div class="mt-2 text-sm text-placeholder text-right">最終更新{{ optional($store->basic_updated_at)->format('n/j')}}</div>
                 </section>
 
                 <section class="px-4">
@@ -137,9 +136,11 @@
                         <x-icons.edit class="w-[15px] h-[15px] text-text_color"/>編集</a>
                     </div>
                     <div class="mt-2 rounded-lg bg-form ring-1 ring-gray-200 px-4 py-4 shadow-[0_2px_10px_rgba(0,0,0,0.10)] overflow-hidden">
-                        <div class="text-base {{ $store->mood ? 'text-text_color' : 'text-placeholder' }}">{{ $store->description ?? '未設定です'}}</div>
+                        <div class="text-base {{ filled($store->description) ? 'text-text_color' : 'text-placeholder' }}">
+                            {{ filled($store->description) ? $store->description : '未設定です' }}
+                        </div>
                     </div>
-                    <div class="mt-2 text-sm text-placeholder text-right">最終更新12/10</div>
+                    <div class="mt-2 text-sm text-placeholder text-right">最終更新{{ optional($store->description_updated_at)->format('n/j') }}</div>
                 </section>
 
                 <section class="px-4">
@@ -156,14 +157,18 @@
                                     <x-icons.mail stroke="1.5" class="h-5 w-5 shrink-0 text-main2" />
                                     <div class="text-sm font-medium">メールアドレス</div>
                                 </div>
-                                <div class="text-base {{ $store->mood ? 'text-text_color' : 'text-placeholder' }}">{{ $store->email ?? '未設定です'}}</div>
+                                <div class="text-base {{ filled($store->email) ? 'text-text_color' : 'text-placeholder' }}">
+                                    {{ filled($store->email) ? $store->email : '未設定です' }}
+                                </div>
                             </div>
                             <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
                                 <div class="grid grid-cols-[20px_auto] items-center gap-3 text-main2">
                                     <x-icons.phone stroke="1.5" class="h-5 w-5 shrink-0 text-main2" />
                                     <div class="text-sm font-medium">電話番号</div>
                                 </div>
-                                <div class="text-base {{ $store->mood ? 'text-text_color' : 'text-placeholder' }}">{{ $store->phone ?? '未設定です'}}</div>
+                                <div class="text-base {{ filled($store->phone) ? 'text-text_color' : 'text-placeholder' }}">
+                                    {{ filled($store->phone) ? $store->phone : '未設定です' }}
+                                </div>
                             </div>
                             <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
                                 <div class="grid grid-cols-[20px_auto] items-center gap-3 text-main2">
@@ -172,22 +177,42 @@
                                 </div>
                                 <div class="flex items-center gap-3">
                                 @if($hasSns)
-                                @foreach($sns as $type => $url)
-                                    @if($url)
-                                    <a href="{{ $url }}" target="_blank"
+                                    @foreach($sns as $type => $url)
+                                    @continue(empty($url))
+
+                                    <a href="{{ $url }}" target="_blank" rel="noopener"
                                         class="text-text_color hover:text-main transition">
-                                        <x-icons.{{ $type }} class="h-6 w-6" />
+                                        @switch($type)
+                                        @case('instagram')
+                                            <x-icons.instagram class="h-6 w-6" />
+                                            @break
+
+                                        @case('tiktok')
+                                            <x-icons.tiktok class="h-6 w-6" />
+                                            @break
+
+                                        @case('x')
+                                            <x-icons.x class="h-6 w-6" />
+                                            @break
+
+                                        @case('website')
+                                            <x-icons.website class="h-6 w-6" />
+                                            @break
+
+                                        @default
+                                            <x-icons.instagram class="h-6 w-6" />
+                                        @endswitch
                                     </a>
-                                    @endif
-                                @endforeach
+                                    @endforeach
                                 @else
-                                <span class="text-placeholder text-base">未設定です</span>
+                                    <span class="text-placeholder text-base">未設定です</span>
                                 @endif
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <div class="mt-2 text-sm text-placeholder text-right">最終更新{{ optional($store->contact_updated_at)->format('n/j') }}</div>
                 </div>
-                <div class="mt-2 text-sm text-placeholder text-right">最終更新12/10</div>
                 </section>
             </div>
         </div>

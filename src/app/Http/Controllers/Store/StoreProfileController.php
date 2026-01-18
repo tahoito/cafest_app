@@ -4,22 +4,28 @@ namespace App\Http\Controllers\Store;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\StoreSocialLink;
+
 
 class StoreProfileController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         $store = auth('store')->user();
+        if (!$store) abort(403);
 
-        if (!$store) {
-            abort(403);
-        }
-
-        $store->load([
+        $store = $store->fresh([
             'paymentMethods',
             'hours' => fn($q) => $q->orderBy('day_of_week'),
+            'socialLinks',
         ]);
-        return view('pages.store.profile',compact('store'));
+
+        $sns = $store->socialLinks->pluck('url', 'type')->toArray();
+        $hasSns = count(array_filter($sns)) > 0;
+
+        return view('pages.store.profile', compact('store', 'sns', 'hasSns'));
     }
+
 
     public function editBasic (Request $request) {
         $store = $request->user('store')->load(['hours','paymentMethods']);
@@ -55,6 +61,8 @@ class StoreProfileController extends Controller
         $ids = \App\Models\PaymentMethod::whereIn('slug', $slugs)->pluck('id')->all();
         $store->paymentMethods()->sync($ids);
 
+        $store->forceFill(['basic_updated_at' => now()])->save();
+        
         return redirect()->route('store.profile')->with('status', '基本情報を更新しました');
     }
 
@@ -64,15 +72,61 @@ class StoreProfileController extends Controller
     }
 
     public function updateDescription (Request $request) {
+        $store = $request->user('store');
+
+        $validated = $request->validate([
+            'description' => ['required','string','max:200'],
+        ]);
+
+        $store->update(['description' => $validated['description']]);
+        $store->forceFill(['description_updated_at' => now()])->save();
+        
         return redirect()->route('store.profile')->with('status', '店舗紹介を更新しました');
     }
 
     public function editContact (Request $request) {
-        $store = $request->user('store');
-        return view('pages.store.profile.edit-contact', compact('store'));
+        $store = $request->user('store')->load('socialLinks');
+        $sns = $store->socialLinks->pluck('url','type')->toArray();
+        return view('pages.store.profile.edit-contact', compact('store','sns'));
     }
 
     public function updateContact (Request $request) {
+        $store = $request->user('store');
+
+        $validated = $request->validate([
+            'email' => ['required', 'email', 'max:225'],
+            'phone' => ['required', 'string', 'max:30'],
+
+            'sns' => ['array'],
+            'sns.instagram' => ['nullable', 'url','max:2048'],
+            'sns.tiktok' => ['nullable', 'url','max:2048'],
+            'sns.x' => ['nullable', 'url','max:2048'],
+            'sns.website' => ['nullable', 'url','max:2048'],
+        ]);
+
+        $store->fill([
+            'email' => $validated['email'],
+            'phone' => $validated['phone'],
+        ])->save();
+
+        $sns = $validated['sns'] ?? [];
+        $allowedTypes = ['instagram', 'tiktok', 'x', 'website'];
+
+        foreach ($allowedTypes as $type) {
+            $url = $sns[$type] ?? null;
+            if (filled($url)) {
+                StoreSocialLink::updateOrCreate(
+                    ['store_id' => $store->id, 'type' => $type],
+                    ['url' => $url]
+                );
+            }else {
+                StoreSocialLink::where('store_id', $store->id)
+                ->where('type',$type)
+                ->delete();
+            }
+        }
+        $store->forceFill(['contact_updated_at' => now()])->save();
+    
         return redirect()->route('store.profile')->with('status', '連絡情報を更新しました');
     }
     
