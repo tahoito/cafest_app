@@ -23,22 +23,38 @@ class StoreProfileController extends Controller
 
     public function editBasic (Request $request) {
         $store = $request->user('store')->load(['hours','paymentMethods']);
-
-        $range = $request->input('budget_range', '');
-        if ($range === '')  {
-            $store->budget_min = null;
-            $store->budget_max = null;
-        } else {
-            [$min,$max] = array_pad(explode('-', $range,2),2,null);
-            $store->budget_min = ($min === '' ? null : (int)$min);
-            $store->budget_max = ($max === '' ? null : (int)$max);
-        }
-        $store->save();
-
         return view('pages.store.profile.edit-basic', compact('store'));
     }
 
     public function updateBasic (Request $request) {
+        $store = $request->user('store');
+        $validated = $request->validate([
+            'name' => ['required','string','max:255'],
+            'address' => ['required','string','max:255'],
+            'area' => ['required', 'string'],
+            'mood' => ['required', 'string'],
+            'budget_range' => ['required','string'],
+            'payments' => ['array'],
+            'payments.*' => ['string']
+        ]);
+
+        $store->fill([
+            'name' => $validated['name'],
+            'address' => $validated['address'],
+            'area' => $validated['area'],
+            'mood' => $validated['mood'],
+        ])->save();
+
+        $range = $validated['budget_range'];
+        [$min, $max] = array_pad(explode('-', $range, 2),2,'');
+        $store->budget_min = ($min === '' ? null : (int)$min);
+        $store->budget_max = ($max === '' ? null : (int)$max);
+        $store->save();
+        
+        $slugs = $validated['payments'] ?? [];
+        $ids = \App\Models\PaymentMethod::whereIn('slug', $slugs)->pluck('id')->all();
+        $store->paymentMethods()->sync($ids);
+
         return redirect()->route('store.profile')->with('status', '基本情報を更新しました');
     }
 

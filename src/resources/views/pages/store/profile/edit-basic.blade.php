@@ -47,7 +47,7 @@
                 '1000-2000' => '1,000~2,000円',
                 '2000-3000' => '2,000~3,000円',
                 '3000-5000' => '3,000~5,000円',
-                '5,000-' => '5,000円〜',
+                '5000-' => '5,000円〜',
             ];
 
             $defaultRange = '';
@@ -56,6 +56,16 @@
                 $max = $store->budget_max ?? '';
                 $defaultRange = "{$min}-{$max}";
             }
+
+            $payments = [
+                'cash' => '現金',
+                'card' => 'クレジットカード',
+                'ic' => '交通系IC',
+                'paypay' => 'PayPay',
+            ];
+
+            $selectedDefault = $store->paymentMethods->pluck('slug')->toArray();
+            $selectedPayments = old('payments', $selectedDefault);
         @endphp 
 
         <div class="h-full overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
@@ -172,7 +182,7 @@
 
                             <div class="space-y-2">
                                 <label class="flex items-center gap-3 rounded-lg bg-form px-4 py-3 ring-1 ring-gray-200">
-                                <input type="radio" x-model="is24h" class="h-5 w-5 accent-main2">
+                                <input type="checkbox" x-model="is24h" class="h-5 w-5 accent-main2">
                                 <span class="text-text_color">24時間営業</span>
                                 </label>
 
@@ -195,7 +205,7 @@
                             </div>
 
                             <div x-show="!is24h && hoursMode === 'same'" x-cloak class="py-4"
-                                x-data="{ open:'', close: '' }">
+                                x-data="{ open: @js(old('same_open', $store->same_open ?? '')), close: @js(old('same_close', $store->same_close ?? ''))}">
                                 <div class="grid grid-cols-2 gap-3">
                                     <div class="space-y-1">
                                         <select name="same_open" x-model="open"
@@ -262,9 +272,20 @@
 
                         <div class="space-y-1">
                             <div class="text-lg text-text_color font-medium">支払い方法</div>
+                            <div class="py-3 space-y-3">
+                                @foreach($payments as $key => $label)
+                                <label class="flex items-center gap-3 rounded-lg bg-form px-4 py-3 ring-1 ring-gray-200">
+                                    <input type="checkbox" name="payments[]" value="{{ $key }}"
+                                    @checked(in_array($key, (array)$selectedPayments, true))
+                                    class="peer h-5 w-5 accent-main2"
+                                >
+                                    <span class="text-text_color">{{ $label }}</span>
+                                </label>
+                                @endforeach
+                            </div>
                         </div>
                         
-                        <div class="pt-8">
+                        <div class="pt-4">
                             <x-ui.button type="submit" theme="store" class="w-full text-form">
                                 保存
                             </x-ui.button>

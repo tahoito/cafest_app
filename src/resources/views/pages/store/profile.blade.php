@@ -116,12 +116,12 @@
                                     <x-icons.wallet stroke="1.5" class="h-5 w-5 shrink-0 text-main2" />
                                     <div class="text-sm font-medium">支払い方法</div>
                                 </div>
-                                <div class="text-base text-text_color">
-                                    @if($pm->isNotEmpty())
-                                        {{ $pm->join(' / ') }}
-                                    @else
+                                <div class="text-base">
+                                    @forelse($store->paymentMethods as $pm)
+                                        <div class="text-text_color">{{ $pm->name }}</div>
+                                    @empty
                                         <span class="text-placeholder">未設定です</span>
-                                    @endif
+                                    @endforelse
                                 </div>
                             </div>
                         </div>
