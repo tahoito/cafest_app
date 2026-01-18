@@ -18,6 +18,11 @@ class StoreProfileController extends Controller
             'paymentMethods',
             'hours' => fn($q) => $q->orderBy('day_of_week'),
         ]);
+
+        $store->load('socialLinks');
+        $sns = $store->socialLinks->pluck('url','type')->toArray();
+        $hasSns = count(array_filter($sns)) > 0;
+
         return view('pages.store.profile',compact('store'));
     }
 
@@ -81,6 +86,38 @@ class StoreProfileController extends Controller
     }
 
     public function updateContact (Request $request) {
+        $store = $request->user('store');
+
+        $validated = $request->validate([
+            'email' => ['required', 'email', 'max:225'],
+            'phone' => ['required', 'string', 'max:30'],
+
+            'sns' => ['array'],
+            'sns.instagram' => ['nullable', 'url','max:2048'],
+            'sns.tiktok' => ['nullable', 'url','max:2048'],
+            'sns.x' => ['nullable', 'url','max:2048'],
+            'sns.website' => ['nullable', 'url','max:2048'],
+        ]);
+
+        $store->fill([
+            'email' => $validated['email'],
+            'phone' => $validated['phone'],
+        ])->save();
+
+        $sns = $validated['sns'] ?? [];
+        $allowedTypes = ['instagram', 'tiktok', 'x', 'website'];
+
+        foreach ($allowedTypes as $type) {
+            $url = $sns[$type] ?? null;
+            if (filled($url)) {
+                StoreSocialLink::updateOrCreate(
+                    ['store_id' => $store->id, 'type' => $type],
+                    ['url' => $url]
+                );
+            }else {
+                StoreSocialLink;;where('store_id', $store->id)->where('type',$type)->delete();
+            }
+        }
         return redirect()->route('store.profile')->with('status', '連絡情報を更新しました');
     }
     

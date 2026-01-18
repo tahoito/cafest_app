@@ -8,6 +8,7 @@ use App\Models\Review;
 use App\Models\MenuPhoto;
 use App\Models\RecommendedItem;
 use App\Models\FavoriteFolder;
+use App\Models\StoreSocialLink;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -88,6 +89,10 @@ class Store extends Authenticatable
 
     public function favoriteByUsers() {
         return $this->belongsToMany(User::class, 'user_favorites');
+    }
+
+    public function socialLinks() {
+        return $this->hasMany(StoreSocialLink::class);
     }
 
 }

@@ -158,14 +158,18 @@
                                     <x-icons.mail stroke="1.5" class="h-5 w-5 shrink-0 text-main2" />
                                     <div class="text-sm font-medium">メールアドレス</div>
                                 </div>
-                                <div class="text-base {{ $store->mood ? 'text-text_color' : 'text-placeholder' }}">{{ $store->email ?? '未設定です'}}</div>
+                                <div class="text-base {{ filled($store->email) ? 'text-text_color' : 'text-placeholder' }}">
+                                    {{ filled($store->email) ? $store->email : '未設定です' }}
+                                </div>
                             </div>
                             <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
                                 <div class="grid grid-cols-[20px_auto] items-center gap-3 text-main2">
                                     <x-icons.phone stroke="1.5" class="h-5 w-5 shrink-0 text-main2" />
                                     <div class="text-sm font-medium">電話番号</div>
                                 </div>
-                                <div class="text-base {{ $store->mood ? 'text-text_color' : 'text-placeholder' }}">{{ $store->phone ?? '未設定です'}}</div>
+                                <div class="text-base {{ filled($store->phone) ? 'text-text_color' : 'text-placeholder' }}">
+                                    {{ filled($store->phone) ? $store->phone : '未設定です' }}
+                                </div>
                             </div>
                             <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
                                 <div class="grid grid-cols-[20px_auto] items-center gap-3 text-main2">
