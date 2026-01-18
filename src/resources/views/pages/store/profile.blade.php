@@ -38,7 +38,7 @@
                 <section class="px-4">
                     <div class="flex items-center justify-between">
                         <div class="text-lg text-text_color">基本情報</div>
-                        <a href="#"
+                        <a href="{{ route('store.profile.edit.basic') }}"
                             class="flex items-center gap-1 text-sm text-text_color hover:opacity-80">
                         <x-icons.edit class="w-[15px] h-[15px] text-text_color"/>編集</a>
                     </div>
@@ -116,12 +116,12 @@
                                     <x-icons.wallet stroke="1.5" class="h-5 w-5 shrink-0 text-main2" />
                                     <div class="text-sm font-medium">支払い方法</div>
                                 </div>
-                                <div class="text-base text-text_color">
-                                    @if($pm->isNotEmpty())
-                                        {{ $pm->join(' / ') }}
-                                    @else
+                                <div class="text-base">
+                                    @forelse($store->paymentMethods as $pm)
+                                        <div class="text-text_color">{{ $pm->name }}</div>
+                                    @empty
                                         <span class="text-placeholder">未設定です</span>
-                                    @endif
+                                    @endforelse
                                 </div>
                             </div>
                         </div>
@@ -132,7 +132,7 @@
                 <section class="px-4">
                     <div class="flex items-center justify-between">
                         <div class="text-lg text-text_color">店舗紹介</div>
-                        <a href="#"
+                        <a href="{{ route('store.profile.edit.description') }}"
                             class="flex items-center gap-1 text-sm text-text_color hover:opacity-80">
                         <x-icons.edit class="w-[15px] h-[15px] text-text_color"/>編集</a>
                     </div>
@@ -145,7 +145,7 @@
                 <section class="px-4">
                     <div class="flex items-center justify-between">
                         <div class="text-lg text-text_color">連絡情報</div>
-                        <a href="#"
+                        <a href="{{ route('store.profile.edit.contact') }}"
                             class="flex items-center gap-1 text-sm text-text_color hover:opacity-80">
                         <x-icons.edit class="w-[15px] h-[15px] text-text_color"/>編集</a>
                     </div>

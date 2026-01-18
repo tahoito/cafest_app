@@ -55,7 +55,6 @@
 <a href="{{ $link }}" class="{{ $base }} {{ $size }}" {{ $attributes }}>
   <div class="{{ $wrap }}">
 
-    {{-- 上段：ユーザー + 日付 --}}
     <div class="flex items-start justify-between gap-3">
       <div class="flex items-center gap-3 min-w-0">
         <div class="{{ $avatarSize }} rounded-full bg-base overflow-hidden shrink-0">
@@ -74,7 +73,6 @@
       @endif
     </div>
 
-    {{-- 中段：店舗名 + 星 --}}
     <div class="flex items-center justify-between gap-3">
       <div class="text-text_color text-sm font-medium truncate">
         {{ $shopName }}
@@ -91,7 +89,6 @@
       </div>
     </div>
 
-    {{-- 本文 --}}
     <div class="text-text_color text-[13px] leading-snug line-clamp-2">
       {{ $body }}
     </div>
