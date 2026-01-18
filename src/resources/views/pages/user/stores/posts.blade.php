@@ -18,12 +18,21 @@
                     みんなの写真
                 </h1> 
                 <div>
-                    <button 
+
+                    <div x-data="favoriteFolderModal({{ (int) data_get($store,'id') }}, @js($faved))">
+                        <button
                         type="button"
-                        class="h-8 w-8 grid place-items-center text-main" 
-                        aria-label="お気に入り">
-                        <x-icons.heart class="w-8 h-8 text-main transition duration-200" />
-                    </button> 
+                        class="h-8 w-8 grid place-items-center text-main"
+                        aria-label="お気に入り"
+                        @click.prevent.stop="toggleAndOpen()"
+                        >
+                        <x-icons.heart
+                            class="w-8 h-8 text-main transition duration-200"
+                            x-bind:class="on ? 'fill-main text-main scale-110' : 'fill-transparent text-main scale-100'"
+                        />
+                        </button>
+                        <x-ui.modal.favorite :store="$store" />
+                    </div>
                 </div>
             </div>
         </div>

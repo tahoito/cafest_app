@@ -47,7 +47,7 @@
       >
         <x-icons.heart
           class="w-8 h-8 text-main transition duration-200"
-          x-bind:class="on ? 'fill-main scale-110' : 'fill-transparent scale-100'"
+          x-bind:class="on ? 'fill-main text-main scale-110' : 'fill-transparent text-main scale-100'"
         />
       </button>
       <x-ui.modal.favorite :store="$store" />

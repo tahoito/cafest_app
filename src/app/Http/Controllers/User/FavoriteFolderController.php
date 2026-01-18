@@ -14,8 +14,7 @@ class FavoriteFolderController extends Controller
         $userId = auth('user')->id();
 
         $folders = FavoriteFolder::where('user_id', $userId)
-            ->with(['latestStore:id,image_url'])
-            ->orderBy('id', 'desc')
+            ->with(['stores.latestImage'])
             ->get();
 
         $selectedFolderIds = $store->favoriteFolders()
@@ -23,8 +22,28 @@ class FavoriteFolderController extends Controller
             ->pluck('favorite_folders.id')
             ->values();
 
+        $foldersPayload = $folders->map(function ($folder) {
+            $latestStore = $folder->stores 
+                ->sortByDesc(fn ($s) => optional($s->pivot)->created_at)
+                ->first();
+
+            $imageUrl = null;
+            if($latestStore && $latestStore->latestImage) {
+                $imageUrl = asset('storage/'.ltrim($latestStore->latestImage->path,'/'));
+            }
+
+            return [
+                'id' => $folder->id,
+                'name' => $folder->name,
+                'latest_store' => $latestStore ? [
+                    'id' => $latestStore->id,
+                    'image_url' => $imageUrl,
+                ] : null,
+            ];
+        });
+
         return response()->json([
-            'folders' => $folders,
+            'folders' => $foldersPayload,
             'selected_folder_ids' => $selectedFolderIds,
         ]);
     }
@@ -52,7 +71,8 @@ class FavoriteFolderController extends Controller
         }
 
         if (count($validFolderIds)) {
-            $store->favoriteFolders()->attach($validFolderIds);
+            $attach = collect($validFolderIds)->mapWithKeys(fn($id) => [$id => ['user_id' => $userId]]);
+            $store->favoriteFolders()->attach($attach->all());
         }
 
         return response()->json(['ok' => true]);
