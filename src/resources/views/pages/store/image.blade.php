@@ -34,6 +34,26 @@
                             class="flex items-center gap-1 text-sm text-text_color hover:opacity-80">
                         <x-icons.edit class="w-[15px] h-[15px] text-text_color"/>編集</a>
                     </div>
+
+                    <div class="rounded-2xl border border-favorite bg-base_color p-3">
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="overflow-hidden rounded-xl border border-placeholder-color/40 bg-white">
+                                <img src="/images/store/card.png" alt="" class="w-full aspect-[4/3] object-cover">
+                            </div>
+
+                            <div class="overflow-hidden rounded-xl border border-placeholder-color/40 bg-white">
+                                <img src="/images/store/card.png" alt="" class="w-full aspect-[4/3] object-cover">
+                            </div>
+
+                            <div class="overflow-hidden rounded-xl border border-placeholder-color/40 bg-white">
+                                <img src="/images/store/card.png" alt="" class="w-full aspect-[4/3] object-cover">
+                            </div>
+
+                            <a href="#" class="grid place-items-center rounded-xl border border-placeholder bg-notification2 aspect-[16/7]">
+                                <x-icons.no_image class="w-6 h-6 text-text_color" />
+                            </a>
+                        </div>
+                    </div>
                 </section>
 
                 <section class="px-4">
