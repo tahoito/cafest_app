@@ -16,6 +16,7 @@ use App\Http\Controllers\User\ReviewController;
 use App\Http\Controllers\User\ReserveController;
 use App\Http\Controllers\User\FavoriteController;
 use App\Http\Controllers\User\FavoriteFolderController;
+use App\Http\Controllers\User\MyCafeController;
 
 use App\Http\Controllers\User\StoreController as UserStoreController;
 use App\Http\Controllers\Store\StoreController as StoreStoreController;
@@ -64,6 +65,8 @@ Route::prefix('user')->name('user.')->group(function () {
         Route::post('/stores/{store}/favorite/folders', [FavoriteFolderController::class, 'sync'])->name('stores.favorite.folders.sync');
         Route::post('/favorite-folders', [FavoriteFolderController::class, 'store'])->name('favorite-folders.store');
         Route::delete('/favorite-folders/{favoriteFolder}', [FavoriteFolderController::class, 'destroy'])->name('favorite-folders.destroy');
+
+        Route::get('/mycafe',[MyCafeController::class,'index'])->name('mycafe');
     });
 });
 
