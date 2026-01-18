@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Store;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\StoreSocialLink;
+
 
 class StoreProfileController extends Controller
 {
@@ -17,13 +19,13 @@ class StoreProfileController extends Controller
         $store->load([
             'paymentMethods',
             'hours' => fn($q) => $q->orderBy('day_of_week'),
+            'socialLinks'
         ]);
 
-        $store->load('socialLinks');
         $sns = $store->socialLinks->pluck('url','type')->toArray();
         $hasSns = count(array_filter($sns)) > 0;
 
-        return view('pages.store.profile',compact('store'));
+        return view('pages.store.profile',compact('store','sns', 'hasSns'));
     }
 
     public function editBasic (Request $request) {
@@ -81,8 +83,9 @@ class StoreProfileController extends Controller
     }
 
     public function editContact (Request $request) {
-        $store = $request->user('store');
-        return view('pages.store.profile.edit-contact', compact('store'));
+        $store = $request->user('store')->load('socialLinks');
+        $sns = $store->socialLinks->pluck('url','type')->toArray();
+        return view('pages.store.profile.edit-contact', compact('store','sns'));
     }
 
     public function updateContact (Request $request) {
@@ -115,7 +118,9 @@ class StoreProfileController extends Controller
                     ['url' => $url]
                 );
             }else {
-                StoreSocialLink;;where('store_id', $store->id)->where('type',$type)->delete();
+                StoreSocialLink::where('store_id', $store->id)
+                ->where('type',$type)
+                ->delete();
             }
         }
         return redirect()->route('store.profile')->with('status', '連絡情報を更新しました');

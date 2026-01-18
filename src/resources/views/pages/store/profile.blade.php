@@ -24,13 +24,12 @@
         @php 
             $days = ['日','月','火','水','木','金','土'];
             $pm = $store->paymentMethods->pluck('name')->filter()->values();
-            $sns = [
-                'tiktok' => $store->tiktok_url, 
-                'instagram' => $store->instagram_url,
-                'x' => $store->x_url,
-                'website' => $store->website_url,
+            $iconMap = [
+                'instagram' => 'instagram',
+                'tiktok' => 'tiktok',
+                'x' => 'x',
+                'website' => 'website',
             ];
-            $hasSns = collect($sns)->filter()->isNotEmpty();
         @endphp
 
         <div class="h-full overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
@@ -178,17 +177,37 @@
                                 </div>
                                 <div class="flex items-center gap-3">
                                 @if($hasSns)
-                                @foreach($sns as $type => $url)
-                                    @if($url)
-                                    <a href="{{ $url }}" target="_blank"
+                                    @foreach($sns as $type => $url)
+                                    @continue(empty($url))
+
+                                    <a href="{{ $url }}" target="_blank" rel="noopener"
                                         class="text-text_color hover:text-main transition">
-                                        <x-icons.{{ $type }} class="h-6 w-6" />
+                                        @switch($type)
+                                        @case('instagram')
+                                            <x-icons.instagram class="h-6 w-6" />
+                                            @break
+
+                                        @case('tiktok')
+                                            <x-icons.tiktok class="h-6 w-6" />
+                                            @break
+
+                                        @case('x')
+                                            <x-icons.x class="h-6 w-6" />
+                                            @break
+
+                                        @case('website')
+                                            <x-icons.website class="h-6 w-6" />
+                                            @break
+
+                                        @default
+                                            <x-icons.instagram class="h-6 w-6" />
+                                        @endswitch
                                     </a>
-                                    @endif
-                                @endforeach
+                                    @endforeach
                                 @else
-                                <span class="text-placeholder text-base">未設定です</span>
+                                    <span class="text-placeholder text-base">未設定です</span>
                                 @endif
+                                </div>
                             </div>
                         </div>
                     </div>
