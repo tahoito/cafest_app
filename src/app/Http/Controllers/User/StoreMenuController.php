@@ -10,6 +10,13 @@ class StoreMenuController extends Controller
 {
     public function show(Store $store)
     {
+        $userId = auth('user')->id();
+
+        $faved = \DB::table('user_favorites')
+            ->where('user_id', $userId)
+            ->where('store_id', $store->id)
+            ->exists();
+
         $menuPhotos = $store->menuPhotos()->take(3)->get();
         $recommendedItems = $store->recommendedItems()->take(3)->get();
 

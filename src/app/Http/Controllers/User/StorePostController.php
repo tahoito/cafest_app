@@ -16,6 +16,12 @@ class StorePostController extends Controller
 {
     public function index($storeId)
     {
+        $userId = auth('user')->id();
+
+        $faved = auth()->check()
+            ? auth()->user()->favorites()->where('store_id', $store->id)->exists()
+            : false;
+
         $store = Store::findOrFail($storeId);
 
         $posts = Review::with(['user','images'])
