@@ -20,6 +20,7 @@ class Store extends Authenticatable
         'email',
         'password',
         'address',
+        'description',
         'phone',
         'area',
         'mood',

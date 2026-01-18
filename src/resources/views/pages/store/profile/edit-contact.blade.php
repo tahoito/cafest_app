@@ -28,6 +28,32 @@
                         @csrf 
                         @method('PATCH')
 
+                        <div class="space-y-4">
+                            <div class="space-y-1">
+                                <x-ui.label for="mail">メールアドレス</x-ui.label>
+                                <x-ui.input
+                                    id="name"
+                                    type="mail"
+                                    name="mail"
+                                    placeholder="メールアドレスを入力"
+                                    value="{{ old('mail', $store->mail) }}"
+                                    required
+                                />
+                            </div>
+                    
+                            <div class="space-y-1">
+                                <x-ui.label for="store">電話番号</x-ui.label>
+                                <x-ui.input
+                                    id="phone"
+                                    type="number"
+                                    name="phone"
+                                    placeholder="電話番号を入力"
+                                    value="{{ old('phone', $store->phone) }}"
+                                    required
+                                />
+                            </div>
+                        </div>
+
                        
                         <div class="pt-4">
                             <x-ui.button type="submit" theme="store" class="w-full text-form">
