@@ -38,8 +38,8 @@
                 $sameSource = $store->hours->first(fn($h) => !$h->is_closed && $h->open_time && $h->close_time);
             }
 
-            $sameOpenDefault  = optional($sameSource)->open_time ?? '';
-            $sameCloseDefault = optional($sameSource)->close_time ?? '';
+            $sameOpenDefault  = optional($sameSource)->open_time ? substr($sameSource->open_time, 0, 5) : '';
+            $sameCloseDefault = optional($sameSource)->close_time ? substr($sameSource->close_time, 0, 5) : '';
             $sameOpenValue  = old('same_open', $sameOpenDefault);
             $sameCloseValue = old('same_close', $sameCloseDefault);
 
