@@ -12,15 +12,14 @@ class StoreMenuController extends Controller
     {
         $userId = auth('user')->id();
 
-        $faved = \DB::table('user_favorites')
-            ->where('user_id', $userId)
-            ->where('store_id', $store->id)
-            ->exists();
+        $faved = auth()->check()
+            ? auth()->user()->favorites()->where('store_id', $store->id)->exists()
+            : false;
 
         $menuPhotos = $store->menuPhotos()->take(3)->get();
         $recommendedItems = $store->recommendedItems()->take(3)->get();
 
-        return view('pages.user.stores.menu', compact('store', 'menuPhotos', 'recommendedItems'));
+        return view('pages.user.stores.menu', compact('store', 'menuPhotos', 'recommendedItems','faved'));
     }
 
 
