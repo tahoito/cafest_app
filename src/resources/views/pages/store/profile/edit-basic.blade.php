@@ -40,6 +40,8 @@
 
             $sameOpenDefault  = optional($sameSource)->open_time ?? '';
             $sameCloseDefault = optional($sameSource)->close_time ?? '';
+            $sameOpenValue  = old('same_open', $sameOpenDefault);
+            $sameCloseValue = old('same_close', $sameCloseDefault);
 
             $times = [];
             for ($h=0; $h<24; $h++) {
