@@ -27,7 +27,7 @@
       </span>
     </a>
 
-    <a href="#"
+    <a href="{{ route('user.mycafe') }}"
        class="menu__item">
       <span class="menu__icon">
         <x-icons.mycafe size="34" class="nav-draw"/>
