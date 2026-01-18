@@ -17,7 +17,6 @@
         $store.favModal.openStoreId === {{ $storeId }} ||
         $store.favModal.createStoreId === {{ $storeId }}
       "
-      x-transition.opacity
       class="fixed inset-0 z-[9000]"
       style="display:none;"
       @keydown.escape.window="
@@ -31,7 +30,6 @@
       ========================================== --}}
       <div
         x-show="$store.favModal.openStoreId === {{ $storeId }}"
-        x-transition.opacity
         class="absolute inset-0 bg-black/50"
         @click.self="$store.favModal.closeList()"
       ></div>
@@ -42,8 +40,7 @@
       ========================================== --}}
       <div
         x-show="$store.favModal.createStoreId === {{ $storeId }}"
-        x-transition.opacity
-        class="absolute inset-0 z-[9099] bg-black/40 backdrop-blur-[1px]"
+        class="fixed inset-0 z-[9099] bg-black/40 backdrop-blur-[1px]"
         @click.self="$store.favModal.closeCreate()"
       ></div>
 
@@ -107,8 +104,7 @@
         <div
           class="bg-base_color px-5 pb-5 max-h-[60vh] overflow-y-auto"
           x-data="favoriteFoldersUI({{ $storeId }}, @js(asset('images/store/card.png')))"
-          x-init="init()"
-        >
+          x-init="initWatch()">
           <div class="mt-3 flex items-center justify-between">
             <div class="text-text_color">コレクション</div>
 
@@ -136,7 +132,7 @@
               <div class="flex items-center gap-3">
                 <img
                   :src="folder.latest_store?.image_url ?? defaultThumb"
-                  class="w-12 h-12 rounded-lg object-cover"
+                  class="w-[85px] h-[85px] rounded-lg object-cover"
                   alt=""
                 >
                 <div class="text-text_color" x-text="folder.name"></div>
@@ -145,10 +141,14 @@
               <button
                 type="button"
                 @click="toggleFolder(folder.id)"
-                class="grid h-8 w-8 place-items-center rounded-full border border-line"
+                class="grid place-items-center"
                 :aria-label="selectedFolderIds.includes(folder.id) ? '解除' : '追加'"
               >
-                <span x-text="selectedFolderIds.includes(folder.id) ? '✓' : '+'"></span>
+                <x-icons.add size="30" class="w-[30px] h-[30px] text-text_color"
+                  x-show="!selectedFolderIds.includes(folder.id)" />
+
+                <x-icons.check size="30" class="w-[30px] h-[30px] text-text_color"
+                  x-show="selectedFolderIds.includes(folder.id)" />
               </button>
             </div>
           </template>

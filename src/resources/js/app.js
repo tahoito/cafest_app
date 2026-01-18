@@ -6,7 +6,7 @@ window.Alpine = Alpine
 document.addEventListener('alpine:init', () => {
   Alpine.store('search', {
     activeModal: null,
-    keyword: '',     
+    keyword: '',
     area: '',
     budget: '',
     time: '',
@@ -36,23 +36,15 @@ document.addEventListener('alpine:init', () => {
     clearRatings(){ this.selectedRatings = [] },
   })
 
-
   Alpine.store('favModal', {
     openStoreId: null,
     createStoreId: null,
 
-    openList(storeId){
-      this.openStoreId = Number(storeId)
-    },
-    closeList(){
-      this.openStoreId = null
-    },
-    openCreate(storeId){
-      this.createStoreId = Number(storeId)
-    },
-    closeCreate(){
-      this.createStoreId = null
-    },
+    openList(storeId){ this.openStoreId = Number(storeId) },
+    closeList(){ this.openStoreId = null },
+
+    openCreate(storeId){ this.createStoreId = Number(storeId) },
+    closeCreate(){ this.createStoreId = null },
   })
 
   Alpine.store('reviewModal', {
@@ -60,7 +52,6 @@ document.addEventListener('alpine:init', () => {
     loading: false,
     data: null,
     error: '',
-
     close() {
       this.open = false
       this.loading = false
@@ -94,24 +85,51 @@ document.addEventListener('alpine:init', () => {
     },
   }))
 
+  // ✅ こっちだけ残す（重複定義しない）
   Alpine.data('favoriteFoldersUI', (storeId, defaultThumb) => ({
     storeId: Number(storeId),
     defaultThumb,
     folders: [],
     selectedFolderIds: [],
+    error: '',
+    hasInit: false,
 
-    async init() {
-      window.addEventListener('favorite-folder-created', (e) => {
-        if (!e?.detail) return
-        this.folders = [e.detail, ...this.folders]
+    initWatch() {
+      this.error = ''
+      this.hasInit = false
+
+      this.$watch(() => Alpine.store('favModal').openStoreId, async (v) => {
+        if (v === this.storeId && !this.hasInit) {
+          this.hasInit = true
+          await this.fetchFolders()
+        }
       })
 
-      const res = await fetch(`/user/stores/${this.storeId}/favorite/folders`, {
-        headers: { 'Accept': 'application/json' },
+      window.addEventListener('favorite-folder-created', () => {
+        if (Alpine.store('favModal').openStoreId === this.storeId) {
+          this.fetchFolders()
+        }
       })
-      const data = await res.json()
-      this.folders = data.folders ?? []
-      this.selectedFolderIds = data.selected_folder_ids ?? []
+    },
+
+    async fetchFolders() {
+      try {
+        const res = await fetch(`/user/stores/${this.storeId}/favorite/folders`, {
+          headers: { 'Accept': 'application/json' },
+        })
+
+        if (!res.ok) {
+          const txt = await res.text()
+          throw new Error(txt || `HTTP ${res.status}`)
+        }
+
+        const data = await res.json()
+        this.folders = data.folders ?? []
+      } catch (e) {
+        console.error('folders fetch failed:', e)
+        this.folders = []
+        this.error = '読み込みに失敗しました'
+      }
     },
 
     toggleFolder(folderId) {
@@ -124,7 +142,6 @@ document.addEventListener('alpine:init', () => {
     },
   }))
 
-  // ---- create folder modal ----
   Alpine.data('favoriteFolderCreateUI', (storeId) => ({
     storeId: Number(storeId),
     name: '',
@@ -157,8 +174,8 @@ document.addEventListener('alpine:init', () => {
         window.dispatchEvent(new CustomEvent('favorite-folder-created', { detail: folder }))
         this.name = ''
 
-        // 作成後：作成モーダル閉じてリストに戻る（このstoreに）
-        Alpine.store('favModal').closeCreate(this.storeId)
+        // ✅ 引数いらない
+        Alpine.store('favModal').closeCreate()
 
       } catch (e) {
         this.error = e?.message ?? 'エラーが発生しました'

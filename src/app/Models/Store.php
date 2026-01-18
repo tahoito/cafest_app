@@ -101,4 +101,19 @@ class Store extends Authenticatable
         return $this->hasMany(StoreSocialLink::class);
     }
 
+    public function stores()
+    {
+        return $this->belongsToMany(Store::class, 'favorite_folders_store')
+            ->withTimestamps();
+    }
+
+
+    public function images() {
+        return $this->hasMany(StoreImage::class);
+    }
+
+    public function latestImage() {
+        return $this->hasOne(StoreImage::class)->latestOfMany();
+    }
+
 }
