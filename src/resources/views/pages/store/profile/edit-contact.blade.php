@@ -67,7 +67,7 @@
                                         />
                                     </div>
                                     <div class="flex items-center gap-3">
-                                        <x-icons.instagram class="h-7 w-7 text-text_color" />
+                                        <x-icons.website class="h-7 w-7 text-text_color" />
                                         <input
                                             type="url"
                                             name="sns[website]"
@@ -77,7 +77,7 @@
                                         />
                                     </div>
                                     <div class="flex items-center gap-3">
-                                        <x-icons.instagram class="h-7 w-7 text-text_color" />
+                                        <x-icons.tiktok class="h-7 w-7 text-text_color" />
                                         <input
                                             type="url"
                                             name="sns[tiktok]"
@@ -87,7 +87,7 @@
                                         />
                                     </div>
                                     <div class="flex items-center gap-3">
-                                        <x-icons.instagram class="h-7 w-7 text-text_color" />
+                                        <x-icons.x class="h-7 w-7 text-text_color" />
                                         <input
                                             type="url"
                                             name="sns[x]"
