@@ -44,8 +44,8 @@ class StoreProfileController extends Controller
             'payments.*' => ['string'],
             'open_days' => ['array'],
             'open_days.*' => ['in:0,1,2,3,4,5,6'],
-            'hours_mode' => ['nullable','boolean'],
-            'is_24h' => ['nullable','boolean'],
+            'hours_mode' => ['nullable','in:same,byDay'],
+            'is_24h' => ['nullable','in:0,1'],
             'same_open' => ['nullable','date_format:H:i'],
             'same_close' => ['nullable','date_format:H:i'],
             'hours' => ['array'],
@@ -68,7 +68,7 @@ class StoreProfileController extends Controller
         $is24h = (bool)($request->input('is_24h') ?? false);
         $mode = $request->input('hours_mode','same');
         $openDays = collect($request->input('open_days',[]))
-            ->map(fn($d) => int($d))
+            ->map(fn($d) => (int)$d)
             ->all();
         for ($dow = 0; $dow <= 6; $dow++ ){
             $isOpen = in_array($dow, $openDays, true);
@@ -79,12 +79,12 @@ class StoreProfileController extends Controller
                 $open = '00:00';
                 $close = '23:59';
             }elseif($isOpen) {
-                if ($mood === 'byDay') {
+                if ($mode === 'byDay') {
                     $open = $request->input("hours.$dow.open");
                     $close = $request->input("hours.$dow.close");
                 }else {
                     $open = $request->input("same_open");
-                    $open = $request->input("close_open");
+                    $close = $request->input("same_close");
                 }
             }
 

@@ -33,7 +33,13 @@
                 ->map(fn($v) => (string)$v)
                 ->toArray();
             $openDays = old('open_days', $openDaysDefault);
-            $dayHour = $hoursByDay->get($i);
+            $sameSource = $hoursByDay->get(1);
+            if (!$sameSource) {
+                $sameSource = $store->hours->first(fn($h) => !$h->is_closed && $h->open_time && $h->close_time);
+            }
+
+            $sameOpenDefault  = optional($sameSource)->open_time ?? '';
+            $sameCloseDefault = optional($sameSource)->close_time ?? '';
 
             $times = [];
             for ($h=0; $h<24; $h++) {
@@ -178,7 +184,7 @@
                             </div>
                         </div>
 
-                        <div class="space-y-3" x-data="{ hoursMode: @js(old('hour_mode', 'same')), is24h: @js((int) old('is_24h',0)) === 1, }">
+                        <div class="space-y-3" x-data="{ hoursMode: @js(old('hours_mode', 'same')), is24h: @js((int) old('is_24h',0)) === 1, }">
                             <input type="hidden" name="hours_mode" :value="hoursMode">
                             <input type="hidden" name="is_24h" :value="is24h ? 1 : 0">
                         
@@ -209,7 +215,7 @@
                             </div>
 
                             <div x-show="!is24h && hoursMode === 'same'" x-cloak class="py-4"
-                                x-data="{ open: @js(old('same_open', $store->same_open ?? '')), close: @js(old('same_close', $store->same_close ?? ''))}">
+                                x-data="{ open: @js($sameOpenValue), close: @js($sameCloseValue) }">
                                 <div class="grid grid-cols-2 gap-3">
                                     <div class="space-y-1">
                                         <select name="same_open" x-model="open"
@@ -217,7 +223,7 @@
                                             class="w-full rounded-lg px-4 py-3 ring-1 ring-gray-200">
                                             <option value="" disabled>開店時間</option>
                                             @foreach($times as $t)
-                                                <option value="{{ $t }}" @selected(old('same_open', $store->same_open) === $t)>{{ $t }}</option>
+                                                <option value="{{ $t }}" @selected(old('same_open', $sameOpenDefault) === $t)>{{ $t }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -227,7 +233,7 @@
                                             class="w-full rounded-lg px-4 py-3 ring-1 ring-gray-200">
                                             <option value="" disabled>閉店時間</option>
                                             @foreach($times as $t)
-                                                <option value="{{ $t }}" @selected(old('same_close', $store->same_close) === $t)>{{ $t }}</option>
+                                                <option value="{{ $t }}" @selected(old('same_close', $sameCloseDefault) === $t)>{{ $t }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -236,6 +242,7 @@
 
                             <div x-show="!is24h && hoursMode === 'byDay'" x-cloak class="space-y-2">
                                 @foreach($days as $i => $label)
+                                    @php $dayHour = $hoursByDay->get($i); @endphp
                                 <div class="flex items-center justify-between rounded-lg bg-form px-4 py-3 ring-1 ring-gray-200">
                                     <span class="text-text_color font-medium">{{ $label }}</span>
                                     <div class="flex items-center gap-2">
