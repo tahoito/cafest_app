@@ -49,7 +49,7 @@
         <x-slot name="icon"><x-icons.info size="60" /></x-slot>
       </x-ui.top-item>
 
-      <x-ui.top-item href="#" label="公式写真">
+      <x-ui.top-item href="{{ route('store.image') }}" label="公式写真">
         <x-slot name="icon"><x-icons.store_image size="60" /></x-slot>
       </x-ui.top-item>
 
