@@ -149,6 +149,56 @@
 </div>
 
 
+@if (session('review_success'))
+<div 
+  x-data="{
+    open: true,
+    timer: null,
+    start() { this.timer = setTimeout(() => { this.open = false },2500) },
+    close() { this.open = false; if (this.timer) clearTimeout(this.timer) },
+  }"
+
+  x-inti="start()"
+  x-show="open"
+  x-transition.opacity
+  class="fixed inset-0 z-[200] flex items-center justify-center"
+>
+
+<div class="absolute inset-0 bg-black/40" @click="close()"></div>
+
+    <div class="relative w-[353px] rounded-lg bg-base_color px-6 py-6">
+      <button
+        type="button"
+        class="absolute left-3 top-3 grid h-10 w-10 place-items-center rounded-full hover:bg-black/5 active:scale-95"
+        @click="close()"
+        aria-label="閉じる"
+      >
+        <x-icons.close class="h-7 w-7 text-text_color" />
+      </button>
+
+      <div class="text-center pt-4">
+        <div class="text-xl text-text_color">
+          {{ session('review_success') }}
+        </div>
+
+        <div class="mt-2 text-sm text-text_color">
+          レビュー投稿が完了しました。
+        </div>
+
+        <x-ui.button
+          type="button"
+          variant="secondary"
+          class="mt-6 text-form"
+          @click="close()"
+        >
+          OK
+        </x-ui.button>
+      </div>
+    </div>
+  </div>
+@endif
+
+
 <script>
 (function () {
   const ratingInput = document.getElementById('rating');
