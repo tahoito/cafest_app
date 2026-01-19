@@ -6,7 +6,7 @@ use App\Models\PaymentMethod;
 use App\Models\StoreImage;
 use App\Models\Review;
 use App\Models\MenuPhoto;
-use App\Models\RecommendedItem;
+use App\Models\RecommendedItems;
 use App\Models\FavoriteFolder;
 use App\Models\StoreSocialLink;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -31,9 +31,9 @@ class Store extends Authenticatable
         'instagram_url',
         'x_url',
         'website_url',
-        'basic_updated_at' => 'datetime',
-        'description_updated_at' => 'datetime',
-        'contact_updated_at' => 'datetime',
+        'basic_updated_at',
+        'description_updated_at',
+        'contact_updated_at',
     ];
 
     protected $hidden = [
@@ -65,15 +65,13 @@ class Store extends Authenticatable
     public function slideImages(){
         return $this->hasMany(StoreImage::class)
             ->where('type','slide')
-            ->orderBy('sort_order')
-            ->limit(5);
+            ->orderBy('sort_order');
     }
 
     public function galleryImages(){
         return $this->hasMany(StoreImage::class)
             ->where('type','gallery')
-            ->orderBy('sort_order')
-            ->limit(6);
+            ->orderBy('sort_order');
     }
 
     public function menuPhotos(){

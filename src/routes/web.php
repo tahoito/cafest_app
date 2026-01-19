@@ -21,6 +21,7 @@ use App\Http\Controllers\User\MyCafeController;
 use App\Http\Controllers\User\StoreController as UserStoreController;
 use App\Http\Controllers\Store\StoreController as StoreStoreController;
 use App\Http\Controllers\Store\StoreProfileController;
+use App\Http\Controllers\Store\StoreImageController;
 
 
 Route::view('/', 'welcome')->name('welcome');
@@ -92,6 +93,11 @@ Route::prefix('store')->name('store.')->group(function () {
         Route::patch('/profile/edit/description',[StoreProfileController::class,'updateDescription'])->name('profile.update.description');
         Route::get('/profile/edit/contact',[StoreProfileController::class,'editContact'])->name('profile.edit.contact');
         Route::patch('/profile/edit/contact',[StoreProfileController::class,'updateContact'])->name('profile.update.contact');
+
+        Route::get('/image',[StoreImageController::class,'index'])->name('image');
+        Route::patch('/store/images/{image}/card', [StoreImageController::class, 'setCardImage'])->name('slide.card');
+        Route::get('/image/edit/slide',[StoreImageController::class,'editSlide'])->name('image.edit.slide');
+        Route::patch('/image/edit/slide',[StoreImageController::class,'updateSlide'])->name('image.update.slide');
     });
 });
 
