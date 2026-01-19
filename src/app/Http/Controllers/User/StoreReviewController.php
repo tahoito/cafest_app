@@ -21,11 +21,8 @@ class StoreReviewController extends Controller
         $userId = auth('user')->id();
 
         $reviews = Review::query()
+            ->with(['user','images'])
             ->where('store_id',$store->id)
-            ->with([
-                'user:id,name,handle,icon_path',
-                'store:id,name',
-            ])
             ->latest();
 
         $faved = auth()->check()

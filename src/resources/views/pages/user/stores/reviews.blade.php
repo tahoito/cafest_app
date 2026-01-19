@@ -40,10 +40,14 @@
 
     <main class="flex-1 overflow-y-auto overscroll-contain">
         <section class="px-4 flex flex-col space-y-[30px] pt-5
-                        pb-[calc(env(safe-area-inset-bottom)+110px)]">
-            @foreach($reviews as $review)
+            pb-[calc(env(safe-area-inset-bottom)+110px)]">
+            @forelse($reviews as $review)
                 <x-ui.card.user.store-reviews :review="$review"/>
-            @endforeach
+            @empty
+                <div class="text-center text-placeholder py-10">
+                    まだレビューがありません
+                </div>
+            @endforelse
         </section>
     </main>
 

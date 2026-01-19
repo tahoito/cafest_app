@@ -167,7 +167,8 @@
 
       <section class="px-4 space-y-2 pb-12">
           <div class="flex items-center justify-between">
-              <div class="text-lg text-text_color font-medium">みんなのレビュー(100件)</div>
+              <div class="text-lg text-text_color font-medium">みんなのレビュー({{ $reviewCount }}件)
+              </div>
 
               <a href="{{ route('user.stores.reviews', data_get($store,'id')) }}"
               class="text-sm text-main hover:text-text_color">

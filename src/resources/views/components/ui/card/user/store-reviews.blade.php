@@ -39,11 +39,7 @@
     }
   }
 
-  // stars
   $stars = max(0, min(5, (int) floor($rating + 0.00001)));
-
-  // モーダル用 endpoint（JSON返す show を使う）
-  // ※ ルート名が違う場合はここだけ変更すればOK
   $endpoint = null;
   if ($storeId && data_get($review,'id')) {
     $endpoint = route('user.stores.reviews.show', [
@@ -51,11 +47,7 @@
       'review' => data_get($review,'id'),
     ]) . '?format=json';
   }
-
-  // もし普通の遷移も残したいなら href を優先
   $link = $href ?? '#';
-
-  // sizing
   $avatarSize = match ($variant) {
     'mini'  => "w-9 h-9",
     default => "w-11 h-11",
@@ -82,7 +74,6 @@
 >
   <div class="h-full px-5 py-4 flex flex-col">
 
-    {{-- 1段目：ユーザー + 日付 --}}
     <div class="flex items-start justify-between gap-3">
       <div class="flex items-center gap-3 min-w-0">
         <div class="{{ $avatarSize }} rounded-full bg-base overflow-hidden shrink-0">
