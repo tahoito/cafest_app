@@ -45,7 +45,7 @@
             @else
                 @foreach ($slides as $img)
                 <div class="relative">
-                    <div class="overflow-hidden border border-placeholder bg-base_color">
+                    <div class="overflow-hidden bg-base_color">
                     <img src="{{ asset('images/store/card.png') }}" class="w-full aspect-[16/10] object-cover" alt="">
                     </div>
 
@@ -53,14 +53,17 @@
                         type="button"
                         class="absolute -top-3 -right-3 flex items-center justify-center
                                 w-[30px] h-[30px] rounded-full bg-accent shadow-sm">
-                        <x-icons.close class="w-6 h-6 text-text_color" />
+                        <x-icons.close
+                            class="w-6 h-6 text-text_color translate-x-[2px] translate-y-[2px]" />
                     </button>
                 </div>
                 @endforeach
             @endif
-            <button type="button" class="w-full text-center text-text_color text-base py-2">
-            + 画像を追加する
-            </button>
+            @if ($slides->count() < 5)
+                <button type="button" class="w-full text-center text-text_color text-base py-2">
+                    + 画像を追加する
+                </button>
+            @endif
       </div>
     </div>
 
