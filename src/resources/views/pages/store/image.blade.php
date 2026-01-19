@@ -21,54 +21,63 @@
             </div>
         </header>
 
+        @php 
+            $slides = $store->slideImages;
+            $max = 5;
+        @endphp
+
 
         <div class="h-full overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
             <div class="w-full max-w-md mx-auto pt-5 space-y-6 pb-4">
                 <section class="px-4 space-y-3">
                     <div class="flex items-center justify-between">
-                        <div class="space-y-1">
+                        <div>
                             <div class="text-lg text-text_color">スライド画像（5枚まで）</div>
-                            <div class="text-sm text-text_color">店舗のトップに表示されます</div>
+                            <div class="mt-1 text-sm text-text_color">店舗のトップに表示されます</div>
                         </div>
                         <a href="#"
-                            class="flex items-center gap-1 text-sm text-text_color hover:opacity-80">
+                            class="mt-10 flex items-center gap-1 text-sm text-text_color hover:opacity-80">
                         <x-icons.edit class="w-[15px] h-[15px] text-text_color"/>編集</a>
                     </div>
 
                     <div class="rounded-lg border border-favorite bg-base_color p-3">
                         <div class="grid grid-cols-2 gap-3">
-                            <div class="overflow-hidden rounded-xl border border-placeholder-color/40 bg-white">
-                                <img src="/images/store/card.png" alt="" class="w-full aspect-[16/10] object-cover">
-                            </div>
+                            @for ($i = 0; $i < $max; $i++)
+                                @php $img = $slides[$i] ?? null; @endphp
+                                <div class="space-y-1">
+                                    <div class="text-main2 text-sm {{ ($img && $img->is_used_on_card) ? '' : 'hidden' }}">店舗カードで使用中</div>
 
-                            <div class="overflow-hidden rounded-xl border border-placeholder-color/40 bg-white">
-                                <img src="/images/store/card.png" alt="" class="w-full aspect-[16/10] object-cover">
-                            </div>
+                                    @if($img)
+                                    <form method="POST" action="{{ route('store.slide.card', $img) }}">
+                                        @csrf
+                                        @method('PATCH')
 
-                            <div class="overflow-hidden rounded-xl border border-placeholder-color/40 bg-white">
-                                <img src="/images/store/card.png" alt="" class="w-full aspect-[16/10] object-cover">
-                            </div>
-
-                            <a href="#" class="grid place-items-center rounded-xl border border-placeholder bg-notification2 aspect-[16/10]">
-                                <x-icons.no_image class="w-6 h-6 text-text_color" />
-                            </a>
-
-                            <a href="#" class="grid place-items-center rounded-xl border border-placeholder bg-notification2 aspect-[16/10]">
-                                <x-icons.no_image class="w-6 h-6 text-text_color" />
-                            </a>
+                                        <button type="submit" class="block w-full text-left">
+                                        <div class="overflow-hidden rounded-xl border border-placeholder-color/40 bg-white">
+                                            <img src="{{ asset(ltrim($img->path,'/')) }}" class="w-full aspect-[16/10] object-cover">
+                                        </div>
+                                        </button>
+                                    </form>
+                                    @else
+                                        <a href="#"
+                                            class="grid place-items-center rounded-xl border border-placeholder bg-notification2 aspect-[16/10]">
+                                            <x-icons.no_image class="w-6 h-6 text-text_color" />
+                                        </a>
+                                    @endif
+                                </div>
+                            @endfor
                         </div>
-                    </div>
                     <div class="mt-2 text-sm text-placeholder text-right">最終更新</div>
                 </section>
 
                 <section class="px-4 space-y-3">
                     <div class="flex items-center justify-between">
-                        <div class="space-y-1">
+                        <div>
                             <div class="text-lg text-text_color">ギャラリー画像（6枚まで）</div>
-                            <div class="text-sm text-text_color">店舗の雰囲気が伝わる写真を登録してください</div>
+                            <div class="mt-1 text-sm text-text_color">店舗の雰囲気が伝わる写真を登録してください</div>
                         </div>
                         <a href="#"
-                            class="flex items-center gap-1 text-sm text-text_color hover:opacity-80">
+                            class="mt-10 flex items-center gap-1 text-sm text-text_color hover:opacity-80">
                         <x-icons.edit class="w-[15px] h-[15px] text-text_color"/>編集</a>
                     </div>
 
@@ -102,6 +111,7 @@
                             </a>
                         </div>
                     </div>
+                    <div class="mt-2 text-sm text-placeholder text-right">最終更新</div>
                 </section>
             </div>
         </div>            

@@ -95,6 +95,9 @@ Route::prefix('store')->name('store.')->group(function () {
         Route::patch('/profile/edit/contact',[StoreProfileController::class,'updateContact'])->name('profile.update.contact');
 
         Route::get('/image',[StoreImageController::class,'index'])->name('image');
+        Route::patch('/store/images/{image}/card', [StoreImageController::class, 'setCardImage'])->name('store.slide.card');
+        Route::get('/image/edit/slide',[StoreImageController::class,'editSlide'])->name('image.edit.slide');
+        Route::patch('/image/edit/slide',[StoreImageController::class,'updateSlide'])->name('image.update.slide');
     });
 });
 
