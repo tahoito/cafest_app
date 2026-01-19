@@ -39,24 +39,27 @@
 
 
     <main class="flex-1 overflow-y-auto overscroll-contain">
-        <section class="px-4 flex flex-col space-y-[30px] pt-5
-                        pb-[calc(env(safe-area-inset-bottom)+110px)]">
-            @foreach($reviews as $review)
+        <section class="px-4 flex flex-col items-center space-y-[30px] pt-5
+            pb-[calc(env(safe-area-inset-bottom)+96px)]">
+            @forelse($reviews as $review)
                 <x-ui.card.user.store-reviews :review="$review"/>
-            @endforeach
+            @empty
+                <div class="text-center text-placeholder py-10">
+                    まだレビューがありません
+                </div>
+            @endforelse
         </section>
-    </main>
 
-    <div class="sticky bottom-0 z-50 bg-base_color/90 backdrop-blur px-4
+        <div class="sticky bottom-0 z-50 px-4
                 pt-3 pb-[calc(env(safe-area-inset-bottom)+16px)]">
-        <div class="w-full max-w-md mx-auto flex justify-center">
-            <a href="{{ route('user.stores.reviews.create', ['store' => data_get($store,'id')]) }}">
+            <div class="w-full max-w-md mx-auto flex justify-center">
+                <a href="{{ route('user.stores.reviews.create', ['store' => data_get($store,'id')]) }}">
                 <x-ui.button variant="secondary" class="text-form">
                     レビューを投稿する
                 </x-ui.button>
-            </a>
+                </a>
+            </div>
         </div>
-    </div>
-
+    </main>
 </div>
 @endsection

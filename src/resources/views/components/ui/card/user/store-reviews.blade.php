@@ -16,7 +16,7 @@
     if (is_string($userIconPath) && str_starts_with($userIconPath, 'http')) {
       $userIconUrl = $userIconPath;
     } else {
-      $userIconUrl = asset('storage/' . ltrim($userIconPath, '/'));
+      $userIconUrl = asset(ltrim($userIconPath, '/'));
     }
   }
 
@@ -39,11 +39,7 @@
     }
   }
 
-  // stars
   $stars = max(0, min(5, (int) floor($rating + 0.00001)));
-
-  // モーダル用 endpoint（JSON返す show を使う）
-  // ※ ルート名が違う場合はここだけ変更すればOK
   $endpoint = null;
   if ($storeId && data_get($review,'id')) {
     $endpoint = route('user.stores.reviews.show', [
@@ -51,11 +47,7 @@
       'review' => data_get($review,'id'),
     ]) . '?format=json';
   }
-
-  // もし普通の遷移も残したいなら href を優先
   $link = $href ?? '#';
-
-  // sizing
   $avatarSize = match ($variant) {
     'mini'  => "w-9 h-9",
     default => "w-11 h-11",
@@ -82,7 +74,6 @@
 >
   <div class="h-full px-5 py-4 flex flex-col">
 
-    {{-- 1段目：ユーザー + 日付 --}}
     <div class="flex items-start justify-between gap-3">
       <div class="flex items-center gap-3 min-w-0">
         <div class="{{ $avatarSize }} rounded-full bg-base overflow-hidden shrink-0">
@@ -92,7 +83,7 @@
         </div>
 
         <div class="min-w-0">
-          <div class="text-text text-base font-semibold truncate">
+          <div class="text-text_color text-base font-semibold truncate">
             {{ $userName }}
           </div>
           @if($userHandle)
@@ -112,7 +103,7 @@
 
     {{-- 2段目：店舗名 + 星 --}}
     <div class="mt-3 flex items-center justify-between gap-3">
-      <div class="text-text text-base font-medium truncate">
+      <div class="text-text_color text-base font-medium truncate">
         {{ $storeName }}
       </div>
 
@@ -123,7 +114,7 @@
       </div>
     </div>
 
-    <div class="mt-2 text-text text-[15px] leading-snug line-clamp-2">
+    <div class="mt-2 text-text_color text-[15px] leading-snug line-clamp-2">
       {{ $body }}
     </div>
 

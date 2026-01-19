@@ -15,9 +15,9 @@ class ReviewFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::inRandomOrder()->first()->id,
-            'store_id' => Store::inRandomOrder()->first()->id,
-            'rating' => $this->faker->numberBetween(3,5),
+            'user_id' => User::query()->inRandomOrder()->value(id),
+            'store_id' => Store::query()->inRandomOrder()->value(id),
+            'rating' => $this->faker->numberBetween(1, 3.0 ,5.0),
             'body' => $this->faker->randomElement([
                 '可愛くておしゃれで映え写真がいっぱい撮れる！',
                 '落ち着いた雰囲気で長居しやすい。',

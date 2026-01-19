@@ -17,7 +17,8 @@ class StoreController extends Controller
 {
     public function show(Store $store, StoreRecommendService $service)
     {
-        $store = Store::with(['hours', 'reviews'])
+        $store = Store::query()
+            ->with(['hours', 'reviews'])
             ->withAvg('reviews','rating')
             ->findOrFail($store->id);
 
@@ -26,6 +27,10 @@ class StoreController extends Controller
             ->latest()
             ->take(10)
             ->get();
+
+        $reviewCount = Review::query()
+            ->where('store_id', $store->id)
+            ->count();
 
         $posts = ReviewImage::query()
             ->whereHas('review', fn($q) => $q->where('store_id',$store->id))
@@ -50,6 +55,7 @@ class StoreController extends Controller
             'reviews' => $reviews,
             'posts' => $posts,
             'faved' => $faved,
+            'reviewCount' => $reviewCount,
         ]);
     }
 

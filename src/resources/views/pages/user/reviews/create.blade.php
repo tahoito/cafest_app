@@ -27,7 +27,7 @@
         @if($slideImage)
           <div class="relative w-full aspect-[16/10] overflow-hidden rounded-[8px]">
             <img
-              src="{{ $slideImage->path }}"
+              src="{{ $slideImage->url }}"
               alt="{{ $store->name }}"
               class="w-full h-full object-cover"
             />

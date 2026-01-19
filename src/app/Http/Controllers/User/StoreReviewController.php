@@ -20,13 +20,10 @@ class StoreReviewController extends Controller
         $storeId = $store->id;
         $userId = auth('user')->id();
 
-        $reviews = Review::query()
+        $reviews = Review::with(['user','store'])
             ->where('store_id',$store->id)
-            ->with([
-                'user:id,name,handle,icon_path',
-                'store:id,name',
-            ])
-            ->latest();
+            ->latest()
+            ->get();
 
         $faved = auth()->check()
             ? auth()->user()->favorites()->where('store_id', $store->id)->exists()
