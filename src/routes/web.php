@@ -98,7 +98,11 @@ Route::prefix('store')->name('store.')->group(function () {
         Route::patch('/image/edit/slide',[StoreImageController::class,'updateSlide'])->name('image.update.slide');
         Route::post('/image/edit/slide', [StoreImageController::class, 'uploadSlide'])->name('image.slide.upload');
         Route::delete('/image/edit/slide', [StoreImageController::class, 'deleteSlide'])->name('image.slide.delete');
-
+        
+        Route::get('/image/edit/gallery',[StoreImageController::class,'editGallery'])->name('image.edit.gallery');
+        Route::patch('/image/edit/gallery',[StoreImageController::class,'updateGallery'])->name('image.update.gallery');
+        Route::post('/image/edit/gallery', [StoreImageController::class, 'uploadGallery'])->name('image.gallery.upload');
+        Route::delete('/image/edit/gallery', [StoreImageController::class, 'deleteGallery'])->name('image.gallery.delete');
     });
 });
 

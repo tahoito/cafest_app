@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class StoreImage extends Model
 {
     protected $fillable = [
-        'store_id',
-        'path',
+        'store_id','path',
         'sort_order',
         'type',
         'is_used_on_card',
