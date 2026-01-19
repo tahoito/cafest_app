@@ -80,7 +80,7 @@
                             <div class="text-lg text-text_color">ギャラリー画像（6枚まで）</div>
                             <div class="mt-1 text-sm text-text_color">店舗の雰囲気が伝わる写真を登録してください</div>
                         </div>
-                        <a href="#"
+                        <a href="{{ route('store.image.edit.gallery') }}"
                             class="mt-10 flex items-center gap-1 text-sm text-text_color hover:opacity-80">
                         <x-icons.edit class="w-[15px] h-[15px] text-text_color"/>編集</a>
                     </div>
