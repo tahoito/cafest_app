@@ -25,7 +25,6 @@
     </header>
 
     @php
-      // index側でloadしてる前提だけど、保険でtake + values
       $slides = $store->slideImages->take(5)->values();
     @endphp
 
@@ -60,7 +59,8 @@
                     type="button"
                     @click="open=true; targetId={{ $img->id }}"
                     class="absolute -top-3 -right-3 flex items-center justify-center
-                           w-[30px] h-[30px] rounded-full bg-accent shadow-sm">
+                           w-[30px] h-[30px] rounded-full bg-accent shadow-sm"
+                  >
                     <x-icons.close class="w-6 h-6 text-text_color translate-x-[2px] translate-y-[2px]" />
                   </button>
                 </div>
@@ -68,19 +68,40 @@
             @endif
           </div>
 
-          @if ($slides->count() < 5)
-            <button type="button" class="w-full text-center text-text_color text-base mt-6">
-              + 画像を追加する
-            </button>
-          @endif
+          {{-- アップロード --}}
+          <form method="POST" action="{{ route('store.image.slide.upload') }}" enctype="multipart/form-data">
+            @csrf
+            <input x-ref="file" type="file" name="image" accept="image/*" class="hidden"
+              @change="$event.target.form.submit()"
+            >
+            @if ($slides->count() < 5)
+              <button type="button"
+                class="w-full text-center text-text_color text-base mt-6"
+                @click="$refs.file.click()"
+              >
+                + 画像を追加する
+              </button>
+            @endif
+          </form>
 
-    
+          {{-- 保存（sort_order詰め直し + カード画像保険） --}}
+          <form id="slideSaveForm" method="POST" action="{{ route('store.image.update.slide') }}" class="hidden">
+            @csrf
+            @method('PATCH')
+
+            @foreach ($slides as $img)
+              <input type="hidden" name="image_ids[]" value="{{ $img->id }}">
+            @endforeach
+          </form>
+
+          {{-- 削除 --}}
           <form x-ref="deleteForm" method="POST" action="{{ route('store.image.slide.delete') }}" class="hidden">
             @csrf
             @method('DELETE')
             <input type="hidden" name="image_id" :value="targetId">
           </form>
 
+          {{-- モーダル --}}
           <div
             x-show="open"
             x-cloak
@@ -120,10 +141,16 @@
       </div>
     </div>
 
+    {{-- 固定の保存ボタン：slideSaveForm を送信 --}}
     <div class="fixed inset-x-0 bottom-0 bg-base_color">
       <div class="pb-[env(safe-area-inset-bottom)]">
         <div class="w-full max-w-md mx-auto px-4 py-4">
-          <x-ui.button type="submit" theme="store" class="w-full text-form">
+          <x-ui.button
+            type="submit"
+            form="slideSaveForm"
+            theme="store"
+            class="w-full text-form"
+          >
             保存
           </x-ui.button>
         </div>
