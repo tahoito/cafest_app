@@ -65,15 +65,13 @@ class Store extends Authenticatable
     public function slideImages(){
         return $this->hasMany(StoreImage::class)
             ->where('type','slide')
-            ->orderBy('sort_order')
-            ->take(5);
+            ->orderBy('sort_order');
     }
 
     public function galleryImages(){
         return $this->hasMany(StoreImage::class)
             ->where('type','gallery')
-            ->orderBy('sort_order')
-            ->take(6);
+            ->orderBy('sort_order');
     }
 
     public function menuPhotos(){

@@ -22,9 +22,19 @@ class StoreImageController extends Controller
     }
 
     public function setCardImage(StoreImage $image) {
+
         $storeId = auth('store')->id();
+        
+        \Log::debug('setCardImage', [
+            'login_store_id' => $storeId,
+            'image_id' => $image->id,
+            'image_store_id' => $image->store_id,
+            'type' => $image->type,
+        ]);
+
 
         abort_unless($image->store_id === $storeId, 403);
+        abort_unless($image->type === 'slide', 403);
 
         DB::transaction(function () use ($storeId, $image) 
         {
@@ -35,6 +45,6 @@ class StoreImageController extends Controller
             $image->update(['is_used_on_card' => true]);
         });
 
-        return back();
+        return back()->with('ok', 'updated');
     }
 }

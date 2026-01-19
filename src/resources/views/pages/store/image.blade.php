@@ -26,8 +26,8 @@
             <div class="w-full max-w-md mx-auto pt-5 space-y-6 pb-4">
                 <section class="px-4 space-y-3">
                     @php 
-                        $slides = $store->slideImages;
-                        $max = 5;
+                        $slides = $store->slideImages->take(5)->values();
+                        $slideMax = 5;
                     @endphp
                     <div class="flex items-center justify-between">
                         <div>
@@ -41,17 +41,17 @@
 
                     <div class="rounded-lg border border-favorite bg-base_color p-3">
                         <div class="grid grid-cols-2 gap-3">
-                            @for ($i = 0; $i < $max; $i++)
+                            @for ($i = 0; $i < $slideMax; $i++)
                                 @php $img = $slides[$i] ?? null; @endphp
                                 <div class="space-y-1">
-                                    <div class="text-main2 text-sm {{ ($img && $img->is_used_on_card) ? '' : 'hidden' }}">店舗カードで使用中</div>
+                                    <div class="text-main2 text-sm {{ ($img && $img->is_used_on_card) ? '' : 'invisible' }}">店舗カードで使用中</div>
 
                                     @if($img)
                                     <form method="POST" action="{{ route('store.slide.card', $img) }}">
                                         @csrf
                                         @method('PATCH')
 
-                                        <button type="submit" class="block w-full text-left">
+                                        <button type="submit" class="block w-full p-0 m-0 bg-transparent border-0 text-left focus:outline-none">
                                         <div class="overflow-hidden rounded-xl border border-placeholder-color/40 bg-white">
                                             <img src="{{ asset(ltrim($img->path,'/')) }}" class="w-full aspect-[16/10] object-cover">
                                         </div>
@@ -72,8 +72,8 @@
 
                 <section class="px-4 space-y-3">
                     @php
-                        $gallery = $store->galleryImages;
-                        $max = 6;
+                        $gallery = $store->galleryImages->take(6)->values();
+                        $galleryMax = 6;
                     @endphp
                     <div class="flex items-center justify-between">
                         <div>
@@ -87,7 +87,7 @@
 
                     <div class="rounded-lg border border-favorite bg-base_color p-3">
                         <div class="grid grid-cols-3 gap-3">
-                            @for ($i = 0; $i < $max; $i++)
+                            @for ($i = 0; $i < $galleryMax; $i++)
                                 @php $img = $gallery[$i] ?? null; @endphp
 
                                 @if($img)
