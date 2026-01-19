@@ -11,14 +11,10 @@ class StoreImage extends Model
         'sort_order',
         'type',
         'is_used_on_card',
-        'slide_updated_at',
-        'gallery_updated_at',
     ];
 
     protected $cast = [
         'is_used_on_card' => 'boolean',
-        'slide_updated_at' => 'datetime',
-        'gallery_updated_at' => 'datetime',
     ];
 
     public function store(){

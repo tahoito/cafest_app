@@ -67,7 +67,7 @@
                             @endfor
                         </div>
                     </div>
-                    <div class="mt-2 text-sm text-placeholder text-right">最終更新</div>
+                    <div class="mt-2 text-sm text-placeholder text-right">最終更新{{ optional($store->slide_updated_at)->format('n/j') }}</div>
                 </section>
 
                 <section class="px-4 space-y-3">
@@ -105,7 +105,7 @@
                             @endfor
                         </div>
                     </div>
-                    <div class="mt-2 text-sm text-placeholder text-right">最終更新</div>
+                    <div class="mt-2 text-sm text-placeholder text-right">最終更新{{ optional($store->gallery_updated_at)->format('n/j') }}</div>
                 </section>
             </div>
         </div>            

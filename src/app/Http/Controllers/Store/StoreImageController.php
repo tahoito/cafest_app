@@ -134,6 +134,7 @@ class StoreImageController extends Controller
     public function updateSlide(Request $request)
     {
         $storeId = auth('store')->id();
+        $store = auth('store')->user();
 
         $request->validate([
             'image_ids' => ['nullable', 'array'],
@@ -178,7 +179,9 @@ class StoreImageController extends Controller
             }
         });
 
-        $store->forceFill(['slide_updated_at' => now()])->save();
+        $store->update([
+            'slide_updated_at' => now(),
+        ]);
         return redirect()->route('store.image')->with('ok', 'saved');
     }
 
@@ -207,7 +210,7 @@ class StoreImageController extends Controller
             ->where('type', 'gallery')
             ->max('sort_order') ?? 0) + 1;
 
-        $path = $request->file('image')->store("stores/{$storeId}/slides", 'public');
+        $path = $request->file('image')->store("stores/{$storeId}/galleries", 'public');
 
         StoreImage::create([
             'store_id' => $storeId,
@@ -248,6 +251,7 @@ class StoreImageController extends Controller
     public function updateGallery(Request $request)
     {
         $storeId = auth('store')->id();
+        $store = auth('store')->user();
 
         $request->validate([
             'image_ids' => ['nullable', 'array'],
@@ -278,7 +282,10 @@ class StoreImageController extends Controller
             }
         });
 
-        $store->forceFill(['gallery_updated_at' => now()])->save();
+        $store->update([
+            'gallery_updated_at' => now()
+        ]);
+        
         return redirect()->route('store.image')->with('ok', 'saved');
     }
 }

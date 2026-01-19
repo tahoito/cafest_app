@@ -34,6 +34,8 @@ class Store extends Authenticatable
         'basic_updated_at',
         'description_updated_at',
         'contact_updated_at',
+        'slide_updated_at',
+        'gallery_updated_at',
     ];
 
     protected $hidden = [
@@ -47,6 +49,8 @@ class Store extends Authenticatable
         'basic_updated_at' => 'datetime',
         'description_updated_at' => 'datetime',
         'contact_updated_at' => 'datetime',
+        'slide_updated_at' => 'datetime',
+        'gallery_updated_at' => 'datetime',
     ];
 
     public function reviews()
