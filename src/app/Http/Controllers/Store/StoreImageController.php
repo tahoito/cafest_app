@@ -24,7 +24,7 @@ class StoreImageController extends Controller
     public function setCardImage(StoreImage $image) {
 
         $storeId = auth('store')->id();
-        
+
         \Log::debug('setCardImage', [
             'login_store_id' => $storeId,
             'image_id' => $image->id,
@@ -47,4 +47,17 @@ class StoreImageController extends Controller
 
         return back()->with('ok', 'updated');
     }
+
+    public function editSlide (Request $request) {
+        $store = $request->user('store');
+
+        return view('pages.store.image.edit-slide', compact('store'));
+    }
+
+    public function updateSlide (Request $request) {
+        $store = $request->user('store');
+
+        return redirect()->route('store.image')->with('status', 'スライド写真を更新しました');
+    }
+
 }
