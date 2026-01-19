@@ -24,6 +24,6 @@ class ReserveController extends Controller
         abort_unless($reservation->user_id === auth('user')->id(), 403);
         $reservation->update(['status' => 'canceled']);
 
-        return redirect()->route('user.reserve')->with('success', '予約をキャンセルしました');
+        return redirect()->route('user.reserve')->with('cancel_success', '予約をキャンセルしました');
     }
 }

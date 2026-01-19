@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\Store;
 use App\Models\Review;
+use App\Models\ReviewImage;
 use App\Services\StoreRecommendService;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -26,6 +27,16 @@ class StoreController extends Controller
             ->take(10)
             ->get();
 
+        $posts = ReviewImage::query()
+            ->whereHas('review', fn($q) => $q->where('store_id',$store->id))
+            ->orderByDesc('id')
+            ->take(3)
+            ->get()
+            ->map(fn($img) => (object)[
+                'review_id' => $img->review_id,
+                'image' => asset('storage/'.$img->path),
+            ]);
+        
         $store->load(['slideImages','galleryImages','hours','reviews'])
             ->loadAvg('reviews','rating')
             ->findOrFail($store->id);
@@ -37,6 +48,7 @@ class StoreController extends Controller
         return view('pages.user.stores.show', [
             'store' => $store,
             'reviews' => $reviews,
+            'posts' => $posts,
             'faved' => $faved,
         ]);
     }
@@ -112,7 +124,7 @@ class StoreController extends Controller
 
         return redirect()
             ->route('user.stores.show', $store->id)
-            ->with('success', '予約完了！');
+            ->with('reserve_success', '予約完了！');
     }
 
 }

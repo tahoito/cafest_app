@@ -16,7 +16,14 @@ class StorePostController extends Controller
 {
     public function index($storeId)
     {
+
         $store = Store::findOrFail($storeId);
+        $userId = auth('user')->id();
+
+        $faved = auth()->check()
+            ? auth()->user()->favorites()->where('store_id', $store->id)->exists()
+            : false;
+
 
         $posts = Review::with(['user','images'])
             ->where('store_id',$storeId)
@@ -26,7 +33,8 @@ class StorePostController extends Controller
             ->flatMap(function ($review) {
                 return $review->images->map(function ($image) use ($review){
                     return (object) [
-                        'id' => $image->id,
+                        'review_id' => $review->id,
+                        'image_id' => $image->id,
                         'image' => asset('storage/' . $image->path),
                         'created_at' => $review->created_at,
                         'user' => (object)[
@@ -37,7 +45,7 @@ class StorePostController extends Controller
                 });
             });
         
-        return view('pages.user.stores.posts', compact('store', 'posts'));
+        return view('pages.user.stores.posts', compact('store', 'posts','faved'));
     
     }
 

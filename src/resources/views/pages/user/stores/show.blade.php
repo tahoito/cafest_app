@@ -23,12 +23,20 @@
               <x-icons.share class="w-8 h-8" />
               </button>
 
-              <button 
-                type="button"
-                class="h-8 w-8 grid place-items-center text-main" 
-                aria-label="お気に入り">
-                <x-icons.heart class="w-8 h-8 text-main transition duration-200" />
-              </button> 
+              <div x-data="favoriteFolderModal({{ (int) data_get($store,'id') }}, @js($faved))">
+                <button
+                  type="button"
+                  class="h-8 w-8 grid place-items-center text-main"
+                  aria-label="お気に入り"
+                  @click.prevent.stop="toggleAndOpen()"
+                >
+                  <x-icons.heart
+                    class="w-8 h-8 text-main transition duration-200"
+                    x-bind:class="on ? 'fill-main text-main scale-110' : 'fill-transparent text-main scale-100'"
+                  />
+                </button>
+                <x-ui.modal.favorite :store="$store" />
+            </div>
           </div>
         </div>
       </div>
@@ -167,12 +175,16 @@
               </a>
           </div>
           <div class="flex flex-nowrap gap-3 overflow-x-auto pb-4 px-2">
-              @foreach($reviews as $review)
+              @forelse($reviews as $review)
                   <x-ui.card.user.review
                       :review="$review" 
                       variant="mini" 
-                      class="shrink-0" />
-              @endforeach
+                      class="shrink-0 cursor-pointer" />
+                  @empty
+                  <div class="col-span-3 text-center text-placeholder py-10">
+                    まだレビューがありません
+                  </div>
+              @endforelse
           </div>
 
           <div class="flex items-center justify-between pt-2">
@@ -185,24 +197,29 @@
 
           </div>
           <div class="grid grid-cols-3 gap-3">
-              <div class="aspect-square overflow-hidden rounded-lg bg-base">
-                  <img src="/images/store/image_example.png" class="w-full h-full object-cover">
-              </div>
-
-              <div class="aspect-square overflow-hidden rounded-lg bg-base">
-                  <img src="/images/store/image_example.png" class="w-full h-full object-cover">
-              </div>
-
-              <div class="aspect-square overflow-hidden rounded-lg bg-base">
-                  <img src="/images/store/image_example.png" class="w-full h-full object-cover">
-              </div>
+              @forelse($posts as $post)
+                <button type="button" class="aspect-square overflow-hidden rounded-lg bg-base"
+                  @click='window.dispatchEvent(new CustomEvent("review:open",{
+                    detail: {
+                        reviewId: {{ $post->review_id }},
+                        endpoint: "{{ route('user.stores.reviews.show', ['store' => $store->id, 'review' => $post->review_id]) }}?format=json"
+                    }
+                  }))'
+                >
+                  <img src="{{ $post->image }}" alt="review image" class="w-full h-full object-cover" loading="lazy">
+                </button>
+              @empty
+                <div class="col-span-3 text-center text-placeholder py-10">
+                  まだレビュー写真がありません
+                </div>
+              @endforelse
           </div>
 
           <div class="flex justify-center pt-4">
-            <a href="{{ route('user.stores.reviews.create', $store) }}">
-                <x-ui.button variant="secondary" class="text-form">
-                    レビューを投稿する
-                </x-ui.button>
+            <a href="{{ route('user.stores.reviews.create', ['store' => $store->id]) }}">
+              <x-ui.button variant="secondary" class="text-form">
+                  レビューを投稿する
+              </x-ui.button>
             </a>
           </div>
       </section>
