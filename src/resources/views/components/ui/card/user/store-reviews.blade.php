@@ -16,7 +16,7 @@
     if (is_string($userIconPath) && str_starts_with($userIconPath, 'http')) {
       $userIconUrl = $userIconPath;
     } else {
-      $userIconUrl = asset('storage/' . ltrim($userIconPath, '/'));
+      $userIconUrl = asset(ltrim($userIconPath, '/'));
     }
   }
 
@@ -83,7 +83,7 @@
         </div>
 
         <div class="min-w-0">
-          <div class="text-text text-base font-semibold truncate">
+          <div class="text-text_color text-base font-semibold truncate">
             {{ $userName }}
           </div>
           @if($userHandle)
@@ -103,7 +103,7 @@
 
     {{-- 2段目：店舗名 + 星 --}}
     <div class="mt-3 flex items-center justify-between gap-3">
-      <div class="text-text text-base font-medium truncate">
+      <div class="text-text_color text-base font-medium truncate">
         {{ $storeName }}
       </div>
 
@@ -114,7 +114,7 @@
       </div>
     </div>
 
-    <div class="mt-2 text-text text-[15px] leading-snug line-clamp-2">
+    <div class="mt-2 text-text_color text-[15px] leading-snug line-clamp-2">
       {{ $body }}
     </div>
 
