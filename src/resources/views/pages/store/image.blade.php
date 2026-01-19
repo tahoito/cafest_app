@@ -31,10 +31,10 @@
                     @endphp
                     <div class="flex items-center justify-between">
                         <div>
-                            <div class="text-lg text-text_color">スライド画像（5枚まで）</div>
+                            <div class="text-lg text-text_color">スライド写真（5枚まで）</div>
                             <div class="mt-1 text-sm text-text_color">店舗のトップに表示されます</div>
                         </div>
-                        <a href="#"
+                        <a href="{{ route('store.image.edit.slide') }}"
                             class="mt-10 flex items-center gap-1 text-sm text-text_color hover:opacity-80">
                         <x-icons.edit class="w-[15px] h-[15px] text-text_color"/>編集</a>
                     </div>
