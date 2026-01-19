@@ -90,7 +90,7 @@
             >
               @foreach($store->slideImages as $img)
                 <div class="w-full h-full flex-shrink-0">
-                  <img src="{{ $img->path }}" class="w-full h-full object-cover object-cover rounded-[8px]" />
+                  <img src="{{ $img->url }}" class="w-full h-full object-cover object-cover rounded-[8px]" />
                 </div>
               @endforeach
             </div>
@@ -151,7 +151,7 @@
           <div class="grid grid-cols-3 gap-3">
               @foreach($store->galleryImages as $img)
               <div class="aspect-square overflow-hidden rounded-lg bg-base">
-                  <img src="{{ $img->path }}" class="w-full h-full object-cover">
+                  <img src="{{ $img->url }}" class="w-full h-full object-cover">
               </div>
               @endforeach
           </div>
@@ -167,7 +167,8 @@
 
       <section class="px-4 space-y-2 pb-12">
           <div class="flex items-center justify-between">
-              <div class="text-lg text-text_color font-medium">みんなのレビュー(100件)</div>
+              <div class="text-lg text-text_color font-medium">みんなのレビュー({{ $reviewCount }}件)
+              </div>
 
               <a href="{{ route('user.stores.reviews', data_get($store,'id')) }}"
               class="text-sm text-main hover:text-text_color">
@@ -175,16 +176,27 @@
               </a>
           </div>
           <div class="flex flex-nowrap gap-3 overflow-x-auto pb-4 px-2">
-              @forelse($reviews as $review)
-                  <x-ui.card.user.review
-                      :review="$review" 
-                      variant="mini" 
-                      class="shrink-0 cursor-pointer" />
-                  @empty
-                  <div class="col-span-3 text-center text-placeholder py-10">
-                    まだレビューがありません
-                  </div>
-              @endforelse
+            @forelse($reviews as $review)
+              @php
+                $payload = [
+                  'reviewId' => (int) $review->id,
+                  'endpoint' => route('user.stores.reviews.show', [
+                    'store' => $store->id,
+                    'review' => $review->id,
+                  ]) . '?format=json',
+                ];
+              @endphp
+
+              <button type="button" class="shrink-0 cursor-pointer"
+                @click.prevent.stop="window.dispatchEvent(new CustomEvent('review:open',{ detail: @js($payload) }))"
+              >
+                <x-ui.card.user.review :review="$review" variant="mini" />
+              </button>
+            @empty
+              <div class="col-span-3 text-center text-placeholder py-10">
+                まだレビューがありません
+              </div>
+            @endforelse
           </div>
 
           <div class="flex items-center justify-between pt-2">
@@ -198,13 +210,17 @@
           </div>
           <div class="grid grid-cols-3 gap-3">
               @forelse($posts as $post)
+                @php
+                  $payload = [
+                    'reviewId' => (int) $post->review_id,
+                    'endpoint' => route('user.stores.reviews.show', [
+                      'store' => $store->id,
+                      'review' => $post->review_id,
+                    ]) . '?format=json',
+                  ];
+                @endphp
                 <button type="button" class="aspect-square overflow-hidden rounded-lg bg-base"
-                  @click='window.dispatchEvent(new CustomEvent("review:open",{
-                    detail: {
-                        reviewId: {{ $post->review_id }},
-                        endpoint: "{{ route('user.stores.reviews.show', ['store' => $store->id, 'review' => $post->review_id]) }}?format=json"
-                    }
-                  }))'
+                  @click.prevent.stop="window.dispatchEvent(new CustomEvent('review:open',{ detail: @js($payload) }))"
                 >
                   <img src="{{ $post->image }}" alt="review image" class="w-full h-full object-cover" loading="lazy">
                 </button>

@@ -37,8 +37,8 @@ Route::prefix('user')->name('user.')->group(function () {
     Route::get('/signup', [UserAuth::class, 'showSignup'])->name('signup');
     Route::post('/signup', [UserAuth::class, 'signup'])->name('signup.store');
 
-    Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
-    Route::post('/settings', [SettingsController::class, 'store'])->name('settings.store');
+    Route::get('/settings', [UserSettingsController::class, 'index'])->name('settings');
+    Route::post('/settings', [UserSettingsController::class, 'store'])->name('settings.store');
 
     Route::middleware('auth:user')->group(function () {
         Route::get('/top',[TopController::class, 'index'])->name('top');
@@ -63,11 +63,9 @@ Route::prefix('user')->name('user.')->group(function () {
 
         Route::post('/stores/{store}/favorite', [FavoriteController::class, 'toggle'])->name('stores.favorite.toggle');
         Route::get('/stores/{store}/favorite/folders', [FavoriteFolderController::class, 'index'])->name('stores.favorite.folders.index');
-        Route::post('/stores/{store}/favorite/folders', [FavoriteFolderController::class, 'sync'])->name('stores.favorite.folders.sync');
-        Route::post('/favorite-folders', [FavoriteFolderController::class, 'store'])->name('favorite-folders.store');
-        Route::delete('/favorite-folders/{favoriteFolder}', [FavoriteFolderController::class, 'destroy'])->name('favorite-folders.destroy');
-
-        Route::get('/mycafe',[MyCafeController::class,'index'])->name('mycafe');
+        Route::post('/stores/{store}/favorite/folders', [FavoriteFolderController::class, 'sync'])->name('stores.favorite.folders.sync');  
+        
+        Route::post('/mycafe',[MyCafeController::class,'index'])->name('mycafe');
     });
 });
 

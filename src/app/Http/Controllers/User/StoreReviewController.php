@@ -18,27 +18,19 @@ class StoreReviewController extends Controller
     public function index(Store $store)
     {
         $storeId = $store->id;
+        $userId = auth('user')->id();
 
-        $reviews = collect(range(1, 12))->map(function ($i) use ($storeId){
-            return (object) [
-                'id' => $i,
-                'user' => (object)[
-                    'name' => "User {$i}",
-                    'avatar' => '/images/user/avatar.png',
-                ],
-                'store_id' => $storeId,
-                'store' => (object)['id' => $storeId, 'name' => 'ダミー店舗'],
-                'rating' => rand(30, 50) / 10, // 3.0〜5.0
-                'body' => "雰囲気よかった！作業しやすいしまた行きたい {$i}",
-                'created_at' => now()->subDays($i),
-                'images' => [
-                    '/images/store/image_example.png',
-                    '/images/store/image_example.png',
-                ],
-            ];
-        });
+        $reviews = Review::with(['user','store'])
+            ->where('store_id',$store->id)
+            ->latest()
+            ->get();
 
-        return view('pages.user.stores.reviews', compact('store', 'reviews'));
+        $faved = auth()->check()
+            ? auth()->user()->favorites()->where('store_id', $store->id)->exists()
+            : false;
+
+
+        return view('pages.user.stores.reviews', compact('store', 'reviews','faved'));
     }
 
     public function show(Store $store, Review $review)
@@ -47,7 +39,6 @@ class StoreReviewController extends Controller
 
         if (request()->query('format') === 'json') {
 
-            // tags
             $tags = [];
             try {
                 if (method_exists($review, 'tags')) {

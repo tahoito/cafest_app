@@ -1,97 +1,122 @@
 @props([
   'review',
   'href' => null,
-  'variant' => 'compact', 
+  'variant' => 'compact', // mini | compact
 ])
 
 @php
-  $userName = data_get($review, 'user.name', data_get($review, 'username', ''));
-  $userIcon = data_get($review, 'user.icon_path', data_get($review, 'icon_path', null));
+  // user
+  $userName = (string) data_get($review, 'user.name', data_get($review, 'username', ''));
+  $userHandle = (string) data_get($review, 'user.handle', '');
 
-  $shop     = data_get($review, 'shop', data_get($review, 'store', null));
-  $shopId   = data_get($shop, 'id', data_get($review, 'shop_id', null));
-  $shopName = data_get($shop, 'name', data_get($review, 'shop_name', ''));
+  // user icon (storage / absolute url 対応)
+  $userIconPath = data_get($review,'user.icon_path', data_get($review,'icon_path', null));
+  $userIconUrl = null;
+  if ($userIconPath) {
+    if (is_string($userIconPath) && str_starts_with($userIconPath, 'http')) {
+      $userIconUrl = $userIconPath;
+    } else {
+      $userIconUrl = asset(ltrim($userIconPath, '/'));
+    }
+  }
 
-  $rating = (float) data_get($review, 'reviews_avg_rating', 0);
+  // store (review->store をwithしてる想定)
+  $store     = data_get($review, 'store', data_get($review, 'shop', null));
+  $storeId   = data_get($store, 'id', data_get($review, 'store_id', data_get($review, 'shop_id', null)));
+  $storeName = (string) data_get($store, 'name', data_get($review, 'store_name', data_get($review, 'shop_name', '')));
+
+  // rating/body/date
+  $rating = (float) data_get($review, 'rating', 0);
   $body   = (string) data_get($review, 'body', data_get($review, 'comment', ''));
 
   $date = data_get($review, 'created_at', data_get($review, 'date', null));
-  $link = $href ?? ($shopId ? url("/stores/{$shopId}") : '#');
-
-  $base = "rounded-lg bg-form ring-1 ring-black/5 shadow-[0_1px_4px_rgba(0,0,0,0.20)]";
-
-  $size = match ($variant) {
-    'mini'    => "inline-block w-[167px]",   // ←ここでカード幅を固定
-    'grid'    => "block w-full",
-    'compact' => "block w-full",
-    default   => "block w-full",
-  };
-
-    $wrap = match ($variant) {
-    'mini'    => "p-2 space-y-1",
-    'grid'    => "p-2 space-y-2",
-    'compact' => "p-2 space-y-1.5",
-    default   => "p-4 space-y-3",
-  };
-
-  $avatarSize = match ($variant) {
-    'mini'    => "w-7 h-7",
-    'compact' => "w-8 h-8",
-    default   => "w-11 h-11",
-  };
-
   $dateText = '';
   if ($date) {
-      try {
-          $dateText = is_string($date) ? $date : $date->format('Y/m/d');
-      } catch (\Throwable $e) {
-          $dateText = (string) $date;
-      }
+    try {
+      $dateText = is_string($date) ? $date : $date->format('Y/m/d');
+    } catch (\Throwable $e) {
+      $dateText = (string) $date;
+    }
   }
 
-  $stars = max(0, min(5, (int) round($rating)));
+  $stars = max(0, min(5, (int) floor($rating + 0.00001)));
+  $endpoint = null;
+  if ($storeId && data_get($review,'id')) {
+    $endpoint = route('user.stores.reviews.show', [
+      'store' => $storeId,
+      'review' => data_get($review,'id'),
+    ]) . '?format=json';
+  }
+  $link = $href ?? '#';
+  $avatarSize = match ($variant) {
+    'mini'  => "w-9 h-9",
+    default => "w-11 h-11",
+  };
 @endphp
 
-<a href="{{ $link }}" class="{{ $base }} {{ $size }}" {{ $attributes }}>
-  <div class="{{ $wrap }}">
+<button
+  type="button"
+  @if($endpoint)
+    @click.prevent.stop='window.dispatchEvent(new CustomEvent("review:open",{
+      detail: { reviewId: {{ (int) data_get($review,"id") }}, endpoint: "{{ $endpoint }}" }
+    }))'
+  @else
+    disabled
+  @endif
+  {{ $attributes->merge([
+    'class' =>
+      'block w-[353px] h-[196px]
+       rounded-xl bg-form
+       ring-1 ring-black/5
+       shadow-[0_2px_10px_rgba(0,0,0,0.12)]
+       text-left'
+  ]) }}
+>
+  <div class="h-full px-5 py-4 flex flex-col">
 
     <div class="flex items-start justify-between gap-3">
       <div class="flex items-center gap-3 min-w-0">
         <div class="{{ $avatarSize }} rounded-full bg-base overflow-hidden shrink-0">
-          @if($userIcon)
-            <img src="{{ asset($userIcon) }}" class="w-full h-full object-cover" alt="">
+          @if($userIconUrl)
+            <img src="{{ $userIconUrl }}" class="w-full h-full object-cover" alt="">
           @endif
         </div>
 
         <div class="min-w-0">
-          <div class="text-text_color text-sm font-semibold truncate">{{ $userName }}</div>
+          <div class="text-text_color text-base font-semibold truncate">
+            {{ $userName }}
+          </div>
+          @if($userHandle)
+            <div class="text-placeholder text-xs truncate">
+              {{ '@' . $userHandle }}
+            </div>
+          @endif
         </div>
       </div>
 
       @if($dateText !== '')
-        <div class="text-placeholder text-xs shrink-0">{{ $dateText }}</div>
+        <div class="text-placeholder text-xs shrink-0 pt-1">
+          {{ $dateText }}
+        </div>
       @endif
     </div>
 
-    <div class="flex items-center justify-between gap-3">
-      <div class="text-text_color text-sm font-medium truncate">
-        {{ $shopName }}
+    {{-- 2段目：店舗名 + 星 --}}
+    <div class="mt-3 flex items-center justify-between gap-3">
+      <div class="text-text_color text-base font-medium truncate">
+        {{ $storeName }}
       </div>
 
-      <div class="shrink-0">
-        <div class="flex w-[48px] h-[9px] items-center justify-between">
-          @for ($i = 1; $i <= 5; $i++)
-            <x-icons.star
-              class="h-[9px] w-[9px] {{ $i <= $stars ? 'text-star' : 'text-placeholder' }}"
-            />
-          @endfor
-        </div>
+      <div class="flex items-center gap-[2px] shrink-0">
+        @for ($i = 1; $i <= 5; $i++)
+          <x-icons.star class="h-3 w-3 {{ $i <= $stars ? 'text-star' : 'text-placeholder' }}" />
+        @endfor
       </div>
     </div>
 
-    <div class="text-text_color text-[13px] leading-snug line-clamp-2">
+    <div class="mt-2 text-text_color text-[15px] leading-snug line-clamp-2">
       {{ $body }}
     </div>
 
   </div>
-</a>
+</button>
