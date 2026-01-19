@@ -22,7 +22,7 @@ use App\Http\Controllers\User\StoreController as UserStoreController;
 use App\Http\Controllers\Store\StoreController as StoreStoreController;
 use App\Http\Controllers\Store\StoreProfileController;
 use App\Http\Controllers\Store\StoreImageController;
-
+use App\Http\Controllers\Store\StoreReviewsController;
 
 Route::view('/', 'welcome')->name('welcome');
 
@@ -103,6 +103,8 @@ Route::prefix('store')->name('store.')->group(function () {
         Route::patch('/image/edit/gallery',[StoreImageController::class,'updateGallery'])->name('image.update.gallery');
         Route::post('/image/edit/gallery', [StoreImageController::class, 'uploadGallery'])->name('image.gallery.upload');
         Route::delete('/image/edit/gallery', [StoreImageController::class, 'deleteGallery'])->name('image.gallery.delete');
+
+        Route::get('/reviews', [StoreReviewsController::class,'index'])->name('reviews');
     });
 });
 
