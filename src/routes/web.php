@@ -98,6 +98,8 @@ Route::prefix('store')->name('store.')->group(function () {
         Route::patch('/store/images/{image}/card', [StoreImageController::class, 'setCardImage'])->name('slide.card');
         Route::get('/image/edit/slide',[StoreImageController::class,'editSlide'])->name('image.edit.slide');
         Route::patch('/image/edit/slide',[StoreImageController::class,'updateSlide'])->name('image.update.slide');
+        Route::delete('/image/edit/slide', [StoreImageController::class, 'deleteSlide'])->name('image.slide.delete');
+
     });
 });
 

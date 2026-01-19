@@ -50,6 +50,7 @@ class StoreImageController extends Controller
 
     public function editSlide (Request $request) {
         $store = $request->user('store');
+        $store->load(['slideImages']);
 
         return view('pages.store.image.edit-slide', compact('store'));
     }
@@ -60,4 +61,36 @@ class StoreImageController extends Controller
         return redirect()->route('store.image')->with('status', 'スライド写真を更新しました');
     }
 
+    public function deleteSlide(Request $request) 
+    {
+        $storeId = auth('store')->id();
+
+        $request->validate([
+            'image_id' => ['required', 'integer'],
+        ]);
+
+        DB::transaction(function () use ($storeId, $request) {
+            $image = StoreImage::where('id', $request->image_id)
+                ->where('store_id', $storeId)
+                ->where('type', 'slide')
+                ->firstOrFail();
+
+            $wasCard = (bool) $image->is_used_on_card;
+
+            $image->delete();
+
+            if ($wasCard) {
+                $next = StoreImage::where('store_id', $storeId)
+                    ->where('type', 'slide')
+                    ->orderBy('sort_order')
+                    ->first();
+
+                if ($next) {
+                    $next->update(['is_used_on_card' => true]);
+                }
+            }
+        });
+
+        return back()->with('ok', 'deleted');
+    }
 }
