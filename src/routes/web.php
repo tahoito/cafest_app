@@ -63,7 +63,9 @@ Route::prefix('user')->name('user.')->group(function () {
 
         Route::post('/stores/{store}/favorite', [FavoriteController::class, 'toggle'])->name('stores.favorite.toggle');
         Route::get('/stores/{store}/favorite/folders', [FavoriteFolderController::class, 'index'])->name('stores.favorite.folders.index');
-        Route::post('/stores/{store}/favorite/folders', [FavoriteFolderController::class, 'sync'])->name('stores.favorite.folders.sync');       
+        Route::post('/stores/{store}/favorite/folders', [FavoriteFolderController::class, 'sync'])->name('stores.favorite.folders.sync');  
+        
+        Route::post('/mycafe',[MyCafeController::class,'index'])->name('mycafe');
     });
 });
 

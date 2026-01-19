@@ -5,39 +5,31 @@
 ])
 
 @php
+  // user
   $userName = (string) data_get($review, 'user.name', data_get($review, 'username', ''));
-  $userIcon = data_get($review, 'user.icon_path', data_get($review, 'icon_path', null));
+  $userHandle = (string) data_get($review, 'user.handle', '');
 
-  $shop     = data_get($review, 'shop', data_get($review, 'store', null));
-  $shopId   = data_get($shop, 'id', data_get($review, 'shop_id', null));
-  $shopName = (string) data_get($shop, 'name', data_get($review, 'shop_name', ''));
+  // user icon (storage / absolute url 対応)
+  $userIconPath = data_get($review,'user.icon_path', data_get($review,'icon_path', null));
+  $userIconUrl = null;
+  if ($userIconPath) {
+    if (is_string($userIconPath) && str_starts_with($userIconPath, 'http')) {
+      $userIconUrl = $userIconPath;
+    } else {
+      $userIconUrl = asset('storage/' . ltrim($userIconPath, '/'));
+    }
+  }
 
-  $rating = (float) data_get($review, 'reviews_avg_rating', data_get($review, 'rating', 0));
+  // store (review->store をwithしてる想定)
+  $store     = data_get($review, 'store', data_get($review, 'shop', null));
+  $storeId   = data_get($store, 'id', data_get($review, 'store_id', data_get($review, 'shop_id', null)));
+  $storeName = (string) data_get($store, 'name', data_get($review, 'store_name', data_get($review, 'shop_name', '')));
+
+  // rating/body/date
+  $rating = (float) data_get($review, 'rating', 0);
   $body   = (string) data_get($review, 'body', data_get($review, 'comment', ''));
 
   $date = data_get($review, 'created_at', data_get($review, 'date', null));
-  $link = $href ?? ($shopId ? url("/stores/{$shopId}") : '#');
-
-  // card
-  $base = "rounded-xl bg-form ring-1 ring-black/5 shadow-[0_2px_10px_rgba(0,0,0,0.12)]";
-
-  // サイズ：一覧(=compact)は高さ固定しない。miniだけ固定。
-  $size = match ($variant) {
-    'mini'  => "inline-block w-full h-[196px]",
-    default => "block w-full",
-  };
-
-  // 余白：スクショ寄せで少し横を広め
-  $wrap = match ($variant) {
-    'mini'  => "px-4 py-3",
-    default => "px-5 py-4",
-  };
-
-  $avatarSize = match ($variant) {
-    'mini'  => "w-9 h-9",
-    default => "w-11 h-11",
-  };
-
   $dateText = '';
   if ($date) {
     try {
@@ -47,18 +39,45 @@
     }
   }
 
-  // 星は「丸め」より「切り捨て」の方が見た目が安定する（好みでroundでもOK）
+  // stars
   $stars = max(0, min(5, (int) floor($rating + 0.00001)));
+
+  // モーダル用 endpoint（JSON返す show を使う）
+  // ※ ルート名が違う場合はここだけ変更すればOK
+  $endpoint = null;
+  if ($storeId && data_get($review,'id')) {
+    $endpoint = route('user.stores.reviews.show', [
+      'store' => $storeId,
+      'review' => data_get($review,'id'),
+    ]) . '?format=json';
+  }
+
+  // もし普通の遷移も残したいなら href を優先
+  $link = $href ?? '#';
+
+  // sizing
+  $avatarSize = match ($variant) {
+    'mini'  => "w-9 h-9",
+    default => "w-11 h-11",
+  };
 @endphp
 
-<a
-  href="{{ $link }}"
+<button
+  type="button"
+  @if($endpoint)
+    @click.prevent.stop='window.dispatchEvent(new CustomEvent("review:open",{
+      detail: { reviewId: {{ (int) data_get($review,"id") }}, endpoint: "{{ $endpoint }}" }
+    }))'
+  @else
+    disabled
+  @endif
   {{ $attributes->merge([
     'class' =>
       'block w-[353px] h-[196px]
        rounded-xl bg-form
        ring-1 ring-black/5
-       shadow-[0_2px_10px_rgba(0,0,0,0.12)]'
+       shadow-[0_2px_10px_rgba(0,0,0,0.12)]
+       text-left'
   ]) }}
 >
   <div class="h-full px-5 py-4 flex flex-col">
@@ -67,8 +86,8 @@
     <div class="flex items-start justify-between gap-3">
       <div class="flex items-center gap-3 min-w-0">
         <div class="{{ $avatarSize }} rounded-full bg-base overflow-hidden shrink-0">
-          @if($userIcon)
-            <img src="{{ asset($userIcon) }}" class="w-full h-full object-cover" alt="">
+          @if($userIconUrl)
+            <img src="{{ $userIconUrl }}" class="w-full h-full object-cover" alt="">
           @endif
         </div>
 
@@ -76,6 +95,11 @@
           <div class="text-text text-base font-semibold truncate">
             {{ $userName }}
           </div>
+          @if($userHandle)
+            <div class="text-placeholder text-xs truncate">
+              {{ '@' . $userHandle }}
+            </div>
+          @endif
         </div>
       </div>
 
@@ -89,7 +113,7 @@
     {{-- 2段目：店舗名 + 星 --}}
     <div class="mt-3 flex items-center justify-between gap-3">
       <div class="text-text text-base font-medium truncate">
-        {{ $shopName }}
+        {{ $storeName }}
       </div>
 
       <div class="flex items-center gap-[2px] shrink-0">
@@ -99,11 +123,9 @@
       </div>
     </div>
 
-    {{-- 本文：残り高さを使う --}}
     <div class="mt-2 text-text text-[15px] leading-snug line-clamp-2">
       {{ $body }}
     </div>
 
   </div>
-</a>
-
+</button>
