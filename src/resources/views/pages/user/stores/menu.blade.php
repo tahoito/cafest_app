@@ -17,27 +17,15 @@
             </div>
 
             <div class="flex items-center gap-1.5">
-              <button type="button" class="h-8 w-8 grid place-items-center text-text_color" aria-label="共有">
-              <x-icons.share class="w-8 h-8" />
-              </button>
-
-              <div x-data="favoriteFolderModal({{ (int) data_get($store,'id') }}, @js($faved))">
-                <button
-                  type="button"
-                  class="h-8 w-8 grid place-items-center text-main"
-                  aria-label="お気に入り"
-                  @click.prevent.stop="toggleAndOpen()"
-                >
-                  <x-icons.heart
-                    class="w-8 h-8 text-main transition duration-200"
-                    x-bind:class="on ? 'fill-main text-main scale-110' : 'fill-transparent text-main scale-100'"
-                  />
+                <button type="button" class="h-8 w-8 grid place-items-center text-text_color" aria-label="共有">
+                <x-icons.share class="w-8 h-8" />
                 </button>
-                <x-ui.modal.favorite :store="$store" />
+
+                <button type="button" class="h-8 w-8 grid place-items-center text-main" aria-label="お気に入り">
+                <x-icons.heart class="w-8 h-8" />
+                </button>
             </div>
-          </div>
         </div>
-      </div>
     </header>
 
     <div class="h-full overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
