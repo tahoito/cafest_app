@@ -1,11 +1,7 @@
 @props([
   'review',
   'href' => null,
-<<<<<<< HEAD
-  'variant' => 'compact', // mini | grid | compact
-=======
-  'variant' => 'compact', 
->>>>>>> main
+  'variant' => 'compact', // mini | compact
 ])
 
 @php
@@ -22,25 +18,24 @@
   $date = data_get($review, 'created_at', data_get($review, 'date', null));
   $link = $href ?? ($shopId ? url("/stores/{$shopId}") : '#');
 
-  // スクショ寄せ：角丸 + 影 + 枠
+  // card
   $base = "rounded-xl bg-form ring-1 ring-black/5 shadow-[0_2px_10px_rgba(0,0,0,0.12)]";
 
-  // 一覧は基本 full 幅でOK
+  // サイズ：一覧(=compact)は高さ固定しない。miniだけ固定。
   $size = match ($variant) {
-    'mini'    => "inline-block h-[196px]",
-    default   => "block w-full",
+    'mini'  => "inline-block w-full h-[196px]",
+    default => "block w-full",
   };
 
-  // スクショ寄せ：余白は p-4
+  // 余白：スクショ寄せで少し横を広め
   $wrap = match ($variant) {
-    'mini'    => "p-3 space-y-2",
-    default   => "p-4 space-y-3",
+    'mini'  => "px-4 py-3",
+    default => "px-5 py-4",
   };
 
-  // スクショ寄せ：アバターは大きめ
   $avatarSize = match ($variant) {
-    'mini'    => "w-8 h-8",
-    default   => "w-11 h-11",
+    'mini'  => "w-9 h-9",
+    default => "w-11 h-11",
   };
 
   $dateText = '';
@@ -52,18 +47,23 @@
     }
   }
 
-  $stars = max(0, min(5, (int) round($rating)));
+  // 星は「丸め」より「切り捨て」の方が見た目が安定する（好みでroundでもOK）
+  $stars = max(0, min(5, (int) floor($rating + 0.00001)));
 @endphp
 
 <a
   href="{{ $link }}"
-  class="{{ $base }} {{ $size }} h-[196px]"
-  {{ $attributes }}
+  {{ $attributes->merge([
+    'class' =>
+      'block w-[353px] h-[196px]
+       rounded-xl bg-form
+       ring-1 ring-black/5
+       shadow-[0_2px_10px_rgba(0,0,0,0.12)]'
+  ]) }}
 >
+  <div class="h-full px-5 py-4 flex flex-col">
 
-  <div class="{{ $wrap }}">
-
-    {{-- 上段：ユーザー + 日付 --}}
+    {{-- 1段目：ユーザー + 日付 --}}
     <div class="flex items-start justify-between gap-3">
       <div class="flex items-center gap-3 min-w-0">
         <div class="{{ $avatarSize }} rounded-full bg-base overflow-hidden shrink-0">
@@ -73,40 +73,37 @@
         </div>
 
         <div class="min-w-0">
-          <div class="text-text_color text-base font-semibold truncate">
+          <div class="text-text text-base font-semibold truncate">
             {{ $userName }}
           </div>
         </div>
       </div>
 
       @if($dateText !== '')
-        <div class="text-placeholder text-sm shrink-0">
+        <div class="text-placeholder text-xs shrink-0 pt-1">
           {{ $dateText }}
         </div>
       @endif
     </div>
 
-    {{-- 中段：店舗名 + 星 --}}
-    <div class="flex items-center justify-between gap-3">
-      <div class="text-text_color text-base font-medium truncate">
+    {{-- 2段目：店舗名 + 星 --}}
+    <div class="mt-3 flex items-center justify-between gap-3">
+      <div class="text-text text-base font-medium truncate">
         {{ $shopName }}
       </div>
 
-      <div class="shrink-0">
-        <div class="flex w-[72px] h-[12px] items-center justify-between">
-          @for ($i = 1; $i <= 5; $i++)
-            <x-icons.star
-              class="h-[12px] w-[12px] {{ $i <= $stars ? 'text-star' : 'text-placeholder' }}"
-            />
-          @endfor
-        </div>
+      <div class="flex items-center gap-[2px] shrink-0">
+        @for ($i = 1; $i <= 5; $i++)
+          <x-icons.star class="h-3 w-3 {{ $i <= $stars ? 'text-star' : 'text-placeholder' }}" />
+        @endfor
       </div>
     </div>
 
-    {{-- 本文 --}}
-    <div class="text-text_color text-[15px] leading-snug line-clamp-3">
+    {{-- 本文：残り高さを使う --}}
+    <div class="mt-2 text-text text-[15px] leading-snug line-clamp-2">
       {{ $body }}
     </div>
 
   </div>
 </a>
+

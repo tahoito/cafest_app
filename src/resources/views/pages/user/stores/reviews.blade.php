@@ -18,19 +18,22 @@
                 <h1 class="text-center text-text_color text-2xl whitespace-nowrap overflow-hidden text-ellipsis">
                     レビュー一覧
                 </h1>
+                <button type="button" class="h-8 w-8 grid place-items-center text-main" aria-label="お気に入り">
+                <x-icons.heart class="w-8 h-8" />
+                </button>
                 </div>
             </div>
         </header>
 
-        <div class="h-full overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
-    <div class="w-full max-w-md mx-auto pt-4 space-y-5 pb-24">
-        <section class="px-4">
-        @foreach($reviews as $review)
-          <x-ui.card.user.store-reviews :review="$review" variant="compact" />
-        @endforeach
-        </section>
-    </div>
-</div>
+      <div class="h-full overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
+          <section class="px-4 flex flex-col space-y-[30px]">
+          @foreach($reviews as $review)
+            <x-ui.card.user.store-reviews :review="$review"/>
+          @endforeach
+          </section>
+        </div>
+      </div>
+
 
       <div class="flex justify-center pt-4">
         <a href="#">
