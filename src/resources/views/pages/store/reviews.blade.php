@@ -24,7 +24,6 @@
       </div>
     </header>
 
-    {{-- サマリー --}}
     <section class="px-4 pt-4">
       <div class="max-w-md mx-auto rounded-2xl bg-form p-4 shadow-[0_2px_10px_rgba(0,0,0,0.12)]">
         <div class="space-y-4">
@@ -33,11 +32,11 @@
 
             <div class="flex items-center gap-3">
               <div class="flex items-center gap-1">
-                <x-icons.star class="h-6 w-6" />
-                <x-icons.star class="h-6 w-6" />
-                <x-icons.star class="h-6 w-6" />
-                <x-icons.star class="h-6 w-6" />
-                <x-icons.star class="h-6 w-6" />
+                @php $avgStars = floor($avgRating); @endphp 
+
+                @for ($i = 1; $i <= 5; $i++)
+                  <x-icons.star class="h-6 w-6 {{ $i <= $avgStars ? 'text-star' : 'text-placeholder' }}" />
+                @endfor
               </div>
               <div class="text-text_color text-base">({{ number_format($avgRating, 1) }})</div>
             </div>
@@ -56,48 +55,43 @@
       </div>
     </section>
 
+@php 
+  $filters = [
+    'all' => 'すべて',
+    '5' => '5.0',
+    '4' => '4.0',
+    '3' => '3.0以下',
+    'with_photo' => '画像あり',
+    'no_photo' => '画像なし',
+  ];
+
+  // 選択中を先頭へ（all以外）
+  if ($filter !== 'all' && isset($filters[$filter])) {
+    $filters = [$filter => $filters[$filter]] + $filters;
+  }
+@endphp
+
     <section class="px-4 pt-[27px]">
-        <div class="max-w-md mx-auto">
-            <div class="flex flex-wrap gap-2">
-                <a href="{{ route('store.reviews', ['filter' => 'all']) }}">
-                    <x-ui.tag tone="main2" :active="$filter==='all'">すべて</x-ui.tag>
-                </a>
-
-                <a href="{{ route('store.reviews', ['filter' => '5']) }}">
-                    <x-ui.tag tone="main2" :active="$filter==='5'">
-                    <span class="inline-flex items-center gap-1">
-                        <x-icons.star class="h-4 w-4 text-star" />5.0
-                    </span>
-                    </x-ui.tag>
-                </a>
-
-                <a href="{{ route('store.reviews', ['filter' => '4']) }}">
-                    <x-ui.tag tone="main2" :active="$filter==='4'">
-                    <span class="inline-flex items-center gap-1">
-                        <x-icons.star class="h-4 w-4 text-star" />4.0
-                    </span>
-                    </x-ui.tag>
-                </a>
-
-                <a href="{{ route('store.reviews', ['filter' => '3']) }}">
-                    <x-ui.tag tone="main2" :active="$filter==='3'">
-                    <span class="inline-flex items-center gap-1">
-                        <x-icons.star class="h-4 w-4 text-star" />3.0以下
-                    </span>
-                    </x-ui.tag>
-                </a>
-
-                <a href="{{ route('store.reviews', ['filter' => 'with_photo']) }}">
-                    <x-ui.tag tone="main2" :active="$filter==='with_photo'">画像あり</x-ui.tag>
-                </a>
-
-                <a href="{{ route('store.reviews', ['filter' => 'no_photo']) }}">
-                    <x-ui.tag tone="main2" :active="$filter==='no_photo'">画像なし</x-ui.tag>
-                </a>
-            </div>
+      <div class="max-w-md mx-auto">
+        <div class="flex flex-wrap gap-2">
+          @foreach($filters as $key => $label)
+            <a href="{{ route('store.reviews', ['filter' => $key]) }}">
+              <x-ui.tag tone="main2" :active="$filter === $key">
+                @if(in_array($key, ['5','4','3'], true))
+                  <span class="inline-flex items-center gap-1">
+                    <x-icons.star class="h-4 w-4 {{ $filter === $key ? 'text-form' : 'text-star' }}" />
+                    {{ $label }}
+                  </span>
+                @else
+                  {{ $label }}
+                @endif
+              </x-ui.tag>
+            </a>
+          @endforeach
         </div>
+      </div>
     </section>
-    
+
 
     <section class="px-4 py-6">
       <div class="space-y-4 max-w-md mx-auto">
@@ -110,7 +104,6 @@
         @endforelse
       </div>
     </section>
-
   </div>
 </div>
 @endsection
