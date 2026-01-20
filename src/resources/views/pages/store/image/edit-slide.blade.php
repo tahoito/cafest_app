@@ -25,7 +25,16 @@
     </header>
 
     @php
+      use Illuminate\Support\Facades\Storage;
+
       $slides = $store->slideImages->take(5)->values();
+
+      $toPublicUrl = function ($path) {
+        if (!$path) return null;
+        if (str_starts_with($path, '/storage/')) return $path;
+        $path = preg_replace('#^storage/#', '', ltrim($path, '/'));
+        return Storage::url($path);
+      };
     @endphp
 
     <div class="flex-1 overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
@@ -49,7 +58,7 @@
                 <div class="relative">
                   <div class="overflow-hidden bg-base_color">
                     <img
-                      src="{{ asset(ltrim($img->path,'/')) }}"
+                      src="{{ $toPublicUrl($img->path) }}"
                       class="w-full aspect-[16/10] object-cover"
                       alt=""
                     >

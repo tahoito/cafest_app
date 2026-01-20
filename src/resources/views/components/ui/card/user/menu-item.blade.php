@@ -3,6 +3,9 @@
 ])
 
 @php
+  use Illuminate\Support\Facades\Storage;
+
+  $defaultCard = Storage::url('images/store/card.png');
   $name = (string) data_get($item, 'name', '');
   $price = data_get($item, 'price');
   $description = (string) data_get($item, 'description', '');
@@ -18,7 +21,7 @@
     <div class="shrink-0">
       <div class="h-[135px] w-[135px] overflow-hidden rounded-xl bg-base ring-1 ring-black/5">
         <img
-          src="{{ $imageUrl !== '' ? $imageUrl : asset('images/store/card.png') }}"
+          src="{{ $imageUrl !== '' ? $imageUrl : $defaultCard }}"
           alt=""
           class="h-full w-full object-cover"
           loading="lazy"

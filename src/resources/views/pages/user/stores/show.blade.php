@@ -90,7 +90,7 @@
             >
               @foreach($store->slideImages as $img)
                 <div class="w-full h-full flex-shrink-0">
-                  <img src="{{ $img->url }}" class="w-full h-full object-cover object-cover rounded-[8px]" />
+                  <img src="{{ $img->url }}" class="w-full h-full object-cover rounded-[8px]" />
                 </div>
               @endforeach
             </div>

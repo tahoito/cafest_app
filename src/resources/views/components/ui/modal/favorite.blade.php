@@ -1,9 +1,13 @@
 @props(['store'])
 
 @php
+  use Illuminate\Support\Facades\Storage;
   $storeId  = (int) data_get($store, 'id');
   $name     = data_get($store, 'name', 'No Name');
-  $imageUrl = data_get($store, 'image_url') ?: asset('images/store/card.png');
+  $defaultCard = Storage::url('images/store/card.png'); // ★ここ
+  $imageUrl = data_get($store, 'image_url')
+    ? Storage::url(data_get($store, 'image_url'))
+    : $defaultCard;
 @endphp
 
 <div x-data x-cloak {{ $attributes }}>
@@ -103,7 +107,7 @@
         {{-- folders list --}}
         <div
           class="bg-base_color px-5 pb-5 max-h-[60vh] overflow-y-auto"
-          x-data="favoriteFoldersUI({{ $storeId }}, @js(asset('images/store/card.png')))"
+          x-data="favoriteFoldersUI({{ $storeId }}, @js($defaultCard))"
           x-init="initWatch()">
           <div class="mt-3 flex items-center justify-between">
             <div class="text-text_color">コレクション</div>
