@@ -55,6 +55,23 @@
       </div>
     </section>
 
+    <section class="px-4 py-3">
+      <div class="max-w-md mx-auto flex justify-end">
+        <form method="GET" action="{{ route('store.reviews') }}">
+          <input type="hidden" name="filter" value="{{ $filter }}">
+
+          <label class="inline-flex items-center gap-2 rounded-full bg-form px-3 py-2 shadow-[0_2px_10px_rgba(0,0,0,0.12)] ring-1 ring-black/5">
+            <select name="sort" onchange="this.form.submit()" class="bg-transparent text-sm text-text_color focus:outline-none">
+              <option value="new" @selected($sort === 'new')>新しい順</option>
+              <option value="old" @selected($sort === 'old')>古い順</option>
+              <option value="high" @selected($sort === 'high')>評価が高い順</option>
+              <option value="low" @selected($sort === 'low')>評価が低い順</option>
+            </select>
+          </label>
+        </form>
+      </div>
+    </section>
+
 @php 
   $filters = [
     'all' => 'すべて',

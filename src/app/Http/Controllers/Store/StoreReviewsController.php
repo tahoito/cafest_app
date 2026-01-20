@@ -13,32 +13,34 @@ class StoreReviewsController extends Controller
 
         $store = auth('store')->user();
         $filter = (string) $request->query('filter','all');
+        $sort = (string)  $request->query('sort','new');
 
         $q = Review::query()
             ->where('store_id', $store->id)
             ->with(['user','images']);
 
-        switch ($filter) {
-            case '5':
-                $q->where('rating','>=',5.0);
-                break;
-            case '4':
-                $q->where('rating','>=',4.0)
-                    ->where('rating','<',5.0);
-                break;
-            case '3':
-                $q->where('rating','<=',3.0);
-                break;
-            case 'with_photo':
-                $q->whereHas('images');
-                break;
-            case 'no_photo':
-                $q->whereDoesntHave('images');
-                break;
-
-            default:
-                break;
+        if ($filter === '5') {
+            $q->where('rating', '>=', 5);
+        } elseif ($filter === '4') {
+            $q->where('rating', '>=', 4)->where('rating', '<', 5);
+        } elseif ($filter === '3') {
+            $q->where('rating', '<=', 3);
+        } elseif ($filter === 'with_photo') {
+            $q->whereHas('images');
+        } elseif ($filter === 'no_photo') {
+            $q->whereDoesntHave('images');
         }
+
+        if ($sort === 'old'){
+            $q->oldest();
+        } elseif ($sort === 'high') {
+            $q->orderByDesc('rating')->latest();
+        } elseif ($sort === 'low') {
+            $q->orderBy('rating')->latest();
+        } else {
+            $q->latest();
+        }
+
 
         $reviews = $q->latest()->get();
 
@@ -55,6 +57,7 @@ class StoreReviewsController extends Controller
             'store',
             'reviews',
             'filter',
+            'sort',
             'avgRating',
             'reviewCount',
             'thisWeekCount',
