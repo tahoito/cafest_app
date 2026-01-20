@@ -21,16 +21,16 @@
             </div>
         </header>
 
-@php
-  use Illuminate\Support\Facades\Storage;
+        @php
+        use Illuminate\Support\Facades\Storage;
 
-  $toPublicUrl = function ($path) {
-    if (!$path) return null;
-    if (str_starts_with($path, '/storage/')) return $path;
-    $path = preg_replace('#^storage/#', '', ltrim($path, '/'));
-    return Storage::url($path);
-  };
-@endphp
+        $toPublicUrl = function ($path) {
+            if (!$path) return null;
+            if (str_starts_with($path, '/storage/')) return $path;
+            $path = preg_replace('#^storage/#', '', ltrim($path, '/'));
+            return Storage::url($path);
+        };
+        @endphp
 
 
         <div class="h-full overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
@@ -64,7 +64,7 @@
 
                                         <button type="submit" class="block w-full p-0 m-0 bg-transparent border-0 text-left focus:outline-none">
                                         <div class="overflow-hidden rounded-xl border border-placeholder-color/40 bg-white">
-                                            <img src="{{ $toPublicUrl($img->path)) }}" class="w-full aspect-[16/10] object-cover">
+                                            <img src="{{ $toPublicUrl($img->path)) }}" class="w-full aspect-[3/4] object-cover">
                                         </div>
                                         </button>
                                     </form>

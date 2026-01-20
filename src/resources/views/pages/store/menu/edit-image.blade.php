@@ -81,7 +81,7 @@
             @endif
           </div>
 
-          {{-- 追加：3枚未満だけ --}}
+
           <form method="POST" action="{{ route('store.menu.image.upload') }}" enctype="multipart/form-data">
             @csrf
             <input x-ref="file" type="file" name="photos[]" accept="image/*" class="hidden"
@@ -97,7 +97,6 @@
             @endif
           </form>
 
-          {{-- 保存（今は並び順とか無いなら hiddenでOK） --}}
           <form id="menuSaveForm" method="POST" action="{{ route('store.menu.update.image') }}" class="hidden">
             @csrf
             @method('PATCH')
@@ -107,14 +106,14 @@
             @endforeach
           </form>
 
-          {{-- 削除フォーム（hidden） --}}
+
           <form x-ref="deleteForm" method="POST" action="{{ route('store.menu.image.delete') }}" class="hidden">
             @csrf
             @method('DELETE')
             <input type="hidden" name="menu_photo_id" :value="targetId">
           </form>
 
-          {{-- 削除確認モーダル（ギャラリーと同型） --}}
+
           <div
             x-show="open"
             x-cloak
