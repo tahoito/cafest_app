@@ -5,27 +5,27 @@
 @php
   use Illuminate\Support\Facades\Storage;
 
-  $defaultCard = Storage::url('images/store/card.png');
+  $photoPath = data_get($item,'image');
   $name = (string) data_get($item, 'name', '');
   $price = data_get($item, 'price');
   $description = (string) data_get($item, 'description', '');
-  $imageUrl = (string) (
-    data_get($item, 'image_url')
-    ?? data_get($item, 'image')
-    ?? ''
-  );
+  $imageUrl = $photoPath ? Storage::url($photoPath) : null;
 @endphp
 
 <div class="w-[353px] h-[175px] rounded-lg border border-main bg-base p-5">
   <div class="flex gap-5">
     <div class="shrink-0">
-      <div class="h-[135px] w-[135px] overflow-hidden rounded-xl bg-base_color ring-1 ring-black/5">
-        <img
-          src="{{ $imageUrl !== '' ? $imageUrl : $defaultCard }}"
-          alt=""
-          class="h-full w-full object-cover"
-          loading="lazy"
-        />
+      <div class="h-[135px] w-[135px] overflow-hidden rounded-xl bg-base_color ring-1 ring-black/5 flex items-center justify-center">
+        @if($imageUrl)
+          <img
+            src="{{ $imageUrl }}"
+            alt=""
+            class="h-full w-full object-cover"
+            loading="lazy"
+          />
+        @else
+          <x-icons.no_image class="w-8 h-8 text-placeholder" />
+        @endif
       </div>
     </div>
 
