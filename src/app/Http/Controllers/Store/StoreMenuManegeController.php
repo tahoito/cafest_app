@@ -104,8 +104,71 @@ class StoreMenuManegeController extends Controller
         $store = auth('store')->user();
         abort_unless($recommendedItem->store_id === $store->id, 403);
 
-        return view('pages.store.menu.recommended.edit',compact('recommendedItem'));
+        return view('pages.store.recommended.edit',compact('recommendedItem'));
 
     }
 
+    public function updateRecommended(REquest $request, RecommendedItem $recommendedItem) {
+        $store= auth('store')->user();
+
+        abort_unless($recommendedItem->store_id === $store->id, 403);
+
+        $data = $request->validate([
+            'name' => ['required','string','max:255'],
+            'price' => ['nullable','integer','min:0'],
+            'description' => ['nullable','string'],
+            'image' => ['nullable','image','max:5120'],
+        ]);
+
+        if($request->hasFile('image')) {
+            if ($recommendedItem->image) {
+                Storage::disk('public')->delete($recommendedItem->image);
+            }
+            $data['image'] = $request->file('image')->store('recommended_item','public');
+        }
+
+        $recommendedItem->update($data);
+
+        return redirect() 
+            ->route('store.menu')
+            ->with('success','保存しました');
+    }
+
+    public function uploadRecommended(Request $request, RecommendedItem $recommendedItem) {
+
+        $store = auth('store')->user();
+        abort_unless($recommendedItem->store_id === $store->id, 403);
+
+        $request->validate([
+            'image' => ['required', 'image', 'max:5120'],
+        ]);
+
+        if($recommendedItem->image) {
+            Storage::disk('public')->delete($recommendedItem->image);
+        }
+
+        $path = $request->file('image')->store('recommended_item','public');
+
+        $recommendedItem->update([
+            'image' => $path,
+        ]);
+
+        return back()->with('success','画像を更新しました');
+
+    }
+
+    public function deleteRecommendedImage(RecommendedItem $recommendedItem) {
+        $store = auth('store')->user();
+
+        abort_unless($recommendedItem->store_id === $store->id, 403);
+
+        if ($recommendedItem->image) {
+            Storage::disk('public')->delete($recommendedItem->image);
+        }
+
+        $recommendedItem->update(['image' => null]);
+
+        return back()->with('success', '画像を削除しました');
+
+    }
 }
