@@ -23,19 +23,42 @@
         </header>
 
         <section class="px-4">
-            <div class="rounded-2xl bg-form p-3 shadow-[0_2px_10px_rgba(0,0,0,0.12)]">
+            <div class="rounded-2xl bg-form p-4 shadow-[0_2px_10px_rgba(0,0,0,0.12)]">
                 <div class="space-y-4">
-                    <div class="grid grid-cols-[96px_auto] items-center gap-3">
-                        <div class="text-base text-text_color font-medium">平均評価</div>
-                        <div class="text-base text-text_color">レビューのほし</div>
+                    <div class="grid grid-cols-[96px_1fr] items-center gap-3">
+                        <div class="text-text_color text-base font-medium">平均評価</div>
+
+                        <div class="flex items-center gap-3">
+                            <div class="flex items-center gap-1">
+                                <x-icons.star class="h-6 w-6" />
+                                <x-icons.star class="h-6 w-6" />
+                                <x-icons.star class="h-6 w-6" />
+                                <x-icons.star class="h-6 w-6" />
+                                <x-icons.star class="h-6 w-6" />
+                            </div>
+                            <div class="text-text_color text-base font-medium">(3.0)</div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-[96px_1fr] items-center gap-3">
+                        <div class="text-text_color text-base font-medium">レビュー数</div>
+                        <div class="text-text_color text-base">100件</div>
+                    </div>
+
+                    <div class="grid grid-cols-[96px_1fr] items-center gap-3">
+                        <div class="text-text_color text-base font-medium">今週の新規</div>
+                        <div class="text-text_color text-base">10件</div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="px-4">
-
+        <section class="space-y-4 items-center">
+            @foreach($reviews as $review)
+                <x-ui.card.store.review :review="$review" />
+            @endforeach
         </section>
+
 
         <section class="px-4">
 

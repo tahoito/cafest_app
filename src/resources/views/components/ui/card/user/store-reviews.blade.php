@@ -101,7 +101,6 @@
       @endif
     </div>
 
-    {{-- 2段目：店舗名 + 星 --}}
     <div class="mt-3 flex items-center justify-between gap-3">
       <div class="text-text_color text-base font-medium truncate">
         {{ $storeName }}
