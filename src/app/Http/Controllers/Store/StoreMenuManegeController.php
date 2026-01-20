@@ -93,7 +93,7 @@ class StoreMenuManegeController extends Controller
         }
 
         return redirect()
-            ->route('store.menu.edit.image')
+            ->route('store.menu')
             ->with('success','保存しました');        
     }
 

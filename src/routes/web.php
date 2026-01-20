@@ -107,7 +107,7 @@ Route::prefix('store')->name('store.')->group(function () {
 
         Route::get('/menu', [StoreMenuManegeController::class,'index'])->name('menu');
         Route::get('/menu/edit/image', [StoreMenuManegeController::class,'editImage'])->name('menu.edit.image');
-        Route::patch('/menu/edit/image',[StoreMenuManegeController::class,'updateGallery'])->name('menu.update.image');
+        Route::patch('/menu/edit/image',[StoreMenuManegeController::class,'updateImage'])->name('menu.update.image');
         Route::post('/menu/edit/image', [StoreMenuManegeController::class,'uploadImage'])->name('menu.image.upload');
         Route::delete('/menu/edit/image', [StoreMenuManegeController::class, 'deleteImage'])->name('menu.image.delete');       
 

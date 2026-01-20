@@ -61,7 +61,7 @@
                   <div class="relative w-[260px]">
                     <div class="overflow-hidden bg-base_color rounded-md shadow-[0_2px_10px_rgba(0,0,0,0.12)]">
                       <img
-                        src="{{ $toPublicUrl($photo->photo_path) }}"
+                        src="{{ Storage::url($photo->photo_path) }}"
                         class="w-full aspect-[3/4] object-cover"
                         alt=""
                       >
