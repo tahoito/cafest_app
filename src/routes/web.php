@@ -105,6 +105,7 @@ Route::prefix('store')->name('store.')->group(function () {
         Route::delete('/image/edit/gallery', [StoreImageController::class, 'deleteGallery'])->name('image.gallery.delete');
 
         Route::get('/reviews', [StoreReviewsController::class,'index'])->name('reviews');
+        Route::get('/reviews/{review}', [StoreReviewsController::class,'show'])->name('reviews.show');
     });
 });
 

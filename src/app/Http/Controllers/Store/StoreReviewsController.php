@@ -20,7 +20,7 @@ class StoreReviewsController extends Controller
             ->with(['user','images']);
 
         if ($filter === '5') {
-            $q->where('rating', '>=', 5);
+            $q->where('rating', '=', 5);
         } elseif ($filter === '4') {
             $q->where('rating', '>=', 4)->where('rating', '<', 5);
         } elseif ($filter === '3') {
@@ -61,5 +61,14 @@ class StoreReviewsController extends Controller
             'reviewCount',
             'thisWeekCount',
         ));
+    }
+
+    public function show(Review $review) {
+        $store = auth('store')->user();
+        abort_unless($review->store_id === $store->id, 404);
+
+        $review->load(['user', 'images']);
+
+        return view('pages.store.reviews.show', compact('store','review'));
     }
 }

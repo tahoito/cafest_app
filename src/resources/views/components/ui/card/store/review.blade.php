@@ -58,6 +58,21 @@
   }
 
   $stars = max(0, min(5, (int) floor($rating + 0.00001)));
+
+  $reviewId = data_get($review, 'id', data_get($review, 'review_id'));
+  $storeId = data_get($review, 'store_id')
+    ?? data_get($review, 'shop_id')
+    ?? data_get($review, 'store.id')
+    ?? data_get($review, 'shop.id');
+
+  $moreUrl = ($storeId && $reviewId) 
+      ? route('store.reviews.show', ['review' => $reviewId])
+      : null;
+
+  $endpoint = ($storeId && $reviewId)
+      ? $moreUrl . '?format=json'
+      :null;
+
 @endphp
 
 <div {{ $attributes->merge([
@@ -97,4 +112,13 @@
       @endforeach
     </div>
   @endif
+
+  <div class="pt-1 flex justify-end">
+    <a href="{{ $moreUrl ?? '#' }}" 
+      @if(!$moreUrl) aria-disabled="true" @endif 
+      class="inline-flex items-center gap-1 text-sm text-main2 hover:opacity-80
+       {{ $moreUrl ? '' : 'pointer-events-none opacity-40'}} ">
+        もっと見る
+    </a>
+  </div>
 </div>
