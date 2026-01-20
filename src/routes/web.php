@@ -23,6 +23,7 @@ use App\Http\Controllers\Store\StoreController as StoreStoreController;
 use App\Http\Controllers\Store\StoreProfileController;
 use App\Http\Controllers\Store\StoreImageController;
 use App\Http\Controllers\Store\StoreReviewsController;
+use App\Http\Controllers\Store\StoreMenuManegeController;
 
 Route::view('/', 'welcome')->name('welcome');
 
@@ -103,6 +104,12 @@ Route::prefix('store')->name('store.')->group(function () {
         Route::patch('/image/edit/gallery',[StoreImageController::class,'updateGallery'])->name('image.update.gallery');
         Route::post('/image/edit/gallery', [StoreImageController::class, 'uploadGallery'])->name('image.gallery.upload');
         Route::delete('/image/edit/gallery', [StoreImageController::class, 'deleteGallery'])->name('image.gallery.delete');
+
+        Route::get('/menu', [StoreMenuManegeController::class,'index'])->name('menu');
+        Route::get('/menu/edit/image', [StoreMenuManegeController::class,'editImage'])->name('menu.edit.image');
+        Route::patch('/menu/edit/image',[StoreMenuManegeController::class,'updateImage'])->name('menu.update.image');
+        Route::post('/menu/edit/image', [StoreMenuManegeController::class,'uploadImage'])->name('menu.image.upload');
+        Route::delete('/menu/edit/image', [StoreMenuManegeController::class, 'deleteImage'])->name('menu.image.delete');       
 
         Route::get('/reviews', [StoreReviewsController::class,'index'])->name('reviews');
         Route::get('/reviews/{review}', [StoreReviewsController::class,'show'])->name('reviews.show');

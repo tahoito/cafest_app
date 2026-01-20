@@ -53,7 +53,7 @@
         <x-slot name="icon"><x-icons.store_image size="60" /></x-slot>
       </x-ui.top-item>
 
-      <x-ui.top-item href="#" label="メニュー管理">
+      <x-ui.top-item href="{{ route('store.menu') }}" label="メニュー管理">
         <x-slot name="icon"><x-icons.menu size="60" /></x-slot>
       </x-ui.top-item>
 

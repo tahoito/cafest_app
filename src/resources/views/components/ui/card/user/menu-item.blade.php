@@ -19,7 +19,7 @@
 <div class="w-[353px] h-[175px] rounded-lg border border-main bg-base p-5">
   <div class="flex gap-5">
     <div class="shrink-0">
-      <div class="h-[135px] w-[135px] overflow-hidden rounded-xl bg-base ring-1 ring-black/5">
+      <div class="h-[135px] w-[135px] overflow-hidden rounded-xl bg-base_color ring-1 ring-black/5">
         <img
           src="{{ $imageUrl !== '' ? $imageUrl : $defaultCard }}"
           alt=""
