@@ -45,7 +45,9 @@
   $stars = max(0, min(5, (int) floor($rating + 0.00001)));
 @endphp
 
-<div class="rounded-2xl bg-form w-full max-w-[353px] shadow-[0_2px_10px_rgba(0,0,0,0.12)] p-4 space-y-3">
+<div {{ $attributes->merge([
+    'class' => 'w-full max-w-[353px] rounded-xl bg-form ring-1 ring-black/5 shadow-[0_2px_10px_rgba(0,0,0,0.12)] text-left p-4 space-y-3'
+  ]) }}>
 
   <div class="flex items-start justify-between">
     <div class="flex items-center gap-3">

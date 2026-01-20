@@ -39,7 +39,7 @@
                 <x-icons.star class="h-6 w-6" />
                 <x-icons.star class="h-6 w-6" />
               </div>
-              <div class="text-text_color text-base font-medium">({{ number_format($avgRating, 1) }})</div>
+              <div class="text-text_color text-base">({{ number_format($avgRating, 1) }})</div>
             </div>
           </div>
 
@@ -56,7 +56,7 @@
       </div>
     </section>
 
-    <section class="px-4 pt-3">
+    <section class="px-4 pt-[27px]">
         <div class="max-w-md mx-auto">
             <div class="flex flex-wrap gap-2">
                 <a href="{{ route('store.reviews', ['filter' => 'all']) }}">

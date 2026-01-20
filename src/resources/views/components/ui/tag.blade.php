@@ -11,13 +11,17 @@ $state = $disabled
   ? 'opacity-50 cursor-not-allowed'
   : 'cursor-pointer hover:opacity-90 active:scale-[0.98]';
 
-$accent = $tone === 'main2' ? 'main2' : 'main';
-
-$theme = $active
-  ? 'bg-{$accent} border-{$accent} text-form'
-  : 'bg-base_color border-{$accent} text-text_color';
-
+if ($tone === 'main2') {
+  $theme = $active
+    ? 'bg-main2 border-main2 text-form'
+    : 'bg-base_color border-main2 text-text_color';
+} else {
+  $theme = $active
+    ? 'bg-main border-main text-form'
+    : 'bg-base_color border-main text-text_color';
+}
 @endphp
+
 
 <button
   type="{{ $type }}"
