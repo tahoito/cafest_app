@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\MenuPhoto;
 use Illuminate\Support\Facades\Storage;
+use App\Models\RecommendedItems;
+
 
 
 class StoreMenuManegeController extends Controller
@@ -97,5 +99,13 @@ class StoreMenuManegeController extends Controller
             ->with('success','保存しました');        
     }
 
+    public function editRecommended(RecommendedItem $recommendedItem) {
+        
+        $store = auth('store')->user();
+        abort_unless($recommendedItem->store_id === $store->id, 403);
+
+        return view('pages.store.menu.recommended.edit',compact('recommendedItem'));
+
+    }
 
 }

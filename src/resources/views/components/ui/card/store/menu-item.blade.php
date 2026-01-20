@@ -14,17 +14,23 @@
   $name = (string) data_get($item, 'name', '');
   $price = data_get($item, 'price');
   $description = (string) data_get($item, 'description', '');
-  $imageUrl = (string) (
-    data_get($item, 'image_url')
-    ?? data_get($item, 'image')
-    ?? ''
-  );
+  
+  $resolvedImageUrl = $imageUrl !== ''
+    ? $imageUrl
+    : (string) (data_get($item, 'image_url') ?? data_get($item, 'image') ?? '');
+
+  if ($resolvedImageUrl === '') {
+    $resolvedImageUrl = $fallback;
+  }
+
+  $resolvedEditUrl = $editUrl
+    ?? (data_get($item, 'id') ? route('store.menu.recommended.edit', data_get($item,'id')) : null);
 @endphp
 
 <div class="relative w-[353px] h-[179px] rounded-lg border border-main2 bg-form p-6">
     {{-- 編集：右上固定 --}}
     <a
-      href="{{ $editUrl ?? '#' }}"
+      href="{{ $editUrl ?? route('store.menu.recommended.edit', data_get($item,'id')) }}"
       class="absolute top-4 right-4 inline-flex items-center gap-1 text-sm text-text_color hover:opacity-80"
     >
       <x-icons.edit class="w-[15px] h-[15px] text-text_color" />編集
@@ -42,7 +48,7 @@
                     />
                 @else
                     <x-icons.no_image class="w-8 h-8 text-placeholder" />
-                    <span class="text-xs text-placeholder">写真がありません</span>
+                    <span class="text-xs text-placeholder">画像がありません</span>
                 @endif
             </div>
         </div>
@@ -50,7 +56,7 @@
         <div class="min-w-0 flex-1">
             <div class="space-y-3">
                 <div class="space-y-1">
-                    <div class="text-main2 text-sm">名前</div>
+                    <div class="text-main2 text-sm">メニュー名</div>
                     <div class="text-base text-text_color truncate">
                         {{ $name }}
                     </div>
