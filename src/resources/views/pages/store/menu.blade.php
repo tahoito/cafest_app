@@ -56,7 +56,7 @@
                     </div>
                     <div class="space-y-3">
                         @forelse($recommendedItems as $item)
-                            <x-ui.card.store.menu-item 
+                            <x-ui.card.store.menu-item :item="$item"
                                 :name="$item->name" 
                                 :price="$item->price" 
                                 :description="$item->description" 

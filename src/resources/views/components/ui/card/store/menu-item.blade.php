@@ -15,24 +15,26 @@
   $price = data_get($item, 'price');
   $description = (string) data_get($item, 'description', '');
   
-  $resolvedImageUrl = $imageUrl !== ''
-    ? $imageUrl
-    : (string) (data_get($item, 'image_url') ?? data_get($item, 'image') ?? '');
+  $id = data_get($item, 'id');
 
-  if ($resolvedImageUrl === '') {
-    $resolvedImageUrl = $fallback;
-  }
+  $photoPath = 
+    data_get($item, 'photo_path')
+    ?? data_get($item, 'image')
+    ?? null;
 
-  $resolvedEditUrl = $editUrl
-    ?? (data_get($item, 'id') ? route('store.menu.recommended.edit', data_get($item,'id')) : null);
+    $imageUrl = (string) (data_get($item, 'image_url') ?? '');
+    $resolvedEditUrl = $editUrl ?? ($id ? route('store.menu.recommended.edit', $id) : null);
+
 @endphp
 
 <div class="relative w-[353px] h-[179px] rounded-lg border border-main2 bg-form p-6">
     {{-- 編集：右上固定 --}}
-    <a
-      href="{{ $editUrl ?? route('store.menu.recommended.edit', data_get($item,'id')) }}"
-      class="absolute top-4 right-4 inline-flex items-center gap-1 text-sm text-text_color hover:opacity-80"
-    >
+    @if($resolvedEditUrl)
+        <a
+        href="{{ $resolvedEditUrl }}"
+        class="absolute top-4 right-4 inline-flex items-center gap-1 text-sm text-text_color hover:opacity-80"
+        >
+    @endif
       <x-icons.edit class="w-[15px] h-[15px] text-text_color" />編集
     </a>
 
@@ -54,16 +56,16 @@
         </div>
 
         <div class="min-w-0 flex-1">
-            <div class="space-y-3">
-                <div class="space-y-1">
-                    <div class="text-main2 text-sm">メニュー名</div>
+            <div class="space-y-2">
+                <div class="space-y-0.5">
+                    <div class="text-main2 text-[11px]">メニュー名</div>
                     <div class="text-base text-text_color truncate">
                         {{ $name }}
                     </div>
                 </div>
 
-                <div class="space-y-1">
-                    <div class="text-main2 text-sm">価格</div>
+                <div class="space-y-0.5">
+                    <div class="text-main2 text-[11px]">価格</div>
                     @if(!is_null($price))
                         <div class="text-base text-text_color">
                             {{ number_format((int)$price) }}円
@@ -71,8 +73,8 @@
                     @endif
                 </div>
 
-                <div class="space-y-1">
-                    <div class="text-main2 text-sm">説明文</div>
+                <div class="space-y-0.5">
+                    <div class="text-main2 text-[11px]">説明文</div>
                     @if($description !== '')
                         <div class="text-base text-text_color leading-relaxed line-clamp-2">
                             {{ $description }}
