@@ -54,7 +54,7 @@
                     <div class="flex items-center justify-between">
                         <div class="text-lg text-text_color">おすすめのメニュー3つ</div>
                     </div>
-                    <div class="space-y-3">
+                    <div class="space-y-3 flex flex-col items-center">
                         @forelse($recommendedItems as $item)
                             <x-ui.card.store.menu-item :item="$item"
                                 :name="$item->name" 

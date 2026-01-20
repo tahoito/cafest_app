@@ -23,7 +23,13 @@
     ?? data_get($item, 'image')
     ?? null;
 
-  $imageUrl = (string) (data_get($item, 'image_url') ?? '');
+    $photoPath =
+    data_get($item, 'photo_path')
+    ?? data_get($item, 'image')
+    ?? null;
+
+    $imageUrl = $photoPath ? Storage::url($photoPath) : '';
+
   $resolvedEditUrl = $editUrl ?? ($id ? route('store.menu.recommended.edit', $id) : null);
 @endphp
 
@@ -76,7 +82,7 @@
         <div class="space-y-0.5">
           <div class="text-main2 text-[11px]">説明文</div>
           @if($description !== '')
-            <div class="text-sm text-text_color leading-relaxed line-clamp-2 break-words">
+            <div class="text-sm text-text_color leading-relaxed break-words">
               {{ $description }}
             </div>
           @else

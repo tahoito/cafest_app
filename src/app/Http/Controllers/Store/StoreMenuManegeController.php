@@ -108,31 +108,24 @@ class StoreMenuManegeController extends Controller
 
     }
 
-    public function updateRecommended(REquest $request, RecommendedItem $recommendedItem) {
-        $store= auth('store')->user();
-
+    public function updateRecommended(Request $request, RecommendedItem $recommendedItem)
+    {
+        $store = auth('store')->user();
         abort_unless($recommendedItem->store_id === $store->id, 403);
 
         $data = $request->validate([
             'name' => ['required','string','max:255'],
             'price' => ['nullable','integer','min:0'],
             'description' => ['nullable','string'],
-            'image' => ['nullable','image','max:5120'],
         ]);
-
-        if($request->hasFile('image')) {
-            if ($recommendedItem->image) {
-                Storage::disk('public')->delete($recommendedItem->image);
-            }
-            $data['image'] = $request->file('image')->store('recommended_item','public');
-        }
 
         $recommendedItem->update($data);
 
-        return redirect() 
+        return redirect()
             ->route('store.menu')
-            ->with('success','保存しました');
+            ->with('success', '保存しました');
     }
+
 
     public function uploadRecommended(Request $request, RecommendedItem $recommendedItem) {
 
