@@ -39,18 +39,18 @@
                 <x-icons.star class="h-6 w-6" />
                 <x-icons.star class="h-6 w-6" />
               </div>
-              <div class="text-text_color text-base font-medium">(3.0)</div>
+              <div class="text-text_color text-base font-medium">({{ number_format($avgRating, 1) }})</div>
             </div>
           </div>
 
           <div class="grid grid-cols-[96px_1fr] items-center gap-3">
             <div class="text-text_color text-base font-medium">レビュー数</div>
-            <div class="text-text_color text-base">100件</div>
+            <div class="text-text_color text-base">{{ $reviewCount }}件</div>
           </div>
 
           <div class="grid grid-cols-[96px_1fr] items-center gap-3">
             <div class="text-text_color text-base font-medium">今週の新規</div>
-            <div class="text-text_color text-base">10件</div>
+            <div class="text-text_color text-base">{{ $thisWeekCount }}件</div>
           </div>
         </div>
       </div>
@@ -59,27 +59,41 @@
     <section class="px-4 pt-3">
         <div class="max-w-md mx-auto">
             <div class="flex flex-wrap gap-2">
-                <x-ui.tag tone="main2" :active="$filter==='all'">すべて</x-ui.tag>
-                <x-ui.tag tone="main2" :active="$filter==='5'">
+                <a href="{{ route('store.reviews', ['filter' => 'all']) }}">
+                    <x-ui.tag tone="main2" :active="$filter==='all'">すべて</x-ui.tag>
+                </a>
+
+                <a href="{{ route('store.reviews', ['filter' => '5']) }}">
+                    <x-ui.tag tone="main2" :active="$filter==='5'">
                     <span class="inline-flex items-center gap-1">
-                        <x-icons.star class="text-star" />
-                        5.0
+                        <x-icons.star class="h-4 w-4 text-star" />5.0
                     </span>
-                </x-ui.tag>
-                <x-ui.tag tone="main2" :active="$filter==='4'">
+                    </x-ui.tag>
+                </a>
+
+                <a href="{{ route('store.reviews', ['filter' => '4']) }}">
+                    <x-ui.tag tone="main2" :active="$filter==='4'">
                     <span class="inline-flex items-center gap-1">
-                        <x-icons.star class="h-4 w-4 text-star" />
-                        4.0
+                        <x-icons.star class="h-4 w-4 text-star" />4.0
                     </span>
-                </x-ui.tag>
-                <x-ui.tag tone="main2" :active="$filter==='3'">
+                    </x-ui.tag>
+                </a>
+
+                <a href="{{ route('store.reviews', ['filter' => '3']) }}">
+                    <x-ui.tag tone="main2" :active="$filter==='3'">
                     <span class="inline-flex items-center gap-1">
-                        <x-icons.star class="text-star" />
-                        3.0以下
+                        <x-icons.star class="h-4 w-4 text-star" />3.0以下
                     </span>
-                </x-ui.tag>
-                <x-ui.tag tone="main2" :active="$filter==='with_photo'"><x-icons.star class="text-star" />画像あり</x-ui.tag>
-                <x-ui.tag tone="main2" :active="$filter==='no_photo'">画像なし</x-ui.tag>
+                    </x-ui.tag>
+                </a>
+
+                <a href="{{ route('store.reviews', ['filter' => 'with_photo']) }}">
+                    <x-ui.tag tone="main2" :active="$filter==='with_photo'">画像あり</x-ui.tag>
+                </a>
+
+                <a href="{{ route('store.reviews', ['filter' => 'no_photo']) }}">
+                    <x-ui.tag tone="main2" :active="$filter==='no_photo'">画像なし</x-ui.tag>
+                </a>
             </div>
         </div>
     </section>
