@@ -2,7 +2,7 @@
   'active' => false,
   'disabled' => false,
   'type' => 'button',
-  'icon' => false,
+  'tone' => 'main'
 ])
 
 @php
@@ -11,9 +11,11 @@ $state = $disabled
   ? 'opacity-50 cursor-not-allowed'
   : 'cursor-pointer hover:opacity-90 active:scale-[0.98]';
 
+$accent = $tone === 'main2' ? 'main2' : 'main';
+
 $theme = $active
-  ? 'bg-main border-main text-form'
-  : 'bg-base border-main text-text_color';
+  ? 'bg-{$accent} border-{$accent} text-form'
+  : 'bg-base_color border-{$accent} text-text_color';
 
 @endphp
 
