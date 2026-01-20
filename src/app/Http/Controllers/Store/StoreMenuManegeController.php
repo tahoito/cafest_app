@@ -17,4 +17,14 @@ class StoreMenuManegeController extends Controller
 
         return view('pages.store.menu', compact('store','menuPhotos','recommendedItems'));
     }
+
+    public function editImage (Request $request) {
+        
+        $store = auth('store')->user();
+        $menuPhotos = $store->menuPhotos()->orderBy('sort_order')->get();
+
+
+        return view('pages.store.menu.edit-image', compact('store','menuPhotos'));
+    }
+
 }

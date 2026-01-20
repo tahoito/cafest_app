@@ -27,7 +27,7 @@
                <section class="px-4">
                     <div class="flex items-center justify-between">
                         <div class="text-lg text-text_color">メニュー表画像（最大3枚まで）</div>
-                        <a href="#"
+                        <a href="{{ route('store.menu.edit.image') }}"
                             class="flex items-center gap-1 text-sm text-text_color hover:opacity-80">
                         <x-icons.edit class="w-[15px] h-[15px] text-text_color"/>編集</a>
                     </div>
