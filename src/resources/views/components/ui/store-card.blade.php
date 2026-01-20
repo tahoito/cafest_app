@@ -6,6 +6,9 @@
 ])
 
 @php
+  use Illuminate\Support\Facades\Storage;
+  $defaultCard = Storage::url('images/store/card.png');
+
   $url = $href ?? '#';
 
   $name = data_get($store, 'name', 'No Name');
@@ -30,7 +33,7 @@
   <div class="relative px-4 pt-3 pb-2">
     <div class="w-full aspect-square max-w-[138px] mx-auto overflow-hidden bg-base">
       <img
-        src="{{ $imageUrl ?: asset('images/store/card.png') }}"
+        src="{{ $imageUrl ? Storage::url($imageUrl) : $defaultCard }}"
         alt="{{ $name }}"
         loading="lazy"
         class="w-full h-full object-cover"

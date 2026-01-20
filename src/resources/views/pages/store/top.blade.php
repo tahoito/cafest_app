@@ -61,7 +61,7 @@
         <x-slot name="icon"><x-icons.graph size="60" /></x-slot>
       </x-ui.top-item>
 
-      <x-ui.top-item href="#" label="レビュー一覧">
+      <x-ui.top-item href="{{ route('store.reviews') }}" label="レビュー一覧">
         <x-slot name="icon"><x-icons.review size="60" stroke="1" dx="2" dy="2" /></x-slot>
       </x-ui.top-item>
 

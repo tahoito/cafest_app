@@ -10,7 +10,7 @@ use App\Services\StoreRecommendService;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Reservation;
-
+use Illuminate\Support\Facades\Storage;
 
 
 class StoreController extends Controller
@@ -39,7 +39,7 @@ class StoreController extends Controller
             ->get()
             ->map(fn($img) => (object)[
                 'review_id' => $img->review_id,
-                'image' => asset('storage/'.$img->path),
+                'image' => Storage::url($img->path),
             ]);
         
         $store->load(['slideImages','galleryImages','hours','reviews'])

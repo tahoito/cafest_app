@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class StoreImage extends Model
 {
@@ -28,13 +29,10 @@ class StoreImage extends Model
         if ($p === '') return null;
         
         if (str_starts_with($p, 'http://') || str_starts_with($p, 'https://')) return $p;
+        
+        $p = preg_replace('#^/?storage/#', '', $p);
 
-        if (str_starts_with($p, '/images/')) return asset(ltrim($p, '/'));
-        if (str_starts_with($p, 'images/')) return asset($p);
-
-        if (str_starts_with($p, '/storage/')) return asset(ltrim($p, '/'));
-
-        return asset('storage/' . ltrim($p, '/'));
+        return Storage::url($p);
     }
 
 }

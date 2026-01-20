@@ -5,6 +5,7 @@
 ])
 
 @php
+  use Illuminate\Support\Facades\Storage;
   $userName = data_get($review, 'user.name', data_get($review, 'username', ''));
   $userIcon = data_get($review, 'user.icon_path', data_get($review, 'icon_path', null));
 
@@ -85,9 +86,25 @@
     <div class="flex items-start justify-between gap-3">
       <div class="flex items-center gap-3 min-w-0">
         <div class="{{ $avatarSize }} rounded-full bg-base overflow-hidden shrink-0">
-          @if($userIcon)
-            <img src="{{ asset($userIcon) }}" class="w-full h-full object-cover" alt="">
-          @endif
+          @php
+          $userIconUrl = null;
+
+          if ($userIcon) {
+            if (is_string($userIcon) && str_starts_with($userIcon, 'http')) {
+              $userIconUrl = $userIcon; // 外部URL
+            } elseif (is_string($userIcon) && str_starts_with($userIcon, '/storage/')) {
+              $userIconUrl = $userIcon; // すでに公開URL
+            } else {
+              // users/xxx.jpg or storage/users/xxx.jpg どっちでもOKにする
+              $path = preg_replace('#^storage/#', '', ltrim((string)$userIcon, '/'));
+              $userIconUrl = Storage::url($path);
+            }
+          }
+        @endphp
+
+        @if($userIconUrl)
+          <img src="{{ $userIconUrl }}" class="w-full h-full object-cover" alt="">
+        @endif
         </div>
 
         <div class="min-w-0">

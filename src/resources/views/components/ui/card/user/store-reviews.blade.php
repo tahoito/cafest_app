@@ -5,7 +5,7 @@
 ])
 
 @php
-  // user
+  use Illuminate\Support\Facades\Storage;
   $userName = (string) data_get($review, 'user.name', data_get($review, 'username', ''));
   $userHandle = (string) data_get($review, 'user.handle', '');
 
@@ -15,8 +15,13 @@
   if ($userIconPath) {
     if (is_string($userIconPath) && str_starts_with($userIconPath, 'http')) {
       $userIconUrl = $userIconPath;
+
+    } elseif (is_string($userIconPath) && str_starts_with($userIconPath, '/storage/')) {
+      $userIconUrl = $userIconPath;
+
     } else {
-      $userIconUrl = asset(ltrim($userIconPath, '/'));
+      $path = preg_replace('#^storage/#', '', ltrim((string)$userIconPath, '/'));
+      $userIconUrl = Storage::url($path);
     }
   }
 
@@ -101,7 +106,6 @@
       @endif
     </div>
 
-    {{-- 2段目：店舗名 + 星 --}}
     <div class="mt-3 flex items-center justify-between gap-3">
       <div class="text-text_color text-base font-medium truncate">
         {{ $storeName }}
