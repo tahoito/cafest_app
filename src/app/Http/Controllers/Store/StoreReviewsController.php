@@ -32,17 +32,16 @@ class StoreReviewsController extends Controller
         }
 
         if ($sort === 'old'){
-            $q->oldest();
+        $q->oldest();
         } elseif ($sort === 'high') {
-            $q->orderByDesc('rating')->latest();
+        $q->orderBy('rating', 'desc')->orderBy('created_at', 'desc');
         } elseif ($sort === 'low') {
-            $q->orderBy('rating')->latest();
+        $q->orderBy('rating', 'asc')->orderBy('created_at', 'desc');
         } else {
-            $q->latest();
+        $q->orderBy('created_at', 'desc');
         }
 
-
-        $reviews = $q->latest()->get();
+        $reviews = $q->get();
 
         $base = Review::where('store_id', $store->id);
 

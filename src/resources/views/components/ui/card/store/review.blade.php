@@ -4,6 +4,7 @@
   // ユーザーアイコン
   $userIconPath = data_get($review,'user.icon_path', data_get($review,'icon_path'));
   $userIconUrl = null;
+  $fallbackAvatar = asset('images/users/user1.jpg');
 
   if ($userIconPath) {
     $userIconUrl = str_starts_with($userIconPath, 'http')
@@ -52,7 +53,7 @@
   <div class="flex items-start justify-between">
     <div class="flex items-center gap-3">
       <img
-        src="{{ $userIconUrl ?? '/images/user/avatar.png' }}"
+        src="{{ $userIconUrl ?: $fallbackAvatar }}"
         class="h-10 w-10 rounded-full object-cover"
         alt=""
       >
