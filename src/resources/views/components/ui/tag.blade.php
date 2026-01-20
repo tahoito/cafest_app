@@ -2,7 +2,8 @@
   'active' => false,
   'disabled' => false,
   'type' => 'button',
-  'tone' => 'main'
+  'tone' => 'main',
+  'href' => null,
 ])
 
 @php
@@ -20,13 +21,20 @@ if ($tone === 'main2') {
     ? 'bg-main border-main text-form'
     : 'bg-base_color border-main text-text_color';
 }
+
+$class = "$common $state $theme";
 @endphp
 
-
-<button
-  type="{{ $type }}"
-  {{ $disabled ? 'disabled' : '' }}
-  {{ $attributes->merge(['class' => "$common $state $theme"]) }}
->
-  {{ $slot }}
-</button>
+@if($href)
+  <a href="{{ $href }}" {{ $attributes->merge(['class' => $class]) }}>
+    {{ $slot }}
+  </a>
+@else
+  <button
+    type="{{ $type }}"
+    {{ $disabled ? 'disabled' : '' }}
+    {{ $attributes->merge(['class' => $class]) }}
+  >
+    {{ $slot }}
+  </button>
+@endif

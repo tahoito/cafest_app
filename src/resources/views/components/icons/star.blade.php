@@ -6,6 +6,10 @@
 <svg
   xmlns="http://www.w3.org/2000/svg"
   viewBox="0 0 9.12972 8.14058"
+  stroke="currentColor"
+  stroke-width="{{ $stroke }}"
+  stroke-linecap="round"
+  stroke-linejoin="round"
   width="{{ $size }}"
   height="{{ $size }}"
   fill="currentColor"

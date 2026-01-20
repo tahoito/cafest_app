@@ -75,18 +75,18 @@
       <div class="max-w-md mx-auto">
         <div class="flex flex-wrap gap-2">
           @foreach($filters as $key => $label)
-            <a href="{{ route('store.reviews', ['filter' => $key]) }}">
-              <x-ui.tag tone="main2" :active="$filter === $key">
-                @if(in_array($key, ['5','4','3'], true))
-                  <span class="inline-flex items-center gap-1">
-                    <x-icons.star class="h-4 w-4 {{ $filter === $key ? 'text-form' : 'text-star' }}" />
-                    {{ $label }}
-                  </span>
-                @else
+            <x-ui.tag tone="main2" :active="$filter == $key"
+              :href="route('store.reviews', ['filter' => $key])"
+            >
+              @if(in_array($key, ['5','4','3']))
+                <span class="inline-flex items-center gap-1">
+                  <x-icons.star class="{{ $filter == $key ? 'h-5 w-5 text-star' : 'h-4 w-4 text-star' }}"></x-icons.star>
                   {{ $label }}
-                @endif
-              </x-ui.tag>
-            </a>
+                </span>
+              @else
+                {{ $label }}
+              @endif
+            </x-ui.tag>
           @endforeach
         </div>
       </div>
