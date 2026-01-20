@@ -6,7 +6,7 @@ use App\Models\PaymentMethod;
 use App\Models\StoreImage;
 use App\Models\Review;
 use App\Models\MenuPhoto;
-use App\Models\RecommendedItems;
+use App\Models\RecommendedItem;
 use App\Models\FavoriteFolder;
 use App\Models\StoreSocialLink;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -84,7 +84,7 @@ class Store extends Authenticatable
     }
 
     public function recommendedItems(){
-        return $this->hasMany(RecommendedItems::class)
+        return $this->hasMany(RecommendedItem::class)
             ->orderBy('sort_order');    
     }
 

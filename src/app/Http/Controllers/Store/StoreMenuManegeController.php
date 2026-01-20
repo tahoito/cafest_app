@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\MenuPhoto;
 use Illuminate\Support\Facades\Storage;
-use App\Models\RecommendedItems;
+use App\Models\RecommendedItem;
 
 
 

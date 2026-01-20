@@ -66,25 +66,21 @@
                     </div>
                 </div>
 
-            </div>
-        
-
-    </div>
+     
     
-
-    <div class="fixed inset-x-0 bottom-0 bg-base_color">
-      <div class="pb-[env(safe-area-inset-bottom)]">
-        <div class="w-full max-w-md mx-auto px-4 py-4">
-          <x-ui.button
-            type="submit"
-            theme="store"
-            class="w-full text-form"
-          >
-            保存
-          </x-ui.button>
-        </div>
-      </div>
-    </div>
+                <div class="fixed inset-x-0 bottom-0 bg-base_color">
+                    <div class="pb-[env(safe-area-inset-bottom)]">
+                        <div class="w-full max-w-md mx-auto px-4 py-4">
+                        <x-ui.button
+                            type="submit"
+                            theme="store"
+                            class="w-full text-form"
+                        >
+                            保存
+                        </x-ui.button>
+                        </div>
+                    </div>
+                </div>
 
   </div>
 </div>
