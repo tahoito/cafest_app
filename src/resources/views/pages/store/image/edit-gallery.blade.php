@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','スライド写真')
+@section('title','ギャラリー')
 
 @section('hideNavbar')
 @endsection
@@ -60,7 +60,7 @@
                 <div class="relative">
                     <div class="overflow-hidden bg-base_color">
                         <img
-                        src="{{ $toPublicUrl($img->path)) }}"
+                        src="{{ $toPublicUrl($img->path) }}"
                         class="w-full aspect-square object-cover"
                         alt=""
                         >
