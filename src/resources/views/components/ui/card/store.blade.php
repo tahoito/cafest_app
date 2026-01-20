@@ -25,6 +25,18 @@
     ? "{$area}・{$mood}"
     : (trim($area) !== '' ? $area : $mood);
 
+  $imageSrc = $defaultCard;
+
+  if ($imageUrl) {
+    if (str_starts_with($imageUrl, 'http')) {
+      $imageSrc = $imageUrl;
+    } elseif (str_starts_with($imageUrl, '/storage/')) {
+      $imageSrc = $imageUrl;
+    } else {
+      $path = preg_replace('#^storage/#', '', ltrim($imageUrl, '/'));
+      $imageSrc = Storage::url($path);
+    }
+  }
 @endphp
 
 <a href="{{ $url }}"
@@ -34,7 +46,7 @@
   <div class="relative px-4 pt-3 pb-2">
     <div class="w-full aspect-square max-w-[138px] mx-auto overflow-hidden bg-base">
       <img
-        src="{{ $imageUrl : $defaultCard }}"
+        src="{{ $imageSrc }}"
         alt="{{ $name }}"
         loading="lazy"
         class="w-full h-full object-cover"
