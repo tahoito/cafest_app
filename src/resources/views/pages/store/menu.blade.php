@@ -39,7 +39,7 @@
                         @else
                             <div class="space-y-3">
                                 @foreach ($menuPhotos as $photo)
-                                    <div class="aspect-[4/3] overflow-hidden rounded-lg">
+                                    <div class="aspect-[3/4] overflow-hidden rounded-lg">
                                         <img src="{{ asset('storage/' . $photo->photo_path) }}"
                                             alt="メニュー画像"
                                             class="w-full h-full object-cover">
@@ -54,9 +54,9 @@
                     <div class="flex items-center justify-between">
                         <div class="text-lg text-text_color">おすすめのメニュー3つ</div>
                     </div>
-                    <div class="space-y-3">
+                    <div class="space-y-3 flex flex-col items-center">
                         @forelse($recommendedItems as $item)
-                            <x-ui.card.store.menu-item 
+                            <x-ui.card.store.menu-item :item="$item"
                                 :name="$item->name" 
                                 :price="$item->price" 
                                 :description="$item->description" 

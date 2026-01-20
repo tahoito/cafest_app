@@ -110,6 +110,12 @@ Route::prefix('store')->name('store.')->group(function () {
         Route::patch('/menu/edit/image',[StoreMenuManegeController::class,'updateImage'])->name('menu.update.image');
         Route::post('/menu/edit/image', [StoreMenuManegeController::class,'uploadImage'])->name('menu.image.upload');
         Route::delete('/menu/edit/image', [StoreMenuManegeController::class, 'deleteImage'])->name('menu.image.delete');       
+       
+        Route::get('/recommended/{recommendedItem}/edit',[StoreMenuManegeController::class,'editRecommended'])->name('menu.recommended.edit');
+        Route::patch('/recommended/{recommendedItem}',[StoreMenuManegeController::class,'updateRecommended'])->name('menu.recommended.update');
+        Route::post('/recommended/{recommendedItem}/image',[StoreMenuManegeController::class,'uploadRecommended'])->name('menu.recommended.image.upload');
+        Route::delete('/recommended/{recommendedItem}/image',[StoreMenuManegeController::class,'deleteRecommendedImage'])->name('menu.recommended.image.delete');
+
 
         Route::get('/reviews', [StoreReviewsController::class,'index'])->name('reviews');
         Route::get('/reviews/{review}', [StoreReviewsController::class,'show'])->name('reviews.show');

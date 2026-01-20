@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Store;
-use App\Models\RecommendedItems; 
+use App\Models\RecommendedItem; 
 
 class RecommendedItemSeeder extends Seeder
 {
@@ -13,7 +13,7 @@ class RecommendedItemSeeder extends Seeder
         $stores = Store::pluck('id');
 
         foreach ($stores as $storeId) {
-            RecommendedItems::insert([
+            RecommendedItem::insert([
                 [
                     'store_id' => $storeId,
                     'name' => 'カフェラテ',

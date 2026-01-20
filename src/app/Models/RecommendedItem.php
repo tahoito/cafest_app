@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class RecommendedItems extends Model
+class RecommendedItem extends Model
 {
     protected $fillable = [
         'store_id',
