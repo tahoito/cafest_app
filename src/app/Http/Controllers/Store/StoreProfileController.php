@@ -33,6 +33,11 @@ class StoreProfileController extends Controller
     }
 
     public function updateBasic (Request $request) {
+
+        logger()->info('budget incoming', [
+            'budget_range' => $request->input('budget_range'),
+        ]);
+
         $store = $request->user('store');
         $validated = $request->validate([
             'name' => ['required','string','max:255'],
@@ -60,10 +65,23 @@ class StoreProfileController extends Controller
             'mood' => $validated['mood'],
         ])->save();
 
-        $range = $validated['budget_range'];
-        [$min, $max] = array_pad(explode('-', $range, 2),2,'');
-        $store->budget_min = ($min === '' ? null : (int)$min);
-        $store->budget_max = ($max === '' ? null : (int)$max);
+
+        $range = (string)$validated['budget_range'];
+        $nums = preg_split('/\D+/', $range, -1, PREG_SPLIT_NO_EMPTY);
+
+        $budgetMin = isset($nums[0]) ? (int)$nums[0] : null;
+        $budgetMax = isset($nums[1]) ? (int)$nums[1] : null;
+
+        $store->fill([
+            'name' => $validated['name'],
+            'address' => $validated['address'],
+            'area' => $validated['area'],
+            'mood' => $validated['mood'],
+            'budget_min' => $budgetMin,
+            'budget_max' => $budgetMax,
+        ])->save();
+
+
 
         $is24h = (bool)($request->input('is_24h') ?? false);
         $mode = $request->input('hours_mode','same');

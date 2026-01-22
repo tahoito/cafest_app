@@ -103,9 +103,16 @@
                                     <div class="text-sm font-medium">予算</div>
                                 </div>
                                 <div class="text-base text-text_color">
-                                    @if($store->budget_min && $store->budget_max)
-                                        {{ $store->budget_min }}円~{{ $store->budget_max }}円
-                                    @else   
+                                    @if($store->budget_min === 0 && $store->budget_max !== null)
+                                        〜{{ number_format($store->budget_max) }}円
+
+                                    @elseif($store->budget_min !== null && $store->budget_max !== null)
+                                        {{ number_format($store->budget_min) }}円〜{{ number_format($store->budget_max) }}円
+
+                                    @elseif($store->budget_min !== null && $store->budget_max === null)
+                                        {{ number_format($store->budget_min) }}円〜
+
+                                    @else
                                         <span class="text-placeholder">未設定です</span>
                                     @endif
                                 </div>
