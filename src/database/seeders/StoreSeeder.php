@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Store;
 use App\Models\StoreHour;
+use Illuminate\Support\Facades\DB;
 
 class StoreSeeder extends Seeder
 {

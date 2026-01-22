@@ -15,7 +15,10 @@
   $areaKey = data_get($store, 'area', '');
   $area = $areaKey !== '' ? (config('cafest.areas')[$areaKey] ?? $areaKey) : '';
   $mood = data_get($store, 'mood', '');
-  $imageUrl = data_get($store, 'image_url');
+  $imageUrl = optional(
+    collect(data_get($store, 'slideImages', []))->firstWhere('is_used_on_card', true)
+  )->url;
+
 
   $rating = (float) data_get($store, 'reviews_avg_rating', 0);
   $rating = max(0, min(5, $rating));
@@ -44,7 +47,7 @@
 
   {{-- image --}}
   <div class="relative px-4 pt-3 pb-2">
-    <div class="w-full aspect-square max-w-[138px] mx-auto overflow-hidden bg-base">
+    <div class="w-full aspect-square max-w-[138px] mx-auto overflow-hidden rounded-lg bg-base">
       <img
         src="{{ $imageSrc }}"
         alt="{{ $name }}"
