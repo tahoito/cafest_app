@@ -31,7 +31,7 @@
       <section class="px-4 space-y-3">
         <div class="text-lg text-text_color font-medium">おすすめのカフェ</div>
         <div class="grid grid-cols-2 gap-3">
-          @foreach($stores as $store)
+          @foreach($recommendedStores as $store)
             <x-ui.card.store
               :store="$store"
               :faved="in_array(data_get($store,'id'), $favIds)" 
@@ -60,9 +60,10 @@
       <section class="px-4 space-y-3">
         <div class="text-lg text-text_color font-medium">カフェ一覧</div>
         <div class="grid grid-cols-2 gap-3">
-          @foreach($stores as $store)
+          @foreach($allStores as $store)
             <x-ui.card.store
               :store="$store"
+              :faved="in_array(data_get($store,'id'), $favIds)"
               :href="route('user.stores.show', ['store' => data_get($store,'id')])"
               variant="list"
             />

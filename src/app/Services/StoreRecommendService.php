@@ -14,7 +14,9 @@ class StoreRecommendService
         $areaIds = $user?->favorite_areas ?? [];
         $moodIds = $user?->favorite_moods ?? [];
 
-        $base = Store::query()->withAvg('reviews', 'rating');
+        $base = Store::query()
+            ->with(['latestImage'])
+            ->withAvg('reviews', 'rating');
 
         $q1 = (clone $base);
         if (!empty($areaIds)) $q1->whereIn('area', $areaIds);

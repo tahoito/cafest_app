@@ -48,21 +48,21 @@
                                     <x-icons.store stroke="1.5" class="h-5 w-5 shrink-0 text-main2" />
                                     <div class="text-sm font-medium">店舗名</div>
                                 </div>
-                                <div class="text-base {{ $store->mood ? 'text-text_color' : 'text-placeholder' }}">{{ $store->name ?? '未設定です'}}</div>
+                                <div class="text-base {{ $store->name ? 'text-text_color' : 'text-placeholder' }}">{{ $store->name ?? '未設定です'}}</div>
                             </div>
                             <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
                                 <div class="grid grid-cols-[20px_auto] items-center gap-1.5 text-main2">
                                     <x-icons.access stroke="1.5" class="h-5 w-5 shrink-0 text-main2" />
                                     <div class="text-sm font-medium">住所</div>
                                 </div>
-                                <div class="text-base {{ $store->mood ? 'text-text_color' : 'text-placeholder' }}">{{ $store->address ?? '未設定です'}}</div>
+                                <div class="text-base {{ $store->address ? 'text-text_color' : 'text-placeholder' }}">{{ $store->address ?? '未設定です'}}</div>
                             </div>
                             <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
                                 <div class="grid grid-cols-[20px_auto] items-center gap-1.5 text-main2">
                                     <x-icons.pin stroke="1.5" class="h-5 w-5 shrink-0 text-main2" />
                                     <div class="text-sm font-medium">エリア</div>
                                 </div>
-                                <div class="text-base {{ $store->mood ? 'text-text_color' : 'text-placeholder' }}">{{ $store->area ?? '未設定です'}}</div>
+                                <div class="text-base {{ $store->area ? 'text-text_color' : 'text-placeholder' }}">{{ $store->area ?? '未設定です'}}</div>
                             </div>
                             <div class="grid grid-cols-[170px_1fr] items-center px-4 py-4">
                                 <div class="grid grid-cols-[20px_auto] items-center gap-1.5 text-main2">
@@ -164,7 +164,7 @@
                                     <x-icons.mail stroke="1.5" class="h-5 w-5 shrink-0 text-main2" />
                                     <div class="text-sm font-medium">メールアドレス</div>
                                 </div>
-                                <div class="text-base {{ filled($store->email) ? 'text-text_color' : 'text-placeholder' }}">
+                                <div class="text-base break-all leading-relaxed {{ filled($store->email) ? 'text-text_color' : 'text-placeholder' }}">
                                     {{ filled($store->email) ? $store->email : '未設定です' }}
                                 </div>
                             </div>

@@ -38,8 +38,9 @@
             }"
             >
             @csrf
-            <input type="hidden" name="area" :value="selectedArea ?? ''">
-            <input type="hidden" name="mood" :value="selectedMood ?? ''">
+            <input type="hidden" name="area" x-bind:value="selectedArea ?? ''">
+            <input type="hidden" name="mood" x-bind:value="selectedMood ?? ''">
+
             <section class="space-y-2 pt-8">
                 <x-ui.label for="name">店舗名（正式名称）</x-ui.label>
                 <x-ui.input 
@@ -82,9 +83,10 @@
                 :class="showAllAreas ? 'max-h-[999px]' : 'max-h-[72px]'">
                     <template x-for="(area, index) in areas" :key="index">
                         <x-ui.chip
+                            type="button"
                             variant="area"
-                            @click="selectArea(area)"
-                            x-bind:class="selectedArea === area ? '!bg-main text-form' : '!bg-accent text-text_color'"
+                            @click.prevent="selectArea(area)"
+                            x-bind:class="selectedArea === area ? '!bg-main !text-form' : '!bg-accent !text-text_color'"
                         >
                             <span x-text="area"></span>
                         </x-ui.chip>
@@ -112,9 +114,10 @@
                 :class="showAllMoods ? 'max-h-[999px]' : 'max-h-[104px]'">
                     <template x-for="(mood, index) in moods" :key="index">
                         <x-ui.chip
+                            type="button"
                             variant="mood"
-                            @click="selectMood(mood)"
-                            x-bind:class="selectedMood === mood ? '!bg-main text-form' : '!bg-accent text-text_color'"
+                            @click.prevent="selectMood(mood)"
+                            x-bind:class="selectedMood === mood ? '!bg-main !text-form' : '!bg-accent !text-text_color'"
                         >
                             <span x-text="mood"></span>
                         </x-ui.chip>

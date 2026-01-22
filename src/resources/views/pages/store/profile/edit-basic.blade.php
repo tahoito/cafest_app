@@ -273,14 +273,6 @@
                             </div>
                         </div>
 
-                        <div class="text-xs text-red-500">
-                            budget_min={{ var_export($store->budget_min, true) }}
-                            budget_max={{ var_export($store->budget_max, true) }}
-                            defaultRange={{ $defaultRange }}
-                            old={{ var_export(old('budget_range'), true) }}
-                        </div>
-
-    
                         <div class="space-y-1">
                             <div class="text-lg text-text_color font-medium">予算</div>
                             <select name="budget_range"

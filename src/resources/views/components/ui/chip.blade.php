@@ -1,5 +1,4 @@
 @props([
-  'active' => false,
   'disabled' => false,
   'type' => 'button',
   'variant' => 'area', // area | mood
@@ -21,7 +20,8 @@ $state = $disabled
   ? 'opacity-50 cursor-not-allowed'
   : 'cursor-pointer hover:opacity-90 active:scale-[0.98]';
 
-$theme = "border-main text-text_color";
+$theme = 'border-main';
+
 @endphp
 
 <button
