@@ -90,7 +90,7 @@
         @include('pages.user.mycafe.reviews')
       </div>
       <div x-show="tab==='history'" x-cloak>
-        @include('pages.user.mycafe.history')
+        @include('pages.user.mycafe.histories')
       </div>
     </div>
   </div>
