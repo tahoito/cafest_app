@@ -28,17 +28,13 @@ class SettingsController extends Controller
         $signup = $request->session()->get('signup');
         $validated = $request->validated();
 
-        $areas = json_decode($validated['area'], true);
-        $moods = json_decode($validated['mood'], true);
-
-
         $store = Store::create([
             'name' => $validated['name'],
             'email' => $signup['email'],
             'password' => Hash::make($signup['password']),
             'address' => $validated['address'],
-            'area' => $areas,
-            'mood' => $moods,
+            'area' => $validated['area'] ?? null,
+            'mood' => $validated['mood'] ?? null,
         ]);
 
         Auth::guard('store')->login($store);
