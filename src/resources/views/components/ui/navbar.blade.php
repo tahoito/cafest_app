@@ -28,7 +28,7 @@
     </a>
 
     <a href="{{ route('user.mycafe') }}"
-       class="menu__item">
+       class="menu__item {{ request()->routeIs('user.mycafe') ? 'active' : '' }}">
       <span class="menu__icon">
         <x-icons.mycafe size="34" class="nav-draw"/>
       </span>
