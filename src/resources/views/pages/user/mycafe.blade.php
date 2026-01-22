@@ -1,35 +1,43 @@
 @extends('layouts.app')
-@section('title','おすすめのカフェ')
+@section('title','マイカフェページ')
 
 @section('content')
 <div class="relative px-4 pt-6 pb-6 bg-base_color">
 
-  {{-- 編集ボタン --}}
-  <div class="absolute top-4 right-4 text-xs text-text flex items-center gap-1">
-    <x-icons.edit class="w-6 h-6" />編集
-  </div>
+  <div>
+    @php
+      use Illuminate\Support\Facades\Storage;
 
-  <div class="flex items-start gap-4 mt-6">
+      $iconUrl = $user->icon_path
+        ? Storage::url($user->icon_path)
+        : Storage::url('users/user1.jpg');
+    @endphp
 
-    {{-- ユーザーアイコン --}}
-    <img
-      src="/images/users/user1.jpg"
-      class="w-[73px] h-[73px] rounded-full object-cover"
-    >
+    <a href="{{ route('user.mycafe.edit') }}">
+      <div class="absolute top-6 right-4 text-xs text-text flex items-center gap-1">
+        <x-icons.edit class="w-[15px] h-[15px]" />編集
+      </div>
+    </a>
 
-    {{-- ユーザー情報（ベタ書き） --}}
-  <div class="flex-1">
-    <div class="rounded-xl ring-1 ring-main bg-base_color px-4 py-3 text-sm text-text leading-relaxed">
-      <p class="mb-2">
-        ユーザー名：cafest_vantan
-      </p>
-      <p>
-        メールアドレス：cafest@gmail.com
-      </p>
+    <div class="flex items-start gap-3 mt-6">
+      <img
+        src="{{ $iconUrl }}"
+        class="w-[73px] h-[73px] rounded-full object-cover"
+        alt="ユーザーアイコン"
+      >
+
+      <div class="flex-1">
+        <div class="rounded-lg ring-1 ring-main bg-base_color px-2 py-3 text-sm text-text_color">
+          <p class="mb-2">
+            ユーザー名：{{ $user->name }}
+          </p>
+          <p class="break-all">
+            メールアドレス：{{ $user->email }}
+          </p>
+        </div>
+      </div>
+
     </div>
-  </div>
-
-
   </div>
 </div>
 @endsection
