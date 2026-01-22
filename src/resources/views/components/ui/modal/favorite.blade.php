@@ -2,13 +2,20 @@
 
 @php
   use Illuminate\Support\Facades\Storage;
+
   $storeId  = (int) data_get($store, 'id');
   $name     = data_get($store, 'name', 'No Name');
-  $defaultCard = Storage::url('images/store/card.png'); // ★ここ
-  $imageUrl = data_get($store, 'image_url')
-    ? Storage::url(data_get($store, 'image_url'))
-    : $defaultCard;
+
+  $defaultCardPath = 'images/store/card.png';
+  $defaultCardUrl  = Storage::disk('public')->url($defaultCardPath);
+
+  $imagePath = data_get($store, 'image_url');
+  $imageUrl  = $imagePath
+    ? Storage::disk('public')->url($imagePath)
+    : $defaultCardUrl;
 @endphp
+
+
 
 <div x-data x-cloak {{ $attributes }}>
   <template x-teleport="body">
@@ -107,7 +114,7 @@
         {{-- folders list --}}
         <div
           class="bg-base_color px-5 pb-5 max-h-[60vh] overflow-y-auto"
-          x-data="favoriteFoldersUI({{ $storeId }}, @js($defaultCard))"
+          x-data="favoriteFoldersUI({{ $storeId }}, @js($defaultCardUrl))"
           x-init="initWatch()">
           <div class="mt-3 flex items-center justify-between">
             <div class="text-text_color">コレクション</div>
@@ -135,7 +142,7 @@
             <div class="flex items-center justify-between py-3">
               <div class="flex items-center gap-3">
                 <img
-                  :src="folder.latest_store?.image_url ?? defaultThumb"
+                  :src="toPublicUrl(folder.latest_store?.image_url)|| defaultThumb"
                   class="w-[85px] h-[85px] rounded-lg object-cover"
                   alt=""
                 >

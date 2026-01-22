@@ -85,7 +85,7 @@ document.addEventListener('alpine:init', () => {
     },
   }))
 
-  // ✅ こっちだけ残す（重複定義しない）
+
   Alpine.data('favoriteFoldersUI', (storeId, defaultThumb) => ({
     storeId: Number(storeId),
     defaultThumb,
@@ -94,6 +94,14 @@ document.addEventListener('alpine:init', () => {
     error: '',
     hasInit: false,
 
+    toPublicUrl(path) {
+      if (!path) return null;
+      if (path.startsWith('http://') || path.startsWith('https://')) return path;
+      if (path.startsWith('/storage/')) return path;
+      if (path.startsWith('storage/')) return '/' + path;
+      return '/storage/' + path.replace(/^\/+/, '');
+    },
+  
     initWatch() {
       this.error = ''
       this.hasInit = false
