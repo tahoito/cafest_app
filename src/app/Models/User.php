@@ -6,7 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-namespace App\Models\ViewHistory;
+
 
 class User extends Authenticatable
 {
@@ -63,6 +63,6 @@ class User extends Authenticatable
     }
 
     public function viewHistories() {
-        return $this->hasMany(ViewHistory::class);
+        return $this->hasMany(\App\Models\ViewHistory::class);
     }
 }

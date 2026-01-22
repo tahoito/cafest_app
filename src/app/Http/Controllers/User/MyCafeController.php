@@ -7,21 +7,29 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Store;
 use App\Models\Review;
+use App\Models\VIewHistory;
 
 class MyCafeController extends Controller
 {
     public function index(Request $request) {
 
+
         $user = Auth::guard('user')->user();
 
+        $store = Store::findOrFail($storeId);
         $favorites = $user->favorites()->get();
+
+        $faved = auth()->check()
+            ? auth()->user()->favorites()->where('store_id', $store->id)->exists()
+            : false;
+
 
         $reviews = Review::where('user_id', $user->id)
             ->with('store')
             ->latest()
             ->get();
         
-        $histories = viewHistories::where('user_id', $user->id)
+        $histories = ViewHistory::where('user_id', $user->id)
             ->with(['store' => fn($q) => $q->withAvg('reviews','rating')])
             ->orderByDesc('viewed_at')
             ->limit(30)
