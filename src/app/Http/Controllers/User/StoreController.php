@@ -22,6 +22,11 @@ class StoreController extends Controller
             ->withAvg('reviews','rating')
             ->findOrFail($store->id);
 
+        ViewHistory::updateOrCreate(
+            ['user_id' => $userId, 'store_id' => $store->id ],
+            ['viewed_at' => Carbon::now()]
+        );
+
         $reviews = Review::with(['user','store'])
             ->where('store_id', $store->id)
             ->latest()

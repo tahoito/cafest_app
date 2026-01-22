@@ -118,4 +118,10 @@ class Store extends Authenticatable
         return $this->hasOne(StoreImage::class)->latestOfMany();
     }
 
+    public function viewHistories()
+    {
+        return $this->hasMany(ViewHistory::class);
+    }
+
+
 }

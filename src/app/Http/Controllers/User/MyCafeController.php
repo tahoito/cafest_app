@@ -21,9 +21,10 @@ class MyCafeController extends Controller
             ->latest()
             ->get();
         
-        $histories = $user->viewHistories()
-            ->with('stores')
-            ->latest()
+        $histories = viewHistories::where('user_id', $user->id)
+            ->with(['store' => fn($q) => $q->withAvg('reviews','rating')])
+            ->orderByDesc('viewed_at')
+            ->limit(30)
             ->get();
 
         return view('pages.user.mycafe',compact(
