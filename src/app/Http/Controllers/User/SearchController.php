@@ -12,14 +12,10 @@ class SearchController extends Controller
 {
     public function index(Request $request)
     {
-        $tagId = $request->query('tag');
         $keyword = $request->input('keyword');
-
         $tags = Tag::orderBy('name')->get();
 
-        $query = Store::query()
-            ->withAvg('reviews', 'rating');
-
+        $query = Store::query()->withAvg('reviews', 'rating');
 
         $isSearching =
             $request->filled('keyword') ||
@@ -28,68 +24,55 @@ class SearchController extends Controller
             $request->filled('time') ||
             $request->filled('moods') ||
             $request->filled('rating_min') ||
-            $request->filled('tag');
+            $request->filled('tags');
 
-       
+
         if ($request->filled('tags')) {
             $tagIds = array_values(array_unique(array_map('intval', (array)$request->input('tags'))));
-
-            $query->whereHas('reviews', function ($q) use ($tagIds) {
-                foreach ($tagIds as $id) {
-                    $q->whereHas('tags', fn($tq) => $tq->where('tags.id', $id));
-                }
+            $query->whereHas('reviews.tags', function ($tq) use ($tagIds) {
+                $tq->whereIn('tags.id', $tagIds);
             });
         }
-
 
         if ($keyword) {
             $query->where(function ($q) use ($keyword) {
                 $q->where('name', 'like', "%{$keyword}%")
-                  ->orWhere('area', 'like', "%{$keyword}%");
+                ->orWhere('area', 'like', "%{$keyword}%");
             });
         }
 
-       
+     
         if ($request->filled('area')) {
             $query->where('area', $request->input('area'));
         }
 
-      
         if ($request->filled('moods')) {
-            $query->whereIn('mood', (array) $request->input('moods'));
+            $query->whereIn('mood', (array)$request->input('moods'));
         }
 
-        
         if ($request->filled('rating_min')) {
-            $min = (float) $request->input('rating_min');
-            $query->having('reviews_avg_rating', '>=', $min);
-        }
-        
-        if ($isSearching) {
-            $stores = $query->get();
-        }else{
-            $stores = app(StoreRecommendService::class)->recommended(8); 
+            $min = (float)$request->input('rating_min');
+            $query->where('reviews_avg_rating', '>=', $min);
         }
 
-        if ($request->input('time')) {
+        if ($request->filled('time')) {
             $time = $request->input('time');
 
             if ($time === 'morning') {
                 $query->whereHas('hours', function ($q) {
-                $q->where('is_closed', false)
-                ->whereNotNull('open_time')
-                ->where('open_time', '<=', '10:00:00');
-            });
+                    $q->where('is_closed', false)
+                    ->whereNotNull('open_time')
+                    ->where('open_time', '<=', '10:00:00');
+                });
             } elseif ($time === 'night') {
                 $query->whereHas('hours', function ($q) {
-                $q->where('is_closed', false)
-                ->whereNotNull('close_time')
-                ->where('close_time', '>=', '20:00:00');
-            });
-
+                    $q->where('is_closed', false)
+                    ->whereNotNull('close_time')
+                    ->where('close_time', '>=', '20:00:00');
+                });
             } elseif ($time === 'now') {
                 $now = now()->format('H:i:s');
-                $dow = (int) now()->dayOfWeek; // 0=Sun..6=Sat（Carbon）
+                $dow = (int) now()->dayOfWeek;
 
                 $query->whereHas('hours', function ($q) use ($dow, $now) {
                     $q->where('day_of_week', $dow)
@@ -100,28 +83,28 @@ class SearchController extends Controller
             }
         }
 
-        if ($request->filled('budget')){
+        if ($request->filled('budget')) {
             $key = $request->input('budget');
-            $ranges = config('cafest.budget_ranges');
+            $ranges = config('cafest.budget_ranges', []);
 
-            if (isset($ranges[$key])){
-                [$min,$max] = $ranges[$key];
+            if (isset($ranges[$key])) {
+                [$min, $max] = $ranges[$key];
 
-                $query->where(function ($q) use ($min, $max){
+                $query->where(function ($q) use ($min, $max) {
                     $q->where('budget_max', '>=', $min);
-
-                    if ($max !== null){
+                    if ($max !== null) {
                         $q->where('budget_min', '<=', $max);
                     }
                 });
             }
         }
 
+
         $stores = $isSearching
             ? $query->get()
             : app(StoreRecommendService::class)->recommended(8);
 
-
-        return view('pages.user.search', compact('stores', 'tags','isSearching'));
+        return view('pages.user.search', compact('stores', 'tags', 'isSearching'));
     }
+
 }

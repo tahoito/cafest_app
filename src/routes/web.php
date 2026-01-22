@@ -67,6 +67,9 @@ Route::prefix('user')->name('user.')->group(function () {
         Route::post('/stores/{store}/favorite/folders', [FavoriteFolderController::class, 'sync'])->name('stores.favorite.folders.sync');  
         
         Route::get('/mycafe',[MyCafeController::class,'index'])->name('mycafe');
+        Route::get('/mycafe/edit',[MyCafeController::class,'edit'])->name('mycafe.edit');
+        Route::post('/mycafe/edit', [MyCafeController::class, 'update'])->name('mycafe.update');
+
     });
 });
 

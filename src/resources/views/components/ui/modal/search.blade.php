@@ -52,7 +52,15 @@
         class="bg-base_color px-5 pt-4 pb-0"
         action="{{ route('user.search') }}"
         method="GET"
+        x-init="
+          $store.search.area = @js(request('area', ''));
+          $store.search.budget = @js(request('budget', ''));
+          $store.search.time = @js(request('time', ''));
+          $store.search.ratingMin = @js(request('rating_min', '')) || null;
+          $store.search.tags = @js((array) request('tags', []));
+        "
       >
+        <input type="hidden" name="area" :value="$store.search.area">
         <div class="mx-auto w-full max-w-md space-y-4">
 
           {{-- エリア --}}
@@ -204,7 +212,7 @@
           {{-- ボタン --}}
           <div class="sticky bottom-0 bg-base_color pt-3 pb-6">
             <div class="flex justify-center">
-              <x-ui.button type="button" class="w-[70%]" variants="secondary"
+              <x-ui.button type="submit" class="w-[70%]" variants="secondary"
                 @click="document.getElementById('searchForm').submit()">
                 検索
               </x-ui.button>
