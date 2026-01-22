@@ -2,9 +2,9 @@
 @section('title','マイカフェページ')
 
 @section('content')
-<div class="relative px-4 pt-6 pb-6 bg-base_color">
+<div class="relative pt-6 pb-6 bg-base_color">
 
-  <div>
+  <div class="px-4">
     @php
       use Illuminate\Support\Facades\Storage;
 
@@ -37,6 +37,61 @@
         </div>
       </div>
 
+    </div>
+  </div>
+
+  <div x-data="{ tab: 'favorite' }" class="mt-8">
+    <div class="flex items-end border-b border-line">
+      <button
+        type="button"
+        @click="tab='favorite'"
+        class="rounded-t-2xl transition-all duration-200"
+        :class="
+          tab === 'favorite'
+            ? 'bg-main text-form w-[154px] text-lg py-3'
+            : 'bg-accent text-main w-[120px] text-base py-2'
+        "
+      >
+        お気に入り
+      </button>
+
+      <button
+        type="button"
+        @click="tab='review'"
+        class="rounded-t-2xl transition-all duration-200"
+        :class="
+          tab === 'review'
+            ? 'bg-main text-form w-[154px] text-lg py-3'
+            : 'bg-accent text-main w-[120px] text-base py-2'
+        "
+      >
+        レビュー
+      </button>
+
+      <button
+        type="button"
+        @click="tab='history'"
+        class="rounded-t-2xl transition-all duration-200"
+        :class="
+          tab === 'history'
+            ? 'bg-main text-form w-[154px] text-lg py-3'
+            : 'bg-accent text-main w-[120px] text-base py-2'
+        "
+      >
+        閲覧履歴
+      </button>
+    </div>
+
+    <div class="pt-4">
+      <div x-show="tab==='favorite'" x-cloak>
+        @include('pages.user.mycafe.favorites')
+      </div>
+      <div x-show="tab==='review'" x-cloak>
+        @include('pages.user.mycafe.reviews')
+      </div>
+      <div x-show="tab==='history'" x-cloak>
+        @include('pages.user.mycafe.history')
+      </div>
     </div>
   </div>
 </div>
