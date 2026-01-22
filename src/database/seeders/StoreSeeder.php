@@ -16,42 +16,6 @@ class StoreSeeder extends Seeder
     {
         $stores = [
             [
-                'name' => 'Cafe Lumiere',
-                'email' => 'lumiere@example.com',
-                'password' => Hash::make('password'),
-                'address' => '名古屋市中区栄1-24-38 エムズハウス栄 2F',
-                'phone' => '052-123-4567',
-                'area' => '栄',
-                'mood' => '静か',
-                'description' => '落ち着いた空間で、こだわりのコーヒーと焼き菓子を楽しめるカフェです。',
-                'budget_min' => 800,
-                'budget_max' => 1600,
-            ],
-            [
-                'name' => 'Morining',
-                'email' => 'morining@example.com', // ←ユニークに
-                'password' => Hash::make('password'),
-                'address' => '名古屋市中区栄3丁目31-13',
-                'phone' => '052-234-5678',
-                'area' => '矢場町',
-                'mood' => 'ペットOK',
-                'description' => 'モーニングが人気のカフェです。',
-                'budget_min' => 800,
-                'budget_max' => 1600,
-            ],
-            [
-                'name' => 'フラワーカフェ',
-                'email' => 'flower@example.com', // ←ユニークに
-                'password' => Hash::make('password'),
-                'address' => '名古屋市昭和区桜山町',
-                'phone' => '070-9086-54XX',
-                'area' => '桜山',
-                'mood' => 'ペットOK',
-                'description' => '花に囲まれたカフェです。',
-                'budget_min' => 3000,
-                'budget_max' => 4000,
-            ],
-            [
                 'name' => 'cafest',
                 'email' => 'cafest@example.com',
                 'password' => Hash::make('password'),
@@ -62,18 +26,6 @@ class StoreSeeder extends Seeder
                 'description' => '韓国っぽい雰囲気のカフェです。',
                 'budget_min' => 1000,
                 'budget_max' => 2000,
-            ],
-            [
-                'name' => 'ミラクル',
-                'email' => 'miracle@example.com', // ←ユニークに
-                'password' => Hash::make('password'),
-                'address' => '名古屋市千種区末盛通1丁目7番地',
-                'phone' => '052-567-8903',
-                'area' => '覚王山',
-                'mood' => '女子会',
-                'description' => '女子会に人気のカフェです。',
-                'budget_min' => 5000,
-                'budget_max' => 7000,
             ],
         ];
 

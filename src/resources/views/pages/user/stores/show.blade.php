@@ -281,8 +281,17 @@
                   <div class="grid grid-cols-[120px_1fr] gap-x-6 items-start">
                       <div class="text-lg font-medium text-text_color">予算</div>
                       <div class="text-base leading-[1.9]">
-                      @if(data_get($store,'budget_min') && data_get($store,'budget_max'))
+                      @if($store->budget_min === 0 && $store->budget_max !== null)
+                        <p>〜{{ number_format($store->budget_max) }}円</p>
+
+                      @elseif($store->budget_min !== null && $store->budget_max !== null)
                         <p>{{ number_format($store->budget_min) }}円〜{{ number_format($store->budget_max) }}円</p>
+
+                      @elseif($store->budget_min !== null && $store->budget_max === null)
+                        <p>{{ number_format($store->budget_min) }}円〜</p>
+
+                      @else
+                        <p class="text-placeholder">未設定</p>
                       @endif
                       </div>
                   </div>

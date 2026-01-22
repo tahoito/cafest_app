@@ -51,7 +51,6 @@
             }
 
             $ranges = [
-                '' => '未設定',
                 '0-1000' => '〜1,000円',
                 '1000-2000' => '1,000~2,000円',
                 '2000-3000' => '2,000~3,000円',
@@ -60,11 +59,16 @@
             ];
 
             $defaultRange = '';
-            if (!is_null($store->budget_min) || !is_null($store->budget_max)) {
-                $min = $store->budget_min ?? 0;
-                $max = $store->budget_max ?? '';
-                $defaultRange = "{$min}-{$max}";
+            if ($store->budget_min !== null || $store->budget_max !== null) {
+                $min = $store->budget_min;
+                $max = $store->budget_max;
+
+                $minStr = ($min === null) ? '' : (string)$min;   // 0でも"0"にする
+                $maxStr = ($max === null) ? '' : (string)$max;
+
+                $defaultRange = "{$minStr}-{$maxStr}";
             }
+
 
             $payments = [
                 'cash' => '現金',
@@ -268,16 +272,23 @@
                                 @endforeach
                             </div>
                         </div>
+
+                        <div class="text-xs text-red-500">
+                            budget_min={{ var_export($store->budget_min, true) }}
+                            budget_max={{ var_export($store->budget_max, true) }}
+                            defaultRange={{ $defaultRange }}
+                            old={{ var_export(old('budget_range'), true) }}
+                        </div>
+
     
                         <div class="space-y-1">
                             <div class="text-lg text-text_color font-medium">予算</div>
                             <select name="budget_range"
-                                x-data="{ v: @js(old('budget_range', $defaultRange)) }"
-                                x-model="v" :class="v ? 'text-text_color' : 'text-placeholder'"
+                                :class="'text-text_color'"
                                 class="w-full rounded-lg bg-form px-4 py-3 ring-1 ring-gray-200">
                                 @foreach($ranges as $val => $label)
-                                    <option value="{{ $val }}">
-                                        {{ $label }}
+                                    <option value="{{ $val }}" @selected(old('budget_range', $defaultRange) === $val)>
+                                    {{ $label }}
                                     </option>
                                 @endforeach
                             </select>
