@@ -6,7 +6,7 @@
   $storeId  = (int) data_get($store, 'id');
   $name     = data_get($store, 'name', 'No Name');
 
-  $defaultCardPath = 'images/store/card.png';
+  $defaultCardPath = 'store/card.png';
   $defaultCardUrl  = Storage::disk('public')->url($defaultCardPath);
 
   $imagePath = data_get($store, 'image_url');

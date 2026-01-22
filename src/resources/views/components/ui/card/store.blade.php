@@ -8,7 +8,7 @@
 @php
   use Illuminate\Support\Facades\Storage;
 
-  $defaultCard = Storage::url('images/store/card.png');
+  $defaultCard = Storage::url('store/card.png');
   $url = $href ?? '#';
 
   $name = data_get($store, 'name', 'No Name');
