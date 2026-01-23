@@ -32,7 +32,6 @@
   @php
     use Illuminate\Support\Facades\Storage;
 
-    // 置けるなら public/images/store/menu.png を用意（なくても下のプレースホルダが出る）
     $dummy = asset('images/store/menu.png');
     $hasDummy = file_exists(public_path('images/store/menu.png'));
   @endphp

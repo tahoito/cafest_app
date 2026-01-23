@@ -44,7 +44,7 @@
       <button
         type="button"
         @click="tab='favorite'"
-        class="rounded-t-2xl transition-all duration-200"
+        class="rounded-t-2xl transition-all duration-100"
         :class="
           tab === 'favorite'
             ? 'bg-main text-form w-[154px] text-lg py-3'
@@ -57,7 +57,7 @@
       <button
         type="button"
         @click="tab='review'"
-        class="rounded-t-2xl transition-all duration-200"
+        class="rounded-t-2xl transition-all duration-100"
         :class="
           tab === 'review'
             ? 'bg-main text-form w-[154px] text-lg py-3'
@@ -70,7 +70,7 @@
       <button
         type="button"
         @click="tab='history'"
-        class="rounded-t-2xl transition-all duration-200"
+        class="rounded-t-2xl transition-all duration-100"
         :class="
           tab === 'history'
             ? 'bg-main text-form w-[154px] text-lg py-3'
