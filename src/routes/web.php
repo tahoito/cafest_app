@@ -69,6 +69,7 @@ Route::prefix('user')->name('user.')->group(function () {
 
         
         Route::get('/mycafe',[MyCafeController::class,'index'])->name('mycafe');
+        Route::get('/mycafe/favorites/{folder}',[MyCafeController::class,'index'])->name('mycafe.favorites');
         Route::get('/mycafe/edit',[MyCafeController::class,'edit'])->name('mycafe.edit');
         Route::post('/mycafe/edit', [MyCafeController::class, 'update'])->name('mycafe.update');
 

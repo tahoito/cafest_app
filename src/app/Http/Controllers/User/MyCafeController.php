@@ -18,6 +18,9 @@ class MyCafeController extends Controller
         $user = Auth::guard('user')->user();
         $userId = $user->id;
 
+        $favoriteStores = collect();
+        $folderTitle = null;
+
         // すべてのお気に入り（最新順）
         $favoritesAll = $user->favorites()
             ->with(['latestImage'])
@@ -29,7 +32,25 @@ class MyCafeController extends Controller
             ->with(['stores.latestImage'])
             ->get();
 
-        // フォルダカード用データ（サムネは「フォルダ内の最新お気に入り」）
+        $folder = $request->query('folder');
+        
+        if ($folder === 'all') {
+            $stores = $user->favorites()
+                ->with('latestImage')
+                ->orderByDesc('user_favorites.created_at')
+                -get();
+        } else {
+            $folderModel = FavoriteFolder::where('user_id',$userId)
+                ->findOrFail($folder);
+
+            $stores = $folderModel->stores()
+                ->with('latestImage')
+                ->orderByDesc('favorite_folders_store.created_at')
+                ->get();
+                
+            $title = $folderModel->name;
+        }
+
         $foldersPayload = $folders->map(function ($folder) {
             $latestStore = $folder->stores
                 ->sortByDesc(fn ($s) => optional($s->pivot)->created_at)
@@ -78,7 +99,9 @@ class MyCafeController extends Controller
             'allThumbs',
             'favIds',
             'reviews',
-            'histories'
+            'histories',
+            'favoriteStores',
+            'folderTitle',
         ));
     }
 
