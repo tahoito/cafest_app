@@ -32,7 +32,7 @@
 
                         <div class="flex justify-center">
                             <div class="relative w-[260px] rounded-2xl border border-main p-3">
-                                <div class="aspect-square rounded-xl overflow-hidden">
+                                <div class="aspect-square overflow-hidden">
                                     <img
                                         id="avatarPreview"
                                         src="{{ $user->icon_path
