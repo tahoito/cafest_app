@@ -47,7 +47,7 @@
                                     w-9 h-9 rounded-full bg-accent cursor-pointer">
                                     <input 
                                         type="file" 
-                                        name="avatar" 
+                                        name="icon" 
                                         class="hidden" 
                                         accept="image/*"
                                         onChange="

@@ -133,8 +133,8 @@ class MyCafeController extends Controller
             if($user->avatar_path){
                 Storage::disk('public')->delete($user->icon_path);
             }
-            $path = $request->file('icon_path')->store('user/icon_path', 'public');
-            $user->avatar_path = $path;
+            $path = $request->file('icon')->store('user_icon', 'public');
+            $user->icon_path = $path;
         }
 
         $user->save();
