@@ -23,7 +23,7 @@
             </div>
         </header>
 
-        <form method="POST" action="{{ route('user.mycafe.update') }}">
+        <form method="POST" action="{{ route('user.mycafe.update') }}" enctype="multipart/form-data">
             @csrf 
   
             <div class="h-full overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
@@ -31,23 +31,39 @@
                     <section class="px-5 pt-4 space-y-6">
 
                         <div class="flex justify-center">
-                            <div class="relative w-[260px] rounded-2xl border border-line bg-form p-3">
+                            <div class="relative w-[260px] rounded-2xl border border-main p-3">
                                 <div class="aspect-square rounded-xl overflow-hidden">
                                     <img
-                                        src="{{ $user->avatar_path ? Storage::url($user->avatar_path) }}"
+                                        id="avatarPreview"
+                                        src="{{ $user->icon_path
+                                            ? \Illuminate\Support\Facades\Storage::url($user->icon_path)
+                                            : \Illuminate\Support\Facades\Storage::url('users/user1.jpg') }}"
                                         class="w-full h-full object-cover"
-                                    >
+                                    />
                                 </div>
 
                         
-                                <a class="p-2" href="{{ url()->previous() }}">
-                                    <x-icons.plus class="w-5 h-5 text-accent" />
-                                </a>
+                                <label class="absolute top-3 right-3 z-10 grid place-items-center
+                                    w-9 h-9 rounded-full bg-accent cursor-pointer">
+                                    <input 
+                                        type="file" 
+                                        name="avatar" 
+                                        class="hidden" 
+                                        accept="image/*"
+                                        onChange="
+                                            const f = this.files?.[0]; 
+                                            if (!f) return;
+                                            const u = window.URL || window.webkitURL;
+                                            const url = u.createObjectURL(f);
+                                            document.getElementById('avatarPreview').src = url;
+                                        ">
+                                    <x-icons.add class="w-6 h-6 text-text_color" />
+                                </label>
                             </div>
                         </div>
 
 
-                        <div class="space-y-10">
+                        <div class="space-y-[42px]">
                             <div class="space-y-1">
                                 <x-ui.label for="username">ユーザー名</x-ui.label>
                                 <x-ui.input
@@ -77,7 +93,7 @@
                             </div>
 
                     
-                            <div class="pt-6">
+                            <div class="pt-[50px]">
                                 <x-ui.button type="submit" class="w-full">
                                     保存
                                 </x-ui.button>

@@ -115,4 +115,30 @@ class MyCafeController extends Controller
 
         return view('pages.user.mycafe.edit',compact('user'));
     }
+
+    public function update(Request $request) 
+    {
+        $user = Auth::guard('user')->user();
+
+        $validated = $request->validate([
+            'username' => ['required', 'string', 'max:30'],
+            'email' => ['required', 'email', 'max:225'],
+            'icon_path' => ['nullable', 'image', 'max:4096'],
+        ]);
+
+        $user->name = $validated['username'];
+        $user->email = $validated['email'];
+
+        if ($request->hasFile('icon')){
+            if($user->avatar_path){
+                Storage::disk('public')->delete($user->icon_path);
+            }
+            $path = $request->file('icon_path')->store('user/icon_path', 'public');
+            $user->avatar_path = $path;
+        }
+
+        $user->save();
+
+        return redirect()->route('user.mycafe')->with('success','更新しました');
+    }
 }

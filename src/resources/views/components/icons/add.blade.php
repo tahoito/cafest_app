@@ -1,6 +1,6 @@
 @props([
-  'size' => 24,      // 表示サイズ(px)
-  'stroke' => 1.5,     // 線の太さ
+  'size' => 24,
+  'stroke' => 1.5,
 ])
 
 <svg
@@ -15,6 +15,5 @@
   height="{{ $size }}"
   {{ $attributes->merge(['class' => 'inline-block shrink-0']) }}
 >
-
-<path d="M4.16699 10.0003H15.8337M10.0003 4.16699V15.8337" />
+  <path d="M12 5V19M5 12H19" />
 </svg>
