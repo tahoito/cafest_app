@@ -43,6 +43,9 @@
             $sameOpenValue  = old('same_open', $sameOpenDefault);
             $sameCloseValue = old('same_close', $sameCloseDefault);
 
+            $openDefault = optional($dayHour)->open_time ? substr($dayHour->open_time, 0, 5) : '';
+            $closeDefault = optional($dayHour)->close_time ? substr($dayHour->close_time, 0, 5) : '';
+
             $times = [];
             for ($h=0; $h<24; $h++) {
                 foreach ([0,30] as $m) {
@@ -162,8 +165,19 @@
                             </div>
                         </div>
                     
-                        <div class="space-y-1">
+                        <div class="space-y-1" x-data="{
+                            toggleAll(e){
+                                const checked = e.target.checked;
+                                this.$root.querySelectorAll('input[name='\'open_days[]\']').forEach(cb => cb.checked = checked);
+                            }
+                        }">
                             <div class="text-lg text-text_color font-medium">営業曜日</div>
+                            <label class="flex items-center gap-3 rounded-lg bg-form px-4 py-3 ring-1 ring-line mb-3">
+                                <input type="checkbox" @change="toggleAll($event)"
+                                    class="h-5 w-5 accent-main2">
+                                    <span class="text-text_color">すべて</span>
+                            </label>
+
                             <div class="grid grid-cols-2 gap-3">
                                 <div class="space-y-3">
                                     @foreach($leftDays as $i => $label)
@@ -249,22 +263,24 @@
                             <div x-show="!is24h && hoursMode === 'byDay'" x-cloak class="space-y-2">
                                 @foreach($days as $i => $label)
                                     @php $dayHour = $hoursByDay->get($i); @endphp
-                                <div class="flex items-center justify-between rounded-lg bg-form px-4 py-3 ring-1 ring-gray-200">
-                                    <span class="text-text_color font-medium">{{ $label }}</span>
+                                <div class="flex items-center justify-between rounded-lg bg-form px-4 py-3 ring-1 ring-gray-200"
+                                    x-data="{ allOpen: '', allClose:'' }">
+                                    <span class="text-text_color font-medium">すべて</span>
+
                                     <div class="flex items-center gap-2">
-                                        <select  name="hours[{{ $i }}][open]" 
+                                        <select  x-model="allOpen" @change="document.querySelectorAll('select[name^=\'hours\'][name$=\'[open]'\]').forEach(s => s.value = allOpen);"
                                             class="w-[120px] rounded-lg bg-white px-2 py-2 ring-1 ring-gray-200 text-text_color">
                                             <option value="">--:--</option>
                                             @foreach($times as $t)
-                                                <option value="{{ $t }}" @selected(old("hours.$i.open", optional($dayHour)->open_time) === $t)>{{ $t }}</option>
+                                                <option value="{{ $t }}">{{ $t }}</option>
                                             @endforeach
                                         </select>
-                                    <span class="text-placeholder">-</span>
-                                        <select name="hours[{{ $i }}][close]" 
+                                        <span class="text-placeholder">-</span>
+                                        <select x-model="allClose" @change="document.querySelectorAll('select[name^=\'hours\'][name$=\'[close]\']').forEach(s => s.value = allClose);"
                                             class="w-[120px] rounded-lg bg-white px-2 py-2 ring-1 ring-gray-200 text-text_color">
                                             <option value="">--:--</option>
                                             @foreach($times as $t)
-                                                <option value="{{ $t }}" @selected(old("hours.$i.close", optional($dayHour)->close_time) === $t)>{{ $t }}</option>
+                                                <option value="{{ $t }}">{{ $t }}</option>
                                             @endforeach
                                         </select>
                                     </div>
