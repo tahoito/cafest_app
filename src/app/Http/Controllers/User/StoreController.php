@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\Store;
 use App\Models\Review;
+use App\Models\ViewHistory;
 use App\Models\ReviewImage;
 use App\Services\StoreRecommendService;
 use Illuminate\Http\Request;
@@ -17,15 +18,17 @@ class StoreController extends Controller
 {
     public function show(Store $store, StoreRecommendService $service)
     {
-        $store = Store::query()
-            ->with(['hours', 'reviews'])
-            ->withAvg('reviews','rating')
-            ->findOrFail($store->id);
+        $store->load(['hours', 'reviews', 'slideImages', 'galleryImages'])
+            ->loadAvg('reviews','rating');
+        
+        $userId = auth('user')->id();
 
-        ViewHistory::updateOrCreate(
-            ['user_id' => $userId, 'store_id' => $store->id ],
-            ['viewed_at' => Carbon::now()]
-        );
+        if ($userId) {
+            ViewHistory::updateOrCreate(
+                ['user_id' => $userId, 'store_id' => $store->id ],
+                ['viewed_at' => Carbon::now()]
+            );
+        }
 
         $reviews = Review::with(['user','store'])
             ->where('store_id', $store->id)
