@@ -18,38 +18,15 @@ class MyCafeController extends Controller
         $user = Auth::guard('user')->user();
         $userId = $user->id;
 
-        $favoriteStores = collect();
-        $folderTitle = null;
-
-        // すべてのお気に入り（最新順）
         $favoritesAll = $user->favorites()
             ->with(['latestImage'])
-            ->orderByDesc('user_favorites.created_at') // pivot名が違うなら修正
+            ->orderByDesc('user_favorites.created_at')
             ->get();
 
-        // フォルダ一覧（フォルダ内店舗も取得）
         $folders = FavoriteFolder::where('user_id', $userId)
             ->with(['stores.latestImage'])
             ->get();
 
-        $folder = $request->query('folder');
-        
-        if ($folder === 'all') {
-            $stores = $user->favorites()
-                ->with('latestImage')
-                ->orderByDesc('user_favorites.created_at')
-                -get();
-        } else {
-            $folderModel = FavoriteFolder::where('user_id',$userId)
-                ->findOrFail($folder);
-
-            $stores = $folderModel->stores()
-                ->with('latestImage')
-                ->orderByDesc('favorite_folders_store.created_at')
-                ->get();
-                
-            $title = $folderModel->name;
-        }
 
         $foldersPayload = $folders->map(function ($folder) {
             $latestStore = $folder->stores
@@ -68,7 +45,7 @@ class MyCafeController extends Controller
             ];
         });
 
-        // 左上「すべて」用コラージュ（最大4枚）
+
         $allThumbs = $favoritesAll
             ->map(fn ($s) => $s->latestImage 
                 ? Storage::url($s->latestImage->path)
@@ -78,7 +55,7 @@ class MyCafeController extends Controller
             ->take(4)
             ->values();
 
-        // お気に入り判定用（StoreCardで使うなら）
+       
         $favIds = $favoritesAll->pluck('id')->all();
 
         $reviews = Review::where('user_id', $userId)
@@ -100,13 +77,42 @@ class MyCafeController extends Controller
             'favIds',
             'reviews',
             'histories',
-            'favoriteStores',
-            'folderTitle',
         ));
+    }
+
+    public function favorites(string $folder)
+    {
+        $user = Auth::guard('user')->user();
+        $userId = $user->id;
+
+        if ($folder === 'all') {
+            $stores = $user->favorites()
+                ->with('latestImage')
+                ->orderByDesc('user_favorites.created_at')
+                ->get();
+
+            $title = 'すべての投稿';
+        } else {
+            $folderModel = FavoriteFolder::where('user_id', $userId)
+                ->findOrFail((int)$folder);
+
+            $stores = $folderModel->stores()
+                ->with('latestImage')
+                ->orderByDesc('favorite_folders_store.created_at')
+                ->get();
+
+            $title = $folderModel->name;
+        }
+
+        $favIds = $stores->pluck('id')->all();
+
+        return view('pages.user.mycafe_favorites', compact('stores','favIds','title'));
     }
 
     public function edit(Request $request)
     {
-        return view('pages.user.mycafe.edit');
+        $user = Auth::guard('user')->user();
+
+        return view('pages.user.mycafe.edit',compact('user'));
     }
 }
