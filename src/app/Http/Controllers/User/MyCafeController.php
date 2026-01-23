@@ -17,7 +17,7 @@ class MyCafeController extends Controller
         $favorites = $user->favorites()
             ->get();
 
-    
+
         $favIds = $favorites->pluck('id')->all();
 
         $reviews = Review::where('user_id', $user->id)
