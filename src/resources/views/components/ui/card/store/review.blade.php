@@ -144,7 +144,7 @@
     </div>
 
     {{-- 開いた時：全部 --}}
-    <div class="grid grid-cols-3 gap-2" x-show="open" x-transition x-cloak>
+    <div class="grid grid-cols-2 gap-2" x-show="open" x-transition x-cloak>
       @foreach($images as $url)
         <div class="relative aspect-square overflow-hidden rounded-xl">
           <img src="{{ $url }}" class="h-full w-full object-cover" alt="">
