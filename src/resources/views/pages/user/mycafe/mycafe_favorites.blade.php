@@ -15,18 +15,127 @@
                     <h1 class="text-center text-text_color text-2xl whitespace-nowrap overflow-hidden text-ellipsis">
                         {{ $title ?? '' }}
                     </h1>
-                    <div class="flex justify-end">
-                        <x-icons.more-menu class="text-center"/>
+                    <div
+                        x-data="{ open:false, show:false }"
+                        x-on:open-delete.window="show = true"
+                        class="flex justify-end"
+                        >
+                        <button type="button" class="p-2 rounded-full" @click="open=true" aria-label="More">
+                            <x-icons.more-menu class="text-center"/>
+                        </button>
+
+                        <div x-show="open" x-cloak class="fixed inset-0 z-[60]">
+                            <button type="button" class="absolute inset-0 bg-black/40" @click="open=false" aria-label="Close"></button>
+                        <div class="absolute inset-x-0 bottom-0">
+                            <div class="bg-form px-5 pt-3 pb-4 rounded-t-3xl">
+                                <div class="mx-auto mb-2 h-1.5 w-12 rounded-full bg-line"></div>
+
+                                <div class="relative flex items-center justify-center">
+                                <button
+                                    type="button"
+                                    class="absolute left-0 grid h-9 w-9 place-items-center rounded-full hover:bg-black/5"
+                                    aria-label="閉じる"
+                                    @click="open=false"
+                                >
+                                    <x-icons.close class="w-[24px] h-[24px] text-text_color" />
+                                </button>
+                                </div>
+                            </div>
+                            <div class="mx-auto w-full max-w-md bg-base_color"
+                                @click.stop>
+                                <div class="pt-3 pb-2 flex justify-center">
+                                </div>
+
+                                <div class="px-4 pb-4 space-y-3">
+                                    <button
+                                        type="button"
+                                        class="mx-auto block h-12 w-[260px]
+                                                rounded-full border-2 border-main bg-main
+                                                text-sm text-form
+                                                shadow-[0_4px_10px_rgba(0,0,0,0.18)]"
+                                        @click="open=false; $nextTick(() => $dispatch('open-delete'))"
+                                        >
+                                        削除する
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        class="mx-auto block h-12 w-[260px]
+                                                rounded-full border-2 border-main bg-form
+                                                text-sm text-text_color
+                                                shadow-[0_4px_10px_rgba(0,0,0,0.18)]"
+                                        @click="open=false; confirmOpen=true"
+                                        >
+                                        削除する
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="h-[env(safe-area-inset-bottom)] bg-form"></div>
+                            </div>
+                        </div>
+
+                        <div
+                            x-show="show"
+                            x-cloak
+                            class="fixed inset-0 z-[70]"
+                            >
+                            {{-- 背景 --}}
+                            <button
+                                type="button"
+                                class="absolute inset-0 bg-black/40"
+                                @click="show = false"
+                                aria-label="Close"
+                            ></button>
+
+                            <div class="relative h-full w-full grid place-items-center px-6">
+                                <div
+                                class="relative w-full max-w-sm rounded-2xl bg-form shadow-[0_10px_30px_rgba(0,0,0,0.35)] p-6"
+                                @click.stop
+                                >
+                                <button
+                                    type="button"
+                                    class="absolute left-4 top-4 grid h-9 w-9 place-items-center rounded-full hover:bg-black/5"
+                                    @click="show = false"
+                                    aria-label="閉じる"
+                                >
+                                    <x-icons.close class="w-5 h-5 text-text_color" />
+                                </button>
+
+                                <div class="pt-8 text-center">
+                                    <div class="text-text_color text-lg font-medium">
+                                    コレクションを削除しますか？
+                                    </div>
+
+                                    <form method="POST" action="#" class="mt-6 space-y-4">
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <x-ui.button theme="store" class="w-full">
+                                        削除する
+                                    </x-ui.button>
+
+                                    <button
+                                        type="button"
+                                        class="w-full text-text_color text-sm"
+                                        @click="show = false"
+                                    >
+                                        キャンセル
+                                    </button>
+                                    </form>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </header>
 
         <div class="h-full overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
-            <div class="w-ful mx-auto px-4 pt-4 py-4 space-y-5">
+            <div class="w-full mx-auto px-4 pt-4 py-4 space-y-5">
                 @if (($stores ?? collect())->isEmpty())
-                <div class="text-placeholder text-sm">
-                    このフォルダにはまだありません
+                <div class="text-placeholder text-center text-sm">
+                    お気に入りの店舗がまだありません
                 </div>
                 @else
                 <div class="grid grid-cols-2 gap-3">
