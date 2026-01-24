@@ -31,12 +31,12 @@
                             class="flex items-center gap-1 text-sm text-text_color hover:opacity-80">
                         <x-icons.edit class="w-[15px] h-[15px] text-text_color"/>編集</a>
                     </div>
-                    <div class="rounded-lg border border-favorite bg-base_color p-3">
-                        @if ($menuPhotos->isEmpty())
-                            <p class="text-sm text-placeholder text-center">
-                                メニュー画像はまだありません
-                            </p>
-                        @else
+                    @if ($menuPhotos->isEmpty())
+                        <p class="text-sm text-placeholder text-center p-2">
+                            メニュー画像はまだありません
+                        </p>
+                    @else
+                        <div class="rounded-lg border border-favorite bg-base_color p-3">
                             <div class="space-y-3">
                                 @foreach ($menuPhotos as $photo)
                                     <div class="aspect-[3/4] overflow-hidden rounded-lg">
@@ -46,8 +46,8 @@
                                     </div>
                                 @endforeach    
                             </div>
+                        </div>
                         @endif
-                    </div>
                 </section>
 
                 <section class="px-4 space-y-2">
@@ -55,23 +55,14 @@
                         <div class="text-lg text-text_color">おすすめのメニュー3つ</div>
                     </div>
                     <div class="space-y-3 flex flex-col items-center">
-                        @forelse($recommendedItems as $item)
-                            <x-ui.card.store.menu-item :item="$item"
-                                :name="$item->name" 
-                                :price="$item->price" 
-                                :description="$item->description" 
-                                :imageUrl="asset('storage/'. $item->photo_path)"
-                                />
-                        @empty
-                            <div class="rounded-lg border border-favorite bg-base_color p-3">
-                                <p class="text-sm text-placeholder text-center">
-                                    おすすめメニューはまだありません
-                                </p>
-                            </div>
-                        @endforelse
+                        @for($i = 0; $i < 3; $i++)
+                            @php 
+                                $item = $recommendedItems[$i] ?? null;
+                            @endphp
+                            <x-ui.card.store.menu-item :item="$item" />
+                        @endfor
                     </div>
                 </section>
-
             </div>
         </div>            
     </div>
