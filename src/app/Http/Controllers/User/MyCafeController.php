@@ -80,35 +80,6 @@ class MyCafeController extends Controller
         ));
     }
 
-    public function favorites(string $folder)
-    {
-        $user = Auth::guard('user')->user();
-        $userId = $user->id;
-
-        if ($folder === 'all') {
-            $stores = $user->favorites()
-                ->with('latestImage')
-                ->orderByDesc('user_favorites.created_at')
-                ->get();
-
-            $title = 'すべての投稿';
-        } else {
-            $folderModel = FavoriteFolder::where('user_id', $userId)
-                ->findOrFail((int)$folder);
-
-            $stores = $folderModel->stores()
-                ->with('latestImage')
-                ->orderByDesc('favorite_folders_store.created_at')
-                ->get();
-
-            $title = $folderModel->name;
-        }
-
-        $favIds = $stores->pluck('id')->all();
-
-        return view('pages.user.mycafe_favorites', compact('stores','favIds','title'));
-    }
-
     public function edit(Request $request)
     {
         $user = Auth::guard('user')->user();
@@ -140,5 +111,31 @@ class MyCafeController extends Controller
         $user->save();
 
         return redirect()->route('user.mycafe')->with('success','更新しました');
+    }
+
+    public function favoriteFolder($folder)
+    {
+        $user = Auth::guard('user')->user();
+        $userId = $user->id;
+
+        if ($folder === 'all') {
+            $stores = $user->favorites()
+                ->with('latestImage')
+                ->orderByDesc('user_favorites.created_at')
+                ->get();
+            $title = 'すべての投稿';
+        } else {
+            $folderModel = FavoriteFolder::where('user_id', $userId)
+                ->findOrFail((int) $folder);
+            $stores = $folderModel->stores()
+                ->with('latestImage')
+                ->orderByDesc('favorite_folders_store.created_at')
+                ->get();
+            $title = $folderModel->name;
+        }
+
+        $favIds = $stores->pluck('id')->all();
+
+        return view('pages.user.mycafe.maycafe_favorites',compact('stores', 'favIds', 'title', 'folder'));
     }
 }

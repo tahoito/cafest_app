@@ -6,7 +6,7 @@
   <div class="px-4">
 
     <div class="mb-3">
-      <a href="{{ route('user.mycafe', ['tab' => 'favorites']) }}"
+      <a href="{{ route('user.mycafe.favorites.folder', ['tab' => 'favorites']) }}"
          class="text-sm text-text_color underline">
         戻る
       </a>
@@ -31,7 +31,6 @@
   </div>
 
 @else
-  {{-- ✅ フォルダ一覧（今のコードそのまま） --}}
   <div class="px-4">
     @if (($favoritesAll ?? collect())->isEmpty() && ($foldersPayload ?? collect())->isEmpty())
       <div class="text-placeholder text-sm">
@@ -41,7 +40,7 @@
       <div class="grid grid-cols-2 gap-3">
 
         {{-- すべて --}}
-        <a href="{{ route('user.mycafe', ['tab' => 'favorites', 'folder' => 'all']) }}"
+        <a href="{{ route('user.mycafe.favorites.folder', ['folder' => 'all']) }}"
            class="rounded-2xl">
           <div class="aspect-square rounded-xl overflow-hidden bg-placeholder">
             <div class="grid grid-cols-2 grid-rows-2 h-full w-full">
@@ -59,7 +58,7 @@
 
         {{-- フォルダ --}}
         @foreach ($foldersPayload as $f)
-          <a href="{{ route('user.mycafe', ['tab' => 'favorites', 'folder' => $f['id']]) }}"
+          <a href="{{ route('user.mycafe.favorites.folder', ['folder' => $f['id']]) }}"
              class="rounded-2xl">
             <div class="aspect-square rounded-lg overflow-hidden bg-placeholder shadow-[0_2px_10px_rgba(0,0,0,0.12)]">
               @if (!empty($f['thumb_url']))

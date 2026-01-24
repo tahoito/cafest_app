@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\User;
+use App\Models\Store;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ViewHistory extends Model
 {
@@ -21,6 +24,6 @@ class ViewHistory extends Model
     }
 
     public function store() {
-        return $this-belongsTo(Store::class);
+        return $this->belongsTo(Store::class);
     }
 }
