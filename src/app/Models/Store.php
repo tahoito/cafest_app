@@ -91,8 +91,11 @@ class Store extends Authenticatable
 
     public function favoriteFolders() {
         return $this->belongsToMany(
-            FavoriteFolder::class, 'favorite_folders_store', 'store_id', 'favorite_folder_id'
-        )->withPivot('user_id')->withTimestamps();
+            FavoriteFolder::class, 
+            'favorite_folders_store', 
+            'store_id', 
+            'favorite_folder_id'
+        )->withTimestamps();
     }
 
 
@@ -106,8 +109,11 @@ class Store extends Authenticatable
 
     public function stores()
     {
-        return $this->belongsToMany(Store::class, 'favorite_folders_store')
-            ->withTimestamps();
+        return $this->belongsToMany(Store::class, 
+            'favorite_folders_store',
+            'favorite_folder_id',
+            'store_id'
+        )->withTimestamps();
     }
 
 

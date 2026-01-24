@@ -106,8 +106,8 @@ document.addEventListener('alpine:init', () => {
       this.error = ''
       this.hasInit = false
 
-      this.$watch(() => Alpine.store('favModal').openStoreId, async (v) => {
-        if (v === this.storeId && !this.hasInit) {
+      this.$watch('$store.favModal.openStoreId', async (v) => {
+        if (Number(v) === this.storeId && !this.hasInit) {
           this.hasInit = true
           await this.fetchFolders()
         }

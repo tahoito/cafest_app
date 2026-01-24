@@ -55,41 +55,27 @@ class FavoriteFolderController extends Controller
         $folderIds = $request->input('folder_ids', []);
         if (!is_array($folderIds)) $folderIds = [];
 
-      
+       
+        $myFolderIds = FavoriteFolder::where('user_id', $userId)->pluck('id')->all();
+
+        
         $validFolderIds = FavoriteFolder::where('user_id', $userId)
             ->whereIn('id', $folderIds)
             ->pluck('id')
             ->all();
 
-        $store->favoriteFolders()
-            ->wherePivot('user_id', $userId)
-            ->detach();
+        
+        $syncMap = array_fill_keys($validFolderIds, []);
+        $store->favoriteFolders()->syncWithoutDetaching($syncMap);
 
-        if (count($validFolderIds)) {
-            $attach = collect($validFolderIds)->mapWithKeys(fn($id) => [$id => ['user_id' => $userId]]);
-            $store->favoriteFolders()->attach($attach->all());
+        
+        $detachIds = array_values(array_diff($myFolderIds, $validFolderIds));
+        if (count($detachIds)) {
+            $store->favoriteFolders()->detach($detachIds);
         }
 
         return response()->json(['ok' => true]);
     }
 
-    public function store(Request $request) {
-        $userId = auth('user')->id();
-
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:30'],
-        ]);
-
-        $folder = FavoriteFolder::create([
-            'user_id' => $userId,
-            'name' => $validated['name'],
-        ]);
-
-        return response()->json([
-            'id' => $folder->id,
-            'name' => $folder->name,
-            'latest_store' => null,
-        ],201);
-    }
 
 }

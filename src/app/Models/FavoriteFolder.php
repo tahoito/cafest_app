@@ -20,7 +20,7 @@ class FavoriteFolder extends Model
             'favorite_folders_store',
             'favorite_folder_id',
             'store_id'
-        )->withPivot('user_id')->withTimestamps();
+        )->withTimestamps();
     }
 
     public function latestStore() {

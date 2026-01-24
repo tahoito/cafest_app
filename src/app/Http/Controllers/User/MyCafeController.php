@@ -144,18 +144,16 @@ class MyCafeController extends Controller
         return view('pages.user.mycafe.mycafe_favorites',compact('stores', 'favIds', 'title', 'folder','folderId'));
     }
 
-    public function destroyFolder(FavoriteFolder $folder)
+    public function destroy(FavoriteFolder $folder)
     {
         $user = Auth::guard('user')->user();
 
-        if ($folder->user_id !== $user->id) {
-            abort(403);
-        }
+        abort_unless($folder->user_id === $userId, 403);
 
         $folder->stores()->detach();
 
         $folder->delete();
 
-        return redirect()->route('user.mycafe',['tab' => 'favorites'])->with('success','コレクションを削除しました');
+        return redirect()->route('user.mycafe');
     }
 }
