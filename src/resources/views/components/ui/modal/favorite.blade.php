@@ -9,10 +9,11 @@
   $defaultCardPath = 'store/card.png';
   $defaultCardUrl  = Storage::disk('public')->url($defaultCardPath);
 
-  $imagePath = data_get($store, 'image_url');
-  $imageUrl  = $imagePath
-    ? Storage::disk('public')->url($imagePath)
-    : $defaultCardUrl;
+  $imageUrl =
+    optional(collect(data_get($store, 'slideImages', []))->firstWhere('is_used_on_card', true))->url
+    ?? optional(collect(data_get($store, 'slideImages', []))->first())->url
+    ?? $defaultCardUrl;
+
 @endphp
 
 
@@ -90,7 +91,7 @@
               <div class="flex justify-center">
                 <div class="flex items-center gap-4">
                   <img
-                    src="{{ $imageUrl }}"
+                    src="{{ $store->card_image_url }}"
                     alt="{{ $name }}"
                     class="h-[64px] w-[64px] rounded-lg object-cover shadow-[0_2px_10px_rgba(0,0,0,0.12)]"
                     loading="lazy"

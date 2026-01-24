@@ -64,11 +64,6 @@ class FavoriteFolderController extends Controller
         $store->favoriteFolders()
             ->wherePivot('user_id', $userId)
             ->detach();
-            
-        $myFolderIds = FavoriteFolder::where('user_id', $userId)->pluck('id')->all();
-        if (count($myFolderIds)) {
-            $store->favoriteFolders()->detach($myFolderIds);
-        }
 
         if (count($validFolderIds)) {
             $attach = collect($validFolderIds)->mapWithKeys(fn($id) => [$id => ['user_id' => $userId]]);

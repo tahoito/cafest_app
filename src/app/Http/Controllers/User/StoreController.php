@@ -54,9 +54,9 @@ class StoreController extends Controller
             ->loadAvg('reviews','rating')
             ->findOrFail($store->id);
 
-        $faved = auth()->check()
-            ? auth()->user()->favorites()->where('store_id', $store->id)->exists()
-            : false;
+        $faved = $store->favoriteFolders()
+            ->wherePivot('user_id', auth('user')->id())
+            ->exists();
         
         return view('pages.user.stores.show', [
             'store' => $store,

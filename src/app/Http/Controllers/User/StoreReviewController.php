@@ -25,9 +25,9 @@ class StoreReviewController extends Controller
             ->latest()
             ->get();
 
-        $faved = auth()->check()
-            ? auth()->user()->favorites()->where('store_id', $store->id)->exists()
-            : false;
+        $faved = $store->favoriteFolders()
+            ->wherePivot('user_id', auth('user')->id())
+            ->exists();
 
 
         return view('pages.user.stores.reviews', compact('store', 'reviews','faved'));
@@ -55,7 +55,7 @@ class StoreReviewController extends Controller
                     $images = $review->images()
                         ->orderBy('sort')
                         ->pluck('path')
-                        ->map(fn ($p) => asset('storage/' . ltrim($p, '/')))
+                        ->map(fn ($p) => Storage::url(ltrim($p, '/')))
                         ->values();
                 }
             } catch (\Throwable $e) {
@@ -70,7 +70,7 @@ class StoreReviewController extends Controller
                     'name' => data_get($review, 'user.name'),
                     'handle' => data_get($review, 'user.handle'),
                     'avatar_url' => data_get($review, 'user.icon_path')
-                        ? asset($review->user->icon_path)
+                        ? Storage::url(ltrim($review->user->icon_path, '/'))
                         : null,
                 ],
                 'created_at' => optional($review->created_at)->format('Y/m/d'),

@@ -17,7 +17,10 @@ class FavoriteFolder extends Model
     {
         return $this->belongsToMany(
             Store::class, 
-            'favorite_folders_store')->withTimestamps();
+            'favorite_folders_store',
+            'favorite_folder_id',
+            'store_id'
+        )->withPivot('user_id')->withTimestamps();
     }
 
     public function latestStore() {

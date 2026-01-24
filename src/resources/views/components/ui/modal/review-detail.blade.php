@@ -14,7 +14,6 @@
       >
         <div class="pb-[env(safe-area-inset-bottom)]">
 
-          {{-- header 固定 --}}
             <div class="sticky top-0 z-10 pt-4 bg-base_color">
                 <div class="h-12 grid grid-cols-[48px_1fr_48px] items-center px-4">
 
@@ -36,22 +35,18 @@
                 </div>
             </div>
 
-          {{-- content スクロール --}}
+
           <div class="max-h-[75vh] overflow-y-auto overscroll-contain px-4 pb-6">
-            {{-- loading --}}
             <template x-if="loading">
               <div class="py-10 text-center text-placeholder">読み込み中...</div>
             </template>
 
-            {{-- error --}}
             <template x-if="error && !loading">
               <div class="py-10 text-center text-red-500" x-text="error"></div>
             </template>
 
-            {{-- body --}}
             <template x-if="data && !loading">
               <div>
-                {{-- user row --}}
                 <div class="flex items-center gap-3 pt-2">
                   <div class="w-12 h-12 rounded-full overflow-hidden bg-base shrink-0">
                     <img
@@ -70,7 +65,6 @@
                   <div class="ml-auto text-placeholder text-sm" x-text="data.created_at ?? ''"></div>
                 </div>
 
-                {{-- rating --}}
                 <div class="mt-3 flex items-center gap-1" aria-label="評価">
                     <template x-for="i in 5" :key="i">
                         <svg
@@ -86,14 +80,12 @@
                 </div>
 
 
-                {{-- comment --}}
                 <template x-if="data.body">
                   <div class="mt-3 rounded-lg border border-main bg-base px-4 py-3 shadow-sm shadow-[0_1px_4px_rgba(0,0,0,0.20)]">
                     <div class="text-text_color text-base leading-relaxed" x-text="data.body"></div>
                   </div>
                 </template>
 
-                {{-- tags --}}
                 <template x-if="data.tags?.length">
                   <div class="mt-3 flex flex-wrap gap-2">
                     <template x-for="t in data.tags" :key="t">
@@ -105,7 +97,6 @@
                   </div>
                 </template>
 
-                {{-- images（最大8枚縦並び） --}}
                 <template x-if="data.images?.length">
                   <div class="mt-4 space-y-4">
                     <template x-for="(img, idx) in data.images" :key="idx">

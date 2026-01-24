@@ -9,6 +9,8 @@ use App\Services\StoreRecommendService;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Reservation;
+use Illuminate\Support\Facades\Storage;
+
 
 
 
@@ -20,9 +22,9 @@ class StorePostController extends Controller
         $store = Store::findOrFail($storeId);
         $userId = auth('user')->id();
 
-        $faved = auth()->check()
-            ? auth()->user()->favorites()->where('store_id', $store->id)->exists()
-            : false;
+        $faved = $store->favoriteFolders()
+            ->werePivot('user_id', auth('user')->id())
+            ->exists();
 
 
         $posts = Review::with(['user','images'])
@@ -39,7 +41,9 @@ class StorePostController extends Controller
                         'created_at' => $review->created_at,
                         'user' => (object)[
                             'name' => $review->user->name,
-                            'avatar' => $review->user->avatar_url,
+                            'avatar_url' => $review->user->avatar_url
+                                ? Storage::url($review->user->avatar_url)
+                                : null,
                         ],
                     ];
                 });

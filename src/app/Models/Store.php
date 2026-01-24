@@ -9,6 +9,7 @@ use App\Models\MenuPhoto;
 use App\Models\RecommendedItem;
 use App\Models\FavoriteFolder;
 use App\Models\StoreSocialLink;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -90,8 +91,8 @@ class Store extends Authenticatable
 
     public function favoriteFolders() {
         return $this->belongsToMany(
-            FavoriteFolder::class, 'favorite_folders_store'
-        )->withTimestamps();
+            FavoriteFolder::class, 'favorite_folders_store', 'store_id', 'favorite_folder_id'
+        )->withPivot('user_id')->withTimestamps();
     }
 
 
@@ -123,5 +124,27 @@ class Store extends Authenticatable
         return $this->hasMany(ViewHistory::class);
     }
 
+
+    public function getCardImageUrlAttribute(): string 
+    {
+        $img = $this->relationLoaded('slideImages')
+            ? $this->slideImages->firstWhere('is_used_on_card', true) ?? $this->slideImages->first()
+            : $this->slideImages()->where('is_used_on_card', true)->first()
+                ?? $this->slideImages()->orderBy('sort_order')->first();
+
+        $default = Storage::url('store/card.png');
+
+        if (!$img || !$img->path) return $default;
+
+        $value = trim((string) $img->path);
+        if (!$value === '') return $default;
+
+        if (str_starts_with($value, 'http://') || str_starts_with($value, 'https://')) return $value;
+        if (str_starts_with($value, '/storage/')) return $value;
+
+        $path = preg_replace('#^/?storage/#', '', ltrim($value, '/'));
+        return Storage::url($path);
+
+    }
 
 }
