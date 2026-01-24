@@ -136,6 +136,6 @@ class MyCafeController extends Controller
 
         $favIds = $stores->pluck('id')->all();
 
-        return view('pages.user.mycafe.maycafe_favorites',compact('stores', 'favIds', 'title', 'folder'));
+        return view('pages.user.mycafe.mycafe_favorites',compact('stores', 'favIds', 'title', 'folder'));
     }
 }

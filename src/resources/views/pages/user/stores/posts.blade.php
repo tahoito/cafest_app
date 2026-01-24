@@ -18,7 +18,6 @@
                     みんなの写真
                 </h1> 
                 <div>
-
                     <div x-data="favoriteFolderModal({{ (int) data_get($store,'id') }}, @js($faved))">
                         <button
                         type="button"
