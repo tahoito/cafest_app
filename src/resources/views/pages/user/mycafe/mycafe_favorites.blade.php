@@ -5,153 +5,166 @@
 
 @section('content')
 <div class="h-screen bg-base_color">
-  <div class="h-full overflow-y-auto">
-    <header class="fixed top-0 inset-x-0 z-50 bg-base_color">
-      <div class="pt-[env(safe-area-inset-top)]">
-        <div class="grid grid-cols-[48px_1fr_48px] items-center px-4 h-16">
-          <a class="p-2" href="{{ route('user.mycafe') }}">
-            <x-icons.back class="w-5 h-5 text-text_color" />
-          </a>
+    <div class="h-full overflow-y-auto">
+        <header class="fixed top-0 inset-x-0 z-50 bg-base_color">
+            <div class="pt-[env(safe-area-inset-top)]">
+                <div class="grid grid-cols-[48px_1fr_48px] items-center px-4 h-16">
+                <a class="p-2" href="{{ route('user.mycafe') }}">
+                    <x-icons.back class="w-5 h-5 text-text_color" />
+                </a>
 
-          <h1 class="text-center text-text_color text-2xl whitespace-nowrap overflow-hidden text-ellipsis">
-            {{ $title ?? '' }}
-          </h1>
+                <h1 class="text-center text-text_color text-2xl whitespace-nowrap overflow-hidden text-ellipsis">
+                    {{ $title ?? '' }}
+                </h1>
 
-          <div x-data="{ open:false, show:false }" class="flex justify-end">
+                {{-- ︙メニュー（フォルダ詳細の時だけ） --}}
+                @if(!empty($folderId))
+                    <div x-data="{ open:false, show:false }" class="flex justify-end">
 
-            <button type="button" class="p-2 rounded-full" @click="open=true" aria-label="More">
-              <x-icons.more-menu class="text-center" />
-            </button>
-
-            <div x-show="open" x-cloak class="fixed inset-0 z-[60]">
-                <button type="button"
-                        class="absolute inset-0 bg-black/40"
-                        @click="open=false"
-                        aria-label="Close"></button>
-
-                <div class="absolute inset-x-0 bottom-0">
-                    {{-- ヘッダー部分 --}}
-                    <div class="bg-form px-5 pt-3 pb-4 rounded-t-3xl">
-                    <div class="mx-auto mb-2 h-1.5 w-12 rounded-full bg-line"></div>
-
-                    <div class="relative flex items-center justify-center">
-                        <button
-                        type="button"
-                        class="absolute left-0 grid h-9 w-9 place-items-center rounded-full hover:bg-black/5"
-                        aria-label="閉じる"
-                        @click="open=false"
-                        >
-                        <x-icons.close class="w-[24px] h-[24px] text-text_color" />
-                        </button>
-                    </div>
-                </div>
-
-                
-                <div class="mx-auto w-full max-w-md bg-base_color" @click.stop>
-                    <div class="px-4 py-4 space-y-3">
-
-                        <button
-                        type="button"
-                        class="mx-auto block h-12 w-[260px]
-                                rounded-full border-2 border-main bg-main
-                                text-sm text-form
-                                shadow-[0_4px_10px_rgba(0,0,0,0.18)]"
-                        @click="open=false; $nextTick(() => show=true)"
-                        >
-                        削除する
+                    {{-- ︙ボタン --}}
+                    <button type="button" class="p-2 rounded-full" @click="open=true" aria-label="More">
+                        <x-icons.more-menu class="text-center" />
                     </button>
 
-                    {{-- キャンセル --}}
-                    <button
-                        type="button"
-                        class="mx-auto block h-12 w-[260px]
-                                rounded-full border-2 border-main bg-form
-                                text-sm text-text_color
-                                shadow-[0_4px_10px_rgba(0,0,0,0.18)]"
-                        @click="open=false"
-                    >
-                        キャンセル
-                    </button>
-                  </div>
-                </div>
+                    {{-- 下シート --}}
+                    <div x-show="open" x-cloak class="fixed inset-0 z-[60]">
+                        <button type="button"
+                                class="absolute inset-0 bg-black/40"
+                                @click="open=false"
+                                aria-label="Close"></button>
 
-                    <div class="h-[env(safe-area-inset-bottom)] bg-form"></div>
-                </div>
-            </div>
+                        <div class="absolute inset-x-0 bottom-0">
+                        <div class="bg-form px-5 pt-3 pb-4 rounded-t-3xl">
+                            <div class="mx-auto mb-2 h-1.5 w-12 rounded-full bg-line"></div>
 
-            <div x-show="show" x-cloak class="fixed inset-0 z-[70]">
-                <button
-                    type="button"
-                    class="absolute inset-0 bg-black/40"
-                    @click="show=false"
-                    aria-label="Close"
-                ></button>
-
-                <div class="relative h-full w-full grid place-items-center px-6">
-                    <div
-                    class="relative w-full max-w-sm rounded-2xl bg-form shadow-[0_10px_30px_rgba(0,0,0,0.35)] p-6"
-                    @click.stop
-                    >
-                  
-                    <button
-                        type="button"
-                        class="absolute left-4 top-4 grid h-9 w-9 place-items-center rounded-full hover:bg-black/5"
-                        @click="show=false"
-                        aria-label="閉じる"
-                    >
-                        <x-icons.close class="w-5 h-5 text-text_color" />
-                    </button>
-
-                    <div class="pt-8 text-center">
-                        <div class="text-text_color text-lg font-medium">
-                            コレクションを削除しますか？
+                            <div class="relative flex items-center justify-center">
+                            <button
+                                type="button"
+                                class="absolute left-0 grid h-9 w-9 place-items-center rounded-full hover:bg-black/5"
+                                aria-label="閉じる"
+                                @click="open=false"
+                            >
+                                <x-icons.close class="w-[24px] h-[24px] text-text_color" />
+                            </button>
+                            </div>
                         </div>
 
-                        <form method="POST" action="#" class="mt-6 space-y-4">
-                            @csrf
-                            @method('DELETE')
+                        <div class="mx-auto w-full max-w-md bg-base_color" @click.stop>
+                            <div class="px-4 py-4 space-y-3">
 
-                            <x-ui.button class="w-full">
+                            {{-- 削除（中央モーダルを開く） --}}
+                            <button
+                                type="button"
+                                class="mx-auto block h-12 w-[260px]
+                                    rounded-full border-2 border-main bg-main
+                                    text-sm text-form
+                                    shadow-[0_4px_10px_rgba(0,0,0,0.18)]"
+                                @click="open=false; $nextTick(() => show=true)"
+                            >
                                 削除する
-                            </x-ui.button>
+                            </button>
 
+                            {{-- キャンセル --}}
+                            <button
+                                type="button"
+                                class="mx-auto block h-12 w-[260px]
+                                    rounded-full border-2 border-main bg-form
+                                    text-sm text-text_color
+                                    shadow-[0_4px_10px_rgba(0,0,0,0.18)]"
+                                @click="open=false"
+                            >
+                                キャンセル
+                            </button>
+
+                            </div>
+                        </div>
+
+                        <div class="h-[env(safe-area-inset-bottom)] bg-form"></div>
+                        </div>
+                    </div>
+
+                    {{-- 中央モーダル（削除確認） --}}
+                    <div x-show="show" x-cloak class="fixed inset-0 z-[70]">
                         <button
-                            type="button"
-                            class="w-full text-text_color text-sm"
-                            @click="show=false"
+                        type="button"
+                        class="absolute inset-0 bg-black/40"
+                        @click="show=false"
+                        aria-label="Close"
+                        ></button>
+
+                        <div class="relative h-full w-full grid place-items-center px-6">
+                        <div
+                            class="relative w-full max-w-sm rounded-2xl bg-form shadow-[0_10px_30px_rgba(0,0,0,0.35)] p-6"
+                            @click.stop
                         >
-                            キャンセル
-                        </button>
-                        </form>
+                            <button
+                            type="button"
+                            class="absolute left-4 top-4 grid h-9 w-9 place-items-center rounded-full hover:bg-black/5"
+                            @click="show=false"
+                            aria-label="閉じる"
+                            >
+                            <x-icons.close class="w-5 h-5 text-text_color" />
+                            </button>
+
+                            <div class="pt-8 text-center">
+                            <div class="text-text_color text-lg font-medium">
+                                コレクションを削除しますか？
+                            </div>
+
+                            <form
+                                method="POST"
+                                action="{{ route('user.mycafe.favorites.destroy', ['folder' => $folderId]) }}"
+                                class="mt-6 space-y-4"
+                            >
+                                @csrf
+                                @method('DELETE')
+
+                                <x-ui.button type="submit" class="w-full">
+                                    削除する
+                                </x-ui.button>
+
+                                <button
+                                type="button"
+                                class="w-full text-text_color text-sm"
+                                @click="show=false"
+                                >
+                                    キャンセル
+                                </button>
+                            </form>
+                            </div>
+
+                        </div>
+                        </div>
                     </div>
+
                     </div>
-                </div>
+                @endif
+
                 </div>
             </div>
+            </header>
+
+            {{-- 本文 --}}
+            <div class="h-full overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
+            <div class="w-full mx-auto px-4 pt-4 py-4 space-y-5">
+                @if (($stores ?? collect())->isEmpty())
+                <div class="text-placeholder text-center text-sm">
+                    お気に入りの店舗がまだありません
+                </div>
+                @else
+                <div class="grid grid-cols-2 gap-3">
+                    @foreach ($stores as $store)
+                    <x-ui.card.store
+                        :store="$store"
+                        :faved="in_array(data_get($store,'id'), $favIds)"
+                        :href="route('user.stores.show', ['store' => data_get($store,'id')])"
+                        variant="grid"
+                    />
+                    @endforeach
+                </div>
+                @endif
             </div>
         </div>
-    </header>
-
-    <div class="h-full overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
-      <div class="w-full mx-auto px-4 pt-4 py-4 space-y-5">
-        @if (($stores ?? collect())->isEmpty())
-          <div class="text-placeholder text-center text-sm">
-            お気に入りの店舗がまだありません
-          </div>
-        @else
-          <div class="grid grid-cols-2 gap-3">
-            @foreach ($stores as $store)
-              <x-ui.card.store
-                :store="$store"
-                :faved="in_array(data_get($store,'id'), $favIds)"
-                :href="route('user.stores.show', ['store' => data_get($store,'id')])"
-                variant="grid"
-              />
-            @endforeach
-          </div>
-        @endif
-      </div>
     </div>
-  </div>
 </div>
-@endsection
+    @endsection

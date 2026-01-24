@@ -118,6 +118,8 @@ class MyCafeController extends Controller
         $user = Auth::guard('user')->user();
         $userId = $user->id;
 
+        $folderId = null;
+
         if ($folder === 'all') {
             $stores = $user->favorites()
                 ->with('latestImage')
@@ -127,6 +129,9 @@ class MyCafeController extends Controller
         } else {
             $folderModel = FavoriteFolder::where('user_id', $userId)
                 ->findOrFail((int) $folder);
+
+            $folderId = $folderModel->id;
+
             $stores = $folderModel->stores()
                 ->with('latestImage')
                 ->orderByDesc('favorite_folders_store.created_at')
@@ -136,6 +141,21 @@ class MyCafeController extends Controller
 
         $favIds = $stores->pluck('id')->all();
 
-        return view('pages.user.mycafe.mycafe_favorites',compact('stores', 'favIds', 'title', 'folder'));
+        return view('pages.user.mycafe.mycafe_favorites',compact('stores', 'favIds', 'title', 'folder','folderId'));
+    }
+
+    public function destroyFolder(FavoriteFolder $folder)
+    {
+        $user = Auth::guard('user')->user();
+
+        if ($folder->user_id !== $user->id) {
+            abort(403);
+        }
+
+        $folder->stores()->detach();
+
+        $folder->delete();
+
+        return redirect()->route('user.mycafe',['tab' => 'favorites'])->with('success','コレクションを削除しました');
     }
 }
