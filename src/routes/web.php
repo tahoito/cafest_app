@@ -72,10 +72,10 @@ Route::prefix('user')->name('user.')->group(function () {
         Route::get('/mycafe/edit', [MyCafeController::class, 'edit'])->name('mycafe.edit');
         Route::post('/mycafe/edit', [MyCafeController::class, 'update'])->name('mycafe.update');
 
-        Route::get('/mycafe/favorites/{folder}', [MyCafeController::class, 'favorites'])
+        Route::get('/mycafe/favorites/{folder}', [MyCafeController::class, 'favoriteFolder'])
             ->where('folder', 'all|[0-9]+')
-            ->name('mycafe.favorites');
-
+            ->name('mycafe.favorites.folder');
+        Route::delete('/mycafe/favorite-folders/{folder}',[MyCafeController::class,'destroyFolder'])->name('mycafe.favorites.destroy');
     });
 });
 

@@ -1,9 +1,11 @@
 @extends('layouts.app')
 @section('title','アカウント情報設定')
 
-@section('content')
 @section('hideNavbar')
 @endsection
+
+@section('content')
+
 <div class="h-screen bg-base_color">
     <div class="h-full overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
 
