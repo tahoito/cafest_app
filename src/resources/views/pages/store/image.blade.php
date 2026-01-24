@@ -82,7 +82,7 @@
                     </form>
                   @else
                     <a href="#"
-                      class="grid place-items-center rounded-xl border border-placeholder bg-notification2 aspect-[3/4]">
+                      class="grid place-items-center rounded-xl border border-placeholder bg-notification2 aspect-[16/10]">
                       <x-icons.no_image class="w-6 h-6 text-text_color" />
                     </a>
                   @endif
