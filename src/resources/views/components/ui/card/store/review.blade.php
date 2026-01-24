@@ -24,7 +24,6 @@
    return Storage::url($path);
   };
 
-  // avatar
   $userIconPath =
     data_get($review,'user.avatar_url')
     ?? data_get($review,'user.icon_path')
@@ -73,11 +72,24 @@
       ? $moreUrl . '?format=json'
       :null;
 
+  $tagsRaw = data_get($review, 'tags')
+      ?? data_get($review, 'review_tags')
+      ?? data_get($review, 'tag_names')
+      ?? [];
+      
+  $tags = collect($tagsRaw)
+      ->map(fn($t) => is_string($t) ? $t : (data_get($t, 'name') ?? data_get($t,'label')))
+      ->filter()
+      ->values();
+
 @endphp
 
-<div {{ $attributes->merge([
-  'class' => 'w-full max-w-[353px] rounded-xl bg-form ring-1 ring-black/5 shadow-[0_2px_10px_rgba(0,0,0,0.12)] text-left p-4 space-y-3'
-]) }}>
+<div
+  x-data="{ open: false }"
+  {{ $attributes->merge([
+    'class' => 'w-full max-w-[353px] rounded-xl bg-form ring-1 ring-black/5 shadow-[0_2px_10px_rgba(0,0,0,0.12)] text-left p-4 space-y-3'
+  ]) }}
+>
   <div class="flex items-start justify-between">
     <div class="flex items-center gap-3">
       <img src="{{ $userIconUrl }}" class="h-10 w-10 rounded-full object-cover" alt="">
@@ -96,29 +108,56 @@
     @endif
   </div>
 
-  <p class="text-base text-text_color leading-relaxed line-clamp-3">{{ $body }}</p>
+  @if($tags->isNotEmpty())
+    <div class="flex flex-wrap gap-2">
+      @foreach($tags as $t)
+        <x-ui.tag
+          :active="true"
+          type="button"
+          class="pointer-events-none"
+        >
+          {{ $t }}
+        </x-ui.tag>
+      @endforeach
+    </div>
+  @endif
 
+
+  <p class="text-base text-text_color leading-relaxed"
+     :class="open ? '' : 'line-clamp-3'">
+    {{ $body }}
+  </p>
+
+  {{-- 画像 --}}
   @if($images->count() > 0)
-    <div class="flex gap-2">
+    <div class="flex gap-2" x-show="!open" x-cloak>
       @foreach($images->take(2) as $i => $url)
         <div class="relative w-[125px] h-[125px] overflow-hidden rounded-xl">
           <img src="{{ $url }}" class="h-full w-full object-cover" alt="">
           @if($i === 1 && $images->count() > 2)
-            <div class="absolute inset-0 bg-black/40 flex items-center justify-center text-white text-2xl font-semibold">
+            <div class="absolute inset-0 bg-black/40 grid place-items-center text-white text-2xl font-semibold">
               +{{ $images->count() - 2 }}
             </div>
           @endif
         </div>
       @endforeach
     </div>
+
+    {{-- 開いた時：全部 --}}
+    <div class="grid grid-cols-2 gap-2" x-show="open" x-transition x-cloak>
+      @foreach($images as $url)
+        <div class="relative aspect-square overflow-hidden rounded-xl">
+          <img src="{{ $url }}" class="h-full w-full object-cover" alt="">
+        </div>
+      @endforeach
+    </div>
   @endif
 
+  {{-- もっと見る --}}
   <div class="pt-1 flex justify-end">
-    <a href="{{ $moreUrl ?? '#' }}" 
-      @if(!$moreUrl) aria-disabled="true" @endif 
-      class="inline-flex items-center gap-1 text-sm text-main2 hover:opacity-80
-       {{ $moreUrl ? '' : 'pointer-events-none opacity-40'}} ">
-        もっと見る
-    </a>
+    <button type="button" @click="open = !open"
+      class="inline-flex items-center gap-1 text-sm text-main2 hover:opacity-80">
+      <span x-text="open ? '閉じる' : 'もっと見る'"></span>
+    </button>
   </div>
 </div>
