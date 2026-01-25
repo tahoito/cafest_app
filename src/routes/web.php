@@ -63,9 +63,9 @@ Route::prefix('user')->name('user.')->group(function () {
         Route::delete('/reserve/{reservation}', [ReserveController::class, 'destroy'])->name('reserve.destroy');
 
         Route::post('/stores/{store}/favorite', [FavoriteController::class, 'toggle'])->name('stores.favorite.toggle');
-        Route::get('/stores/{store}/favorite/folders', [FavoriteFolderController::class, 'index'])->name('stores.favorite.folders.index');
-        Route::post('/stores/{store}/favorite/folders', [FavoriteFolderController::class, 'sync'])->name('stores.favorite.folders.sync');  
-        Route::post('/favorite-folders', [FavoriteFolderController::class, 'store'])->name('favorite.folders.store');
+        Route::get('/stores/{store}/favorite-folders', [FavoriteFolderController::class, 'index']);
+        Route::post('/stores/{store}/favorite-folders', [FavoriteFolderController::class, 'store']);
+        Route::post('/stores/{store}/favorite-folders/sync', [FavoriteFolderController::class, 'sync']);
 
         
         Route::get('/mycafe', [MyCafeController::class, 'index'])->name('mycafe');

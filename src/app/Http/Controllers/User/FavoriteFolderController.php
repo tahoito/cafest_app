@@ -28,7 +28,6 @@ class FavoriteFolderController extends Controller
         $foldersPayload = $folders->map(function ($folder) {
             $latestStore = $folder->stores()
                 ->orderByDesc('favorite_folders_store.created_at')
-                ->with('latestImage')
                 ->first();
 
             return [
@@ -63,7 +62,7 @@ class FavoriteFolderController extends Controller
         
         $store->favoriteFolders()->syncWithoutDetaching($validFolderIds);
 
-        foreach($validFolders as $fid) {
+        foreach($validFolderIds as $fid) {
             $store->favoriteFolders()->updateExistingPivot($fid, [
                 'updated_at' => now(),
             ]);
@@ -77,7 +76,7 @@ class FavoriteFolderController extends Controller
         return response()->json(['ok' => true]);
     }
 
-    public function store(Request $request) {
+    public function store(Request $request, Store $store) {
         $userId = auth('user')->id();
 
         $validated = $request->validate([
@@ -89,10 +88,15 @@ class FavoriteFolderController extends Controller
             'name' => $validated['name'],
         ]);
 
+        $folder->stores()->syncWithoutDetaching([$store->id]);
+
         return response()->json([
             'id' => $folder->id,
             'name' => $folder->name,
-            'latest_store' => null,
+            'latest_store' => [
+                'image_url' => $store->card_image_url,
+            ],
+            'selected' => true,
         ], 201);
     }
 

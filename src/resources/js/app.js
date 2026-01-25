@@ -122,7 +122,7 @@ document.addEventListener('alpine:init', () => {
 
     async fetchFolders() {
       try {
-        const res = await fetch(`/user/stores/${this.storeId}/favorite/folders`, {
+        const res = await fetch(`/user/stores/${this.storeId}/favorite-folders`, {
           headers: { 'Accept': 'application/json' },
         })
 
@@ -133,6 +133,9 @@ document.addEventListener('alpine:init', () => {
 
         const data = await res.json()
         this.folders = data.folders ?? []
+
+        this.selectedFolderIds = (data.selected_folder_ids ?? []).map(Number);
+
       } catch (e) {
         console.error('folders fetch failed:', e)
         this.folders = []
@@ -169,7 +172,7 @@ document.addEventListener('alpine:init', () => {
 
       this.saving = true
       try {
-        const res = await fetch(`/user/favorite-folders`, {
+        const res = await fetch(`/user/stores/${this.storeId}/favorite-folders`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
