@@ -18,21 +18,18 @@ class FavoriteController extends Controller
         );
 
         $exists = $store->favoriteFolders()
-            ->wherePivot('user_id', $userId)
+            ->where('favorite_folders.user_id', $userId)
             ->where('favorite_folders.id', $default->id)
             ->exists();
 
         if ($exists) {
             $store->favoriteFolders()
-                ->wherePivot('user_id', $userId)
-                ->detach();
+                ->detach($default->id);
 
             return response()->json(['status' => 'removed']);
         }
 
-        $store->favoriteFolders()->attach([
-            $default->id => ['user_id' => $userId]
-        ]);
+        $store->favoriteFolders()->syncWithoutDetaching([$default->id]);
 
         return response()->json(['status' => 'added']);
     }

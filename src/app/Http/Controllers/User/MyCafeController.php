@@ -24,18 +24,20 @@ class MyCafeController extends Controller
             ->get();
 
         $folders = FavoriteFolder::where('user_id', $userId)
-            ->with(['stores.latestImage'])
+            ->with(['stores' => function($q) {
+                $q->with('latestImage')
+                    ->orderByPivot('created_at', 'desc');
+            }])
             ->get();
 
 
         $foldersPayload = $folders->map(function ($folder) {
-            $latestStore = $folder->stores
-                ->sortByDesc(fn ($s) => optional($s->pivot)->created_at)
-                ->first();
+            $latestStore = $folder->stores->first();
 
-            $imageUrl = ($latestStore && $latestStore->latestImage)
-                ? Storage::url($latestStore->latestImage->path)
-                : null;
+            $imageUrl = null;
+            if ($latestStore && $latestStore->latestImage) {
+                $imageUrl = Storage::url($latestStore->latestImage->path);
+            }
 
             return [
                 'id' => $folder->id,
@@ -147,11 +149,11 @@ class MyCafeController extends Controller
     public function destroy(FavoriteFolder $folder)
     {
         $user = Auth::guard('user')->user();
+        $userId = $user->id; 
 
         abort_unless($folder->user_id === $userId, 403);
 
         $folder->stores()->detach();
-
         $folder->delete();
 
         return redirect()->route('user.mycafe');

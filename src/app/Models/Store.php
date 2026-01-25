@@ -107,16 +107,6 @@ class Store extends Authenticatable
         return $this->hasMany(StoreSocialLink::class);
     }
 
-    public function stores()
-    {
-        return $this->belongsToMany(Store::class, 
-            'favorite_folders_store',
-            'favorite_folder_id',
-            'store_id'
-        )->withTimestamps();
-    }
-
-
     public function images() {
         return $this->hasMany(StoreImage::class);
     }
@@ -133,17 +123,18 @@ class Store extends Authenticatable
 
     public function getCardImageUrlAttribute(): string 
     {
+        $default = Storage::url('store/card.png');
+        
         $img = $this->relationLoaded('slideImages')
             ? $this->slideImages->firstWhere('is_used_on_card', true) ?? $this->slideImages->first()
             : $this->slideImages()->where('is_used_on_card', true)->first()
                 ?? $this->slideImages()->orderBy('sort_order')->first();
 
-        $default = Storage::url('store/card.png');
 
         if (!$img || !$img->path) return $default;
 
         $value = trim((string) $img->path);
-        if (!$value === '') return $default;
+        if ($value === '') return $default;
 
         if (str_starts_with($value, 'http://') || str_starts_with($value, 'https://')) return $value;
         if (str_starts_with($value, '/storage/')) return $value;

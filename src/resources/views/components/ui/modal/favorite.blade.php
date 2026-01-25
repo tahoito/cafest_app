@@ -143,7 +143,7 @@
             <div class="flex items-center justify-between py-3">
               <div class="flex items-center gap-3">
                 <img
-                  :src="toPublicUrl(folder.latest_store?.image_url)|| defaultThumb"
+                  :src="toPublicUrl(folder.latest_store?.image_url) || defaultThumb"
                   class="w-[85px] h-[85px] rounded-lg object-cover"
                   alt=""
                 >
@@ -216,9 +216,10 @@
         </div>
 
         <x-ui.button
+          type="button"
           class="w-full mt-[30px]"
           x-bind:disabled="name.trim().length === 0 || saving"
-          @click="save()"
+          @click.prevent.stop="save()"
         >
           <span x-show="!saving">保存</span>
           <span x-show="saving">保存中…</span>
