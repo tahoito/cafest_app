@@ -32,15 +32,22 @@ class MyCafeController extends Controller
 
 
         $foldersPayload = $folders->map(function ($folder) {
-            $latestStore = $folder->stores->first();
+            $stores4 = $folder->stores->take(4);
+
+            $thumbUrls = $stores4 
+                ->map(fn($s) => $s->card_image_url ?? null)
+                ->filter()
+                ->unique()
+                ->values()
+                ->all();
 
             return [
                 'id' => $folder->id,
                 'name' => $folder->name,
                 'count' => $folder->stores->count(),
-                'thumb_url' => $latestStore ? $latestStore->card_image_url : null,
+                'thumb_urls' => $thumbUrls,
             ];
-        });
+        })->values();
 
 
         $allThumbs = $favoritesAll
@@ -94,11 +101,11 @@ class MyCafeController extends Controller
         $user->name = $validated['username'];
         $user->email = $validated['email'];
 
-        if ($request->hasFile('icon')){
+        if ($request->hasFile('icon_path')){
             if($user->avatar_path){
                 Storage::disk('public')->delete($user->icon_path);
             }
-            $path = $request->file('icon')->store('user_icon', 'public');
+            $path = $request->file('icon_path')->store('user_icon', 'public');
             $user->icon_path = $path;
         }
 

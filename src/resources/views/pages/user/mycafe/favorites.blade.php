@@ -1,24 +1,23 @@
 @php
-  $folder = request()->route('folder'); // 選択中フォルダID（なければ一覧）
+  $folder = request()->route('folder');
   $storesCol = $stores ?? collect();
   $favoritesAllCol = $favoritesAll ?? collect();
   $foldersCol = $foldersPayload ?? collect();
 
-  $hasOnlyDefaultFolder = 
-    $foldersCol->count() === 1 && 
-    ($foldersCol->first()['name'] ?? '') === 'お気に入り' &&
-    empty($foldersCol->first()['thumb_url']);
+  $firstFolder = $foldersCol->first();
+
+  $hasOnlyDefaultFolder =
+    $foldersCol->count() === 1 &&
+    data_get($firstFolder, 'name') === 'お気に入り' &&
+    empty(data_get($firstFolder, 'thumb_urls', []));
 @endphp
 
 <div class="px-4">
 
-  @if ($folder)
-
+  {{-- フォルダ詳細 --}}
+  @if ($folder && $folder !== 'all')
     <div class="mb-3">
-      <a
-        href="{{ route('user.mycafe', ['tab' => 'favorites']) }}"
-        class="text-sm text-text_color underline"
-      >
+      <a href="{{ route('user.mycafe', ['tab' => 'favorites']) }}" class="text-sm text-text_color underline">
         戻る
       </a>
     </div>
@@ -40,45 +39,63 @@
       </div>
     @endif
 
-
-  {{-- ===== フォルダ一覧（お気に入り一覧） ===== --}}
+  {{-- フォルダ一覧 --}}
   @else
 
     @if ($favoritesAllCol->isEmpty() && $foldersCol->isEmpty())
       <div class="flex justify-center">
-        <span class="text-sm text-placeholder">
-          お気に入りはまだありません
-        </span>
+        <span class="text-sm text-placeholder">お気に入りはまだありません</span>
       </div>
+
     @elseif ($hasOnlyDefaultFolder)
       <div class="flex justify-center">
-        <span class="text-sm text-placeholder">
-          お気に入りはまだありません
-        </span>
+        <span class="text-sm text-placeholder">お気に入りはまだありません</span>
       </div>
-    @else 
+
+    @else
       <div class="grid grid-cols-2 gap-3">
         @foreach ($foldersCol as $f)
-          <a
-            href="{{ route('user.mycafe.favorites.folder', ['folder' => $f['id']]) }}"
-            class="block"
-          >
+          @php
+            $isDefault = (data_get($f, 'name') === 'お気に入り');
+
+            $thumbs = collect(data_get($f, 'thumb_urls', []))
+              ->filter()
+              ->take(4)
+              ->values();
+
+            $latestThumb = $thumbs->first();
+          @endphp
+
+          <a href="{{ route('user.mycafe.favorites.folder', ['folder' => $f['id']]) }}" class="block">
             <div class="aspect-square rounded-lg overflow-hidden bg-placeholder shadow-[0_2px_10px_rgba(0,0,0,0.12)]">
-              @if (!empty($f['thumb_url']))
-                <img
-                  src="{{ $f['thumb_url'] }}"
-                  alt=""
-                  class="h-full w-full object-cover"
-                  loading="lazy"
-                />
+              @if ($isDefault)
+                {{-- お気に入りだけ4分割 --}}
+                @if ($thumbs->isNotEmpty())
+                  <div class="grid h-full w-full grid-cols-2 grid-rows-2 gap-[2px] bg-placeholder">
+                    @foreach ($thumbs as $src)
+                      <img src="{{ $src }}" alt="" class="h-full w-full object-cover" loading="lazy" />
+                    @endforeach
+
+                    @for ($i = $thumbs->count(); $i < 4; $i++)
+                      <div class="h-full w-full bg-placeholder"></div>
+                    @endfor
+                  </div>
+                @endif
+              @else
+                {{-- 他は最新1枚 --}}
+                @if ($latestThumb)
+                  <img src="{{ $latestThumb }}" alt="" class="h-full w-full object-cover" loading="lazy" />
+                @endif
               @endif
             </div>
+
             <div class="mt-2 text-base text-text_color line-clamp-1">
-              {{ $f['name'] }}
+              {{ data_get($f, 'name') }}
             </div>
           </a>
         @endforeach
       </div>
     @endif
+
   @endif
 </div>

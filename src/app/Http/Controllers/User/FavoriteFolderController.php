@@ -13,40 +13,31 @@ class FavoriteFolderController extends Controller
     {
         $userId = auth('user')->id();
 
-          
         $folders = FavoriteFolder::where('user_id', $userId)
-            ->with(['stores.latestImage']) 
+            ->with(['stores' => function ($q) {
+                $q->orderByDesc('favorite_folders_store.created_at');
+            }])
             ->get();
 
-            
         $selectedFolderIds = $store->favoriteFolders()
             ->where('favorite_folders.user_id', $userId)
             ->pluck('favorite_folders.id')
             ->values();
 
-            
         $foldersPayload = $folders->map(function ($folder) {
-            $latestStore = $folder->stores()
-                ->orderByDesc('favorite_folders_store.created_at')
-                ->first();
-            
-            $thumbUrls = $folder->stores()
-                ->with('storeImages')
-                ->get()
-                ->flatMap(fn($s) => [$s->thumb_url ?? $s->image_url ?? null])
+            $stores = $folder->stores->take(4);
+
+            $thumbUrls = $stores
+                ->map(fn($s) => $s->card_image_url)
+                ->filter()
                 ->unique()
-                ->take(4)
                 ->values()
                 ->all();
-
-            $f['thumb_urls'] = $thumbUrls;
 
             return [
                 'id' => $folder->id,
                 'name' => $folder->name,
-                'latest_store' => $latestStore ? [
-                    'image_url' => $latestStore->card_image_url,
-                ] : null,
+                'thumb_urls' => $thumbUrls,
             ];
         })->values();
 
@@ -55,6 +46,7 @@ class FavoriteFolderController extends Controller
             'selected_folder_ids' => $selectedFolderIds,
         ]);
     }
+
 
 
     public function sync(Request $request, Store $store)
