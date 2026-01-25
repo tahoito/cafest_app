@@ -7,6 +7,8 @@ use App\Models\Review;
 use App\Services\StoreRecommendService;
 use App\Services\TagRecommendService;
 use App\Models\Store;
+use App\Models\FavoriteFolder;
+
 
 class TopController extends Controller
 {
@@ -25,9 +27,16 @@ class TopController extends Controller
         $recommendedStores = $storeService->recommended(4);
         $reviews = Review::with(['user','store','tags'])->latest()->take(6)->get();
         
-        $favIds = auth('user')->check()
-            ? auth('user')->user()
-                ->favorites()->pluck('stores.id')->all()
+        $user = auth('user')->user();
+
+        $defaultFolderId = FavoriteFolder::where('user_id', $user->id)
+            ->where('name','お気に入り')
+            ->value('id');
+
+        $favIds = $defaultFolderId
+            ? Store::whereHas('favoriteFolders', function($q) use ($defaultFolderId) {
+                $q->where('favorite_folders.id', $defaultFolderId);
+            })->pluck('stores.id')->all()
             : [];
 
         return view('pages.user.top', [

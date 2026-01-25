@@ -65,4 +65,8 @@ class User extends Authenticatable
     public function viewHistories() {
         return $this->hasMany(\App\Models\ViewHistory::class);
     }
+
+    public function favoriteByUsers() {
+        return $this->belongsToMany(User::class, 'user_favorites');
+    }
 }

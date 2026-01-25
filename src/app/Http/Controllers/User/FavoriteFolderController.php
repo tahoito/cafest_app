@@ -55,8 +55,11 @@ class FavoriteFolderController extends Controller
         if (!is_array($folderIds)) $folderIds = [];
 
        
-        $myFolderIds = FavoriteFolder::where('user_id', $userId)->pluck('id')->all();
+        $myFolderIds = FavoriteFolder::where('user_id', $userId)
+            ->pluck('id')
+            ->all();
 
+        $validFolderIds = array_values(array_intersect($myFolderIds, $folderIds));
         
         $store->favoriteFolders()->syncWithoutDetaching($validFolderIds);
 
@@ -67,7 +70,6 @@ class FavoriteFolderController extends Controller
         }
 
         $detachIds = array_values(array_diff($myFolderIds, $validFolderIds));
-
         if (count($detachIds)) {
             $store->favoriteFolders()->detach($detachIds);
         }
