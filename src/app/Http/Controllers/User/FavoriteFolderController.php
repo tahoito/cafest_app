@@ -29,6 +29,17 @@ class FavoriteFolderController extends Controller
             $latestStore = $folder->stores()
                 ->orderByDesc('favorite_folders_store.created_at')
                 ->first();
+            
+            $thumbUrls = $folder->stores()
+                ->with('storeImages')
+                ->get()
+                ->flatMap(fn($s) => [$s->thumb_url ?? $s->image_url ?? null])
+                ->unique()
+                ->take(4)
+                ->values()
+                ->all();
+
+            $f['thumb_urls'] = $thumbUrls;
 
             return [
                 'id' => $folder->id,
@@ -98,27 +109,6 @@ class FavoriteFolderController extends Controller
             ],
             'selected' => true,
         ], 201);
-    }
-
-    public function update(Request $request, FavoriteFolder $folder) {
-        $userId = auth('user')->id();
-
-        if ($folder->name === 'お気に入り') abort(403);
-        abort_unless($folder->user_id === $userId, 403);
-
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:50'],
-        ]);
-
-        $folder->update([
-            'name' => $validated['name'],
-        ]);
-
-        return response()->json([
-            'ok' => true,
-            'id' => $folder->id,
-            'name' => $folder->name,
-        ]);
     }
 
 }

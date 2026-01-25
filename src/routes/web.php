@@ -74,8 +74,8 @@ Route::prefix('user')->name('user.')->group(function () {
 
         Route::get('/mycafe/favorites/{folder}', [MyCafeController::class, 'favoriteFolder'])
             ->where('folder', 'all|[0-9]+')->name('mycafe.favorites.folder');
-        Route::delete('/mycafe/favorite/{folder}',[MyCafeController::class,'destroy'])->name('mycafe.favorites.destroy');
-        Route::patch('/mycafe/favorites/{folder}',[MyCafeController::class,'update'])->name('mycafe.favorites.update');
+        Route::delete('/mycafe/favorites/{folder}',[MyCafeController::class,'destroy'])->name('mycafe.favorites.destroy');
+        Route::patch('/mycafe/favorites/{folder}',[MyCafeController::class,'updateFavoriteFolder'])->name('mycafe.favorites.update');
     });
 });
 
