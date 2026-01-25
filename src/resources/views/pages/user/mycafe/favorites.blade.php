@@ -1,24 +1,24 @@
 @php
-  $folder = request('folder'); 
+  $folder = request()->route('folder'); 
 @endphp
 
 @if ($folder)
   <div class="px-4">
 
     <div class="mb-3">
-      <a href="{{ route('user.mycafe.favorites.folder', ['tab' => 'favorites']) }}"
+      <a href="{{ route('user.mycafe', ['tab' => 'favorites']) }}"
          class="text-sm text-text_color underline">
         戻る
       </a>
     </div>
 
-    @if (($favoriteStores ?? collect())->isEmpty())
+    @if (($stores ?? collect())->isEmpty())
       <div class="text-placeholder text-sm">
         このフォルダにはまだありません
       </div>
     @else
       <div class="grid grid-cols-2 gap-3">
-        @foreach ($favoriteStores as $store)
+        @foreach ($stores as $store)
           <x-ui.card.store
             :store="$store"
             :faved="in_array(data_get($store,'id'), $favIds)"

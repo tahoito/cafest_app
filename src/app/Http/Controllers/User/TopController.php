@@ -24,8 +24,10 @@ class TopController extends Controller
         
         $recommendedStores = $storeService->recommended(4);
         $reviews = Review::with(['user','store','tags'])->latest()->take(6)->get();
-        $favIds = auth()->check()
-            ? auth()->user()->favorites->pluck('stores.id')->toArray()
+        
+        $favIds = auth('user')->check()
+            ? auth('user')->user()
+                ->favorites()->pluck('stores.id')->all()
             : [];
 
         return view('pages.user.top', [

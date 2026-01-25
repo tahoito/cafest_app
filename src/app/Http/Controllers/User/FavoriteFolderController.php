@@ -28,6 +28,7 @@ class FavoriteFolderController extends Controller
         $foldersPayload = $folders->map(function ($folder) {
             $latestStore = $folder->stores()
                 ->orderByDesc('favorite_folders_store.created_at')
+                ->with('latestImage')
                 ->first();
 
             return [
@@ -57,17 +58,16 @@ class FavoriteFolderController extends Controller
         $myFolderIds = FavoriteFolder::where('user_id', $userId)->pluck('id')->all();
 
         
-        $validFolderIds = FavoriteFolder::where('user_id', $userId)
-            ->whereIn('id', $folderIds)
-            ->pluck('id')
-            ->all();
+        $store->favoriteFolders()->syncWithoutDetaching($validFolderIds);
 
-        
-        $syncMap = array_fill_keys($validFolderIds, []);
-        $store->favoriteFolders()->syncWithoutDetaching($syncMap);
+        foreach($validFolders as $fid) {
+            $store->favoriteFolders()->updateExistingPivot($fid, [
+                'updated_at' => now(),
+            ]);
+        }
 
-        
         $detachIds = array_values(array_diff($myFolderIds, $validFolderIds));
+
         if (count($detachIds)) {
             $store->favoriteFolders()->detach($detachIds);
         }

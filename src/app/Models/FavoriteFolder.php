@@ -24,7 +24,8 @@ class FavoriteFolder extends Model
     }
 
     public function latestStore() {
-        return $this->stores()->latest('favorite_folders_store.created_at');
+        return $this->stores()
+            ->orderByPivot('created_at','desc');
     }
 
 }

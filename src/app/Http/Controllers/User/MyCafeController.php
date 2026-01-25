@@ -34,25 +34,17 @@ class MyCafeController extends Controller
         $foldersPayload = $folders->map(function ($folder) {
             $latestStore = $folder->stores->first();
 
-            $imageUrl = null;
-            if ($latestStore && $latestStore->latestImage) {
-                $imageUrl = Storage::url($latestStore->latestImage->path);
-            }
-
             return [
                 'id' => $folder->id,
                 'name' => $folder->name,
                 'count' => $folder->stores->count(),
-                'thumb_url' => $imageUrl,
+                'thumb_url' => $latestStore ? $latestStore->card_image_url : null,
             ];
         });
 
 
         $allThumbs = $favoritesAll
-            ->map(fn ($s) => $s->latestImage 
-                ? Storage::url($s->latestImage->path)
-                : null 
-            )
+            ->map(fn ($s) => $s->card_image_url ?? null )
             ->filter()
             ->take(4)
             ->values();
