@@ -6,12 +6,15 @@
 @section('content')
 <div class="h-screen bg-base_color">
     <div class="h-full overflow-y-auto">
-        <header 
-            x-data="{ name: @js($folderName ?? $title ?? ''),
-                open: false, showDelete: false, showEdit: false, error:'',
-            }" 
-            class="fixed top-0 inset-x-0 z-50 bg-base_color"
-        >
+            <header
+                x-data="favoriteFolderHeader(
+                    @json($folderName ?? $title ?? ''),
+                    @json(!empty($folderId)
+                    ? route('user.mycafe.favorites.update', ['folder'=>$folderId])
+                    : null
+                    )
+                )"
+            >
             <div class="pt-[env(safe-area-inset-top)]">
                 <div class="grid grid-cols-[48px_1fr_48px] items-center px-4 h-16">
                 <a class="p-2" href="{{ route('user.mycafe') }}">
@@ -104,9 +107,7 @@
                             </div>
 
                             <form
-                                method="POST"
-                                action="{{ route('user.mycafe.favorites.update', ['folder' => $folderId]) }}"
-                                class="mt-6 space-y-6"
+                                @submit.prevent="saveName" class="mt-6 space-y-6"
                             >
                                 @csrf
                                 @method('PATCH')

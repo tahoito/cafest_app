@@ -104,10 +104,7 @@ class FavoriteFolderController extends Controller
         $userId = auth('user')->id();
 
         if ($folder->name === 'お気に入り') abort(403);
-        
-        if ($folder->user_id !== $userId) {
-            abort(403);
-        }
+        abort_unless($folder->user_id === $userId, 403);
 
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:50'],
@@ -117,7 +114,11 @@ class FavoriteFolderController extends Controller
             'name' => $validated['name'],
         ]);
 
-        return back();
+        return response()->json([
+            'ok' => true,
+            'id' => $folder->id,
+            'name' => $folder->name,
+        ]);
     }
 
 }

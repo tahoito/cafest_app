@@ -4,6 +4,7 @@ import Alpine from 'alpinejs'
 window.Alpine = Alpine
 
 document.addEventListener('alpine:init', () => {
+  // ---- Stores ----
   Alpine.store('search', {
     activeModal: null,
     keyword: '',
@@ -15,36 +16,49 @@ document.addEventListener('alpine:init', () => {
     moods: [],
     selectedRatings: [],
 
-    hasTag(t){ const id = Number(t); return this.tags.includes(id) },
-    toggleTag(t){
+    hasTag(t) {
       const id = Number(t)
-      this.tags = this.hasTag(id) ? this.tags.filter(x => x !== id) : [...this.tags, id]
+      return this.tags.includes(id)
+    },
+    toggleTag(t) {
+      const id = Number(t)
+      this.tags = this.hasTag(id)
+        ? this.tags.filter(x => x !== id)
+        : [...this.tags, id]
     },
 
-    hasMood(m){ return this.moods.includes(m) },
-    toggleMood(m){
-      this.moods = this.hasMood(m) ? this.moods.filter(x=>x!==m) : [...this.moods, m]
+    hasMood(m) {
+      return this.moods.includes(m)
+    },
+    toggleMood(m) {
+      this.moods = this.hasMood(m)
+        ? this.moods.filter(x => x !== m)
+        : [...this.moods, m]
     },
 
-    toggleRating(n){
+    toggleRating(n) {
       const i = this.selectedRatings.indexOf(n)
       if (i === -1) this.selectedRatings.push(n)
       else this.selectedRatings.splice(i, 1)
-      this.selectedRatings.sort((a,b)=>a-b)
+      this.selectedRatings.sort((a, b) => a - b)
     },
-    isRatingOn(n){ return this.selectedRatings.includes(n) },
-    clearRatings(){ this.selectedRatings = [] },
+    isRatingOn(n) {
+      return this.selectedRatings.includes(n)
+    },
+    clearRatings() {
+      this.selectedRatings = []
+    },
   })
 
   Alpine.store('favModal', {
     openStoreId: null,
     createStoreId: null,
 
-    openList(storeId){ this.openStoreId = Number(storeId) },
-    closeList(){ this.openStoreId = null },
+    openList(storeId) { this.openStoreId = Number(storeId) },
+    closeList() { this.openStoreId = null },
 
-    openCreate(storeId){ this.createStoreId = Number(storeId) },
-    closeCreate(){ this.createStoreId = null },
+    openCreate(storeId) { this.createStoreId = Number(storeId) },
+    closeCreate() { this.createStoreId = null },
   })
 
   Alpine.store('reviewModal', {
@@ -60,6 +74,7 @@ document.addEventListener('alpine:init', () => {
     },
   })
 
+  // ---- Components ----
   Alpine.data('favoriteFolderModal', (storeId, initialOn = false) => ({
     storeId: Number(storeId),
     on: initialOn,
@@ -68,12 +83,12 @@ document.addEventListener('alpine:init', () => {
       const res = await fetch(`/user/stores/${this.storeId}/favorite`, {
         method: 'POST',
         headers: {
-          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content ?? '',
           'Accept': 'application/json',
         },
       })
 
-      const data = await res.json()
+      const data = await res.json().catch(() => ({}))
 
       if (data.status === 'added') {
         this.on = true
@@ -85,7 +100,6 @@ document.addEventListener('alpine:init', () => {
     },
   }))
 
-
   Alpine.data('favoriteFoldersUI', (storeId, defaultThumb) => ({
     storeId: Number(storeId),
     defaultThumb,
@@ -95,14 +109,15 @@ document.addEventListener('alpine:init', () => {
     hasInit: false,
 
     toPublicUrl(path) {
-      if (!path) return null;
-      if (path.startsWith('http://') || path.startsWith('https://')) return path;
-      if (path.startsWith('/storage/')) return path;
-      if (path.startsWith('storage/')) return '/' + path;
-      return '/storage/' + path.replace(/^\/+/, '');
+      if (!path) return null
+      if (path.startsWith('http://') || path.startsWith('https://')) return path
+      if (path.startsWith('/storage/')) return path
+      if (path.startsWith('storage/')) return '/' + path
+      return '/storage/' + String(path).replace(/^\/+/, '')
     },
-  
+
     initWatch() {
+      // これが呼ばれないと $watch が一切動かないので、必ず x-init="initWatch()" を付けてね
       this.error = ''
       this.hasInit = false
 
@@ -119,9 +134,9 @@ document.addEventListener('alpine:init', () => {
         }
       })
 
-      window.addEventListener('favorite-folder-select',async(ev) => {
+      window.addEventListener('favorite-folder-select', async (ev) => {
         const id = Number(ev.detail?.id)
-        if (!id) return 
+        if (!id) return
         if (Alpine.store('favModal').openStoreId !== this.storeId) return
 
         if (!this.selectedFolderIds.includes(id)) {
@@ -144,9 +159,7 @@ document.addEventListener('alpine:init', () => {
 
         const data = await res.json()
         this.folders = data.folders ?? []
-
-        this.selectedFolderIds = (data.selected_folder_ids ?? []).map(Number);
-
+        this.selectedFolderIds = (data.selected_folder_ids ?? []).map(Number)
       } catch (e) {
         console.error('folders fetch failed:', e)
         this.folders = []
@@ -159,8 +172,8 @@ document.addEventListener('alpine:init', () => {
         const res = await fetch(`/user/stores/${this.storeId}/favorite-folders/sync`, {
           method: 'POST',
           headers: {
-            'Content-Type':'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content ?? '',
             'Accept': 'application/json',
           },
           body: JSON.stringify({ folder_ids: this.selectedFolderIds }),
@@ -168,7 +181,7 @@ document.addEventListener('alpine:init', () => {
 
         if (!res.ok) {
           const txt = await res.text()
-          throw new Error(txt || 'HTTP ${res.status}')
+          throw new Error(txt || `HTTP ${res.status}`)
         }
 
         await this.fetchFolders()
@@ -180,21 +193,23 @@ document.addEventListener('alpine:init', () => {
 
     async toggleFolder(folderId) {
       const id = Number(folderId)
+
       if (this.selectedFolderIds.includes(id)) {
         this.selectedFolderIds = this.selectedFolderIds.filter(x => x !== id)
-        return 
-      } 
+        await this.syncFolders()
+        return
+      }
+
       this.selectedFolderIds = [id, ...this.selectedFolderIds.filter(x => x !== id)]
 
       const idx = this.folders.findIndex(f => Number(f.id) === id)
       if (idx !== -1) {
-        const [picked] = this.folders.splice(idx,1)
+        const [picked] = this.folders.splice(idx, 1)
         this.folders.unshift(picked)
       }
 
       await this.syncFolders()
     },
-
   }))
 
   Alpine.data('favoriteFolderCreateUI', (storeId) => ({
@@ -214,7 +229,7 @@ document.addEventListener('alpine:init', () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content ?? '',
             'Accept': 'application/json',
           },
           body: JSON.stringify({ name: n }),
@@ -230,11 +245,51 @@ document.addEventListener('alpine:init', () => {
         window.dispatchEvent(new CustomEvent('favorite-folder-select', { detail: folder }))
         this.name = ''
 
-        // ✅ 引数いらない
         Alpine.store('favModal').closeCreate()
-
       } catch (e) {
         this.error = e?.message ?? 'エラーが発生しました'
+      } finally {
+        this.saving = false
+      }
+    },
+  }))
+
+  Alpine.data('favoriteFolderHeader', (initialName, updateUrl) => ({
+    name: initialName,
+    updateUrl,
+    open: false,
+    showEdit: false,
+    showDelete: false,
+    saving: false,
+    error: '',
+
+    async saveName() {
+      if (!this.updateUrl) return
+      const n = (this.name || '').trim()
+      if (!n) return
+
+      this.saving = true
+      this.error = ''
+
+      try {
+        const res = await fetch(this.updateUrl, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content ?? '',
+            'Accept': 'application/json',
+          },
+          body: JSON.stringify({ name: n }),
+        })
+
+        if (!res.ok) {
+          const txt = await res.text()
+          throw new Error(txt || '更新に失敗しました')
+        }
+
+        this.showEdit = false
+      } catch (e) {
+        this.error = e?.message ?? '保存に失敗しました'
       } finally {
         this.saving = false
       }
