@@ -6,20 +6,24 @@
 @section('content')
 <div class="h-screen bg-base_color">
     <div class="h-full overflow-y-auto">
-        <header class="fixed top-0 inset-x-0 z-50 bg-base_color">
+        <header 
+            x-data="{ name: @js($folderName ?? $title ?? ''),
+                open: false, showDelete: false, showEdit: false, error:'',
+            }" 
+            class="fixed top-0 inset-x-0 z-50 bg-base_color"
+        >
             <div class="pt-[env(safe-area-inset-top)]">
                 <div class="grid grid-cols-[48px_1fr_48px] items-center px-4 h-16">
                 <a class="p-2" href="{{ route('user.mycafe') }}">
                     <x-icons.back class="w-5 h-5 text-text_color" />
                 </a>
 
-                <h1 class="text-center text-text_color text-2xl whitespace-nowrap overflow-hidden text-ellipsis">
-                    {{ $title ?? '' }}
+                <h1 class="text-center text-text_color text-2xl whitespace-nowrap overflow-hidden text-ellipsis" x-text="name">
                 </h1>
 
                 {{-- ︙メニュー（フォルダ詳細の時だけ） --}}
                 @if(!empty($folderId))
-                    <div x-data="{ open:false, show:false }" class="flex justify-end">
+                    <div class="flex justify-end">
 
                     {{-- ︙ボタン --}}
                     <button type="button" class="p-2 rounded-full" @click="open=true" aria-label="More">
@@ -59,7 +63,7 @@
                                     rounded-full border-2 border-main bg-main
                                     text-sm text-form
                                     shadow-[0_4px_10px_rgba(0,0,0,0.18)]"
-                                @click="open=false"
+                                @click="open=false; $nextTick(() => showEdit=true)"
                             >
                                 編集する
                             </button>
@@ -71,7 +75,7 @@
                                     rounded-full border-2 border-main bg-form
                                     text-sm text-text_color
                                     shadow-[0_4px_10px_rgba(0,0,0,0.18)]"
-                                @click="open=false; $nextTick(() => show=true)"
+                                @click="open=false; $nextTick(() => showDelete=true)"
                             >
                                 削除する
                             </button>
@@ -83,12 +87,54 @@
                         </div>
                     </div>
 
+                    <div x-show="showEdit" x-cloak class="fixed inset-0 z-[70]">
+                        <button class="absolute inset-0 bg-black/40"
+                            @click="showEdit=false; error=''"></button>
+
+                        <div class="relative h-full w-full grid place-items-center px-6">
+                            <div class="relative w-full max-w-sm rounded-2xl bg-base_color p-6" @click.stop>
+
+                            <div class="flex items-center justify-between">
+                                <button class="grid h-9 w-9 place-items-center rounded-full hover:bg-black/5"
+                                @click="showEdit=false; error=''">
+                                <x-icons.close class="w-6 h-6 text-text_color" />
+                                </button>
+                                <div class="text-lg text-text_color">コレクション名を編集</div>
+                                <div class="w-9"></div>
+                            </div>
+
+                            <form
+                                method="POST"
+                                action="{{ route('user.mycafe.favorites.update', ['folder' => $folderId]) }}"
+                                class="mt-6 space-y-6"
+                            >
+                                @csrf
+                                @method('PATCH')
+
+                                <x-ui.input
+                                    type="text"
+                                    name="name"
+                                    x-model="name"
+                                    placeholder="放課後行きたいカフェ"
+                                />
+
+                                <x-ui.button type="submit" class="w-full">
+                                保存する
+                                </x-ui.button>
+                            </form>
+
+                            <div x-show="error" class="mt-3 text-sm text-notification" x-text="error"></div>
+                            </div>
+                        </div>
+                    </div>
+
+
                     {{-- 中央モーダル（削除確認） --}}
-                    <div x-show="show" x-cloak class="fixed inset-0 z-[70]">
+                    <div x-show="showDelete" x-cloak class="fixed inset-0 z-[70]">
                         <button
                         type="button"
                         class="absolute inset-0 bg-black/40"
-                        @click="show=false"
+                        @click="showDelete=false"
                         aria-label="Close"
                         ></button>
 
@@ -100,7 +146,7 @@
                             <button
                             type="button"
                             class="absolute left-4 top-4 grid h-9 w-9 place-items-center rounded-full hover:bg-black/5"
-                            @click="show=false"
+                            @click="showDelete=false"
                             aria-label="閉じる"
                             >
                             <x-icons.close class="w-5 h-5 text-text_color" />
@@ -126,7 +172,7 @@
                                 <button
                                 type="button"
                                 class="w-full text-text_color text-sm"
-                                @click="show=false"
+                                @click="showDelete=false"
                                 >
                                     キャンセル
                                 </button>

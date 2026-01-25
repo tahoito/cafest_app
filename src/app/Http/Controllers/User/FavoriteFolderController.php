@@ -100,5 +100,24 @@ class FavoriteFolderController extends Controller
         ], 201);
     }
 
+    public function update(Request $request, FavoriteFolder $folder) {
+        $userId = auth('user')->id();
+
+        if ($folder->name === 'お気に入り') abort(403);
+        
+        if ($folder->user_id !== $userId) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:50'],
+        ]);
+
+        $folder->update([
+            'name' => $validated['name'],
+        ]);
+
+        return back();
+    }
 
 }

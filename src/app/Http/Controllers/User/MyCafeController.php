@@ -113,6 +113,7 @@ class MyCafeController extends Controller
         $userId = $user->id;
 
         $folderId = null;
+        $folderName = "";
 
         if ($folder === 'all') {
             $stores = $user->favorites()
@@ -125,6 +126,7 @@ class MyCafeController extends Controller
                 ->findOrFail((int) $folder);
 
             $folderId = $folderModel->id;
+            $folderName = $folderModel->name; 
 
             $stores = $folderModel->stores()
                 ->with('latestImage')
@@ -135,7 +137,7 @@ class MyCafeController extends Controller
 
         $favIds = $stores->pluck('id')->all();
 
-        return view('pages.user.mycafe.mycafe_favorites',compact('stores', 'favIds', 'title', 'folder','folderId'));
+        return view('pages.user.mycafe.mycafe_favorites',compact('stores', 'favIds', 'title', 'folder','folderId','folderName'));
     }
 
     public function destroy(FavoriteFolder $folder)
