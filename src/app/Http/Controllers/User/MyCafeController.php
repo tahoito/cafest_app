@@ -60,9 +60,11 @@ class MyCafeController extends Controller
         $favIds = $favoritesAll->pluck('id')->all();
 
         $reviews = Review::where('user_id', $userId)
-            ->with('store')
+            ->whereHas('store', fn ($q) => $q->where('is_public', true))
+            ->with('store.latestImage')
             ->latest()
             ->get();
+
 
         $histories = ViewHistory::where('user_id', $userId)
             ->with(['store' => fn ($q) => $q->withAvg('reviews', 'rating')])
