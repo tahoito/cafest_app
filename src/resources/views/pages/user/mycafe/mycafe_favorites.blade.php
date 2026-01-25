@@ -52,28 +52,28 @@
                         <div class="mx-auto w-full max-w-md bg-base_color" @click.stop>
                             <div class="px-4 py-4 space-y-3">
 
-                            {{-- 削除（中央モーダルを開く） --}}
+                            
                             <button
                                 type="button"
                                 class="mx-auto block h-12 w-[260px]
                                     rounded-full border-2 border-main bg-main
                                     text-sm text-form
                                     shadow-[0_4px_10px_rgba(0,0,0,0.18)]"
-                                @click="open=false; $nextTick(() => show=true)"
+                                @click="open=false"
                             >
-                                削除する
+                                編集する
                             </button>
 
-                            {{-- キャンセル --}}
+                            
                             <button
                                 type="button"
                                 class="mx-auto block h-12 w-[260px]
                                     rounded-full border-2 border-main bg-form
                                     text-sm text-text_color
                                     shadow-[0_4px_10px_rgba(0,0,0,0.18)]"
-                                @click="open=false"
+                                @click="open=false; $nextTick(() => show=true)"
                             >
-                                キャンセル
+                                削除する
                             </button>
 
                             </div>

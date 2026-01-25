@@ -3,6 +3,11 @@
   $storesCol = $stores ?? collect();
   $favoritesAllCol = $favoritesAll ?? collect();
   $foldersCol = $foldersPayload ?? collect();
+
+  $hasOnlyDefaultFolder = 
+    $foldersCol->count() === 1 && 
+    ($foldersCol->first()['name'] ?? '') === 'お気に入り' &&
+    empty($foldersCol->first()['thumb_url']);
 @endphp
 
 <div class="px-4">
@@ -19,7 +24,7 @@
     </div>
 
     @if ($storesCol->isEmpty())
-      <div class="text-placeholder text-sm">
+      <div class="text-placeholder text-center text-sm">
         このフォルダにはまだありません
       </div>
     @else
@@ -40,10 +45,18 @@
   @else
 
     @if ($favoritesAllCol->isEmpty() && $foldersCol->isEmpty())
-      <div class="text-placeholder text-sm">
-        お気に入りはまだありません
+      <div class="flex justify-center">
+        <span class="text-sm text-placeholder">
+          お気に入りはまだありません
+        </span>
       </div>
-    @else
+    @elseif ($hasOnlyDefaultFolder)
+      <div class="flex justify-center">
+        <span class="text-sm text-placeholder">
+          お気に入りはまだありません
+        </span>
+      </div>
+    @else 
       <div class="grid grid-cols-2 gap-3">
         @foreach ($foldersCol as $f)
           <a
@@ -67,6 +80,5 @@
         @endforeach
       </div>
     @endif
-
   @endif
 </div>
