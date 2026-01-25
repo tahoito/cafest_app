@@ -63,9 +63,9 @@ Route::prefix('user')->name('user.')->group(function () {
         Route::delete('/reserve/{reservation}', [ReserveController::class, 'destroy'])->name('reserve.destroy');
 
         Route::post('/stores/{store}/favorite', [FavoriteController::class, 'toggle'])->name('stores.favorite.toggle');
-        Route::get('/stores/{store}/favorite/folders', [FavoriteFolderController::class, 'index'])->name('stores.favorite.folders.index');
-        Route::post('/stores/{store}/favorite/folders', [FavoriteFolderController::class, 'sync'])->name('stores.favorite.folders.sync');  
-        Route::post('/favorite-folders', [FavoriteFolderController::class, 'store'])->name('favorite.folders.store');
+        Route::get('/stores/{store}/favorite-folders', [FavoriteFolderController::class, 'index']);
+        Route::post('/stores/{store}/favorite-folders', [FavoriteFolderController::class, 'store']);
+        Route::post('/stores/{store}/favorite-folders/sync', [FavoriteFolderController::class, 'sync']);
 
         
         Route::get('/mycafe', [MyCafeController::class, 'index'])->name('mycafe');
@@ -73,9 +73,9 @@ Route::prefix('user')->name('user.')->group(function () {
         Route::post('/mycafe/edit', [MyCafeController::class, 'update'])->name('mycafe.update');
 
         Route::get('/mycafe/favorites/{folder}', [MyCafeController::class, 'favoriteFolder'])
-            ->where('folder', 'all|[0-9]+')
-            ->name('mycafe.favorites.folder');
-        Route::delete('/mycafe/favorite-folders/{folder}',[MyCafeController::class,'destroyFolder'])->name('mycafe.favorites.destroy');
+            ->where('folder', 'all|[0-9]+')->name('mycafe.favorites.folder');
+        Route::delete('/mycafe/favorites/{folder}',[MyCafeController::class,'destroy'])->name('mycafe.favorites.destroy');
+        Route::patch('/mycafe/favorites/{folder}',[MyCafeController::class,'updateFavoriteFolder'])->name('mycafe.favorites.update');
     });
 });
 

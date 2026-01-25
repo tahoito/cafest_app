@@ -24,33 +24,34 @@ class MyCafeController extends Controller
             ->get();
 
         $folders = FavoriteFolder::where('user_id', $userId)
-            ->with(['stores.latestImage'])
+            ->with(['stores' => function($q) {
+                $q->with('latestImage')
+                    ->orderByPivot('created_at', 'desc');
+            }])
             ->get();
 
 
         $foldersPayload = $folders->map(function ($folder) {
-            $latestStore = $folder->stores
-                ->sortByDesc(fn ($s) => optional($s->pivot)->created_at)
-                ->first();
+            $stores4 = $folder->stores->take(4);
 
-            $imageUrl = ($latestStore && $latestStore->latestImage)
-                ? Storage::url($latestStore->latestImage->path)
-                : null;
+            $thumbUrls = $stores4 
+                ->map(fn($s) => $s->card_image_url ?? null)
+                ->filter()
+                ->unique()
+                ->values()
+                ->all();
 
             return [
                 'id' => $folder->id,
                 'name' => $folder->name,
                 'count' => $folder->stores->count(),
-                'thumb_url' => $imageUrl,
+                'thumb_urls' => $thumbUrls,
             ];
-        });
+        })->values();
 
 
         $allThumbs = $favoritesAll
-            ->map(fn ($s) => $s->latestImage 
-                ? Storage::url($s->latestImage->path)
-                : null 
-            )
+            ->map(fn ($s) => $s->card_image_url ?? null )
             ->filter()
             ->take(4)
             ->values();
@@ -100,11 +101,11 @@ class MyCafeController extends Controller
         $user->name = $validated['username'];
         $user->email = $validated['email'];
 
-        if ($request->hasFile('icon')){
+        if ($request->hasFile('icon_path')){
             if($user->avatar_path){
                 Storage::disk('public')->delete($user->icon_path);
             }
-            $path = $request->file('icon')->store('user_icon', 'public');
+            $path = $request->file('icon_path')->store('user_icon', 'public');
             $user->icon_path = $path;
         }
 
@@ -119,6 +120,7 @@ class MyCafeController extends Controller
         $userId = $user->id;
 
         $folderId = null;
+        $folderName = "";
 
         if ($folder === 'all') {
             $stores = $user->favorites()
@@ -131,6 +133,7 @@ class MyCafeController extends Controller
                 ->findOrFail((int) $folder);
 
             $folderId = $folderModel->id;
+            $folderName = $folderModel->name; 
 
             $stores = $folderModel->stores()
                 ->with('latestImage')
@@ -141,21 +144,40 @@ class MyCafeController extends Controller
 
         $favIds = $stores->pluck('id')->all();
 
-        return view('pages.user.mycafe.mycafe_favorites',compact('stores', 'favIds', 'title', 'folder','folderId'));
+        return view('pages.user.mycafe.mycafe_favorites',compact('stores', 'favIds', 'title', 'folder','folderId','folderName'));
     }
 
-    public function destroyFolder(FavoriteFolder $folder)
+    public function destroy(FavoriteFolder $folder)
     {
         $user = Auth::guard('user')->user();
+        $userId = $user->id; 
 
-        if ($folder->user_id !== $user->id) {
-            abort(403);
-        }
+        abort_unless($folder->user_id === $userId, 403);
 
         $folder->stores()->detach();
-
         $folder->delete();
 
-        return redirect()->route('user.mycafe',['tab' => 'favorites'])->with('success','コレクションを削除しました');
+        return redirect()->route('user.mycafe');
+    }
+
+    public function updateFavoriteFolder(Request $request, FavoriteFolder $folder) {
+        $userId = auth('user')->id();
+
+        if ($folder->name === 'お気に入り') abort(403);
+        abort_unless($folder->user_id === $userId, 403);
+
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:50'],
+        ]);
+
+        $folder->update([
+            'name' => $validated['name'],
+        ]);
+
+        return response()->json([
+            'ok' => true,
+            'id' => $folder->id,
+            'name' => $folder->name,
+        ]);
     }
 }

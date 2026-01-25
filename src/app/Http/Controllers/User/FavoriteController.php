@@ -13,21 +13,23 @@ class FavoriteController extends Controller
     {
         $userId = auth('user')->id(); // userガード
 
-        $favorite = UserFavorite::where('user_id', $userId)
-            ->where('store_id', $store->id)
-            ->first();
+        $default = \App\Models\FavoriteFolder::firstOrCreate(
+            ['user_id' => $userId, 'name' => 'お気に入り']
+        );
 
-        if ($favorite) {
-            $favorite->delete();
+        $exists = $store->favoriteFolders()
+            ->where('favorite_folders.user_id', $userId)
+            ->where('favorite_folders.id', $default->id)
+            ->exists();
+
+        if ($exists) {
+            $store->favoriteFolders()
+                ->detach($default->id);
 
             return response()->json(['status' => 'removed']);
         }
 
-
-        UserFavorite::create([
-            'user_id' => $userId,
-            'store_id' => $store->id,
-        ]);
+        $store->favoriteFolders()->syncWithoutDetaching([$default->id]);
 
         return response()->json(['status' => 'added']);
     }

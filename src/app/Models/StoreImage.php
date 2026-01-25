@@ -23,16 +23,21 @@ class StoreImage extends Model
         return $this->belongsTo(Store::class);
     }
 
-    public function getUrlAttribute()
+    public function getUrlAttribute(): ?string
     {
-        $p = trim((string) $this->path);
-        if ($p === '') return null;
+        $value = trim((string) $this->path);
         
-        if (str_starts_with($p, 'http://') || str_starts_with($p, 'https://')) return $p;
-        
-        $p = preg_replace('#^/?storage/#', '', $p);
+        if (!$value) return null;
+        if (str_starts_with($value,'http://') || str_starts_with($value, 'http://')) {
+            return $value;
+        } 
 
-        return Storage::url($p);
+        if (str_starts_with($value, '/storage/')) {
+            return $value;
+        }
+
+        $path = preg_replace('#^/?storage/#', '', ltrim($value, '/' ));
+        return Storage::url($path);
     }
 
 }

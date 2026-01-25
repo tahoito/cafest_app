@@ -9,10 +9,11 @@
   $defaultCardPath = 'store/card.png';
   $defaultCardUrl  = Storage::disk('public')->url($defaultCardPath);
 
-  $imagePath = data_get($store, 'image_url');
-  $imageUrl  = $imagePath
-    ? Storage::disk('public')->url($imagePath)
-    : $defaultCardUrl;
+  $imageUrl =
+    optional(collect(data_get($store, 'slideImages', []))->firstWhere('is_used_on_card', true))->url
+    ?? optional(collect(data_get($store, 'slideImages', []))->first())->url
+    ?? $defaultCardUrl;
+
 @endphp
 
 
@@ -90,7 +91,7 @@
               <div class="flex justify-center">
                 <div class="flex items-center gap-4">
                   <img
-                    src="{{ $imageUrl }}"
+                    src="{{ $store->card_image_url }}"
                     alt="{{ $name }}"
                     class="h-[64px] w-[64px] rounded-lg object-cover shadow-[0_2px_10px_rgba(0,0,0,0.12)]"
                     loading="lazy"
@@ -142,7 +143,7 @@
             <div class="flex items-center justify-between py-3">
               <div class="flex items-center gap-3">
                 <img
-                  :src="toPublicUrl(folder.latest_store?.image_url)|| defaultThumb"
+                  :src="toPublicUrl(folder.latest_store?.image_url) || defaultThumb"
                   class="w-[85px] h-[85px] rounded-lg object-cover"
                   alt=""
                 >
@@ -215,9 +216,10 @@
         </div>
 
         <x-ui.button
+          type="button"
           class="w-full mt-[30px]"
           x-bind:disabled="name.trim().length === 0 || saving"
-          @click="save()"
+          @click.prevent.stop="save()"
         >
           <span x-show="!saving">保存</span>
           <span x-show="saving">保存中…</span>

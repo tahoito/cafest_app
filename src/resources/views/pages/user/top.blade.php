@@ -34,7 +34,7 @@
           @foreach($recommendedStores as $store)
             <x-ui.card.store
               :store="$store"
-              :faved="in_array(data_get($store,'id'), $favIds)" 
+              :faved="in_array($store->id, $favIds)" 
               :href="route('user.stores.show', ['store' => data_get($store,'id')])"
               variant="list"
             />
@@ -63,7 +63,7 @@
           @foreach($allStores as $store)
             <x-ui.card.store
               :store="$store"
-              :faved="in_array(data_get($store,'id'), $favIds)"
+              :faved="in_array($store->id, $favIds)"
               :href="route('user.stores.show', ['store' => data_get($store,'id')])"
               variant="list"
             />

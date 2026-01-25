@@ -14,7 +14,9 @@ class FavoriteFolderController extends Controller
         $userId = auth('user')->id();
 
         $folders = FavoriteFolder::where('user_id', $userId)
-            ->with(['stores.latestImage'])
+            ->with(['stores' => function ($q) {
+                $q->orderByDesc('favorite_folders_store.created_at');
+            }])
             ->get();
 
         $selectedFolderIds = $store->favoriteFolders()
@@ -23,30 +25,29 @@ class FavoriteFolderController extends Controller
             ->values();
 
         $foldersPayload = $folders->map(function ($folder) {
-            $latestStore = $folder->stores 
-                ->sortByDesc(fn ($s) => optional($s->pivot)->created_at)
-                ->first();
+            $stores = $folder->stores->take(4);
 
-            $imageUrl = null;
-            if($latestStore && $latestStore->latestImage) {
-                $imageUrl = asset('storage/'.ltrim($latestStore->latestImage->path,'/'));
-            }
+            $thumbUrls = $stores
+                ->map(fn($s) => $s->card_image_url)
+                ->filter()
+                ->unique()
+                ->values()
+                ->all();
 
             return [
                 'id' => $folder->id,
                 'name' => $folder->name,
-                'latest_store' => $latestStore ? [
-                    'id' => $latestStore->id,
-                    'image_url' => $imageUrl,
-                ] : null,
+                'thumb_urls' => $thumbUrls,
             ];
-        });
+        })->values();
 
         return response()->json([
             'folders' => $foldersPayload,
             'selected_folder_ids' => $selectedFolderIds,
         ]);
     }
+
+
 
     public function sync(Request $request, Store $store)
     {
@@ -55,34 +56,34 @@ class FavoriteFolderController extends Controller
         $folderIds = $request->input('folder_ids', []);
         if (!is_array($folderIds)) $folderIds = [];
 
-      
-        $validFolderIds = FavoriteFolder::where('user_id', $userId)
-            ->whereIn('id', $folderIds)
+       
+        $myFolderIds = FavoriteFolder::where('user_id', $userId)
             ->pluck('id')
             ->all();
 
-        $store->favoriteFolders()
-            ->wherePivot('user_id', $userId)
-            ->detach();
-            
-        $myFolderIds = FavoriteFolder::where('user_id', $userId)->pluck('id')->all();
-        if (count($myFolderIds)) {
-            $store->favoriteFolders()->detach($myFolderIds);
+        $validFolderIds = array_values(array_intersect($myFolderIds, $folderIds));
+        
+        $store->favoriteFolders()->syncWithoutDetaching($validFolderIds);
+
+        foreach($validFolderIds as $fid) {
+            $store->favoriteFolders()->updateExistingPivot($fid, [
+                'updated_at' => now(),
+            ]);
         }
 
-        if (count($validFolderIds)) {
-            $attach = collect($validFolderIds)->mapWithKeys(fn($id) => [$id => ['user_id' => $userId]]);
-            $store->favoriteFolders()->attach($attach->all());
+        $detachIds = array_values(array_diff($myFolderIds, $validFolderIds));
+        if (count($detachIds)) {
+            $store->favoriteFolders()->detach($detachIds);
         }
 
         return response()->json(['ok' => true]);
     }
 
-    public function store(Request $request) {
+    public function store(Request $request, Store $store) {
         $userId = auth('user')->id();
 
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:30'],
+            'name' => ['required', 'string', 'max:50'],
         ]);
 
         $folder = FavoriteFolder::create([
@@ -90,11 +91,16 @@ class FavoriteFolderController extends Controller
             'name' => $validated['name'],
         ]);
 
+        $folder->stores()->syncWithoutDetaching([$store->id]);
+
         return response()->json([
             'id' => $folder->id,
             'name' => $folder->name,
-            'latest_store' => null,
-        ],201);
+            'latest_store' => [
+                'image_url' => $store->card_image_url,
+            ],
+            'selected' => true,
+        ], 201);
     }
 
 }

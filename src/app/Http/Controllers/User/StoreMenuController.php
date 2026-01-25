@@ -12,9 +12,9 @@ class StoreMenuController extends Controller
     {
         $userId = auth('user')->id();
 
-        $faved = auth()->check()
-            ? auth()->user()->favorites()->where('store_id', $store->id)->exists()
-            : false;
+        $faved = $store->favoriteFolders()
+            ->wherePivot('user_id', auth('user')->id())
+            ->exists();
 
         $menuPhotos = $store->menuPhotos()->take(3)->get();
         $recommendedItems = $store->recommendedItems()->take(3)->get();

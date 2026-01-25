@@ -14,8 +14,13 @@ class RecommendController extends Controller{
     public function recommended(StoreRecommendService $service)
     {
         $stores = $service->recommended(limit:8);
+        
+        $favIds = auth('user')->check()
+            ? auth('user')->user()->favorites()->pluck('stores.id')->all()
+            : [];
 
-        return view('pages.user.recommended', compact('stores'));
+
+        return view('pages.user.recommended', compact('stores','favIds'));
     }
 }
 
