@@ -118,6 +118,17 @@ document.addEventListener('alpine:init', () => {
           this.fetchFolders()
         }
       })
+
+      window.addEventListener('favorite-folder-select',async(ev) => {
+        const id = Number(ev.detail?.id)
+        if (!id) return 
+        if (Alpine.store('favModal').openStoreId !== this.storeId) return
+
+        if (!this.selectedFolderIds.includes(id)) {
+          this.selectedFolderIds = [id, ...this.selectedFolderIds]
+          await this.syncFolders()
+        }
+      })
     },
 
     async fetchFolders() {
@@ -143,7 +154,31 @@ document.addEventListener('alpine:init', () => {
       }
     },
 
-    toggleFolder(folderId) {
+    async syncFolders() {
+      try {
+        const res = await fetch(`/user/stores/${this.storeId}/favorite-folders/sync`, {
+          method: 'POST',
+          headers: {
+            'Content-Type':'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            'Accept': 'application/json',
+          },
+          body: JSON.stringify({ folder_ids: this.selectedFolderIds }),
+        })
+
+        if (!res.ok) {
+          const txt = await res.text()
+          throw new Error(txt || 'HTTP ${res.status}')
+        }
+
+        await this.fetchFolders()
+      } catch (e) {
+        console.error('folders sync failed:', e)
+        this.error = '保存に失敗しました'
+      }
+    },
+
+    async toggleFolder(folderId) {
       const id = Number(folderId)
       if (this.selectedFolderIds.includes(id)) {
         this.selectedFolderIds = this.selectedFolderIds.filter(x => x !== id)
@@ -156,7 +191,10 @@ document.addEventListener('alpine:init', () => {
         const [picked] = this.folders.splice(idx,1)
         this.folders.unshift(picked)
       }
+
+      await this.syncFolders()
     },
+
   }))
 
   Alpine.data('favoriteFolderCreateUI', (storeId) => ({
@@ -189,6 +227,7 @@ document.addEventListener('alpine:init', () => {
 
         const folder = await res.json()
         window.dispatchEvent(new CustomEvent('favorite-folder-created', { detail: folder }))
+        window.dispatchEvent(new CustomEvent('favorite-folder-select', { detail: folder }))
         this.name = ''
 
         // ✅ 引数いらない
