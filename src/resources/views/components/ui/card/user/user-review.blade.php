@@ -6,26 +6,26 @@
 
 @php
   use Illuminate\Support\Facades\Storage;
+
   $userName = (string) data_get($review, 'user.name', data_get($review, 'username', ''));
   $userHandle = (string) data_get($review, 'user.handle', '');
 
   // user icon (storage / absolute url 対応)
   $userIconPath = data_get($review,'user.icon_path', data_get($review,'icon_path', null));
   $userIconUrl = null;
+
   if ($userIconPath) {
     if (is_string($userIconPath) && str_starts_with($userIconPath, 'http')) {
       $userIconUrl = $userIconPath;
-
     } elseif (is_string($userIconPath) && str_starts_with($userIconPath, '/storage/')) {
       $userIconUrl = $userIconPath;
-
     } else {
       $path = preg_replace('#^storage/#', '', ltrim((string)$userIconPath, '/'));
       $userIconUrl = Storage::url($path);
     }
   }
 
-  // store (review->store をwithしてる想定)
+  // store
   $store     = data_get($review, 'store', data_get($review, 'shop', null));
   $storeId   = data_get($store, 'id', data_get($review, 'store_id', data_get($review, 'shop_id', null)));
   $storeName = (string) data_get($store, 'name', data_get($review, 'store_name', data_get($review, 'shop_name', '')));
@@ -45,40 +45,24 @@
   }
 
   $stars = max(0, min(5, (int) floor($rating + 0.00001)));
-  $endpoint = null;
-  if ($storeId && data_get($review,'id')) {
-    $endpoint = route('user.stores.reviews.show', [
-      'store' => $storeId,
-      'review' => data_get($review,'id'),
-    ]) . '?format=json';
-  }
-  $link = $href ?? '#';
+
+  $link = $href;
   $avatarSize = match ($variant) {
     'mini'  => "w-9 h-9",
     default => "w-11 h-11",
   };
+
+  // カード全体クラス
+  $cardClass = 'block w-full rounded-xl bg-form ring-1 ring-black/5 shadow-[0_2px_10px_rgba(0,0,0,0.12)] text-left';
 @endphp
 
-<button
-  type="button"
-  @if($endpoint)
-    @click.prevent.stop='window.dispatchEvent(new CustomEvent("review:open",{
-      detail: { reviewId: {{ (int) data_get($review,"id") }}, endpoint: "{{ $endpoint }}" }
-    }))'
-  @else
-    disabled
-  @endif
-  {{ $attributes->merge([
-    'class' =>
-      'block w-[353px] h-[196px]
-       rounded-xl bg-form
-       ring-1 ring-black/5
-       shadow-[0_2px_10px_rgba(0,0,0,0.12)]
-       text-left'
-  ]) }}
->
-  <div class="h-full px-5 py-4 flex flex-col">
+@if($link)
+  <a href="{{ $link }}" {{ $attributes->merge(['class' => $cardClass]) }}>
+@else
+  <div {{ $attributes->merge(['class' => $cardClass]) }}>
+@endif
 
+  <div class="h-full px-5 py-4 flex flex-col">
     <div class="flex items-start justify-between gap-3">
       <div class="flex items-center gap-3 min-w-0">
         <div class="{{ $avatarSize }} rounded-full bg-base overflow-hidden shrink-0">
@@ -121,6 +105,10 @@
     <div class="mt-2 text-text_color text-[15px] leading-snug line-clamp-3">
       {{ $body }}
     </div>
-
   </div>
-</button>
+
+@if($link)
+  </a>
+@else
+  </div>
+@endif

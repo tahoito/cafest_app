@@ -26,7 +26,7 @@ class StoreReviewController extends Controller
             ->get();
 
         $faved = $store->favoriteFolders()
-            ->wherePivot('user_id', auth('user')->id())
+            ->where('favorite_folders.user_id', $userId)
             ->exists();
 
 

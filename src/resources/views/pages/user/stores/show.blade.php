@@ -11,10 +11,12 @@
     <header class="fixed top-0 inset-x-0 z-50 bg-base_color">
       <div class="pt-[env(safe-area-inset-top)]">
         <div class="grid grid-cols-[48px_1fr_auto] items-center px-4 h-16">
-          <a class="p-2" href="{{ route('user.top') }}">
-              <x-icons.back class="w-5 h-5 text-text_color" />
+          <a
+            href="{{ url()->previous() ?? route('user.top') }}"
+            class="p-2"
+          >
+            <x-icons.back class="w-5 h-5 text-text_color" />
           </a>
-
           <div class="text-center text-text_color font-medium truncate">
           </div>
 

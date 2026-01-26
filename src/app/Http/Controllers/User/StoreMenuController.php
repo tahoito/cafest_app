@@ -13,7 +13,7 @@ class StoreMenuController extends Controller
         $userId = auth('user')->id();
 
         $faved = $store->favoriteFolders()
-            ->wherePivot('user_id', auth('user')->id())
+            ->where('favorite_folders.user_id', $userId)
             ->exists();
 
         $menuPhotos = $store->menuPhotos()->take(3)->get();

@@ -23,7 +23,7 @@ class StorePostController extends Controller
         $userId = auth('user')->id();
 
         $faved = $store->favoriteFolders()
-            ->werePivot('user_id', auth('user')->id())
+            ->were('favorite_folders.user_id', $userId)
             ->exists();
 
 

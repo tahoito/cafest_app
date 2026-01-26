@@ -76,6 +76,10 @@ Route::prefix('user')->name('user.')->group(function () {
             ->where('folder', 'all|[0-9]+')->name('mycafe.favorites.folder');
         Route::delete('/mycafe/favorites/{folder}',[MyCafeController::class,'destroy'])->name('mycafe.favorites.destroy');
         Route::patch('/mycafe/favorites/{folder}',[MyCafeController::class,'updateFavoriteFolder'])->name('mycafe.favorites.update');
+
+        Route::prefix('stores/{store}')->name('stores.')->group(function () {
+            Route::resource('reviews', ReviewController::class)->only(['edit','update','destroy']);
+        });
     });
 });
 

@@ -55,7 +55,7 @@ class StoreController extends Controller
             ->findOrFail($store->id);
 
         $faved = $store->favoriteFolders()
-            ->wherePivot('user_id', auth('user')->id())
+            ->where('favorite_folders.user_id', $userId)
             ->exists();
         
         return view('pages.user.stores.show', [
