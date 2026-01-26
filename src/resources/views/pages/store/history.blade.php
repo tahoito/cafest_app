@@ -92,12 +92,70 @@
             </section>
             
 
-            <section class="px-4 space-y-3">
+            <section class="space-y-3">
                 <div class="text-lg text-text_color font-medium">閲覧数の推移</div>
-            </section>
 
+                <div>
+                    <div class="h-[220px]">
+                        <canvas id="viewsChart"></canvas>
+                    </div>
+                </div>
+            </section>
         </div>
     </div>
   </div>
 </div>
+
+@push('scripts')
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const canvas = document.getElementById('viewsChart');
+      if (!canvas) return;
+
+      const labels = ['1','2','3','4','5','6','7'];
+      const values = [10,5,50,8,80,20,100];
+
+      const chart = new Chart(canvas, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: '閲覧数',
+            data: values,
+            tension: 0.35,
+            pointRadius: 4,
+
+            borderColor: '#46392A',
+            backgroundColor: '#46392A',
+            pointBackgroundColor: '#46392A',
+            pointBorderColor: '#46392A',
+
+            pointHoverRadius: 5,
+            borderWidth: 2,
+            fill: false,
+          }]
+        },
+        options: { 
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: { enabled: true }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { font: { size: 12 } }
+            },
+            y: {
+              beginAtZero: true,
+              ticks: { font: { size: 12 } }
+            }
+          }
+        }
+      });
+    });
+  </script>
+@endpush
 @endsection
