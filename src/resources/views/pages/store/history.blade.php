@@ -24,23 +24,38 @@
     </header>
 
     <div class="h-full overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
-        <div class="w-full px-4 mx-auto pt-5 space-y-6 pb-4">
-            <section>
-                <div class="flex justify-center mt-6">
-                    <button type="button" class="px-5 py-2 text-base text-text_color bg-base_color border-r border-main"
-                    >全期間
+        <div class="w-full px-4 mx-auto space-y-6 pb-4">
+            <section class="space-y-3">
+                <div class="flex justify-center item-start mt-6">
+                    <button type="button" class="px-3 py-1 text-base text-text_color bg-base_color border border-main border-r-0 rounded-l">
+                    全期間
                     </button>
-                    <button type="button" class="px-5 py-2 text-base text-form bg-main border-r border-main"
-                    >週
+                    <button type="button" class="px-3 py-1 text-base text-form bg-main border border-main border-r-0">
+                    週
                     </button>
-                    <button type="button" class="px-5 py-2 text-base text-form bg-main border-r border-main"
-                    >月
+                    <button type="button" class="px-3 py-1 text-base text-text_color bg-base_color border border-main border-r-0">
+                    月
                     </button>
-                    <button type="button" class="px-5 py-2 text-base text-form bg-main border-r border-main"
-                    >日
+                    <button type="button" class="px-3 py-1 text-base text-text_color bg-base_color border border-main rounded-r">
+                    年
+                    </button>
+                </div>
+
+                <div class="flex items-center justify-center gap-3 text-text_color">
+                    <button type="button" class="p-1 rounded-full">
+                    <x-icons.chevron-left size="15"/>
+                    </button>
+
+                    <div class="flex items-center gap-2 text-sm">
+                    <span>2025/12/08〜2025/12/14</span>
+                    </div>
+
+                    <button type="button" class="p-1 rounded-full">
+                    <x-icons.chevron-right size="15" />
                     </button>
                 </div>
             </section>
+
 
             <section class="bg-base_color border-2 border-main rounded-xl px-5 py-5 shadow-[0_2px_10px_rgba(0,0,0,0.12)]">
                 <div class="grid grid-cols-[1fr_1fr] items-center gap-6">
@@ -57,15 +72,14 @@
 
                     <div class="text-left">
                         <div class="text-text_color text-xl">
-                            先週より <span class="text-text_color">+10%</span>
+                            先週より <span class="text-text_color">+6%</span>
                         </div>
                         <div class="mt-2 text-main2 text-sm leading-snug">
-                            閲覧数が増えていってます。
+                            お気に入り率: <span class="text-main2">40%</span>
                         </div>
                     </div>
                 </div>
             </section>
-
 
             <section class="bg-base_color border-2 border-main rounded-xl px-5 py-5 shadow-[0_2px_10px_rgba(0,0,0,0.12)]">
                 <div class="grid grid-cols-[1fr_1fr] items-center gap-6">
