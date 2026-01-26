@@ -26,7 +26,20 @@
     <div class="h-full overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
         <div class="w-full px-4 mx-auto pt-5 space-y-6 pb-4">
             <section>
-
+                <div class="flex justify-center mt-6">
+                    <button type="button" class="px-5 py-2 text-base text-text_color bg-base_color border-r border-main"
+                    >全期間
+                    </button>
+                    <button type="button" class="px-5 py-2 text-base text-form bg-main border-r border-main"
+                    >週
+                    </button>
+                    <button type="button" class="px-5 py-2 text-base text-form bg-main border-r border-main"
+                    >月
+                    </button>
+                    <button type="button" class="px-5 py-2 text-base text-form bg-main border-r border-main"
+                    >日
+                    </button>
+                </div>
             </section>
 
             <section class="bg-base_color border-2 border-main rounded-xl px-5 py-5 shadow-[0_2px_10px_rgba(0,0,0,0.12)]">
