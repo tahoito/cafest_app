@@ -118,7 +118,7 @@
       </div>
     </div>
 
-    <div class="mt-2 text-text_color text-[15px] leading-snug line-clamp-2">
+    <div class="mt-2 text-text_color text-[15px] leading-snug line-clamp-3">
       {{ $body }}
     </div>
 
