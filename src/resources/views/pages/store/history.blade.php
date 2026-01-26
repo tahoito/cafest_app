@@ -32,8 +32,8 @@
             <section class="bg-base_color border-2 border-main rounded-xl px-5 py-5 shadow-[0_2px_10px_rgba(0,0,0,0.12)]">
                 <div class="grid grid-cols-[1fr_1fr] items-center gap-6">
                     <div>
-                        <div class="flex items-center gap-1">
-                            <x-icons.eye size="30" class="text-text_color" />
+                        <div class="flex items-center">
+                            <x-icons.eyes size="30" class="text-text_color" />
                             <div class="text-text_color text-xl">閲覧数</div>
                         </div>
 
@@ -77,6 +77,12 @@
                     </div>
                 </div>
             </section>
+            
+
+            <section class="px-4 space-y-3">
+                <div class="text-lg text-text_color font-medium">閲覧数の推移</div>
+            </section>
+
         </div>
     </div>
   </div>
