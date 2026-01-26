@@ -24,6 +24,8 @@ use App\Http\Controllers\Store\StoreProfileController;
 use App\Http\Controllers\Store\StoreImageController;
 use App\Http\Controllers\Store\StoreReviewsController;
 use App\Http\Controllers\Store\StoreMenuManegeController;
+use App\Http\Controllers\Store\StoreHistoryController;
+use App\Http\Controllers\Store\StoreReserveController;
 
 Route::view('/', 'welcome')->name('welcome');
 
@@ -129,9 +131,12 @@ Route::prefix('store')->name('store.')->group(function () {
         Route::post('/recommended/{recommendedItem}/image',[StoreMenuManegeController::class,'uploadRecommended'])->name('menu.recommended.image.upload');
         Route::delete('/recommended/{recommendedItem}/image',[StoreMenuManegeController::class,'deleteRecommendedImage'])->name('menu.recommended.image.delete');
 
-
         Route::get('/reviews', [StoreReviewsController::class,'index'])->name('reviews');
         Route::get('/reviews/{review}', [StoreReviewsController::class,'show'])->name('reviews.show');
+
+        Route::get('/history',[StoreHistoryController::class,'show'])->name('history');
+
+        Route::get('reserve',[StoreReserveController::class,'index'])->name('reserve');
     });
 });
 

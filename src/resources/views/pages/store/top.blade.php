@@ -57,7 +57,7 @@
         <x-slot name="icon"><x-icons.menu size="60" /></x-slot>
       </x-ui.top-item>
 
-      <x-ui.top-item href="#" label="閲覧数一覧">
+      <x-ui.top-item href="{{ route('store.history') }}" label="閲覧数一覧">
         <x-slot name="icon"><x-icons.graph size="60" /></x-slot>
       </x-ui.top-item>
 
