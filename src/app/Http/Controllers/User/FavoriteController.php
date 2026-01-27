@@ -13,8 +13,9 @@ class FavoriteController extends Controller
     {
         $userId = auth('user')->id(); // userガード
 
-        $default = \App\Models\FavoriteFolder::firstOrCreate(
-            ['user_id' => $userId, 'name' => 'お気に入り']
+        $default = FavoriteFolder::firstOrCreate(
+            ['user_id' => $userId, 'name' => 'お気に入り'],
+            []
         );
 
         $exists = $store->favoriteFolders()

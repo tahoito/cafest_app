@@ -32,28 +32,28 @@
             <section class="space-y-2">
                 <div class="flex justify-start items-start mt-3">
                     <a href="{{ route('store.history', ['range' => 'all', 'base' => $base ]) }}"
-                        class="px-2 py-1 text-base border border-main border-r-0 
+                        class="px-3 py-1 text-base border border-main border-r-0 
                         {{ $range==='all' ? 'bg-main text-form' : 'bg-base_color text-text_color' }}">
                         全期間
                     </a>
                     <a href="{{ route('store.history', ['range' => 'week', 'base' => $base ]) }}"
-                        class="px-2 py-1 text-base border border-main border-r-0 
+                        class="px-3 py-1 text-base border border-main border-r-0 
                         {{ $range==='week' ? 'bg-main text-form' : 'bg-base_color text-text_color' }}">
                         週
                     </a>
                     <a href="{{ route('store.history', ['range' => 'month', 'base' => $base ]) }}"
-                        class="px-2 py-1 text-base border border-main border-r-0 
+                        class="px-3 py-1 text-base border border-main border-r-0 
                         {{ $range==='month' ? 'bg-main text-form' : 'bg-base_color text-text_color' }}">
                         月
                     </a>
                     <a href="{{ route('store.history', ['range' => 'year', 'base' => $base ]) }}"
-                        class="px-2 py-1 text-base border border-main border
+                        class="px-3 py-1 text-base border border-main border
                         {{ $range==='year' ? 'bg-main text-form' : 'bg-base_color text-text_color' }}">
                         年
                     </a>
                 </div>
 
-                <div class="flex items-center justify-start gap-2 text-text_color">
+                <div class="flex items-center justify-start gap-1 text-text_color">
                     <a href="{{ route('store.history', ['range'=>$range, 'base'=>$prevBase ]) }}"
                         class="p-1 rounded-full {{ $range==='all' ? 'pointer-events-none opacity-30' : '' }}">
                         <x-icons.chevron-left size="15"/>
@@ -85,10 +85,12 @@
 
                     <div class="text-left">
                         <div class="text-text_color text-xl">
-                            先週より <span class="text-text_color">+6%</span>
-                        </div>
-                        <div class="mt-2 text-main2 text-sm leading-snug">
-                            お気に入り率: <span class="text-main2">40%</span>
+                            先週より
+                            @if($viewsRatio !== null)
+                                <span class="text-text_color">{{ $viewsRatio }}倍</span>
+                            @else
+                                <span class="text-text_color">-</span>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -109,10 +111,12 @@
 
                     <div class="text-left">
                         <div class="text-text_color text-xl">
-                            先週より <span class="text-text_color">+6%</span>
-                        </div>
-                        <div class="mt-2 text-main2 text-sm leading-snug">
-                            お気に入り率: <span class="text-main2">40%</span>
+                            先週より
+                            @if($favsRatio !== null)
+                                <span class="text-text_color">{{ $favsRatio }}倍</span>
+                            @else
+                                <span class="text-text_color">-</span>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -136,53 +140,61 @@
 @push('scripts')
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
+  (() => {
+    let chartInstance = null;
+
+    const boot = () => {
       const canvas = document.getElementById('viewsChart');
-      if (!canvas) return;
+      if (!canvas || typeof Chart === 'undefined') return;
 
       const labels = @json($chartLabels);
       const values = @json($chartValues);
 
-      const chart = new Chart(canvas, {
+      if (chartInstance) {
+        chartInstance.destroy();
+        chartInstance = null;
+      }
+
+      chartInstance = new Chart(canvas, {
         type: 'line',
         data: {
-          labels: labels,
+          labels,
           datasets: [{
             label: '閲覧数',
             data: values,
             tension: 0.35,
             pointRadius: 4,
-
             borderColor: '#46392A',
             backgroundColor: '#46392A',
             pointBackgroundColor: '#46392A',
             pointBorderColor: '#46392A',
-
             pointHoverRadius: 5,
             borderWidth: 2,
             fill: false,
           }]
         },
-        options: { 
+        options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false },
-            tooltip: { enabled: true }
-          },
+          plugins: { legend: { display: false }, tooltip: { enabled: true } },
           scales: {
-            x: {
-              grid: { display: false },
-              ticks: { font: { size: 12 } }
-            },
+            x: { grid: { display: false }, ticks: { font: { size: 12 } } },
             y: {
               beginAtZero: true,
-              ticks: { font: { size: 12 } }
+              ticks: {
+                precision: 0,
+                stepSize: 1,
+                callback: (v) => Number(v).toFixed(0),
+              }
             }
           }
         }
       });
-    });
-  </script>
+    };
+
+    document.addEventListener('DOMContentLoaded', boot);
+    document.addEventListener('turbo:load', boot);
+  })();
+</script>
 @endpush
 @endsection
