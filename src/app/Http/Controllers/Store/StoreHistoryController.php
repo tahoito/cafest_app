@@ -69,17 +69,19 @@ class StoreHistoryController extends Controller
             : ($views > 0 ? 100 : 0);
 
         
-        $favs = DB::table('user_favorites')
-            ->where('store_id', $store->id)
-            ->whereBetween('created_at',[$start, $end])
+        $favs = DB::table('favorite_folders_store as p')
+            ->join('favorite_folders as f', 'f.id', '=', 'p.favorite_folder_id')
+            ->where('p.store_id', $store->id)
+            ->whereBetween('p.created_at',[$start, $end])
             ->count();
 
-        $prevFavs = DB::table('user_favorites')
-            ->where('store_id', $store->id)
-            ->whereBetween('created_at',[$prevStart, $prevEnd])
+        $prevFavs = DB::table('favorite_folders_store as p')
+            ->join('favorite_folders as f', 'f.id', '=', 'p.favorite_folder_id')
+            ->where('p.store_id', $store->id)
+            ->whereBetween('p.created_at',[$prevStart, $prevEnd])
             ->count();
 
-        $favDiffPct = $prevFavs > 0
+        $favsDiffPct = $prevFavs > 0
             ? round((($favs - $prevFavs) / $prevFavs) * 100)
             : ($favs > 0 ? 100 : 0);
 
@@ -149,7 +151,8 @@ class StoreHistoryController extends Controller
             'views' => $views,
             'viewsDiffPct' => $viewsDiffPct,
             'favs' => $favs,
-            'favsRate' => $favRate,
+            'favRate' => $favRate,
+            'favsDiffPct' => $favsDiffPct,
 
             'chartLabels' => $labels,
             'chartValues' => $values,
