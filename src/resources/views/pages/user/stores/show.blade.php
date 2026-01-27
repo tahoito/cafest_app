@@ -12,7 +12,7 @@
       <div class="pt-[env(safe-area-inset-top)]">
         <div class="grid grid-cols-[48px_1fr_auto] items-center px-4 h-16">
           <a
-            href="{{ url()->previous() ?? route('user.top') }}"
+            href="{{ route('user.top') }}"
             class="p-2"
           >
             <x-icons.back class="w-5 h-5 text-text_color" />

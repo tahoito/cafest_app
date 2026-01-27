@@ -29,42 +29,43 @@
 
     <div class="h-full overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
         <div class="w-full px-4 mx-auto space-y-6 pb-4">
-            <section class="space-y-3">
-                <div class="flex justify-center item-start mt-6">
+            <section class="space-y-2">
+                <div class="flex justify-start items-start mt-3">
                     <a href="{{ route('store.history', ['range' => 'all', 'base' => $base ]) }}"
-                        class="x-3 py-1 text-base border border-main border-r-0 rounded-xl
+                        class="px-2 py-1 text-base border border-main border-r-0 
                         {{ $range==='all' ? 'bg-main text-form' : 'bg-base_color text-text_color' }}">
                         全期間
                     </a>
                     <a href="{{ route('store.history', ['range' => 'week', 'base' => $base ]) }}"
-                        class="x-3 py-1 text-base border border-main border-r-0 rounded-xl
+                        class="px-2 py-1 text-base border border-main border-r-0 
                         {{ $range==='week' ? 'bg-main text-form' : 'bg-base_color text-text_color' }}">
                         週
                     </a>
                     <a href="{{ route('store.history', ['range' => 'month', 'base' => $base ]) }}"
-                        class="x-3 py-1 text-base border border-main border-r-0 rounded-xl
+                        class="px-2 py-1 text-base border border-main border-r-0 
                         {{ $range==='month' ? 'bg-main text-form' : 'bg-base_color text-text_color' }}">
                         月
                     </a>
                     <a href="{{ route('store.history', ['range' => 'year', 'base' => $base ]) }}"
-                        class="x-3 py-1 text-base border border-main border-r-0 rounded-xl
+                        class="px-2 py-1 text-base border border-main border
                         {{ $range==='year' ? 'bg-main text-form' : 'bg-base_color text-text_color' }}">
                         年
                     </a>
                 </div>
 
-                <div class="flex items-center justify-center gap-3 text-text_color">
-                    <button type="button" class="p-1 rounded-full">
-                    <x-icons.chevron-left size="15"/>
-                    </button>
+                <div class="flex items-center justify-start gap-2 text-text_color">
+                    <a href="{{ route('store.history', ['range'=>$range, 'base'=>$prevBase ]) }}"
+                        class="p-1 rounded-full {{ $range==='all' ? 'pointer-events-none opacity-30' : '' }}">
+                        <x-icons.chevron-left size="15"/>
+                    </a>
 
-                    <div class="flex items-center gap-2 text-sm">
-                    <span>2025/12/08〜2025/12/14</span>
-                    </div>
 
-                    <button type="button" class="p-1 rounded-full">
-                    <x-icons.chevron-right size="15" />
-                    </button>
+                    <div class="flex items-center gap-2 text-sm">{{ $rangeText }}</div>
+
+                    <a href="{{ route('store.history', ['range'=>$range, 'base'=>$nextBase ]) }}"
+                        class="p-1 rounded-full {{ $range==='all' ? 'pointer-events-none opacity-30' : '' }}">
+                        <x-icons.chevron-right size="15"/>
+                    </a>
                 </div>
             </section>
 
@@ -78,7 +79,7 @@
                         </div>
 
                         <div class="mt-2 text-[56px] text-center leading-none text-text_color">
-                            100
+                            {{ $views }}
                         </div>
                     </div>
 
@@ -102,7 +103,7 @@
                         </div>
 
                         <div class="mt-2 text-[56px] text-center leading-none text-text_color">
-                            40
+                            {{ $favs }}
                         </div>
                     </div>
 
@@ -139,8 +140,8 @@
       const canvas = document.getElementById('viewsChart');
       if (!canvas) return;
 
-      const labels = ['1','2','3','4','5','6','7'];
-      const values = [10,5,50,8,80,20,100];
+      const labels = @json($chartLabels);
+      const values = @json($chartValues);
 
       const chart = new Chart(canvas, {
         type: 'line',
