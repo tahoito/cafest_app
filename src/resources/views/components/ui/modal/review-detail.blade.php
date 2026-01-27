@@ -1,4 +1,4 @@
-<div x-data="reviewModal" x-init="init()" @keydown.escape.window="close()">
+<div x-data="reviewModal" x-init="init()" x-effect="console.log('open=', open, 'loading=', loading, 'error=', error)" @keydown.escape.window="close()">
   <template x-teleport="body">
     <div
       x-show="open"
@@ -126,8 +126,11 @@
 
       init() {
         window.addEventListener('review:open', (e) => {
-          const { reviewId, endpoint } = e.detail || {}
-          if (!reviewId || !endpoint) return
+          const { endpoint, fallback_url } = e.detail || {}
+          if (!endpoint) {
+            if (fallback_url) window.location.href = fallback_url
+            return
+          }
           this.openWithFetch(endpoint)
         })
       },
