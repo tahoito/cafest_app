@@ -43,7 +43,7 @@
     <x-ui.navbar />
   @endunless
 
-  @stack('scripts')
   <x-ui.modal.review-detail />
+  @stack('scripts')
 </body>
 </html>
