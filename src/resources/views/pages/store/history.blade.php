@@ -23,22 +23,34 @@
       </div>
     </header>
 
+    @php 
+        $base = request('base');
+    @endphp
+
     <div class="h-full overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
         <div class="w-full px-4 mx-auto space-y-6 pb-4">
             <section class="space-y-3">
                 <div class="flex justify-center item-start mt-6">
-                    <button type="button" class="px-3 py-1 text-base text-text_color bg-base_color border border-main border-r-0 rounded-l">
-                    全期間
-                    </button>
-                    <button type="button" class="px-3 py-1 text-base text-form bg-main border border-main border-r-0">
-                    週
-                    </button>
-                    <button type="button" class="px-3 py-1 text-base text-text_color bg-base_color border border-main border-r-0">
-                    月
-                    </button>
-                    <button type="button" class="px-3 py-1 text-base text-text_color bg-base_color border border-main rounded-r">
-                    年
-                    </button>
+                    <a href="{{ route('store.history', ['range' => 'all', 'base' => $base ]) }}"
+                        class="x-3 py-1 text-base border border-main border-r-0 rounded-xl
+                        {{ $range==='all' ? 'bg-main text-form' : 'bg-base_color text-text_color' }}">
+                        全期間
+                    </a>
+                    <a href="{{ route('store.history', ['range' => 'week', 'base' => $base ]) }}"
+                        class="x-3 py-1 text-base border border-main border-r-0 rounded-xl
+                        {{ $range==='week' ? 'bg-main text-form' : 'bg-base_color text-text_color' }}">
+                        週
+                    </a>
+                    <a href="{{ route('store.history', ['range' => 'month', 'base' => $base ]) }}"
+                        class="x-3 py-1 text-base border border-main border-r-0 rounded-xl
+                        {{ $range==='month' ? 'bg-main text-form' : 'bg-base_color text-text_color' }}">
+                        月
+                    </a>
+                    <a href="{{ route('store.history', ['range' => 'year', 'base' => $base ]) }}"
+                        class="x-3 py-1 text-base border border-main border-r-0 rounded-xl
+                        {{ $range==='year' ? 'bg-main text-form' : 'bg-base_color text-text_color' }}">
+                        年
+                    </a>
                 </div>
 
                 <div class="flex items-center justify-center gap-3 text-text_color">

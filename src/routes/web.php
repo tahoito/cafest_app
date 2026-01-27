@@ -134,7 +134,7 @@ Route::prefix('store')->name('store.')->group(function () {
         Route::get('/reviews', [StoreReviewsController::class,'index'])->name('reviews');
         Route::get('/reviews/{review}', [StoreReviewsController::class,'show'])->name('reviews.show');
 
-        Route::get('/history',[StoreHistoryController::class,'show'])->name('history');
+        Route::get('/history',[StoreHistoryController::class,'index'])->name('history');
 
         Route::get('reserve',[StoreReserveController::class,'index'])->name('reserve');
     });
