@@ -85,10 +85,12 @@
 
                     <div class="text-left">
                         <div class="text-text_color text-xl">
-                            先週より <span class="text-text_color">{{ $viewsDiffPct >= 0 ? '+' : '' }}{{ $viewsDiffPct }}%</span>
-                        </div>
-                        <div class="mt-2 text-main2 text-sm leading-snug">
-                            閲覧数が増えていってます。
+                            先週より
+                            @if($viewsRatio !== null)
+                                <span class="text-text_color">{{ $viewsRatio }}倍</span>
+                            @else
+                                <span class="text-text_color">-</span>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -109,10 +111,12 @@
 
                     <div class="text-left">
                         <div class="text-text_color text-xl">
-                            先週より <span class="text-text_color">{{ $favsDiffPct >= 0 ? '+' : '' }}{{ $favsDiffPct }}%</span>
-                        </div>
-                        <div class="mt-2 text-main2 text-sm leading-snug">
-                            お気に入り率: <span class="text-main2">{{ $favRate !== null ? $favRate.'%' : '-' }}</span>
+                            先週より
+                            @if($favsRatio !== null)
+                                <span class="text-text_color">{{ $favsRatio }}倍</span>
+                            @else
+                                <span class="text-text_color">-</span>
+                            @endif
                         </div>
                     </div>
                 </div>

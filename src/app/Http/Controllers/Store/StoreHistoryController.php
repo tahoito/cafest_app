@@ -81,12 +81,14 @@ class StoreHistoryController extends Controller
             ->whereBetween('p.created_at',[$prevStart, $prevEnd])
             ->count();
 
-        $favsDiffPct = $prevFavs > 0
-            ? round((($favs - $prevFavs) / $prevFavs) * 100)
-            : ($favs > 0 ? 100 : 0);
+        $viewsRatio = $prevViews > 0
+            ? round($views / $prevViews, 1)
+            : null;
 
-        $favRate = $views > 0 ? round(($favs / $views) * 100) : null;
-       
+        $favsRatio = $prevFavs > 0
+            ? round($favs / $prevFavs, 1)
+            : null;
+
         if ($unit === 'day') {
             $rows = DB::table('view_histories')
                 ->selectRaw('DATE(viewed_at) as d, COUNT(*) as c')
@@ -149,10 +151,9 @@ class StoreHistoryController extends Controller
             'nextBase' => $nextBase,
 
             'views' => $views,
-            'viewsDiffPct' => $viewsDiffPct,
+            'viewsRatio' => $viewsRatio,
             'favs' => $favs,
-            'favRate' => $favRate,
-            'favsDiffPct' => $favsDiffPct,
+            'favsRatio' => $favsRatio,
 
             'chartLabels' => $labels,
             'chartValues' => $values,
