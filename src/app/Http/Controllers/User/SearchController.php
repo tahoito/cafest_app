@@ -7,11 +7,15 @@ use Illuminate\Http\Request;
 use App\Models\Store;
 use App\Models\Tag;
 use App\Services\StoreRecommendService;
+use App\Models\FavoriteFolder;
+
 
 class SearchController extends Controller
 {
     public function index(Request $request)
     {
+        $user = auth('user')->user();
+
         $keyword = $request->input('keyword');
         $tags = Tag::orderBy('name')->get();
 
@@ -99,12 +103,23 @@ class SearchController extends Controller
             }
         }
 
+        $defaultFolderId = ($user)
+            ? FavoriteFolder::where('user_id', $user->id)
+                ->where('name', 'お気に入り')
+                ->value('id')
+            : null;
+
+        $favIds = $defaultFolderId
+            ? Store::whereHas('favoriteFolders', function ($q) use ($defaultFolderId) {
+                $q->where('favorite_folders.id', $defaultFolderId);
+            })->pluck('stores.id')->all()
+            : [];
 
         $stores = $isSearching
             ? $query->get()
             : app(StoreRecommendService::class)->recommended(8);
 
-        return view('pages.user.search', compact('stores', 'tags', 'isSearching'));
+        return view('pages.user.search', compact('stores', 'tags', 'isSearching','favIds'));
     }
 
 }

@@ -14,8 +14,8 @@ class TagRecommendService
 
         $q = Tag::query()
             ->whereHas('reviews.store', function ($qq) use ($areaIds, $moodIds) {
-                if (!empty($areaIds)) $qq->whereIn('area_id', $areaIds);
-                if (!empty($moodIds)) $qq->whereIn('mood_id', $moodIds);
+                if (!empty($areaIds)) $qq->whereIn('stores.area', $areaIds);
+                if (!empty($moodIds)) $qq->whereIn('stores.mood', $moodIds);
             })
             ->withCount('reviews')
             ->orderByDesc('reviews_count')
