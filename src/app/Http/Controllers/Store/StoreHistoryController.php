@@ -11,7 +11,9 @@ class StoreHistoryController extends Controller
 {
     public function index(Request $request)
     {
+
         $store = auth('store')->user();
+        $storeId = auth('store')->id();
 
         $range = $request->string('range')->toString() ?: 'week'; // all|week|month|year
         $base  = $request->string('base')->toString();            // 2025-12-14 みたいな
@@ -49,10 +51,9 @@ class StoreHistoryController extends Controller
             ],
         };
 
-        // 表示用日付（2025/12/08〜2025/12/14）
+        
         $rangeText = $start->format('Y/m/d') . '〜' . $end->format('Y/m/d');
 
-        // ▼閲覧数：例）view_histories テーブル（store_id, viewed_at がある想定）
         $views = DB::table('view_histories')
             ->where('store_id', $store->id)
             ->whereBetween('viewed_at', [$start, $end])
@@ -67,12 +68,23 @@ class StoreHistoryController extends Controller
             ? round((($views - $prevViews) / $prevViews) * 100)
             : ($views > 0 ? 100 : 0);
 
-        // ▼お気に入り数：例）user_favorites ピボット（store_id がある想定）
+        
         $favs = DB::table('user_favorites')
             ->where('store_id', $store->id)
+            ->whereBetween('created_at',[$start, $end])
             ->count();
 
-        // グラフ（週/月=日別、年/全期間=月別）
+        $prevFavs = DB::table('user_favorites')
+            ->where('store_id', $store->id)
+            ->whereBetween('created_at',[$prevStart, $prevEnd])
+            ->count();
+
+        $favDiffPct = $prevFavs > 0
+            ? round((($favs - $prevFavs) / $prevFavs) * 100)
+            : ($favs > 0 ? 100 : 0);
+
+        $favRate = $views > 0 ? round(($favs / $views) * 100) : null;
+       
         if ($unit === 'day') {
             $rows = DB::table('view_histories')
                 ->selectRaw('DATE(viewed_at) as d, COUNT(*) as c')
@@ -92,7 +104,7 @@ class StoreHistoryController extends Controller
                 $values[] = (int) ($rows[$key]->c ?? 0);
                 $cursor->addDay();
             }
-        } else { // month
+        } else {
             $rows = DB::table('view_histories')
                 ->selectRaw("DATE_FORMAT(viewed_at, '%Y-%m') as m, COUNT(*) as c")
                 ->where('store_id', $store->id)
@@ -114,7 +126,7 @@ class StoreHistoryController extends Controller
             }
         }
 
-        // 前/次ボタン用 base
+        
         $prevBase = match ($range) {
             'month' => $baseDate->copy()->subMonth()->toDateString(),
             'year'  => $baseDate->copy()->subYear()->toDateString(),
@@ -137,6 +149,7 @@ class StoreHistoryController extends Controller
             'views' => $views,
             'viewsDiffPct' => $viewsDiffPct,
             'favs' => $favs,
+            'favsRate' => $favRate,
 
             'chartLabels' => $labels,
             'chartValues' => $values,
