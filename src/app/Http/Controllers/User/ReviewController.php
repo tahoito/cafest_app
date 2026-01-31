@@ -96,4 +96,8 @@ class ReviewController extends Controller
             ->route('user.stores.show', $store) // ← stores.show じゃなくて user. が多分必要
             ->with('review_success', 'レビューを投稿しました');
     }
+
+    public function edit() {
+        return view('pages.user.reviews.edit');
+    }
 }
