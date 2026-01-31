@@ -79,9 +79,9 @@ Route::prefix('user')->name('user.')->group(function () {
         Route::delete('/mycafe/favorites/{folder}',[MyCafeController::class,'destroy'])->name('mycafe.favorites.destroy');
         Route::patch('/mycafe/favorites/{folder}',[MyCafeController::class,'updateFavoriteFolder'])->name('mycafe.favorites.update');
 
-        Route::prefix('stores/{store}')->name('stores.')->group(function () {
-            Route::resource('reviews', ReviewController::class)->only(['edit','update','destroy']);
-        });
+        Route::get('/stores/{store}/reviews/{review}/edit', [ReviewController::class, 'edit'])->name('stores.reviews.edit');
+
+        
     });
 });
 

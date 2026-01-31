@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title','レビュー投稿')
 
 @section('hideNavbar')
 @endsection

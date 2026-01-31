@@ -1,4 +1,4 @@
-<div x-data="reviewModal()" x-init="init()" @keydown.escape.window="close()">
+<div x-data="reviewModal" x-init="init()" x-effect="console.log('open=', open, 'loading=', loading, 'error=', error)" @keydown.escape.window="close()">
   <template x-teleport="body">
     <div
       x-show="open"
@@ -114,64 +114,71 @@
       </div>
     </div>
   </template>
+<script>
+(() => {
+  const register = () => {
+    Alpine.data('reviewModal', () => ({
+      open: false,
+      loading: false,
+      error: null,
+      data: null,
+      controller: null,
 
-  <script>
-    function reviewModal() {
-      return {
-        open: false,
-        loading: false,
-        error: null,
-        data: null,
-        controller: null,
-
-        init() {
-          window.addEventListener('review:open', (e) => {
-            const { reviewId, endpoint } = e.detail || {};
-            if (!reviewId || !endpoint) return;
-            this.openWithFetch(endpoint);
-          });
-        },
-
-        async openWithFetch(url) {
-          this.open = true;
-          this.loading = true;
-          this.error = null;
-          this.data = null;
-
-          document.body.classList.add('overflow-hidden');
-
-          // 連打対策：前のfetchを中断
-          if (this.controller) this.controller.abort();
-          this.controller = new AbortController();
-
-          try {
-            const res = await fetch(url, {
-              headers: { 'Accept': 'application/json' },
-              signal: this.controller.signal,
-            });
-
-            if (!res.ok) throw new Error('読み込みに失敗したよ');
-            const json = await res.json();
-            this.data = json;
-          } catch (err) {
-            if (err?.name !== 'AbortError') this.error = err?.message || 'エラーが起きたよ';
-          } finally {
-            this.loading = false;
+      init() {
+        window.addEventListener('review:open', (e) => {
+          const { endpoint, fallback_url } = e.detail || {}
+          if (!endpoint) {
+            if (fallback_url) window.location.href = fallback_url
+            return
           }
-        },
+          this.openWithFetch(endpoint)
+        })
+      },
 
-        close() {
-          this.open = false;
-          this.loading = false;
-          this.error = null;
-          this.data = null;
+      async openWithFetch(url) {
+        this.open = true
+        this.loading = true
+        this.error = null
+        this.data = null
 
-          if (this.controller) this.controller.abort();
-          this.controller = null;
+        document.body.classList.add('overflow-hidden')
 
-          document.body.classList.remove('overflow-hidden');
+        if (this.controller) this.controller.abort()
+        this.controller = new AbortController()
+
+        try {
+          const res = await fetch(url, {
+            headers: { 'Accept': 'application/json' },
+            signal: this.controller.signal,
+          })
+          if (!res.ok) throw new Error('読み込みに失敗したよ')
+          this.data = await res.json()
+        } catch (err) {
+          if (err?.name !== 'AbortError') this.error = err?.message || 'エラーが起きたよ'
+        } finally {
+          this.loading = false
         }
-      }
-    }
-  </script>
+      },
+
+      close() {
+        this.open = false
+        this.loading = false
+        this.error = null
+        this.data = null
+
+        if (this.controller) this.controller.abort()
+        this.controller = null
+
+        document.body.classList.remove('overflow-hidden')
+      },
+    }))
+  }
+
+  if (window.Alpine) {
+    register()
+  } else {
+    document.addEventListener('alpine:init', register)
+  }
+})()
+</script>
 </div>

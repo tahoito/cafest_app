@@ -70,21 +70,27 @@
   type="button"
   class="{{ $base }} {{ $size }} block text-left"
   {{ $attributes }}
-  @click='window.dispatchEvent(new CustomEvent("review:open",{
-    detail: {
-      reviewId: {{ $reviewId ?? 'null' }},
-      endpoint: @json($endpoint),
-      fallback_url: @json($link),
-    }
-  }))'
-  @disabled(!$endpoint)
+  @
   aria-label="レビュー詳細を開く"
 >
   <div class="{{ $wrap }}">
 
     {{-- 上段：ユーザー + 日付 --}}
     <div class="flex items-start justify-between gap-3">
-      <div class="flex items-center gap-3 min-w-0">
+      <div class="flex items-center gap-3 min-w-0"
+        @click='(() => {
+          const endpoint = @json($endpoint);
+          const fallback = @json($link);
+
+          if (endpoint) {
+            window.dispatchEvent(new CustomEvent("review:open", {
+              detail: { endpoint, fallback_url: fallback }
+            }));
+          } else {
+            window.location.href = fallback;
+          }
+        })()'
+      >
         <div class="{{ $avatarSize }} rounded-full bg-base overflow-hidden shrink-0">
           @php
           $userIconUrl = null;
