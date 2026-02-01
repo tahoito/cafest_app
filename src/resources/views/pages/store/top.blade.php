@@ -65,7 +65,7 @@
         <x-slot name="icon"><x-icons.review size="60" stroke="1" dx="2" dy="2" /></x-slot>
       </x-ui.top-item>
 
-      <x-ui.top-item href="#" label="予約状況">
+      <x-ui.top-item href="{{ route('store.reserve') }}" label="予約状況">
         <x-slot name="icon"><x-icons.phone size="60" stroke="1" dx="2" dy="2" /></x-slot>
       </x-ui.top-item>
     </div>
