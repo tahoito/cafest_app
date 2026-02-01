@@ -11,12 +11,12 @@ class StoreReserveController extends Controller
     public function index() {
         $reservations = Reservation::where('store_id',auth('store')->id())
             ->whereNull('visited_at')
-            ->orderBy('date')
-            ->orderBy('start_time')
+            ->orderBy('start_at')
             ->get();
 
         return view('pages.store.reserve', compact('reservations'));
     }
+
 
     public function visit(Reservation $reservation, Request $request) {
 

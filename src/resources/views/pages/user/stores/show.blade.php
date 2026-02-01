@@ -1,9 +1,10 @@
 @extends('layouts.app')
 @section('title', data_get($store,'name','店舗詳細'))
 
-@section('content')
 @section('hideNavbar')
 @endsection
+
+@section('content')
 <div class="h-screen bg-base">
 
   <div class="h-full overflow-y-auto pt-16">
@@ -345,11 +346,12 @@
           </div>
         </div>
       </div>
+
   </div>
 </div>
 
 
-@if (session('success'))
+@if (session('reserve_success'))
   <div
     x-data="{
       open: true,
