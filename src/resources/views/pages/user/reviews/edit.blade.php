@@ -104,18 +104,20 @@
                 $checked = in_array($tag->id, old('tag_ids', $review->tags->pluck('id')->all()));
               @endphp
 
-              <label class="tag-item cursor-pointer" data-id="{{ $tag->id }}">
+              <label class="cursor-pointer">
                 <input
                   type="checkbox"
                   name="tag_ids[]"
                   value="{{ $tag->id }}"
-                  class="hidden tag-checkbox"
+                  class="peer sr-only"
                   {{ $checked ? 'checked' : '' }}
                 >
 
                 <x-ui.tag
-                  class="tag-chip !border-main whitespace-nowrap
-                    {{ $checked ? '!bg-main !text-form' : '!bg-base !text-text_color' }}"
+                  class="!border-main whitespace-nowrap
+                        !bg-base !text-text_color
+                        peer-checked:!bg-main peer-checked:!text-form
+                        transition"
                 >
                   {{ $tag->name }}
                 </x-ui.tag>
@@ -123,6 +125,7 @@
             @endforeach
           </div>
 
+          <div id="newTagInputs"></div>
           <div class="mt-4 space-y-2">
             <label class="text-sm text-text_color font-medium" for="tagInput">新しいタグを追加</label>
             <div class="flex gap-2">
@@ -254,30 +257,16 @@
 {{-- 🏷 tags --}}
 <script>
 (function(){
-  const hidden = document.getElementById('tags');
-  const tagArea = document.getElementById('tagArea');
-  const input = document.getElementById('tagInput');
-  const addBtn = document.getElementById('addTagButton');
+  const area = document.getElementById('tagArea');
+  if(!area) return;
 
-  if(!hidden || !tagArea || !input || !addBtn) return;
+  const SELECTED = ['!bg-main','!text-form'];
+  const UNSELECTED = ['!bg-base','!text-text_color'];
 
-  const selected = new Set(
-    (hidden.value || '').split(',').map(s => s.trim()).filter(Boolean)
-  );
-
-  const SELECTED = ['!bg-main','!border-main','!text-form'];
-  const UNSELECTED = ['!bg-base','!border-main','!text-text_color'];
-
-  function syncHidden(){
-    hidden.value = Array.from(selected).slice(0, 8).join(',');
-  }
-
-  function chipEl(item){
-    return item.querySelector('button');
-  }
+  const items = Array.from(area.querySelectorAll('.tag-item'));
 
   function setVisual(item, on){
-    const chip = chipEl(item);
+    const chip = item.querySelector('.tag-chip') || item.querySelector('button');
     if(!chip) return;
 
     if(on){
@@ -289,83 +278,29 @@
     }
   }
 
-  function toggle(name, item){
-    if(selected.has(name)) selected.delete(name);
-    else{
-      if(selected.size >= 8) return;
-      selected.add(name);
-    }
-    setVisual(item, selected.has(name));
-    syncHidden();
+  function selectedCount(){
+    return items.filter(it => it.querySelector('.tag-checkbox')?.checked).length;
   }
 
-  Array.from(tagArea.querySelectorAll('.tag-item')).forEach(item => {
-    const name = (item.dataset.name || '').trim();
-    setVisual(item, selected.has(name));
-    item.addEventListener('click', () => toggle(name, item));
-  });
+  // 初期反映
+  items.forEach(item => {
+    const cb = item.querySelector('.tag-checkbox');
+    if(!cb) return;
+    setVisual(item, cb.checked);
 
-  function findItemByName(name){
-    return Array.from(tagArea.querySelectorAll('.tag-item'))
-      .find(el => (el.dataset.name || '').trim() === name);
-  }
-
-  function createNewItem(name){
-    const template = tagArea.querySelector('.tag-item');
-    if(!template) return null;
-
-    const newItem = template.cloneNode(true);
-    newItem.dataset.name = name;
-
-    const chip = chipEl(newItem);
-    if(chip){
-      chip.textContent = name;
-      chip.classList.remove(...SELECTED);
-      chip.classList.add(...UNSELECTED);
-    }
-
-    newItem.addEventListener('click', () => toggle(name, newItem));
-
-    tagArea.appendChild(newItem);
-    return newItem;
-  }
-
-  function addCustom(){
-    const raw = (input.value || '').trim();
-    if(!raw) return;
-
-    raw.split(',').map(s => s.trim()).filter(Boolean).forEach(name => {
-      if(selected.size >= 8) return;
-
-      const existing = findItemByName(name);
-      if(existing){
-        selected.add(name);
-        setVisual(existing, true);
-        return;
-      }
-
-      const item = createNewItem(name);
-      if(item){
-        selected.add(name);
-        setVisual(item, true);
-      }
+    // label クリックで cb が反転した後に見た目更新
+    item.addEventListener('click', () => {
+      setTimeout(() => {
+        if(cb.checked && selectedCount() > 8){
+          cb.checked = false;
+        }
+        setVisual(item, cb.checked);
+      }, 0);
     });
-
-    input.value = '';
-    syncHidden();
-  }
-
-  addBtn.addEventListener('click', addCustom);
-  input.addEventListener('keydown', (e) => {
-    if(e.key === 'Enter'){
-      e.preventDefault();
-      addCustom();
-    }
   });
-
-  syncHidden();
 })();
 </script>
+
 
 {{-- 🖼 images --}}
 <script>

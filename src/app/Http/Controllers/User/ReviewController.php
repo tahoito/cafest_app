@@ -30,7 +30,14 @@ class ReviewController extends Controller
         $data = $request->validate([
             'rating' => ['required', 'integer', 'min:1', 'max:5'],
             'body'   => ['nullable', 'string', 'max:1000'],
-            'tags'   => ['nullable', 'string', 'max:100'],
+            
+            'tag_ids'   => ['nullable','array','max:8'],
+            'tag_ids.*' => ['integer','exists:tags,id'],
+
+            // 新規タグ（JSで hidden new_tags[] を増やす）
+            'new_tags'   => ['nullable','array','max:8'],
+            'new_tags.*' => ['string','max:30'],
+
 
             'images'   => ['nullable', 'array', 'max:8'],
             'images.*' => ['image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
@@ -47,10 +54,9 @@ class ReviewController extends Controller
             'body'     => $data['body'] ?? null,
         ]);
 
-        // tags
-        $this->syncTagsFromCsv($review, $data['tags'] ?? '', $user->id);
-
-        // images
+        $tagIds = $this->buildTagIds($data);
+        $review->tags()->sync($tagIds);
+    
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $idx => $file) {
                 $path = $file->store('reviews', 'public');
@@ -97,6 +103,8 @@ class ReviewController extends Controller
             'tag_ids'   => ['nullable','array','max:8'],
             'tag_ids.*' => ['integer','exists:tags,id'],
 
+            'new_tags'   => ['nullable','array','max:8'],
+            'new_tags.*' => ['string','max:30'],
 
             'delete_image_ids'   => ['nullable', 'array'],
             'delete_image_ids.*' => ['integer'],
@@ -109,12 +117,11 @@ class ReviewController extends Controller
             'rating' => $data['rating'],
             'body'   => $data['body'],
         ]);
-
        
-        $tagIds = collect($data['tag_ids'] ?? [])->unique()->take(8)->values()->all();
+        $tagIds = $this->buildTagIds($data);
         $review->tags()->sync($tagIds);
 
-        // delete images
+
         $deleteIds = collect($data['delete_image_ids'] ?? [])->unique()->values();
         if ($deleteIds->isNotEmpty()) {
             $imgs = $review->images()->whereIn('id', $deleteIds)->get();
@@ -124,7 +131,6 @@ class ReviewController extends Controller
             }
         }
 
-        // add images (max 8)
         $currentCount = $review->images()->count();
         $canAdd = max(0, 8 - $currentCount);
 
@@ -142,8 +148,9 @@ class ReviewController extends Controller
         }
 
         return redirect()
-            ->route('user.stores.reviews.edit', [$store, $review])
+            ->route('user.mycafe', ['tab' => 'review'])
             ->with('success', '更新したよ');
+
     }
 
     public function destroy(Store $store, Review $review)
@@ -162,7 +169,43 @@ class ReviewController extends Controller
         $review->delete();
 
         return redirect()
-            ->route('user.mycafe')
+            ->route('user.mycafe', ['tab' => 'review'])
             ->with('success', '削除したよ');
     }
+
+    private function buildTagIds(array $data): array
+    {
+        $selected = collect($data['tag_ids'] ?? [])
+            ->filter()
+            ->map(fn($id) => (int)$id)
+            ->unique();
+
+        $newNames = collect($data['new_tags'] ?? [])
+            ->map(fn($s) => trim($s))
+            ->filter()
+            ->unique();
+
+        if ($newNames->isNotEmpty()) {
+            $created = $newNames->map(function ($name) {
+                $slug = Str::slug($name, '-');
+                if ($slug === '') $slug = 'tag-' . Str::random(8);
+
+                $tag = Tag::firstOrCreate(
+                    ['name' => $name],
+                    [
+                        'slug' => $slug . '-' . Str::random(4),
+                        'is_seed' => false,
+                        'status' => 'pending',
+                    ]
+                );
+
+                return (int)$tag->id;
+            });
+
+            $selected = $selected->merge($created);
+        }
+
+        return $selected->unique()->take(8)->values()->all();
+    }
+
 }
