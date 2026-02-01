@@ -138,7 +138,7 @@ Route::prefix('store')->name('store.')->group(function () {
         Route::get('/history',[StoreHistoryController::class,'index'])->name('history');
 
         Route::get('/reserve',[StoreReserveController::class,'index'])->name('reserve');
-        Route::patch('/reserve/{reservation}/visit',[StoreReservationController::class,'reservation.visit'])->name('reservation.visit');
+        Route::patch('/reserve/{reservation}/visit',[StoreReserveController::class,'visit'])->name('reservation.visit');
     });
 });
 

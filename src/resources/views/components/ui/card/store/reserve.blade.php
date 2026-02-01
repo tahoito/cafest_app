@@ -22,44 +22,44 @@
 
 <div class="w-[353px] max-w-full rounded-xl border border-main2 bg-form shadow-[0_4px_10px_rgba(0,0,0,0.18)] overflow-hidden"
      data-reservation-card>
-  <div class="p-5">
-    <div class="space-y-1">
-      <div class="text-lg text-text_color">{{ $name }}様</div>
+    <div class="p-5 space-y-3">
+        <div class="space-y-1">
+            <div class="text-lg text-text_color">{{ $name }}様</div>
 
-      @if($digits !== '')
-        <a href="tel:{{ $digits }}" class="text-base text-placeholder tracking-wide">
-          {{ $prettyPhone }}
-        </a>
-      @else
-        <div class="text-base text-placeholder">電話番号なし</div>
-      @endif
+            @if($digits !== '')
+                <a href="tel:{{ $digits }}" class="text-base text-placeholder tracking-wide">
+                {{ $prettyPhone }}
+                </a>
+            @else
+                <div class="text-base text-placeholder">電話番号なし</div>
+            @endif
+        </div>
+
+        <div class="text-base text-text_color tracking-wide">
+            <span>{{ $date }}</span>
+            <span class="ml-3">{{ $timeText }}</span>
+        </div>
+
+        <div class="flex items-center justify-between gap-3">
+            <div class="grid grid-cols-[30px_auto] items-center text-base text-text_color">
+                <x-icons.number class="h-[30px] w-[30px] shrink-0 relative top-[2px]" />
+                <span class="font-medium">{{ $party }}名</span>
+            </div>
+
+            <form method="POST"
+                    action="{{ route('store.reservation.visit', $reservation) }}"
+                    data-visit-form
+                    class="shrink-0">
+                @csrf
+                @method('PATCH')
+
+                <button type="submit"
+                class="h-11 px-6 rounded-full border border-main2 bg-base_color
+                        text-text_color text-lg shadow-[0_2px_6px_rgba(0,0,0,0.18)]
+                        active:scale-[0.98] transition">
+                来店済みにする
+                </button>
+            </form>
+        </div>
     </div>
-
-    <div class="mt-2 text-base text-text_color tracking-wide">
-      <span>{{ $date }}</span>
-      <span class="ml-3">{{ $timeText }}</span>
-    </div>
-
-    <div class="mt-2 flex items-center justify-between">
-      <div class="flex items-center gap-2 text-base text-text_color leading-none">
-        <x-icons.number class="block shrink-0" size="30" />
-        <span class="leading-none">{{ $party }}名</span>
-     </div>
-
-      <form method="POST"
-            action="{{ route('store.reservation.visit', $reservation) }}"
-            data-visit-form
-            class="shrink-0">
-        @csrf
-        @method('PATCH')
-
-        <button type="submit"
-          class="h-11 px-6 rounded-full border border-main2 bg-base_color
-                 text-text_color text-lg shadow-[0_2px_6px_rgba(0,0,0,0.18)]
-                 active:scale-[0.98] transition">
-          来店済みにする
-        </button>
-      </form>
-    </div>
-  </div>
 </div>
