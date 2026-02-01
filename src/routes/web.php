@@ -80,7 +80,8 @@ Route::prefix('user')->name('user.')->group(function () {
         Route::patch('/mycafe/favorites/{folder}',[MyCafeController::class,'updateFavoriteFolder'])->name('mycafe.favorites.update');
 
         Route::get('/stores/{store}/reviews/{review}/edit', [ReviewController::class, 'edit'])->name('stores.reviews.edit');
-
+        Route::put('/stores/{store}/reviews/{review}/update', [ReviewController::class, 'update'])->name('stores.reviews.update');
+        Route::delete('/stores/{store}/reviews/{review}/destroy', [ReviewController::class, 'destroy'])->name('stores.reviews.destroy');
         
     });
 });
