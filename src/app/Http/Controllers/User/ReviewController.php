@@ -88,7 +88,16 @@ class ReviewController extends Controller
             ->orderBy('name')
             ->get();
 
-        return view('pages.user.reviews.edit', compact('review', 'store', 'approvedTags'));
+        $allTagsForView = $approvedTags
+            ->merge($review->tags)     
+            ->unique('id')
+            ->values();
+
+        return view('pages.user.reviews.edit', [
+            'review' => $review,
+            'store' => $store, 
+            'approvedTags' => $allTagsForView
+        ]);
     }
 
     public function update(Request $request, Store $store, Review $review)

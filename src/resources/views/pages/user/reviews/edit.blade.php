@@ -104,24 +104,24 @@
                 $checked = in_array($tag->id, old('tag_ids', $review->tags->pluck('id')->all()));
               @endphp
 
-              <label class="cursor-pointer">
+              <div class="tag-item cursor-pointer" data-id="{{ $tag->id }}">
                 <input
+                  id="tag_{{ $tag->id }}"
                   type="checkbox"
                   name="tag_ids[]"
                   value="{{ $tag->id }}"
-                  class="peer sr-only"
+                  class="tag-checkbox sr-only"
                   {{ $checked ? 'checked' : '' }}
                 >
 
-                <x-ui.tag
-                  class="!border-main whitespace-nowrap
-                        !bg-base !text-text_color
-                        peer-checked:!bg-main peer-checked:!text-form
-                        transition"
+                <button
+                  type="button"
+                  class="tag-chip inline-flex items-center justify-center whitespace-nowrap rounded-full border px-[16px] py-[2px] text-sm transition select-none
+                    {{ $checked ? 'bg-main border-main text-form' : 'bg-base_color border-main text-text_color' }}"
                 >
                   {{ $tag->name }}
-                </x-ui.tag>
-              </label>
+                </button>
+              </div>
             @endforeach
           </div>
 
@@ -260,46 +260,110 @@
   const area = document.getElementById('tagArea');
   if(!area) return;
 
-  const SELECTED = ['!bg-main','!text-form'];
-  const UNSELECTED = ['!bg-base','!text-text_color'];
+  const MAX = 8;
 
-  const items = Array.from(area.querySelectorAll('.tag-item'));
+  function selectedCount(){
+    return area.querySelectorAll('.tag-checkbox:checked').length;
+  }
 
-  function setVisual(item, on){
-    const chip = item.querySelector('.tag-chip') || item.querySelector('button');
-    if(!chip) return;
+  function paint(item){
+    const cb = item.querySelector('.tag-checkbox');
+    const chip = item.querySelector('.tag-chip');
+    if(!cb || !chip) return;
 
-    if(on){
-      chip.classList.add(...SELECTED);
-      chip.classList.remove(...UNSELECTED);
+    if(cb.checked){
+      chip.classList.add('bg-main','border-main','text-form');
+      chip.classList.remove('bg-base_color','text-text_color');
     }else{
-      chip.classList.remove(...SELECTED);
-      chip.classList.add(...UNSELECTED);
+      chip.classList.remove('bg-main','text-form');
+      chip.classList.add('bg-base_color','text-text_color');
     }
   }
 
-  function selectedCount(){
-    return items.filter(it => it.querySelector('.tag-checkbox')?.checked).length;
-  }
-
   // 初期反映
-  items.forEach(item => {
+  area.querySelectorAll('.tag-item').forEach(paint);
+
+  area.addEventListener('click', (e) => {
+    const chip = e.target.closest('.tag-chip');
+    if(!chip) return;
+
+    const item = chip.closest('.tag-item');
+    if(!item) return;
+
     const cb = item.querySelector('.tag-checkbox');
     if(!cb) return;
-    setVisual(item, cb.checked);
 
-    // label クリックで cb が反転した後に見た目更新
-    item.addEventListener('click', () => {
-      setTimeout(() => {
-        if(cb.checked && selectedCount() > 8){
-          cb.checked = false;
-        }
-        setVisual(item, cb.checked);
-      }, 0);
-    });
+    // 反転
+    cb.checked = !cb.checked;
+
+    // 8個制限
+    if(cb.checked && selectedCount() > MAX){
+      cb.checked = false;
+    }
+
+    paint(item);
   });
 })();
 </script>
+
+
+<script>
+(function(){
+  const input = document.getElementById('tagInput');
+  const addBtn = document.getElementById('addTagButton');
+  const wrap = document.getElementById('newTagInputs');
+  if(!input || !addBtn || !wrap) return;
+
+  function currentNewNames(){
+    return Array.from(wrap.querySelectorAll('input[name="new_tags[]"]'))
+      .map(i => i.value.trim())
+      .filter(Boolean);
+  }
+
+  function addTag(name){
+    const v = (name ?? '').trim();
+    if(!v) return;
+
+    // 重複防止（すでに追加済みなら無視）
+    if(currentNewNames().includes(v)) return;
+
+    // hidden input
+    const hidden = document.createElement('input');
+    hidden.type = 'hidden';
+    hidden.name = 'new_tags[]';
+    hidden.value = v;
+
+    // 見た目チップ（クリックで削除）
+    const chip = document.createElement('button');
+    chip.type = 'button';
+    chip.className = 'inline-flex items-center gap-1 px-3 py-1 rounded-full border border-main bg-main text-form text-sm';
+    chip.textContent = v;
+
+    chip.addEventListener('click', () => {
+      hidden.remove();
+      chip.remove();
+    });
+
+    wrap.appendChild(hidden);
+    wrap.appendChild(chip);
+  }
+
+  addBtn.addEventListener('click', () => {
+    addTag(input.value);
+    input.value = '';
+    input.focus();
+  });
+
+  input.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter'){
+      e.preventDefault();
+      addTag(input.value);
+      input.value = '';
+    }
+  });
+})();
+</script>
+
 
 
 {{-- 🖼 images --}}
