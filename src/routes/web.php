@@ -26,6 +26,8 @@ use App\Http\Controllers\Store\StoreReviewsController;
 use App\Http\Controllers\Store\StoreMenuManegeController;
 use App\Http\Controllers\Store\StoreHistoryController;
 use App\Http\Controllers\Store\StoreReserveController;
+use App\Http\Controllers\Store\NotificationController;
+
 
 Route::view('/', 'welcome')->name('welcome');
 
@@ -139,6 +141,8 @@ Route::prefix('store')->name('store.')->group(function () {
 
         Route::get('/reserve',[StoreReserveController::class,'index'])->name('reserve');
         Route::patch('/reserve/{reservation}/visit',[StoreReserveController::class,'visit'])->name('reservation.visit');
+
+        ROute::get('/notifications',[NotificationController::class, 'index'])->name('notifications');
     });
 });
 

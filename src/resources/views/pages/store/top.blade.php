@@ -38,9 +38,9 @@
           </p>
         </div>
 
-        <button type="button" class="relative p-2">
+        <a href="{{ route('store.notifications') }}" class="relative p-2">
           <x-icons.bell class="text-text_color" />
-        </button>
+        </a>
       </div>
     </div>
 
