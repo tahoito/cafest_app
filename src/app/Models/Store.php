@@ -12,10 +12,12 @@ use App\Models\StoreSocialLink;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class Store extends Authenticatable
 {
     use HasFactory;
+    use Notifiable;
 
     protected $fillable = [
         'name',

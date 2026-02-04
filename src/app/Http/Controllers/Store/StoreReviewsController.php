@@ -52,6 +52,13 @@ class StoreReviewsController extends Controller
             ->where('created_at', '>=', now()->startOfWeek())
             ->count();
 
+        $lastChecked = $store->last_review_checked_at;
+        $newReviewCount = Review::where('store_id', $store->id)
+            ->where($lastChecked, fn($n) => $q->where('created_at','>',$lastChecked))
+            ->count();
+
+        $store->forceFill(['last_review_checked_at' => now()])->save();
+
         return view('pages.store.reviews',compact(
             'store',
             'reviews',
