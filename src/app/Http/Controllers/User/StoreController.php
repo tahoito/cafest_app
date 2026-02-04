@@ -18,7 +18,7 @@ class StoreController extends Controller
 {
     public function show(Store $store, StoreRecommendService $service)
     {
-        $store->load(['hours', 'reviews', 'slideImages', 'galleryImages'])
+        $store->load(['hours', 'reviews', 'slideImages', 'galleryImages','socialLinks'])
             ->loadAvg('reviews','rating');
         
         $userId = auth('user')->id();

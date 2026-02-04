@@ -60,6 +60,14 @@
       $rating = max(0, min(5, $rating));
       $filled = (int) floor($rating + 0.00001);
 
+      $sns = $store->socialLinks->pluck('url','type')->toArray();
+      $items = [
+        'instagram' => ['label' => 'Instagram', 'icon' => 'instagram'],
+        'tiktok' => ['label' => 'TikTok', 'icon' => 'tiktok'],
+        'x' => ['label' => 'X', 'icon' => 'x'],
+        'website' => ['label' => 'Web', 'icon' => 'website'],
+      ];
+
       $dayNames = ['日','月','火','水','木','金','土'];
       $hours = collect(data_get($store,'hours',[]))->sortBy('day_of_week');
       $groups = $hours->map(function ($h) use ($dayNames){
@@ -116,9 +124,6 @@
               <div class="text-2xl text-text_color leading-tight">
                 {{ $name }}
               </div> 
-              <div class="h-[30px] w-[30px] flex items-center justify-center">
-                <x-icons.instagram size="30" class="text-main block" />
-              </div>
             </div>
             <div class="mt-1 flex items-center gap-2">
               <div class="flex items-center gap-1">
@@ -316,6 +321,22 @@
                           {{ $phone }}
                         </a>
                       @endif
+                      </div>
+                  </div>
+
+                  <div class="grid grid-cols-[120px_1fr] gap-x-6 items-start">
+                      <div class="text-lg text-text_color">SNS</div>
+                      <div class="flex items-center gap-1.5">
+                        @foreach($items as $type => $meta)
+                          @php $url = $sns[$type] ?? null; @endphp
+                          @if(filled($url))
+                            <a href="{{ $url }}" target="_blank" rel="noopener"
+                              class="h-8 w-8 grid place-items-center text-main hover:opacity-90 active:scale-95 transition"
+                              aria-label="{{ $meta['label'] }}">
+                              <x-dynamic-component :component="'icons.' . $meta['icon']" class="w-7 h-7" />
+                            </a>
+                          @endif
+                        @endforeach
                       </div>
                   </div>
 
