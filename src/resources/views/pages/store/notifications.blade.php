@@ -39,41 +39,48 @@
                             $type = $data['type'] ?? '';
                         @endphp 
 
-                        <form method="POST"
-                            action="{{ route('store.notifications.read', $notification->id) }}">
-                            @csrf 
+                        <form method="POST" action="{{ route('store.notifications.read', $notification->id) }}">
+                            @csrf
 
-                            <button type="submit" class="w-full text-left rounded-xl p-4 transition
-                                {{ $isUnread ? 'bg-card-back' : 'bg-base_color' }}">
-                                 
-                                <div class="w-10 h-10 flex items-center justify-center">
+                            <button type="submit" class="w-full text-left">
+                                <div class="flex items-center gap-3 px-4 py-4">
+                                {{-- 左：アイコン --}}
+                                <div class="shrink-0">
                                     @if ($type === 'review.posted')
-                                        <x-icons.review_notification />
+                                    <x-icons.review_notification class="w-10 h-10" />
                                     @elseif ($type === 'reservation.created')
-                                        <x-icons.reserve_notification />
-                                    @endif 
+                                    <x-icons.reserve_notification class="w-10 h-10" />
+                                    @else
+                                    <x-icons.bell class="w-10 h-10 text-[#201200]" />
+                                    @endif
                                 </div>
-                                <div class="flex items-start gap-3">
-                                    @if ($isUnread) 
-                                        <span class="mt-2 w-[10px] h-[10px] rounded-full bg-notification"></span>
-                                    @endif 
 
-                                    <div class="flex-1 space-y-1">
-                                        <div class="text-sm text-text_color">
-                                            {{ $data['title'] ?? '通知' }}
-                                        </div>
-
-                                        <div class="text-sm text-text_color">
-                                            {{ $data['body'] ?? '' }}
-                                        </div>
-
-                                        <div class="text-[11px] text-placeholder">
-                                            {{ $notification->created_at->diffForHumans() }}
-                                        </div>
+                                {{-- 中：本文 --}}
+                                <div class="min-w-0 flex-1">
+                                    <div class="text-sm text-text_color truncate">
+                                    {{ $data['body'] ?? ($data['title'] ?? '通知') }}
                                     </div>
                                 </div>
+
+                                {{-- 右：未読ドット + 時間 --}}
+                                <div class="shrink-0 flex flex-col items-end gap-2">
+                                    @if ($isUnread)
+                                    <span class="w-2.5 h-2.5 rounded-full bg-[color:var(--notification-color)]"></span>
+                                    @else
+                                    <span class="w-2.5 h-2.5"></span>
+                                    @endif
+
+                                    <div class="text-[11px] text-placeholder whitespace-nowrap">
+                                    {{ $notification->created_at->diffForHumans() }}
+                                    </div>
+                                </div>
+                                </div>
+
+                                {{-- 下線（画像の区切り線っぽく） --}}
+                                <div class="mx-4 border-b border-[color:var(--line-color)]"></div>
                             </button>
-                        </form>
+                            </form>
+
                     @endforeach
                 </div>
                 @endif 

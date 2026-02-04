@@ -17,7 +17,7 @@ class StoreReviewPostedNotification extends Notification
      */
     public function __construct(public Review $review) 
     {
-        return ['database'];
+    
     }
 
     /**
@@ -53,23 +53,25 @@ class StoreReviewPostedNotification extends Notification
         ];
     }
 
-    public function toDatabase($notifiable): array {
-
+    public function toDatabase($notifiable): array
+    {
         $lastChecked = $notifiable->last_review_checked_at;
 
         $newCount = Review::where('store_id', $this->review->store_id)
-            ->where($lastChecked, fn($q) => $q-where('created_at','>', $lastChecked))
+            ->when($lastChecked, function ($q) use ($lastChecked) {
+                $q->where('created_at', '>', $lastChecked);
+            })
             ->count();
-
 
         return [
             'type' => 'review.posted',
             'review_id' => $this->review->id,
             'store_id' => $this->review->store_id,
             'new_count' => $newCount,
-            'body' => "レビューが追加されました",
+            'body' => 'レビューが追加されました',
             'url' => route('store.reviews.show', $this->review),
             'created_at' => now()->toISOString(),
         ];
     }
+
 }

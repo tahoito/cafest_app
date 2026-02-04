@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class StoreReservationVisitedNotification extends Notification
+class StoreReservationCreatedNotification extends Notification
 {
     use Queueable;
 
