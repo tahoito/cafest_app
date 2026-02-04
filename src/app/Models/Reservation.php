@@ -15,6 +15,7 @@ class Reservation extends Model
         'end_at',
         'party_size',
         'status',
+        'visited_at'
     ];
 
     public function store(){

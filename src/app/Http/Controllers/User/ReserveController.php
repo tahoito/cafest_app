@@ -13,6 +13,7 @@ class ReserveController extends Controller
             ->with(['store.slideImages'])
             ->where('user_id', auth('user')->id())
             ->where('status', '!=', 'canceled') 
+            ->whereNull('visited_at')
             ->orderByDesc('start_at')
             ->get();
 
