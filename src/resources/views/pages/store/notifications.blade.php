@@ -24,9 +24,49 @@
         <div class="h-full overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
             <div class="w-full max-w-md mx-auto pt-5 space-y-6 pb-4">
                 
+                @if ($notifications->isEmpty())
                 <div class="text-sm flex items-center justify-center text-placeholder">
                     通知はまだありません
                 </div>
+                @else 
+                <div class="space-y-3">
+                    @foreach ($notifications as $notification)
+                        @php 
+                            $data = $notification->data;
+                            $isUnread = is_null($notification->read_at);
+                        @endphp 
+
+                        <form method="POST"
+                            action="{{ route('store.notifications.read', $notification->id) }}">
+                            @csrf 
+
+                            <button type="submit" class="w0full text-left rounded-xl p-4 transition
+                                {{ isUnread ? 'bg-card-back' : 'bg-base_color' }}">
+                                 
+                                <div class="flex items-start gap-3">
+                                    @if ($isUnread) 
+                                        <span class="mt-2 w-[10px] h-[10px] rounded-full bg-notification"></span>
+                                    @endif 
+
+                                    <div class="flex-1 space-y-1">
+                                        <div class="text-sm text-text_color">
+                                            {{ $data['title'] ?? '通知' }}
+                                        </div>
+
+                                        <div class="text-xs text-placeholder leading-relaxed">
+                                            {{ $data['body'] ?? '' }}
+                                        </div>
+
+                                        <div class="text-[11px] text-placeholder">
+                                            {{ $notification->created_at->diffForHumans() }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </button>
+                        </form>
+                    @endforeach
+                </div>
+                @endif 
             </div>
         </div>
     </div>
