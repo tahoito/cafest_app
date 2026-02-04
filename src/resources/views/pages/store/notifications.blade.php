@@ -5,6 +5,8 @@
 @endsection
 
 @section('content')
+
+
 <div class="h-screen bg-base_color">
     <div class="h-full overflow-y-auto">
         <header class="fixed top-0 inset-x-0 z-50 bg-base_color">
@@ -34,15 +36,23 @@
                         @php 
                             $data = $notification->data;
                             $isUnread = is_null($notification->read_at);
+                            $type = $data['type'] ?? '';
                         @endphp 
 
                         <form method="POST"
                             action="{{ route('store.notifications.read', $notification->id) }}">
                             @csrf 
 
-                            <button type="submit" class="w0full text-left rounded-xl p-4 transition
-                                {{ isUnread ? 'bg-card-back' : 'bg-base_color' }}">
+                            <button type="submit" class="w-full text-left rounded-xl p-4 transition
+                                {{ $isUnread ? 'bg-card-back' : 'bg-base_color' }}">
                                  
+                                <div class="w-10 h-10 flex items-center justify-center">
+                                    @if ($type === 'review.posted')
+                                        <x-icons.review_notification />
+                                    @elseif ($type === 'reservation.created')
+                                        <x-icons.reserve_notification />
+                                    @endif 
+                                </div>
                                 <div class="flex items-start gap-3">
                                     @if ($isUnread) 
                                         <span class="mt-2 w-[10px] h-[10px] rounded-full bg-notification"></span>
@@ -53,7 +63,7 @@
                                             {{ $data['title'] ?? '通知' }}
                                         </div>
 
-                                        <div class="text-xs text-placeholder leading-relaxed">
+                                        <div class="text-sm text-text_color">
                                             {{ $data['body'] ?? '' }}
                                         </div>
 

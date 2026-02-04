@@ -54,13 +54,14 @@ class StoreReservationVisitedNotification extends Notification
     }
 
     public function toDatabase($notifiable): array {
+
+        $userName = optional($this->reservation->user)->name ?? 'お客様';
         return [
             'type' => 'reservation.visited',
             'reservation_id' => $this->reservation->id,
-            'store_id' => $this->reservation->store_id,
-            'title' => '予約を来店済みにしました',
-            'body' => '来店処理が完了しました',
-            'url' => route('store.reserve'),
+            'store_id' => $this->reservation->store_id, 
+            'body' => "{$userName}様が予約を申請しました。",
+            'url' => route('store.reserve.index'),
             'created_at' => now()->toISOString(), 
         ];
     }

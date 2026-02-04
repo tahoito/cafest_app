@@ -143,7 +143,7 @@ Route::prefix('store')->name('store.')->group(function () {
         Route::patch('/reserve/{reservation}/visit',[StoreReserveController::class,'visit'])->name('reservation.visit');
 
         Route::get('/notifications',[NotificationController::class, 'index'])->name('notifications');
-        Route::post('/notifications/{id}/read',[NotificationController::class, 'read'])->name('notifications');
+        Route::post('/notifications/{id}/read',[NotificationController::class, 'read'])->name('notifications.read');
         Route::post('/notifications/read-all', [NotificationController::class, 'readAll'])->name('notifications.readAll');
     });
 });
