@@ -69,68 +69,82 @@
 
 <script>
 (() => {
-  const modal = document.getElementById("visitModal");
+  const modal = document.getElementById('visitModal');
   if (!modal) return;
 
-  let targetForm = null;
-  let targetCard = null;
+  let reservationId = null;
 
   // 開く
-  document.addEventListener("click", (e) => {
-    const btn = e.target.closest("[data-visit-open]");
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-visit-open]');
     if (!btn) return;
 
-    targetForm = btn.closest("[data-visit-form]");
-    targetCard = btn.closest("[data-reservation-card]");
+    const form = btn.closest('[data-visit-form]');
+    if (!form) return;
 
-    modal.classList.remove("hidden");
+    reservationId = form.dataset.reservationId;
+    modal.classList.remove('hidden');
   });
 
-  // 閉じる（背景 / キャンセル）
-  modal.addEventListener("click", (e) => {
-    if (e.target.closest("[data-visit-close]")) {
-      modal.classList.add("hidden");
-      targetForm = null;
-      targetCard = null;
+  // 閉じる
+  modal.addEventListener('click', (e) => {
+    if (e.target.closest('[data-visit-close]')) {
+      modal.classList.add('hidden');
+      reservationId = null;
     }
   });
 
   // OK
-  const okBtn = modal.querySelector("[data-visit-ok]");
-  if (!okBtn) return;
+  modal.querySelector('[data-visit-ok]')?.addEventListener('click', async () => {
+    if (!reservationId) return;
 
-  okBtn.addEventListener("click", async () => {
-    if (!targetForm) return;
+    const form = document.querySelector(
+      `[data-visit-form][data-reservation-id="${reservationId}"]`
+    );
+    const card = document.querySelector(
+      `[data-reservation-card][data-reservation-id="${reservationId}"]`
+    );
 
-    okBtn.disabled = true;
+    if (!form || !card) {
+      console.warn('form or card not found');
+      modal.classList.add('hidden');
+      return;
+    }
 
     try {
-      const res = await fetch(targetForm.action, {
-        method: "POST",
+      const res = await fetch(form.action, {
+        method: 'POST',
         headers: {
-          "X-Requested-With": "XMLHttpRequest",
-          "Accept": "application/json",
-          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-CSRF-TOKEN': form.querySelector('input[name="_token"]').value,
+          'Accept': 'application/json',
         },
-        body: new URLSearchParams(new FormData(targetForm)),
+        body: new URLSearchParams(new FormData(form)),
       });
 
-      if (!res.ok) throw new Error("request failed");
+      if (!res.ok) throw new Error();
 
-      modal.classList.add("hidden");
+      modal.classList.add('hidden');
 
-      if (targetCard) {
-        targetCard.style.transition = "opacity 180ms ease, transform 180ms ease";
-        targetCard.style.opacity = "0";
-        targetCard.style.transform = "scale(0.98)";
-        setTimeout(() => targetCard.remove(), 200);
-      }
-    } catch (err) {
-      alert("通信に失敗したよ。もう一回！");
+      // 高さアニメーション
+      const h = card.offsetHeight;
+      card.style.height = h + 'px';
+      card.style.transition =
+        'opacity 180ms ease, height 220ms ease, margin 220ms ease, padding 220ms ease';
+      card.style.opacity = '0';
+
+      requestAnimationFrame(() => {
+        card.style.height = '0';
+        card.style.margin = '0';
+        card.style.padding = '0';
+      });
+
+      setTimeout(() => card.remove(), 260);
+
+    } catch {
+      alert('通信に失敗したよ');
     } finally {
-      okBtn.disabled = false;
-      targetForm = null;
-      targetCard = null;
+      reservationId = null;
     }
   });
 })();

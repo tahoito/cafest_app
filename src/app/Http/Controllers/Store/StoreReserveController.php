@@ -19,15 +19,18 @@ class StoreReserveController extends Controller
     }
 
 
-    public function visit(Reservation $reservation, Request $request) {
-
+    public function visit(Reservation $reservation, Request $request)
+    {
         abort_unless($reservation->store_id === auth('store')->id(), 403);
-        $reservation->update(['visited_at' => now()]);
+
+        $reservation->visited_at = now();
+        $reservation->save();
 
         if ($request->expectsJson()) {
             return response()->json(['ok' => true]);
         }
 
-        return back()->with('success','来店済みにしました');
+        return back()->with('success', '来店済みにしました');
     }
+
 }
