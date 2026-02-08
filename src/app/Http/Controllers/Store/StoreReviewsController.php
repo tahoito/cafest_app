@@ -53,9 +53,11 @@ class StoreReviewsController extends Controller
             ->count();
 
         $lastChecked = $store->last_review_checked_at;
+
         $newReviewCount = Review::where('store_id', $store->id)
-            ->where($lastChecked, fn($n) => $q->where('created_at','>',$lastChecked))
+            ->when($lastChecked, fn($q) => $q->where('created_at', '>', $lastChecked))
             ->count();
+
 
         $store->forceFill(['last_review_checked_at' => now()])->save();
 
@@ -70,12 +72,38 @@ class StoreReviewsController extends Controller
         ));
     }
 
-    public function show(Review $review) {
+    public function show(Request $request, Review $review)
+    {
         $store = auth('store')->user();
         abort_unless($review->store_id === $store->id, 404);
 
         $review->load(['user', 'images']);
 
-        return view('pages.store.reviews.show', compact('store','review'));
+        if ($request->query('format') === 'json') {
+            return response()->json([
+                'id' => $review->id,
+                'rating' => (float) $review->rating,
+                'body' => (string) $review->body,
+                'created_at' => optional($review->created_at)->format('Y/m/d'),
+
+                'store' => [
+                    'id' => $review->store_id,
+                    'name' => data_get($review, 'store.name'), // storeリレーション無いなら後で消す
+                ],
+
+                'user' => [
+                    'name' => data_get($review, 'user.name', 'Anonymous'),
+                    'avatar_url' => data_get($review, 'user.icon_path') ? \Storage::url(ltrim(preg_replace('#^storage/#','', data_get($review,'user.icon_path')), '/')) : null,
+                ],
+
+                'images' => $review->images->map(function ($img) {
+                    $path = data_get($img, 'path', data_get($img, 'image_path'));
+                    return $path ? \Storage::url(ltrim(preg_replace('#^storage/#','', $path), '/')) : null;
+                })->filter()->values(),
+            ]);
+        }
+
+        return redirect()->route('store.reviews');
     }
+
 }
