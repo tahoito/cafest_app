@@ -20,9 +20,9 @@
   )->url;
 
 
-  $rating = (float) data_get($store, 'reviews_avg_rating', 0);
+  $rating = (float) data_get($store, 'reviews_avg_rating', data_get($store, 'rating', 0));
   $rating = max(0, min(5, $rating));
-  $filled = (int) floor($rating + 0.00001);
+  $filled = (int) round($rating);
 
   $meta = trim($area) !== '' && trim($mood) !== ''
     ? "{$area}・{$mood}"

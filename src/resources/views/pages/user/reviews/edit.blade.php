@@ -66,11 +66,27 @@
           <input type="hidden" name="rating" id="rating" value="{{ old('rating', $review->rating) }}">
 
           <div class="flex items-center gap-1">
-            <div id="stars" class="flex" aria-label="rating">
+            <div id="stars" class="flex gap-1" aria-label="rating">
               @for ($i = 1; $i <= 5; $i++)
-                <button type="button" class="star p-0.5" data-value="{{ $i }}" aria-label="{{ $i }} star">
-                  <x-icons.star class="w-7 h-7 text-placeholder" />
-                </button>
+                <div class="star-wrap relative w-7 h-7 shrink-0" data-star="{{ $i }}">
+                  <x-icons.star class="absolute inset-0 w-7 h-7 text-placeholder pointer-events-none" />
+                  <div class="star-fill absolute inset-0 overflow-hidden pointer-events-none" style="width: 0%;">
+                    <x-icons.star class="w-7 h-7 text-star" />
+                  </div>
+
+                  <button
+                    type="button"
+                    class="absolute inset-y-0 left-0 w-1/2"
+                    data-value="{{ $i - 0.5 }}"
+                    aria-label="{{ $i - 0.5 }} star"
+                  ></button>
+                  <button
+                    type="button"
+                    class="absolute inset-y-0 right-0 w-1/2"
+                    data-value="{{ $i }}"
+                    aria-label="{{ $i }} star"
+                  ></button>
+                </div>
               @endfor
             </div>
           </div>
@@ -199,17 +215,54 @@
         </x-ui.button>
       </form>
 
-      <form method="POST" action="{{ route('user.stores.reviews.destroy', [$store, $review]) }}">
-        @csrf
-        @method('DELETE')
+      <div x-data="{ open: false }">
+        <form x-ref="deleteForm" method="POST" action="{{ route('user.stores.reviews.destroy', [$store, $review]) }}">
+          @csrf
+          @method('DELETE')
 
-        <button
-          type="submit"
-          class="mx-auto block h-12 w-full rounded-full border-2 border-main bg-base text-[18px] text-text_color shadow-[0_4px_10px_rgba(0,0,0,0.18)]"
+          <button
+            type="button"
+            @click="open = true"
+            class="mx-auto block h-12 w-full rounded-full border-2 border-main bg-base text-[18px] text-text_color shadow-[0_4px_10px_rgba(0,0,0,0.18)]"
+          >
+            削除する
+          </button>
+        </form>
+
+        <div
+          x-show="open"
+          x-cloak
+          class="fixed inset-0 z-[999] flex items-center justify-center"
+          @keydown.escape.window="open=false"
         >
-          削除する
-        </button>
-      </form>
+          <div class="absolute inset-0 bg-black/40" @click="open=false"></div>
+
+          <div class="relative w-[calc(100%-48px)] max-w-sm rounded-lg bg-base_color shadow-lg p-6">
+            <button type="button" class="absolute left-4 top-4" @click="open=false">
+              <x-icons.close class="w-6 h-6 text-text_color translate-x-[1px]" />
+            </button>
+
+            <div class="text-center text-text_color text-lg font-medium pt-4">
+              削除しますか？
+            </div>
+
+            <div class="mt-6 flex flex-col items-center gap-4">
+              <x-ui.button
+                type="button"
+                theme="store"
+                class="w-full text-form"
+                @click="$refs.deleteForm.submit()"
+              >
+                削除する
+              </x-ui.button>
+
+              <button type="button" class="text-text_color" @click="open=false">
+                キャンセル
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
 
     </div>
   </div>
@@ -219,32 +272,31 @@
 <script>
 (function () {
   const ratingInput = document.getElementById('rating');
-  const stars = Array.from(document.querySelectorAll('#stars .star'));
+  const starWraps = Array.from(document.querySelectorAll('#stars .star-wrap'));
+  const starButtons = Array.from(document.querySelectorAll('#stars button[data-value]'));
   const ratingText = document.getElementById('ratingText');
 
   function paint(val) {
-    stars.forEach((btn) => {
-      const v = Number(btn.dataset.value);
-      const svg = btn.querySelector('svg');
-      if (!svg) return;
+    starWraps.forEach((wrap, idx) => {
+      const starValue = idx + 1;
+      const delta = val - (starValue - 1);
+      let percent = 0;
+      if (delta >= 1) percent = 100;
+      else if (delta >= 0.5) percent = 50;
 
-      if (v <= val && val > 0) {
-        svg.classList.add('text-star');
-        svg.classList.remove('text-placeholder');
-      } else {
-        svg.classList.remove('text-star');
-        svg.classList.add('text-placeholder');
-      }
+      const fill = wrap.querySelector('.star-fill');
+      if (fill) fill.style.width = `${percent}%`;
     });
 
     if (ratingText) {
-      ratingText.textContent = val > 0 ? `${val} / 5` : `0 / 5`;
+      const text = val > 0 ? (Number.isInteger(val) ? val : val.toFixed(1)) : 0;
+      ratingText.textContent = `${text} / 5`;
     }
   }
 
   paint(Number(ratingInput?.value || 0));
 
-  stars.forEach((btn) => {
+  starButtons.forEach((btn) => {
     btn.addEventListener('click', () => {
       const val = Number(btn.dataset.value);
       ratingInput.value = String(val);

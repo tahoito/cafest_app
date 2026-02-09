@@ -32,7 +32,7 @@
 
             <div class="flex items-center gap-3">
               <div class="flex items-center gap-1">
-                @php $avgStars = floor($avgRating); @endphp 
+                @php $avgStars = (int) max(0, min(5, round($avgRating))); @endphp 
 
                 @for ($i = 1; $i <= 5; $i++)
                   <x-icons.star class="h-6 w-6 {{ $i <= $avgStars ? 'text-star' : 'text-placeholder' }}" />

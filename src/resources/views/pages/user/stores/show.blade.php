@@ -13,7 +13,7 @@
       <div class="pt-[env(safe-area-inset-top)]">
         <div class="grid grid-cols-[48px_1fr_auto] items-center px-4 h-16">
           <a
-            href="{{ route('user.top') }}"
+            href="{{ $backUrl ?? route('user.top') }}"
             class="p-2"
           >
             <x-icons.back class="w-5 h-5 text-text_color" />
@@ -46,6 +46,18 @@
     </header>
 
     @php
+      $prevUrl = url()->previous();
+      $currentUrl = url()->current();
+      $appBase = url('/');
+      $prevPath = $prevUrl ? (parse_url($prevUrl, PHP_URL_PATH) ?? '') : '';
+      $isExternal = $prevUrl && !str_starts_with($prevUrl, $appBase);
+      $isSame = $prevUrl && $prevUrl === $currentUrl;
+      $isReviewCreate = $prevPath && str_contains($prevPath, '/user/stores/') && str_contains($prevPath, '/reviews/create');
+      $isReviewEdit = $prevPath && preg_match('#/user/stores/\\d+/reviews/\\d+/edit$#', $prevPath);
+      $backUrl = (!$prevUrl || $isExternal || $isSame || $isReviewCreate || $isReviewEdit)
+        ? route('user.top')
+        : $prevUrl;
+
       $name = data_get($store, 'name', 'No Name');
       $areaKey = (string) data_get($store, 'area', '');
       $area = $areaKey !== '' ? (config('cafest.areas')[$areaKey] ?? $areaKey) : '';
@@ -56,9 +68,9 @@
         ? "{$area}・{$mood}"
         : (trim($area) !== '' ? $area : $mood);
 
-      $rating = (float) data_get($store, 'rating', 0);
+      $rating = (float) data_get($store, 'reviews_avg_rating', data_get($store, 'rating', 0));
       $rating = max(0, min(5, $rating));
-      $filled = (int) floor($rating + 0.00001);
+      $filled = (int) round($rating);
 
       $sns = $store->socialLinks->pluck('url','type')->toArray();
       $items = [
@@ -132,7 +144,7 @@
                 @endfor
               </div>
               <div class="text-sm text-text_color/70">
-                {{ number_format($rating, 1) }}
+                {{ number_format($rating, 1) }}（{{ $reviewCount }}件）
               </div>
             </div>
 
@@ -154,15 +166,50 @@
         </div>
       </section>
 
-      <section class="px-4 space-y-2 pb-12">
+      <section
+        class="px-4 space-y-2 pb-12"
+        x-data="{ open:false, src:null }"
+        x-effect="document.body.classList.toggle('overflow-hidden', open)"
+        @keydown.escape.window="open=false; src=null"
+      >
           <div class="text-lg text-text_color font-medium">ギャラリー</div>
           <div class="grid grid-cols-3 gap-3">
               @foreach($store->galleryImages as $img)
-              <div class="aspect-square overflow-hidden rounded-lg bg-base">
-                  <img src="{{ $img->url }}" class="w-full h-full object-cover">
-              </div>
+              <button
+                type="button"
+                class="aspect-square overflow-hidden rounded-lg bg-base"
+                @click="src='{{ $img->url }}'; open=true"
+              >
+                  <img src="{{ $img->url }}" class="w-full h-full object-cover" alt="gallery image">
+              </button>
               @endforeach
           </div>
+
+          <template x-teleport="body">
+            <div
+              x-show="open"
+              x-transition.opacity
+              x-cloak
+              class="fixed inset-0 z-[300] bg-black/60 flex items-center justify-center p-4"
+              @click.self="open=false; src=null"
+            >
+              <button
+                type="button"
+                class="absolute top-4 right-4 h-10 w-10 grid place-items-center rounded-full bg-black/40 text-white"
+                aria-label="閉じる"
+                @click="open=false; src=null"
+              >
+                <x-icons.close class="w-6 h-6" />
+              </button>
+
+              <img
+                x-show="src"
+                :src="src"
+                alt="gallery image"
+                class="max-h-[80vh] max-w-[90vw] object-contain rounded-xl bg-base"
+              >
+            </div>
+          </template>
           
           <div class="flex justify-center pt-4">
             <a href="{{ route('user.stores.menu', $store) }}">
@@ -227,7 +274,10 @@
                     ]) . '?format=json',
                   ];
                 @endphp
-                <button type="button" class="aspect-square overflow-hidden rounded-lg bg-base"
+                <button
+                  type="button"
+                  x-data
+                  class="aspect-square overflow-hidden rounded-lg bg-base"
                   @click.prevent.stop="window.dispatchEvent(new CustomEvent('review:open',{ detail: @js($payload) }))"
                 >
                   <img src="{{ $post->image }}" alt="review image" class="w-full h-full object-cover" loading="lazy">

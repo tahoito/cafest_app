@@ -21,6 +21,11 @@ class SearchController extends Controller
 
         $query = Store::query()->withAvg('reviews', 'rating');
 
+        $tagInputs = array_filter((array) $request->input('tags', []));
+        if ($request->filled('tag')) {
+            $tagInputs[] = $request->input('tag');
+        }
+
         $isSearching =
             $request->filled('keyword') ||
             $request->filled('area') ||
@@ -28,11 +33,11 @@ class SearchController extends Controller
             $request->filled('time') ||
             $request->filled('moods') ||
             $request->filled('rating_min') ||
-            $request->filled('tags');
+            !empty($tagInputs);
 
 
-        if ($request->filled('tags')) {
-            $tagIds = array_values(array_unique(array_map('intval', (array)$request->input('tags'))));
+        if (!empty($tagInputs)) {
+            $tagIds = array_values(array_unique(array_map('intval', $tagInputs)));
             $query->whereHas('reviews.tags', function ($tq) use ($tagIds) {
                 $tq->whereIn('tags.id', $tagIds);
             });
@@ -47,7 +52,11 @@ class SearchController extends Controller
 
      
         if ($request->filled('area')) {
-            $query->where('area', $request->input('area'));
+            $areaKey = $request->input('area');
+            $areas = config('cafest.areas', []);
+            $areaValue = $areas[$areaKey] ?? $areaKey;
+
+            $query->where('area', $areaValue);
         }
 
         if ($request->filled('moods')) {
@@ -56,7 +65,7 @@ class SearchController extends Controller
 
         if ($request->filled('rating_min')) {
             $min = (float)$request->input('rating_min');
-            $query->where('reviews_avg_rating', '>=', $min);
+            $query->having('reviews_avg_rating', '>=', $min);
         }
 
         if ($request->filled('time')) {
@@ -94,12 +103,16 @@ class SearchController extends Controller
             if (isset($ranges[$key])) {
                 [$min, $max] = $ranges[$key];
 
-                $query->where(function ($q) use ($min, $max) {
-                    $q->where('budget_max', '>=', $min);
-                    if ($max !== null) {
-                        $q->where('budget_min', '<=', $max);
-                    }
-                });
+                $query->whereNotNull('budget_min');
+
+                if ($max === null) {
+                    $query->where('budget_min', '>=', $min)
+                        ->whereNull('budget_max');
+                } else {
+                    $query->whereNotNull('budget_max')
+                        ->where('budget_min', '>=', $min)
+                        ->where('budget_max', '<=', $max);
+                }
             }
         }
 

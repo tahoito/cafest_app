@@ -56,7 +56,9 @@
           $store.search.area = @js(request('area', ''));
           $store.search.budget = @js(request('budget', ''));
           $store.search.time = @js(request('time', ''));
-          $store.search.ratingMin = @js(request('rating_min', '')) || null;
+          const _ratingMin = @js(request('rating_min', ''));
+          $store.search.ratingMin = _ratingMin !== '' ? Number(_ratingMin) : null;
+          $store.search.selectedRatings = $store.search.ratingMin ? [$store.search.ratingMin] : [];
           $store.search.tags = @js((array) request('tags', []));
         "
       >
@@ -168,6 +170,10 @@
             <input type="hidden" name="tags[]" :value="t">
           </template>
           <input type="hidden" name="rating_min" :value="$store.search.ratingMin ?? ''">
+          <input type="hidden" name="keyword" :value="$store.search.keyword">
+          <template x-for="m in $store.search.moods" :key="m">
+            <input type="hidden" name="moods[]" :value="m">
+          </template>
 
           {{-- タグ --}}
         <section class="space-y-2">
@@ -212,8 +218,7 @@
           {{-- ボタン --}}
           <div class="sticky bottom-0 bg-base_color pt-3 pb-6">
             <div class="flex justify-center">
-              <x-ui.button type="submit" class="w-[70%]" variants="secondary"
-                @click="document.getElementById('searchForm').submit()">
+              <x-ui.button type="submit" class="w-[70%]" variant="secondary">
                 検索
               </x-ui.button>
             </div>

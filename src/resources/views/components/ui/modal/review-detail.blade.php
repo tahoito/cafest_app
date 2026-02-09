@@ -66,17 +66,11 @@
                 </div>
 
                 <div class="mt-3 flex items-center gap-1" aria-label="評価">
-                    <template x-for="i in 5" :key="i">
-                        <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        class="w-5 h-5"
-                        :class="(data.rating ?? 0) >= i ? 'text-star' : 'text-placeholder'"
-                        >
-                        <path d="M11.6984 0L14.46 7.9463H23.3964L16.1667 12.8574L18.9282 20.8037L11.6984 15.8926L4.46868 20.8037L7.2302 12.8574L0.000442505 7.9463H8.93692L11.6984 0Z"/>
-                        </svg>
-                    </template>
+                  <x-icons.star class="h-4 w-4" x-bind:class="(data.rating ?? 0) >= 1 ? 'text-star' : 'text-placeholder'" />
+                  <x-icons.star class="h-4 w-4" x-bind:class="(data.rating ?? 0) >= 2 ? 'text-star' : 'text-placeholder'" />
+                  <x-icons.star class="h-4 w-4" x-bind:class="(data.rating ?? 0) >= 3 ? 'text-star' : 'text-placeholder'" />
+                  <x-icons.star class="h-4 w-4" x-bind:class="(data.rating ?? 0) >= 4 ? 'text-star' : 'text-placeholder'" />
+                  <x-icons.star class="h-4 w-4" x-bind:class="(data.rating ?? 0) >= 5 ? 'text-star' : 'text-placeholder'" />
                 </div>
 
 
