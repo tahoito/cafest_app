@@ -17,23 +17,21 @@ RUN apt-get update \
 # composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# app
+# app (Laravelはルート直下)
 COPY . .
 
-# install php deps (Laravel本体は /laravel 配下)
-WORKDIR /var/www/html/laravel
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+# composer install（Laravelのcomposer.jsonを使う）
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
 
-# nginx config template (RenderのPORTを埋め込む)
+# nginx config template
 RUN rm -f /etc/nginx/sites-enabled/default /etc/nginx/conf.d/default.conf || true \
   && mkdir -p /etc/nginx/conf.d
 
-# ★テンプレの場所：いま君は docker/nginx/default.conf.template を持ってる
 COPY docker/nginx/default.conf.template /etc/nginx/conf.d/default.conf.template
 
-# ensure permissions (Laravel)
-RUN chown -R www-data:www-data /var/www/html/laravel \
-  && chmod -R 775 /var/www/html/laravel/storage /var/www/html/laravel/bootstrap/cache || true
+# permissions（Laravel直下）
+RUN chown -R www-data:www-data /var/www/html \
+  && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache || true
 
 EXPOSE 8080
 
