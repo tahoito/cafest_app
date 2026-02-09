@@ -48,3 +48,13 @@ COPY --from=nodebuilder /app/src/public/build /var/www/html/src/public/build
 # COPY ./docker/entrypoint.sh /entrypoint.sh
 # RUN chmod +x /entrypoint.sh
 # CMD ["/entrypoint.sh"]
+
+# nginx config
+COPY ./docker/nginx/default.conf /etc/nginx/conf.d/default.conf
+
+# entrypoint
+COPY ./docker/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+EXPOSE 10000
+CMD ["/entrypoint.sh"]
