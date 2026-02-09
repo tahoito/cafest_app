@@ -2,40 +2,45 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Store;
 use App\Models\StoreImage;
 
 class StoreImageSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        $stores = Store::all();
+        $path = database_path('seeders/data/store_images.csv');
+        if (!file_exists($path)) return;
 
-        foreach ($stores as $store){
-            StoreImage::where('store_id', $store->id)->delete();
+        $rows = array_map('str_getcsv', file($path));
+        $header = array_map('trim', array_shift($rows));
 
-            for($i = 1; $i <= 5; $i++){
-                StoreImage::create([
-                    'store_id' => $store->id,
-                    'path' => "/images/store/card.png",
-                    'type' => 'slide',
-                    'sort_order' => $i,
-                ]);
-            }
+        $storeMap = Store::pluck('id', 'email');
 
-            for ($i = 1; $i <= 6; $i++){
-                StoreImage::create([
-                    'store_id' => $store->id,
-                    'path' => "/images/store/image_example.png",
-                    'type' => 'gallery',
-                    'sort_order' => $i,
-                ]);
-            }
+        foreach ($rows as $row) {
+            if (count($row) !== count($header)) continue;
+            $data = array_combine($header, $row);
+
+            $email = trim($data['store_email'] ?? '');
+            if (!$email || !$storeMap->has($email)) continue;
+
+            $storeId = $storeMap[$email];
+
+            StoreImage::updateOrCreate(
+                [
+                    'store_id' => $storeId,
+                    'sort_order' => (int)($data['sort_order'] ?? 1),
+                    'type' => $data['type'] ?? null,
+                ],
+                [
+                    'store_id' => $storeId,
+                    'path' => trim($data['path'] ?? ''),
+                    'sort_order' => (int)($data['sort_order'] ?? 1),
+                    'type' => $data['type'] ?? null,
+                    'is_used_on_card' => (bool) ((int)($data['is_used_on_card'] ?? 0)),
+                ]
+            );
         }
     }
 }
