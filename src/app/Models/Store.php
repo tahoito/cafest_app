@@ -123,30 +123,33 @@ class Store extends Authenticatable
     }
 
 
-    public function getCardImageUrlAttribute(): string 
+    public function getCardImageUrlAttribute(): string
     {
-        $default = asset('images/store/card.png'); 
-        
-        $img = $this->relationLoaded('slideImages')
-            ? $this->slideImages->firstWhere('is_used_on_card', true) ?? $this->slideImages->first()
-            : $this->slideImages()->where('is_used_on_card', true)->first()
-                ?? $this->slideImages()->orderBy('sort_order')->first();
+        // デフォルト（実ファイルの場所に合わせて）
+        $default = asset('images/stores/card.png'); // ← card.png をここに置くのがオススメ
 
+        $img = $this->relationLoaded('slideImages')
+            ? ($this->slideImages->firstWhere('is_used_on_card', true) ?? $this->slideImages->first())
+            : ($this->slideImages()->where('is_used_on_card', true)->first()
+                ?? $this->slideImages()->orderBy('sort_order')->first());
 
         if (!$img || !$img->path) return $default;
-
-        
-        if (str_starts_with($value, '/images/')) return $value;
 
         $value = trim((string) $img->path);
         if ($value === '') return $default;
 
+        // 外部URL
         if (str_starts_with($value, 'http://') || str_starts_with($value, 'https://')) return $value;
+
+        // public配下の絶対パス（あなたのCSVはこれ）
+        if (str_starts_with($value, '/images/')) return $value;
+
+        // storageリンク経由のパス
         if (str_starts_with($value, '/storage/')) return $value;
 
-        $path = preg_replace('#^/?storage/#', '', ltrim($value, '/'));
-        return Storage::url($path);
-
+        // それ以外は storage 扱い
+        return Storage::url(ltrim($value, '/'));
     }
+
 
 }
