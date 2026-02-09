@@ -37,6 +37,11 @@ COPY . .
 WORKDIR /var/www/html/src
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
+# storage と cache を書けるようにする
+RUN chown -R www-data:www-data /var/www/html/src/storage /var/www/html/src/bootstrap/cache \
+ && chmod -R ug+rwX /var/www/html/src/storage /var/www/html/src/bootstrap/cache
+
+ 
 # Vite build output (manifestがある場所)
 COPY --from=nodebuilder /app/src/public/build /var/www/html/src/public/build
 
