@@ -42,12 +42,15 @@
             <section>
                 <div class="grid grid-cols-3 gap-3">
                     @forelse($posts as $post)
-                        <button type="button" class="aspect-square overflow-hidden rounded-lg bg-base"
-                            @click='window.dispatchEvent(new CustomEvent("review:open",{
-                            detail: {
+                        <button
+                            type="button"
+                            x-data
+                            class="aspect-square overflow-hidden rounded-lg bg-base"
+                            @click.prevent.stop='window.dispatchEvent(new CustomEvent("review:open",{
+                              detail: {
                                 reviewId: {{ $post->review_id }},
                                 endpoint: "{{ route('user.stores.reviews.show', ['store' => $store->id, 'review' => $post->review_id]) }}?format=json"
-                            }
+                              }
                             }))'
                         >
                             <img src="{{ $post->image }}"

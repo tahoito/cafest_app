@@ -21,6 +21,11 @@ class SearchController extends Controller
 
         $query = Store::query()->withAvg('reviews', 'rating');
 
+        $tagInputs = array_filter((array) $request->input('tags', []));
+        if ($request->filled('tag')) {
+            $tagInputs[] = $request->input('tag');
+        }
+
         $isSearching =
             $request->filled('keyword') ||
             $request->filled('area') ||
@@ -28,11 +33,11 @@ class SearchController extends Controller
             $request->filled('time') ||
             $request->filled('moods') ||
             $request->filled('rating_min') ||
-            $request->filled('tags');
+            !empty($tagInputs);
 
 
-        if ($request->filled('tags')) {
-            $tagIds = array_values(array_unique(array_map('intval', (array)$request->input('tags'))));
+        if (!empty($tagInputs)) {
+            $tagIds = array_values(array_unique(array_map('intval', $tagInputs)));
             $query->whereHas('reviews.tags', function ($tq) use ($tagIds) {
                 $tq->whereIn('tags.id', $tagIds);
             });

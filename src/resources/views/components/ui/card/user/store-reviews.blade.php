@@ -61,6 +61,7 @@
 
 <button
   type="button"
+  x-data
   @if($endpoint)
     @click.prevent.stop='window.dispatchEvent(new CustomEvent("review:open",{
       detail: { reviewId: {{ (int) data_get($review,"id") }}, endpoint: "{{ $endpoint }}" }

@@ -11,7 +11,10 @@
     const _ratingMin = @js(request('rating_min', ''));
     $store.search.ratingMin = _ratingMin !== '' ? Number(_ratingMin) : null;
     $store.search.selectedRatings = $store.search.ratingMin ? [$store.search.ratingMin] : [];
-    $store.search.tags = @js((array) request('tags', []));
+    const _tags = @js((array) request('tags', []));
+    const _tag = @js(request('tag', null));
+    if (_tag) _tags.push(_tag);
+    $store.search.tags = _tags;
     $store.search.moods = @js((array) request('moods', []));
     $store.search.keyword = @js(request('keyword', ''));
   "

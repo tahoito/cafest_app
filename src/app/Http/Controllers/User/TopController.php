@@ -20,6 +20,7 @@ class TopController extends Controller
         
         $allStores = Store::query()
             ->with(['latestImage'])
+            ->withAvg('reviews', 'rating')
             ->orderByDesc('created_at')
             ->get();
 
