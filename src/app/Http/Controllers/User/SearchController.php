@@ -60,7 +60,7 @@ class SearchController extends Controller
 
         if ($request->filled('rating_min')) {
             $min = (float)$request->input('rating_min');
-            $query->where('reviews_avg_rating', '>=', $min);
+            $query->having('reviews_avg_rating', '>=', $min);
         }
 
         if ($request->filled('time')) {
@@ -98,12 +98,16 @@ class SearchController extends Controller
             if (isset($ranges[$key])) {
                 [$min, $max] = $ranges[$key];
 
-                $query->where(function ($q) use ($min, $max) {
-                    $q->where('budget_max', '>=', $min);
-                    if ($max !== null) {
-                        $q->where('budget_min', '<=', $max);
-                    }
-                });
+                $query->whereNotNull('budget_min');
+
+                if ($max === null) {
+                    $query->where('budget_min', '>=', $min)
+                        ->whereNull('budget_max');
+                } else {
+                    $query->whereNotNull('budget_max')
+                        ->where('budget_min', '>=', $min)
+                        ->where('budget_max', '<=', $max);
+                }
             }
         }
 

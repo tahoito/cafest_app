@@ -132,7 +132,7 @@
                 @endfor
               </div>
               <div class="text-sm text-text_color/70">
-                {{ number_format($rating, 1) }}
+                {{ number_format($rating, 1) }}（{{ $reviewCount }}件）
               </div>
             </div>
 
