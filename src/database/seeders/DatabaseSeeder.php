@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             TagSeeder::class,      
             RecommendedItemSeeder::class,
             MenuPhotoSeeder::class,
+            StoreImageSeeder::class,
         ]);
 
     }
