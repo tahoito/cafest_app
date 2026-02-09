@@ -2,7 +2,11 @@
 @section('title','検索')
 
 @section('content')
-<div x-data class="h-[100dvh] bg-base_color">
+<div
+  x-data
+  x-init="$store.search.moods = @js((array) request('moods', []))"
+  class="h-[100dvh] bg-base_color"
+>
   <div class="fixed top-0 inset-x-0 z-50 bg-base_color border-b border-black/5 shadow-[0_6px_14px_-10px_rgba(0,0,0,0.35)]">
     <div class="pt-[env(safe-area-inset-top)]">
       <div class="w-full max-w-md mx-auto pt-6 space-y-5 pb-3">
@@ -45,7 +49,7 @@
               <x-ui.category
                 label="珈琲専門"
                 type="button"
-                @click="$store.search.toggleMood('珈琲専門')"
+                @click="$store.search.toggleMood('珈琲専門'); $nextTick(() => document.getElementById('searchForm').submit())"
                 x-bind:class="$store.search.hasMood('珈琲専門') ? '!bg-main !text-form' : ''"
               >
                 <img
@@ -63,7 +67,7 @@
               <x-ui.category
                 label="紅茶"
                 type="button"
-                @click="$store.search.toggleMood('紅茶')"
+                @click="$store.search.toggleMood('紅茶'); $nextTick(() => document.getElementById('searchForm').submit())"
                 x-bind:class="$store.search.hasMood('紅茶') ? '!bg-main !text-form' : ''"
               >
                 <img
@@ -81,7 +85,7 @@
               <x-ui.category
                 label="スイーツ"
                 type="button"
-                @click="$store.search.toggleMood('スイーツ')"
+                @click="$store.search.toggleMood('スイーツ'); $nextTick(() => document.getElementById('searchForm').submit())"
                 x-bind:class="$store.search.hasMood('スイーツ') ? '!bg-main !text-form' : ''"
               >
                 <img
@@ -99,7 +103,7 @@
               <x-ui.category
                 label="夜カフェ"
                 type="button"
-                @click="$store.search.toggleMood('夜カフェ')"
+                @click="$store.search.toggleMood('夜カフェ'); $nextTick(() => document.getElementById('searchForm').submit())"
                 x-bind:class="$store.search.hasMood('夜カフェ') ? '!bg-main !text-form' : ''"
               >
                 <img
@@ -118,7 +122,7 @@
                 <x-ui.category
                   label="静か"
                   type="button"
-                  @click="$store.search.toggleMood('静か')"
+                  @click="$store.search.toggleMood('静か'); $nextTick(() => document.getElementById('searchForm').submit())"
                   x-bind:class="$store.search.hasMood('静か') ? '!bg-main !text-form' : ''"
                 >
                   <img
@@ -136,7 +140,7 @@
                 <x-ui.category
                   label="勉強・作業"
                   type="button"
-                  @click="$store.search.toggleMood('勉強・作業')"
+                  @click="$store.search.toggleMood('勉強・作業'); $nextTick(() => document.getElementById('searchForm').submit())"
                   x-bind:class="$store.search.hasMood('勉強・作業') ? '!bg-main !text-form' : ''"
                 >
                   <img
@@ -154,7 +158,7 @@
                 <x-ui.category
                   label="長居OK"
                   type="button"
-                  @click="$store.search.toggleMood('長居OK')"
+                  @click="$store.search.toggleMood('長居OK'); $nextTick(() => document.getElementById('searchForm').submit())"
                   x-bind:class="$store.search.hasMood('長居OK') ? '!bg-main !text-form' : ''"
                 >
                   <img
@@ -172,7 +176,7 @@
                 <x-ui.category
                   label="レトロ・喫茶"
                   type="button"
-                  @click="$store.search.toggleMood('レトロ・喫茶')"
+                  @click="$store.search.toggleMood('レトロ・喫茶'); $nextTick(() => document.getElementById('searchForm').submit())"
                   x-bind:class="$store.search.hasMood('レトロ・喫茶') ? '!bg-main !text-form' : ''"
                 >
                   <img
@@ -190,7 +194,7 @@
                 <x-ui.category
                   label="デート"
                   type="button"
-                  @click="$store.search.toggleMood('デート')"
+                  @click="$store.search.toggleMood('デート'); $nextTick(() => document.getElementById('searchForm').submit())"
                   x-bind:class="$store.search.hasMood('デート') ? '!bg-main !text-form' : ''"
                 >
                   <img
@@ -208,7 +212,7 @@
                 <x-ui.category
                   label="女子会"
                   type="button"
-                  @click="$store.search.toggleMood('女子会')"
+                  @click="$store.search.toggleMood('女子会'); $nextTick(() => document.getElementById('searchForm').submit())"
                   x-bind:class="$store.search.hasMood('女子会') ? '!bg-main !text-form' : ''"
                 >
                   <img
@@ -226,7 +230,7 @@
                 <x-ui.category
                   label="韓国風"
                   type="button"
-                  @click="$store.search.toggleMood('韓国風')"
+                  @click="$store.search.toggleMood('韓国風'); $nextTick(() => document.getElementById('searchForm').submit())"
                   x-bind:class="$store.search.hasMood('韓国風') ? '!bg-main !text-form' : ''"
                 >
                   <img
@@ -244,7 +248,7 @@
                 <x-ui.category
                   label="ペットOK"
                   type="button"
-                  @click="$store.search.toggleMood('ペットOK')"
+                  @click="$store.search.toggleMood('ペットOK'); $nextTick(() => document.getElementById('searchForm').submit())"
                   x-bind:class="$store.search.hasMood('ペットOK') ? '!bg-main !text-form' : ''"
                 >
                   <img

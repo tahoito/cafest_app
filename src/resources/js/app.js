@@ -41,12 +41,16 @@ document.addEventListener('alpine:init', () => {
       if (i === -1) this.selectedRatings.push(n)
       else this.selectedRatings.splice(i, 1)
       this.selectedRatings.sort((a, b) => a - b)
+      this.ratingMin = this.selectedRatings.length
+        ? Math.max(...this.selectedRatings)
+        : null
     },
     isRatingOn(n) {
       return this.selectedRatings.includes(n)
     },
     clearRatings() {
       this.selectedRatings = []
+      this.ratingMin = null
     },
   })
 
