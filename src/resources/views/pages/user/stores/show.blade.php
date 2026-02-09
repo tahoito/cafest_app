@@ -227,7 +227,10 @@
                     ]) . '?format=json',
                   ];
                 @endphp
-                <button type="button" class="aspect-square overflow-hidden rounded-lg bg-base"
+                <button
+                  type="button"
+                  x-data
+                  class="aspect-square overflow-hidden rounded-lg bg-base"
                   @click.prevent.stop="window.dispatchEvent(new CustomEvent('review:open',{ detail: @js($payload) }))"
                 >
                   <img src="{{ $post->image }}" alt="review image" class="w-full h-full object-cover" loading="lazy">
