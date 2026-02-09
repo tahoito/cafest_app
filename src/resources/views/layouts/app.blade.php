@@ -9,7 +9,6 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Cafest">
 
-
   <title>@yield('title', 'cafest')</title>
   <link rel="manifest" href="/manifest.webmanifest" crossorigin="use-credentials">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -26,7 +25,9 @@
 @endphp
 
 <body class="min-h-screen bg-base_color text-text_color relative overflow-x-hidden">
-  <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+
+  {{-- ▼ 背景丸レイヤー（zだけ変更） --}}
+  <div class="fixed inset-0 overflow-hidden pointer-events-none z-[-1]">
     @if($welcomeBg)
       <div class="absolute top-[15px] -left-[80px] w-[180px] h-[180px] rounded-full bg-accent"></div>
       <div class="absolute top-[30px] left-[120px] -translate-x-1/2 w-[36px] h-[36px] rounded-full bg-accent"></div>
@@ -40,7 +41,7 @@
     @endif
   </div>
 
-
+  {{-- ▼ メインコンテンツ --}}
   <main
     class="relative z-10 @unless(View::hasSection('hideNavbar')) pb-20 @else pb-2 @endunless"
   >
