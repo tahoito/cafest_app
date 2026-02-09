@@ -37,7 +37,7 @@
           <button
             type="button"
             class="h-9 px-3 rounded-lg text-main-color font-semibold hover:bg-black/5 active:scale-95 transition"
-            @click="$store.search.activeModal = null"
+            @click="$store.search.activeModal = null; $nextTick(() => document.getElementById('searchForm').submit())"
           >
             決定
           </button>
