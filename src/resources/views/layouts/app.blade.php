@@ -25,20 +25,20 @@
   $authBg = request()->routeIs('user.login', 'user.signup', 'store.login', 'store.signup');
 @endphp
 
-<body class="min-h-screen bg-base_color text-text_color relative overflow-x-hidden isolate">
-  @if($welcomeBg)
-    <div class="absolute top-[15px] -left-[80px] w-[180px] h-[180px] rounded-full bg-accent pointer-events-none -z-10"></div>
-    <div class="absolute top-[30px] left-[120px] -translate-x-1/2 w-[36px] h-[36px] rounded-full bg-accent pointer-events-none -z-10"></div>
-    <div class="absolute top-[120px] -right-[50px] w-[150px] h-[150px] rounded-full bg-accent pointer-events-none -z-10"></div>
-    <div class="absolute -bottom-[120px] -left-[150px] w-[280px] h-[280px] rounded-full bg-accent pointer-events-none -z-10"></div>
-    <div class="absolute bottom-[80px] left-[150px] -translate-x-1/2 w-[44px] h-[44px] rounded-full bg-accent pointer-events-none -z-10"></div>
-  @elseif($authBg)
-    <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+<body class="min-h-screen bg-base_color text-text_color relative overflow-x-hidden">
+  <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+    @if($welcomeBg)
+      <div class="absolute top-[15px] -left-[80px] w-[180px] h-[180px] rounded-full bg-accent"></div>
+      <div class="absolute top-[30px] left-[120px] -translate-x-1/2 w-[36px] h-[36px] rounded-full bg-accent"></div>
+      <div class="absolute top-[120px] -right-[50px] w-[150px] h-[150px] rounded-full bg-accent"></div>
+      <div class="absolute -bottom-[120px] -left-[150px] w-[280px] h-[280px] rounded-full bg-accent"></div>
+      <div class="absolute bottom-[80px] left-[150px] -translate-x-1/2 w-[44px] h-[44px] rounded-full bg-accent"></div>
+    @elseif($authBg)
       <div class="absolute -top-24 -left-24 w-56 h-56 rounded-full bg-accent"></div>
       <div class="absolute -bottom-32 -right-20 w-64 h-64 rounded-full bg-accent"></div>
       <div class="absolute bottom-10 left-40 w-10 h-10 rounded-full bg-accent"></div>
-    </div>
-  @endif
+    @endif
+  </div>
 
 
   <main

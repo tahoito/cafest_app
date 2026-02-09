@@ -58,11 +58,19 @@
 <script>
 "use strict";
 
-const menu = document.querySelector(".menu");
-if (menu) {
+(() => {
+  const menu = document.querySelector(".menu");
+  if (!menu) return;
+
   const menuItems = menu.querySelectorAll(".menu__item");
   const menuBorder = menu.querySelector(".menu__border");
   let activeItem = menu.querySelector(".active");
+
+  // ========= 設定 =========
+  // 遷移をわざと遅らせるならここを 80〜120 程度に（基本は 0 推奨）
+  const NAV_DELAY_MS = 0;
+  // prefetch を使うか（体感速度UP）
+  const ENABLE_PREFETCH = true;
 
   if (!activeItem && menuBorder) {
     menuBorder.style.opacity = "0";
@@ -74,7 +82,7 @@ if (menu) {
     const left = Math.floor(
       rect.left - menu.offsetLeft - (menuBorder.offsetWidth - rect.width) / 2
     ) + "px";
-    menuBorder.style.transform = `translate3d(${left}, 0 , 0)`;
+    menuBorder.style.transform = `translate3d(${left}, 0, 0)`;
   }
 
   function setActive(item) {
@@ -112,9 +120,6 @@ if (menu) {
       // 線だけ描きたいのでfill消す
       clone.setAttribute("fill", "none");
 
-      // 元のstroke色/太さを保持（ここ大事）
-      // clone.setAttribute("stroke", "currentColor"); ←やらない
-
       if (typeof clone.getTotalLength === "function") {
         const len = clone.getTotalLength();
         clone.style.strokeDasharray = `${len}`;
@@ -143,6 +148,31 @@ if (menu) {
     setTimeout(() => overlay.remove(), 650);
   }
 
+  // ========= Prefetch（同一オリジンの document を先読み） =========
+  function prefetchDocument(href) {
+    if (!ENABLE_PREFETCH) return;
+    if (!href) return;
+
+    let url;
+    try {
+      url = new URL(href, window.location.origin);
+    } catch {
+      return;
+    }
+    if (url.origin !== window.location.origin) return;
+
+    const pathname = url.pathname + url.search;
+    // 同じページや、すでにprefetch済みはスキップ
+    if (pathname === (window.location.pathname + window.location.search)) return;
+    if (document.querySelector(`link[rel="prefetch"][href="${pathname}"]`)) return;
+
+    const link = document.createElement("link");
+    link.rel = "prefetch";
+    link.as = "document";
+    link.href = pathname;
+    document.head.appendChild(link);
+  }
+
   // 初期位置（初回だけはアニメなし）
   if (activeItem) {
     menu.style.setProperty("--timeOut", "0s");
@@ -153,28 +183,52 @@ if (menu) {
   }
 
   menuItems.forEach((item) => {
+    const href = item.getAttribute("href") || "";
+
+    // hover / touchstart で先読み（スマホは touchstart が効く）
+    item.addEventListener("mouseenter", () => prefetchDocument(href));
+    item.addEventListener("touchstart", () => prefetchDocument(href), { passive: true });
+
+    // 押した瞬間に “押した感” を出す（遷移待ちはしない）
+    item.addEventListener("pointerdown", (e) => {
+      // 右クリック等は除外
+      if (e.button !== 0) return;
+      if (activeItem !== item) setActive(item);
+      drawIconOverlay(item);
+    });
+
+    // click では「同一ページなら遷移止める」だけやる
     item.addEventListener("click", (e) => {
-      const href = item.getAttribute("href") || "";
-      const isRealNav = href && href !== "#" && !href.startsWith("#");
       const isModified =
         e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1;
-      const hrefPath = isRealNav ? new URL(href, window.location.origin).pathname : "";
-      const isSamePath = isRealNav && hrefPath === window.location.pathname;
 
-      if (!isModified) {
-        if (activeItem !== item) setActive(item);
-        drawIconOverlay(item);
+      const isRealNav = href && href !== "#" && !href.startsWith("#");
+      if (!isRealNav || isModified) return;
+
+      // 同じURLなら何もしない（無駄なリロード防止）
+      let url;
+      try {
+        url = new URL(href, window.location.origin);
+      } catch {
+        return;
       }
+      const same =
+        url.pathname === window.location.pathname &&
+        url.search === window.location.search;
 
-      // 遷移はちょい遅らせて“描き始め”が見えるように
-      if (isRealNav && !isModified) {
-        if (isSamePath) {
-          e.preventDefault();
-          return;
-        }
+      if (same) {
         e.preventDefault();
-        setTimeout(() => { window.location.href = href; }, 220);
+        return;
       }
+
+      // 遷移を遅らせたい時だけここで止める（基本0でOK）
+      if (NAV_DELAY_MS > 0) {
+        e.preventDefault();
+        setTimeout(() => {
+          window.location.href = href;
+        }, NAV_DELAY_MS);
+      }
+      // NAV_DELAY_MS === 0 の場合は、preventDefaultしない＝即遷移
     });
   });
 
@@ -182,5 +236,5 @@ if (menu) {
     offsetMenuBorder(activeItem);
     menu.style.setProperty("--timeOut", "none");
   });
-}
+})();
 </script>
