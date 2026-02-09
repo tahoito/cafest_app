@@ -125,7 +125,7 @@ class Store extends Authenticatable
 
     public function getCardImageUrlAttribute(): string 
     {
-        $default = Storage::url('store/card.png');
+        $default = asset('images/store/card.png'); 
         
         $img = $this->relationLoaded('slideImages')
             ? $this->slideImages->firstWhere('is_used_on_card', true) ?? $this->slideImages->first()
@@ -134,6 +134,9 @@ class Store extends Authenticatable
 
 
         if (!$img || !$img->path) return $default;
+
+        
+        if (str_starts_with($value, '/images/')) return $value;
 
         $value = trim((string) $img->path);
         if ($value === '') return $default;

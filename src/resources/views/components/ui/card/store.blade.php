@@ -15,11 +15,7 @@
   $areaKey = data_get($store, 'area', '');
   $area = $areaKey !== '' ? (config('cafest.areas')[$areaKey] ?? $areaKey) : '';
   $mood = data_get($store, 'mood', '');
-  $imageUrl = optional(
-    collect(data_get($store, 'slideImages', []))->firstWhere('is_used_on_card', true)
-  )->url;
-
-
+  
   $rating = (float) data_get($store, 'reviews_avg_rating', data_get($store, 'rating', 0));
   $rating = max(0, min(5, $rating));
   $filled = (int) round($rating);
@@ -28,18 +24,28 @@
     ? "{$area}・{$mood}"
     : (trim($area) !== '' ? $area : $mood);
 
+  $defaultCard = asset('images/store/card.png');
+
+  $imageUrl = data_get(
+    collect(data_get($store, 'slideImages', []))->firstWhere('is_used_on_card', true)
+      ?? collect(data_get($store, 'slideImages', []))->first(),
+    'path'
+  );
+
   $imageSrc = $defaultCard;
 
   if ($imageUrl) {
     if (str_starts_with($imageUrl, 'http')) {
       $imageSrc = $imageUrl;
+    } elseif (str_starts_with($imageUrl, '/images/')) {
+      $imageSrc = $imageUrl; // ✅ public画像はそのまま
     } elseif (str_starts_with($imageUrl, '/storage/')) {
       $imageSrc = $imageUrl;
     } else {
-      $path = preg_replace('#^storage/#', '', ltrim($imageUrl, '/'));
-      $imageSrc = Storage::url($path);
+      $imageSrc = Storage::url(ltrim($imageUrl, '/'));
     }
-  }
+  }  
+  
 @endphp
 
 <a href="{{ $url }}"
