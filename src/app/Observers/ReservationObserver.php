@@ -4,6 +4,8 @@ namespace App\Observers;
 
 use App\Models\Reservation;
 use App\Models\Store;
+use App\Notifications\StoreReservationCreatedNotification;
+
 class ReservationObserver
 {
     /**
@@ -17,6 +19,7 @@ class ReservationObserver
         if (!$store) return;
 
         $store->notify(new StoreReservationCreatedNotification($reservation));
+
     }
 
     /**

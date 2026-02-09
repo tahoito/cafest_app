@@ -9,7 +9,9 @@ class TopController extends Controller
     public function index()
     {
         $store = auth('store')->user();
-        return view('pages.store.top',compact('store'));
+        $unreadCount = $store->unreadNotifications()->count();
+
+        return view('pages.store.top', compact('store', 'unreadCount'));
     }
 
 }
