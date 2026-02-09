@@ -1789,7 +1789,7 @@ class Request
         if (str_starts_with($matches[1], 'i-')) {
             // Language not listed in ISO 639 that are not variants
             // of any listed language, which can be registered with the
-            // i-prefix, such as i-cherokee
+            // i-prefix, such as i-cslidekee
             $matches[1] = substr($matches[1], 2);
         }
 

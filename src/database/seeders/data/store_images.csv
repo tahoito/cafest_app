@@ -1,40 +1,40 @@
 store_email,path,sort_order,type,is_used_on_card
-wakuwaku@example.com,/images/stores/cafe01.jpg,1,hero,1
+wakuwaku@example.com,/images/stores/cafe01.jpg,1,slide,1
 wakuwaku@example.com,/images/stores/cafe02.jpg,2,gallery,0
 wakuwaku@example.com,/images/stores/cafe03.jpg,3,gallery,0
 
-coffee_inko@example.com,/images/stores/cafe04.jpg,1,hero,1
+coffee_inko@example.com,/images/stores/cafe04.jpg,1,slide,1
 coffee_inko@example.com,/images/stores/cafe05.jpg,2,gallery,0
 coffee_inko@example.com,/images/stores/cafe06.jpg,3,gallery,0
 
-threecafe@example.com,/images/stores/cafe07.jpg,1,hero,1
+threecafe@example.com,/images/stores/cafe07.jpg,1,slide,1
 threecafe@example.com,/images/stores/cafe08.jpg,2,gallery,0
 threecafe@example.com,/images/stores/cafe09.jpg,3,gallery,0
 
-sleeping@example.com,/images/stores/cafe10.jpg,1,hero,1
+sleeping@example.com,/images/stores/cafe10.jpg,1,slide,1
 sleeping@example.com,/images/stores/cafe11.jpg,2,gallery,0
 sleeping@example.com,/images/stores/cafe12.jpg,3,gallery,0
 
-higashimiti@example.com,/images/stores/cafe02.jpg,1,hero,1
+higashimiti@example.com,/images/stores/cafe02.jpg,1,slide,1
 higashimiti@example.com,/images/stores/cafe04.jpg,2,gallery,0
 higashimiti@example.com,/images/stores/cafe07.jpg,3,gallery,0
 
-damonde@example.com,/images/stores/cafe05.jpg,1,hero,1
+damonde@example.com,/images/stores/cafe05.jpg,1,slide,1
 damonde@example.com,/images/stores/cafe08.jpg,2,gallery,0
 damonde@example.com,/images/stores/cafe11.jpg,3,gallery,0
 
-graph@example.com,/images/stores/cafe03.jpg,1,hero,1
+graph@example.com,/images/stores/cafe03.jpg,1,slide,1
 graph@example.com,/images/stores/cafe06.jpg,2,gallery,0
 graph@example.com,/images/stores/cafe09.jpg,3,gallery,0
 
-shop_cafe@example.com,/images/stores/cafe01.jpg,1,hero,1
+shop_cafe@example.com,/images/stores/cafe01.jpg,1,slide,1
 shop_cafe@example.com,/images/stores/cafe10.jpg,2,gallery,0
 shop_cafe@example.com,/images/stores/cafe12.jpg,3,gallery,0
 
-tea@example.com,/images/stores/cafe06.jpg,1,hero,1
+tea@example.com,/images/stores/cafe06.jpg,1,slide,1
 tea@example.com,/images/stores/cafe08.jpg,2,gallery,0
 tea@example.com,/images/stores/cafe04.jpg,3,gallery,0
 
-can_coffee@example.com,/images/stores/cafe09.jpg,1,hero,1
+can_coffee@example.com,/images/stores/cafe09.jpg,1,slide,1
 can_coffee@example.com,/images/stores/cafe02.jpg,2,gallery,0
 can_coffee@example.com,/images/stores/cafe05.jpg,3,gallery,0

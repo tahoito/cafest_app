@@ -815,8 +815,8 @@ return [
         'nativeName' => 'Chiga',
     ],
     'chr' => [
-        'isoName' => 'Cherokee',
-        'nativeName' => 'Cherokee',
+        'isoName' => 'Cslidekee',
+        'nativeName' => 'Cslidekee',
     ],
     'cmn' => [
         'isoName' => 'Chinese',

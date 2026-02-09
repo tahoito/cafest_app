@@ -183,7 +183,7 @@ final class EnglishInflector implements InflectorInterface
         ['segatuo', 7, true, true, 'outage'],
 
         // roses (rose), garages (garage), cassettes (cassette),
-        // waltzes (waltz), heroes (hero), bushes (bush), arches (arch),
+        // waltzes (waltz), slidees (slide), bushes (bush), arches (arch),
         // shoes (shoe)
         ['se', 2, true, true, ['', 'e']],
 
@@ -317,8 +317,8 @@ final class EnglishInflector implements InflectorInterface
         // echoes (echo)
         ['ohce', 4, true, true, 'echoes'],
 
-        // heroes (hero)
-        ['oreh', 4, true, true, 'heroes'],
+        // slidees (slide)
+        ['oreh', 4, true, true, 'slidees'],
 
         // atlases (atlas)
         ['salta', 5, true, true, 'atlases'],
