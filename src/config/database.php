@@ -95,7 +95,11 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
             'search_path' => 'public',
-            'sslmode' => 'prefer',
+            'sslmode' => env('PGSSLMODE', 'prefer'),
+            'options' => extension_loaded('pdo_pgsql') ? array_filter([
+                // Neonで証明書指定が必要なケース用（普通はいらない）
+                // PDO::PGSQL_ATTR_SSL_MODE => env('PGSSLMODE', 'require'),
+            ]) : [],
         ],
 
         'sqlsrv' => [
