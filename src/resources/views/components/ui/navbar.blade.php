@@ -1,3 +1,10 @@
+@php
+  $isHome = request()->routeIs('user.top') || request()->routeIs('user.recommended');
+  $isSearch = request()->routeIs('user.search');
+  $isReserve = request()->routeIs('user.reserve') || request()->routeIs('user.reserve.*');
+  $isMycafe = request()->routeIs('user.mycafe') || request()->routeIs('user.mycafe.*');
+@endphp
+
 <div
   x-data
   :class="($store.favModal?.openStoreId !== null || $store.favModal?.createStoreId !== null)
@@ -7,28 +14,28 @@
 >
   <nav role="navigation" class="menu relative flex w-full items-center justify-around bg-main px-4 py-3">
     <a href="{{ route('user.top') }}"
-       class="menu__item {{ request()->routeIs('user.top') ? 'active' : '' }}">
+       class="menu__item {{ $isHome ? 'active' : '' }}">
       <span class="menu__icon">
         <x-icons.home size="34" class="nav-draw"/>
       </span>
     </a>
 
     <a href="{{ route('user.search') }}"
-       class="menu__item {{ request()->routeIs('user.search') ? 'active' : '' }}">
+       class="menu__item {{ $isSearch ? 'active' : '' }}">
       <span class="menu__icon">
         <x-icons.search size="34" class="nav-draw"/>
       </span>
     </a>
 
     <a href="{{ route('user.reserve') }}"
-       class="menu__item {{ request()->routeIs('user.reserve') ? 'active' : '' }}">
+       class="menu__item {{ $isReserve ? 'active' : '' }}">
       <span class="menu__icon">
         <x-icons.reserve size="34" class="nav-draw"/>
       </span>
     </a>
 
     <a href="{{ route('user.mycafe') }}"
-       class="menu__item {{ request()->routeIs('user.mycafe') ? 'active' : '' }}">
+       class="menu__item {{ $isMycafe ? 'active' : '' }}">
       <span class="menu__icon">
         <x-icons.mycafe size="34" class="nav-draw"/>
       </span>
@@ -55,7 +62,11 @@ const menu = document.querySelector(".menu");
 if (menu) {
   const menuItems = menu.querySelectorAll(".menu__item");
   const menuBorder = menu.querySelector(".menu__border");
-  let activeItem = menu.querySelector(".active") || menuItems[0];
+  let activeItem = menu.querySelector(".active");
+
+  if (!activeItem && menuBorder) {
+    menuBorder.style.opacity = "0";
+  }
 
   function offsetMenuBorder(element) {
     if (!menuBorder || !element) return;
@@ -64,6 +75,15 @@ if (menu) {
       rect.left - menu.offsetLeft - (menuBorder.offsetWidth - rect.width) / 2
     ) + "px";
     menuBorder.style.transform = `translate3d(${left}, 0 , 0)`;
+  }
+
+  function setActive(item) {
+    if (!item) return;
+    if (activeItem) activeItem.classList.remove("active");
+    activeItem = item;
+    activeItem.classList.add("active");
+    if (menuBorder) menuBorder.style.opacity = "1";
+    offsetMenuBorder(activeItem);
   }
 
   // ✅ “元のアイコンは消さずに” 上から線だけなぞる
@@ -123,23 +143,35 @@ if (menu) {
     setTimeout(() => overlay.remove(), 650);
   }
 
-  // 初期位置（初期は描かない＝押した時だけ）
-  offsetMenuBorder(activeItem);
+  // 初期位置（初回だけはアニメなし）
+  if (activeItem) {
+    menu.style.setProperty("--timeOut", "0s");
+    offsetMenuBorder(activeItem);
+    requestAnimationFrame(() => {
+      menu.style.removeProperty("--timeOut");
+    });
+  }
 
   menuItems.forEach((item) => {
     item.addEventListener("click", (e) => {
       const href = item.getAttribute("href") || "";
       const isRealNav = href && href !== "#" && !href.startsWith("#");
+      const isModified =
+        e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1;
+      const hrefPath = isRealNav ? new URL(href, window.location.origin).pathname : "";
+      const isSamePath = isRealNav && hrefPath === window.location.pathname;
 
-      if (activeItem) activeItem.classList.remove("active");
-      item.classList.add("active");
-      activeItem = item;
-
-      offsetMenuBorder(activeItem);
-      drawIconOverlay(activeItem);
+      if (!isModified) {
+        if (activeItem !== item) setActive(item);
+        drawIconOverlay(item);
+      }
 
       // 遷移はちょい遅らせて“描き始め”が見えるように
-      if (isRealNav) {
+      if (isRealNav && !isModified) {
+        if (isSamePath) {
+          e.preventDefault();
+          return;
+        }
         e.preventDefault();
         setTimeout(() => { window.location.href = href; }, 220);
       }
