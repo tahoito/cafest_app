@@ -35,7 +35,7 @@ COPY . .
 
 # Laravel dependencies
 WORKDIR /var/www/html/src
-RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # Vite build output (manifestがある場所)
 COPY --from=nodebuilder /app/src/public/build /var/www/html/src/public/build
