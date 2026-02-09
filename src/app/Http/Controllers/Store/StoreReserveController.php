@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Store;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Reservation;
-use App\Notifications\StoreReservationVisitedNotification;
 
 
 
@@ -28,9 +27,6 @@ class StoreReserveController extends Controller
 
         $reservation->visited_at = now();
         $reservation->save();
-
-        $store = auth('store')->user();
-        $store->notify(new StoreReservationVisitedNotification($reservation));
 
         if ($request->expectsJson()) {
             return response()->json(['ok' => true]);

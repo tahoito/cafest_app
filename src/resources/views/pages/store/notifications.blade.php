@@ -79,8 +79,10 @@
                               <div class="w-12 h-12 rounded-2xl bg-accent border border-main2 grid place-items-center">
                                 @if ($type === 'review.posted')
                                   <x-icons.review class="w-6 h-6 text-main2 translate-x-[2px] translate-y-[1px]" />
-                                @else
+                                @elseif ($type === 'reservation.created')
                                   <x-icons.phone class="w-6 h-6 text-main2 translate-x-[2px] translate-y-[2px]" />
+                                @else
+                                  <x-icons.bell class="w-6 h-6 text-main2" />
                                 @endif
                               </div>
                             </div>

@@ -7,10 +7,14 @@ use Illuminate\Http\Request;
 
 class StoreController extends Controller
 {
-     public function index()
+    public function index()
     {
         $store = auth('store')->user();
-        return view('pages.store.top', compact('store'));
+        $unreadCount = $store->unreadNotifications()
+            ->where('data->type', '!=', 'reservation.visited')
+            ->count();
+
+        return view('pages.store.top', compact('store', 'unreadCount'));
     }
 
     

@@ -12,10 +12,13 @@ class NotificationController extends Controller
         $store = auth('store')->user();
 
         $notifications = $store->notifications()
+            ->where('data->type', '!=', 'reservation.visited')
             ->latest()
             ->paginate(20);
 
-        $unreadCount = $store->unreadNotifications()->count();
+        $unreadCount = $store->unreadNotifications()
+            ->where('data->type', '!=', 'reservation.visited')
+            ->count();
 
 
         return view('pages.store.notifications',compact('notifications','unreadCount'));
