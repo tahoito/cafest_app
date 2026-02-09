@@ -47,7 +47,11 @@ class SearchController extends Controller
 
      
         if ($request->filled('area')) {
-            $query->where('area', $request->input('area'));
+            $areaKey = $request->input('area');
+            $areas = config('cafest.areas', []);
+            $areaValue = $areas[$areaKey] ?? $areaKey;
+
+            $query->where('area', $areaValue);
         }
 
         if ($request->filled('moods')) {
