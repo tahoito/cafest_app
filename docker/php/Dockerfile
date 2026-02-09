@@ -34,6 +34,7 @@ RUN mkdir -p /var/www/html/storage /var/www/html/bootstrap/cache \
   && chown -R www-data:www-data /var/www/html \
   && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
+  
 EXPOSE 8080
 
 CMD sh -c "envsubst '\$PORT' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && php-fpm -D && nginx -g 'daemon off;'"
