@@ -1,19 +1,24 @@
-<?php 
-
+<?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
-        // rating を numeric(2,1) に変更
         DB::statement('ALTER TABLE reviews ALTER COLUMN rating TYPE numeric(2,1)');
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
-        // 元が int とかなら適宜戻す（例）
         DB::statement('ALTER TABLE reviews ALTER COLUMN rating TYPE integer');
     }
 };
