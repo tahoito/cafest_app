@@ -19,6 +19,10 @@ class Review extends Model
         'body',
     ];
 
+    protected $casts = [
+        'rating' => 'float',
+    ];
+
 
     public function user(){
         return $this->belongsTo(User::class);

@@ -28,7 +28,7 @@ class ReviewController extends Controller
     public function store(Request $request, Store $store)
     {
         $data = $request->validate([
-            'rating' => ['required', 'integer', 'min:1', 'max:5'],
+            'rating' => ['required', 'numeric', 'min:0.5', 'max:5', 'regex:/^(0\\.5|[1-4](\\.5)?|5(\\.0)?)$/'],
             'body'   => ['nullable', 'string', 'max:1000'],
             
             'tag_ids'   => ['nullable','array','max:8'],
@@ -106,7 +106,7 @@ class ReviewController extends Controller
         abort_unless($review->user_id === auth('user')->id(), 403);
 
         $data = $request->validate([
-            'rating' => ['required', 'integer', 'min:1', 'max:5'],
+            'rating' => ['required', 'numeric', 'min:0.5', 'max:5', 'regex:/^(0\\.5|[1-4](\\.5)?|5(\\.0)?)$/'],
             'body'   => ['required', 'string', 'max:2000'],
             
             'tag_ids'   => ['nullable','array','max:8'],
