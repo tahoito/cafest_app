@@ -43,10 +43,10 @@
           $badgeText = $badgeCount > 99 ? '99+' : (string) $badgeCount;
         @endphp
 
-        <a href="{{ route('store.notifications') }}" class="relative p-2">
+        <a href="{{ route('store.notifications') }}" class="relative p-1">
           <x-icons.bell class="text-text_color" />
           @if ($badgeCount > 0)
-            <span class="absolute -top-1 right-0 min-w-[20px] h-[20px] px-1 rounded-full bg-notification text-form text-sm text-center">
+            <span class="absolute top-0 right-1 min-w-[20px] h-[20px] px-1 rounded-full bg-notification text-form text-sm text-center">
               {{ $badgeText }}
             </span>
           @endif

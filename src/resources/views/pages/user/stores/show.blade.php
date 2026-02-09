@@ -410,6 +410,7 @@
 
         <x-ui.button
           href="{{ route('user.reserve') }}"
+          as="a"
           variant="secondary"
           class="mt-6 text-form"
           @click="close()"
