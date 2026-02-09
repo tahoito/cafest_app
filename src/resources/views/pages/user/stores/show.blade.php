@@ -56,9 +56,9 @@
         ? "{$area}・{$mood}"
         : (trim($area) !== '' ? $area : $mood);
 
-      $rating = (float) data_get($store, 'rating', 0);
+      $rating = (float) data_get($store, 'reviews_avg_rating', data_get($store, 'rating', 0));
       $rating = max(0, min(5, $rating));
-      $filled = (int) floor($rating + 0.00001);
+      $filled = (int) round($rating);
 
       $sns = $store->socialLinks->pluck('url','type')->toArray();
       $items = [
