@@ -147,5 +147,3 @@ Route::prefix('store')->name('store.')->group(function () {
         Route::post('/notifications/read-all', [NotificationController::class, 'readAll'])->name('notifications.readAll');
     });
 });
-
-

@@ -61,50 +61,47 @@
                     {{ $group['label'] }}
                   </div>
 
-                  <div class="rounded-2xl overflow-hidden bg-[#f4eee8] shadow-[0_1px_6px_rgba(0,0,0,0.08)]">
+                  <div class="overflow-hidden rounded-xl">
                     @foreach ($group['items'] as $notification)
                       @php
                         $data = $notification->data;
                         $isUnread = is_null($notification->read_at);
                         $type = $data['type'] ?? '';
                         $body = $data['body'] ?? ($data['title'] ?? '通知');
+                        $rowBg = $isUnread ? 'bg-notification2' : 'bg-base_color';
                       @endphp
 
                       <form method="POST" action="{{ route('store.notifications.read', $notification->id) }}" class="border-b border-main2 last:border-b-0">
                         @csrf
-                        <button type="submit" class="w-full text-left">
-                          <div class="flex items-center gap-4 px-4 py-4">
+                        <button type="submit" class="w-full text-left {{ $rowBg }}">
+                          <div class="flex items-center gap-4 px-4 py-3">
                             <div class="shrink-0">
-                              <div class="w-12 h-12 rounded-2xl bg-main2 border border-main2 grid place-items-center">
+                              <div class="w-12 h-12 rounded-2xl bg-accent border border-main2 grid place-items-center">
                                 @if ($type === 'review.posted')
-                                  <x-icons.review class="w-6 h-6 text-main2" />
-                                @elseif ($type === 'reservation.created')
-                                  <x-icons.reserve class="w-6 h-6 text-main2" />
+                                  <x-icons.review class="w-6 h-6 text-main2 translate-x-[2px] translate-y-[1px]" />
                                 @else
-                                  <x-icons.bell class="w-6 h-6 text-main2" />
+                                  <x-icons.phone class="w-6 h-6 text-main2 translate-x-[2px] translate-y-[2px]" />
                                 @endif
                               </div>
                             </div>
 
                             <div class="min-w-0 flex-1">
-                              <div class="text-sm text-[#2f241c] leading-relaxed line-clamp-2">
+                              <div class="text-sm text-text_color leading-relaxed line-clamp-2">
                                 {{ $body }}
                               </div>
                             </div>
 
-                            <div class="shrink-0 flex flex-col items-end gap-1">
+                            <div class="shrink-0 relative w-14 self-stretch">
                               @if ($isUnread)
-                                <span class="w-2.5 h-2.5 rounded-full bg-[#ff4d4f]"></span>
-                              @else
-                                <span class="w-2.5 h-2.5"></span>
+                                <span class="absolute right-0 top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-notification"></span>
                               @endif
-                              <div class="text-[11px] text-[#8a7b70] whitespace-nowrap">
+                              <div class="absolute right-0 -bottom-1 text-[11px] text-placeholder whitespace-nowrap">
                                 {{ $notification->created_at->diffForHumans() }}
                               </div>
                             </div>
                           </div>
                         </button>
-                      </form>
+                      </form>                                                                                                                                                                                                    
                     @endforeach
                   </div>
                 </div>

@@ -57,11 +57,11 @@ class StoreReservationCreatedNotification extends Notification
 
         $userName = optional($this->reservation->user)->name ?? 'お客様';
         return [
-            'type' => 'reservation.visited',
+            'type' => 'reservation.created',
             'reservation_id' => $this->reservation->id,
             'store_id' => $this->reservation->store_id, 
             'body' => "{$userName}様が予約を申請しました。",
-            'url' => route('store.reserve.index'),
+            'url' => route('store.reserve'),
             'created_at' => now()->toISOString(), 
         ];
     }
