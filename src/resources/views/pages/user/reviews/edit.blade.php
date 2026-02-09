@@ -199,17 +199,54 @@
         </x-ui.button>
       </form>
 
-      <form method="POST" action="{{ route('user.stores.reviews.destroy', [$store, $review]) }}">
-        @csrf
-        @method('DELETE')
+      <div x-data="{ open: false }">
+        <form x-ref="deleteForm" method="POST" action="{{ route('user.stores.reviews.destroy', [$store, $review]) }}">
+          @csrf
+          @method('DELETE')
 
-        <button
-          type="submit"
-          class="mx-auto block h-12 w-full rounded-full border-2 border-main bg-base text-[18px] text-text_color shadow-[0_4px_10px_rgba(0,0,0,0.18)]"
+          <button
+            type="button"
+            @click="open = true"
+            class="mx-auto block h-12 w-full rounded-full border-2 border-main bg-base text-[18px] text-text_color shadow-[0_4px_10px_rgba(0,0,0,0.18)]"
+          >
+            削除する
+          </button>
+        </form>
+
+        <div
+          x-show="open"
+          x-cloak
+          class="fixed inset-0 z-[999] flex items-center justify-center"
+          @keydown.escape.window="open=false"
         >
-          削除する
-        </button>
-      </form>
+          <div class="absolute inset-0 bg-black/40" @click="open=false"></div>
+
+          <div class="relative w-[calc(100%-48px)] max-w-sm rounded-lg bg-base_color shadow-lg p-6">
+            <button type="button" class="absolute left-4 top-4" @click="open=false">
+              <x-icons.close class="w-6 h-6 text-text_color translate-x-[1px]" />
+            </button>
+
+            <div class="text-center text-text_color text-lg font-medium pt-4">
+              削除しますか？
+            </div>
+
+            <div class="mt-6 flex flex-col items-center gap-4">
+              <x-ui.button
+                type="button"
+                theme="store"
+                class="w-full text-form"
+                @click="$refs.deleteForm.submit()"
+              >
+                削除する
+              </x-ui.button>
+
+              <button type="button" class="text-text_color" @click="open=false">
+                キャンセル
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
 
     </div>
   </div>

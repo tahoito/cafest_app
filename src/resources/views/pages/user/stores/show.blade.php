@@ -13,7 +13,7 @@
       <div class="pt-[env(safe-area-inset-top)]">
         <div class="grid grid-cols-[48px_1fr_auto] items-center px-4 h-16">
           <a
-            href="{{ route('user.top') }}"
+            href="{{ url()->previous() ?: route('user.top') }}"
             class="p-2"
           >
             <x-icons.back class="w-5 h-5 text-text_color" />
@@ -154,15 +154,50 @@
         </div>
       </section>
 
-      <section class="px-4 space-y-2 pb-12">
+      <section
+        class="px-4 space-y-2 pb-12"
+        x-data="{ open:false, src:null }"
+        x-effect="document.body.classList.toggle('overflow-hidden', open)"
+        @keydown.escape.window="open=false; src=null"
+      >
           <div class="text-lg text-text_color font-medium">ギャラリー</div>
           <div class="grid grid-cols-3 gap-3">
               @foreach($store->galleryImages as $img)
-              <div class="aspect-square overflow-hidden rounded-lg bg-base">
-                  <img src="{{ $img->url }}" class="w-full h-full object-cover">
-              </div>
+              <button
+                type="button"
+                class="aspect-square overflow-hidden rounded-lg bg-base"
+                @click="src='{{ $img->url }}'; open=true"
+              >
+                  <img src="{{ $img->url }}" class="w-full h-full object-cover" alt="gallery image">
+              </button>
               @endforeach
           </div>
+
+          <template x-teleport="body">
+            <div
+              x-show="open"
+              x-transition.opacity
+              x-cloak
+              class="fixed inset-0 z-[300] bg-black/60 flex items-center justify-center p-4"
+              @click.self="open=false; src=null"
+            >
+              <button
+                type="button"
+                class="absolute top-4 right-4 h-10 w-10 grid place-items-center rounded-full bg-black/40 text-white"
+                aria-label="閉じる"
+                @click="open=false; src=null"
+              >
+                <x-icons.close class="w-6 h-6" />
+              </button>
+
+              <img
+                x-show="src"
+                :src="src"
+                alt="gallery image"
+                class="max-h-[80vh] max-w-[90vw] object-contain rounded-xl bg-base"
+              >
+            </div>
+          </template>
           
           <div class="flex justify-center pt-4">
             <a href="{{ route('user.stores.menu', $store) }}">
