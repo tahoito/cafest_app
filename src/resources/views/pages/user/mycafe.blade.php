@@ -10,7 +10,7 @@
 
     if ($iconPath && str_starts_with($iconPath, '/images/')) {
       $iconUrl = asset(ltrim($iconPath, '/'));
-    } elseif ($iconPath && str_starts_with($iconPath, '/storage/')) {
+    } elseif ($iconPath && \Illuminate\Support\Str::startsWith($iconPath, ['http://', 'https://'])) {
       $iconUrl = $iconPath;
     } elseif ($iconPath && str_starts_with($iconPath, ['http://', 'https://'])) {
       $iconUrl = $iconPath;
