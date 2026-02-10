@@ -14,6 +14,10 @@ class RecommendController extends Controller{
     public function recommended(StoreRecommendService $service)
     {
         $stores = $service->recommended(limit:8);
+
+        $stores->load([
+            'slideImages' => fn($q) => $q->where('type','slide')->orderBy('sort_order'),
+        ]);
         
         $favIds = auth('user')->check()
             ? auth('user')->user()->favorites()->pluck('stores.id')->all()

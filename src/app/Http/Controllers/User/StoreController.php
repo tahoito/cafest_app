@@ -25,6 +25,7 @@ class StoreController extends Controller
             'slideImages' => fn($q) => $q->where('type', 'slide')->orderBy('sort_order'),
             'galleryImages' => fn($q) => $q->where('type', 'gallery')->orderBy('sort_order'),
             'socialLinks',
+            'paymentMethods',
         ])->loadAvg('reviews', 'rating');
 
         if ($userId) {
@@ -36,7 +37,10 @@ class StoreController extends Controller
 
         $reviews = Review::query()
             ->select(['id','store_id','user_id','rating','body','created_at']) // カラム名は合わせて
-            ->with(['user:id,name,icon_path']) // アイコン表示用
+            ->with([
+                'user:id,name,icon_path',
+                'store:id,name',
+            ]) // 表示に必要な関係をまとめて取得
             ->where('store_id', $store->id)
             ->latest()
             ->take(10)
@@ -144,4 +148,3 @@ class StoreController extends Controller
     }
 
 }
-

@@ -19,7 +19,11 @@ class SearchController extends Controller
         $keyword = $request->input('keyword');
         $tags = Tag::orderBy('name')->get();
 
-        $query = Store::query()->withAvg('reviews', 'rating');
+        $slideImages = fn ($q) => $q->where('type', 'slide')->orderBy('sort_order');
+
+        $query = Store::query()
+            ->withAvg('reviews', 'rating')
+            ->with(['slideImages' => $slideImages]);
 
         $tagInputs = array_filter((array) $request->input('tags', []));
         if ($request->filled('tag')) {
@@ -131,6 +135,10 @@ class SearchController extends Controller
         $stores = $isSearching
             ? $query->get()
             : app(StoreRecommendService::class)->recommended(8);
+
+        if (! $isSearching) {
+            $stores->load(['slideImages' => $slideImages]);
+        }
 
         return view('pages.user.search', compact('stores', 'tags', 'isSearching','favIds'));
     }

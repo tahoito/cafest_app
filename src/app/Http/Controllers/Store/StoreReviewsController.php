@@ -17,7 +17,7 @@ class StoreReviewsController extends Controller
 
         $q = Review::query()
             ->where('store_id', $store->id)
-            ->with(['user','images']);
+            ->with(['user','images','tags']);
 
         if ($filter === '5') {
             $q->where('rating', '=', 5);

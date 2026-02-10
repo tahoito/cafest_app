@@ -13,9 +13,12 @@ class FavoriteFolderController extends Controller
     {
         $userId = auth('user')->id();
 
+        $slideImages = fn ($q) => $q->where('type', 'slide')->orderBy('sort_order');
+
         $folders = FavoriteFolder::where('user_id', $userId)
-            ->with(['stores' => function ($q) {
-                $q->orderByDesc('favorite_folders_store.created_at');
+            ->with(['stores' => function ($q) use ($slideImages) {
+                $q->with(['slideImages' => $slideImages])
+                    ->orderByDesc('favorite_folders_store.created_at');
             }])
             ->get();
 

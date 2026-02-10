@@ -18,14 +18,16 @@ class MyCafeController extends Controller
         $user = Auth::guard('user')->user();
         $userId = $user->id;
 
+        $slideImages = fn ($q) => $q->where('type', 'slide')->orderBy('sort_order');
+
         $favoritesAll = $user->favorites()
-            ->with(['latestImage'])
+            ->with(['slideImages' => $slideImages])
             ->orderByDesc('user_favorites.created_at')
             ->get();
 
         $folders = FavoriteFolder::where('user_id', $userId)
             ->with(['stores' => function($q) {
-                $q->with('latestImage')
+                $q->with(['slideImages' => fn ($sq) => $sq->where('type', 'slide')->orderBy('sort_order')])
                     ->orderByPivot('created_at', 'desc');
             }])
             ->get();
@@ -61,13 +63,19 @@ class MyCafeController extends Controller
 
         $reviews = Review::where('user_id', $userId)
             ->whereHas('store', fn ($q) => $q->where('is_public', true))
-            ->with('store.latestImage')
+            ->with([
+                'store:id,name',
+                'user:id,name,icon_path,handle',
+            ])
             ->latest()
             ->get();
 
 
         $histories = ViewHistory::where('user_id', $userId)
-            ->with(['store' => fn ($q) => $q->withAvg('reviews', 'rating')])
+            ->with(['store' => fn ($q) => $q
+                ->withAvg('reviews', 'rating')
+                ->with(['slideImages' => $slideImages])
+            ])
             ->orderByDesc('viewed_at')
             ->limit(30)
             ->get();
@@ -140,13 +148,14 @@ class MyCafeController extends Controller
     {
         $user = Auth::guard('user')->user();
         $userId = $user->id;
+        $slideImages = fn ($q) => $q->where('type', 'slide')->orderBy('sort_order');
 
         $folderId = null;
         $folderName = "";
 
         if ($folder === 'all') {
             $stores = $user->favorites()
-                ->with('latestImage')
+                ->with(['slideImages' => $slideImages])
                 ->orderByDesc('user_favorites.created_at')
                 ->get();
             $title = 'すべての投稿';
@@ -158,7 +167,7 @@ class MyCafeController extends Controller
             $folderName = $folderModel->name; 
 
             $stores = $folderModel->stores()
-                ->with('latestImage')
+                ->with(['slideImages' => $slideImages])
                 ->orderByDesc('favorite_folders_store.created_at')
                 ->get();
             $title = $folderModel->name;
