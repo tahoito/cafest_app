@@ -14,7 +14,7 @@
   $shopName = data_get($shop, 'name', data_get($review, 'shop_name', ''));
 
   $rating = (float) data_get($review, 'reviews_avg_rating', data_get($review, 'rating', 0));
-  $body   = (string) data_get($review, 'body', data_get($review, 'comment', ''));
+  $body   = (string) data_get($review, 'body', data_get($review, 'body', ''));
 
   $date = data_get($review, 'created_at', data_get($review, 'date', null));
 

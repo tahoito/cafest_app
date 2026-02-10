@@ -8,11 +8,25 @@
     @php
       use Illuminate\Support\Facades\Storage;
 
-      $iconUrl = $user->icon_path
-      ? $user->icon_path
-      : asset('images/users/default.png');
+      $iconPath = $user->icon_path;
 
+      if ($iconPath && str_starts_with($iconPath, '/images/')) {
+          $iconUrl = asset(ltrim($iconPath, '/'));
+      }
+      
+      elseif ($iconPath && str_starts_with($iconPath, '/storage/')) {
+          $iconUrl = $iconPath;
+      }
+      
+      elseif ($iconPath) {
+          $iconUrl = Storage::url($iconPath); // => /storage/...
+      }
+     
+      else {
+          $iconUrl = asset('images/users/user01.jpg');
+      }
     @endphp
+
 
     <a href="{{ route('user.mycafe.edit') }}">
       <div class="absolute top-6 right-4 text-xs text-text flex items-center gap-1">

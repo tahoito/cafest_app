@@ -32,7 +32,7 @@
 
   // rating/body/date
   $rating = (float) data_get($review, 'rating', 0);
-  $body   = (string) data_get($review, 'body', data_get($review, 'comment', ''));
+  $body   = (string) data_get($review, 'body', data_get($review, 'body', ''));
 
   $date = data_get($review, 'created_at', data_get($review, 'date', null));
   $dateText = '';

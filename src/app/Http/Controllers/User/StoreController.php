@@ -35,7 +35,7 @@ class StoreController extends Controller
         }
 
         $reviews = Review::query()
-            ->select(['id','store_id','user_id','rating','comment','created_at']) // カラム名は合わせて
+            ->select(['id','store_id','user_id','rating','body','created_at']) // カラム名は合わせて
             ->with(['user:id,name,icon_path']) // アイコン表示用
             ->where('store_id', $store->id)
             ->latest()
