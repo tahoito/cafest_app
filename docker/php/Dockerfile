@@ -30,6 +30,9 @@ RUN apt-get update \
 # Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+# OPcache settings
+COPY ./docker/php/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+
 # App source
 COPY . .
 

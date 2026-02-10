@@ -10,10 +10,12 @@
 
     if ($iconPath && str_starts_with($iconPath, '/images/')) {
       $iconUrl = asset(ltrim($iconPath, '/'));
+    } elseif ($iconPath && str_starts_with($iconPath, '/storage/')) {
+      $iconUrl = $iconPath;
     } elseif ($iconPath && \Illuminate\Support\Str::startsWith($iconPath, ['http://', 'https://'])) {
       $iconUrl = $iconPath;
-    } elseif ($iconPath && str_starts_with($iconPath, ['http://', 'https://'])) {
-      $iconUrl = $iconPath;
+    } elseif ($iconPath && str_starts_with($iconPath, 'storage/')) {
+      $iconUrl = asset($iconPath);
     } elseif ($iconPath) {
       $iconUrl = \Illuminate\Support\Facades\Storage::url(ltrim($iconPath, '/')); // => /storage/...
     } else {
