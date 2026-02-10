@@ -97,7 +97,7 @@
   if ($userIcon) {
     $icon = (string) $userIcon;
 
-    if (str_starts_with($icon, ['http://', 'https://'])) {
+    if (\Illuminate\Support\Str::startsWith($icon, ['http://', 'https://'])) {
       $userIconUrl = $icon;
 
     } elseif (str_starts_with($icon, '/images/')) {
@@ -112,6 +112,7 @@
     }
   }
 @endphp
+
 
 
         @if($userIconUrl)
