@@ -105,13 +105,13 @@ class MyCafeController extends Controller
         $validated = $request->validate([
             'username' => ['required', 'string', 'max:30'],
             'email' => ['required', 'email', 'max:225'],
-            'icon_path' => ['nullable', 'image', 'max:4096'],
+            'icon' => ['nullable', 'image', 'max:4096'],
         ]);
 
         $user->name = $validated['username'];
         $user->email = $validated['email'];
 
-        if ($request->hasFile('icon_path')) {
+        if ($request->hasFile('icon')) {
 
             // 古い画像を消す（public運用）
             if ($user->icon_path && str_starts_with($user->icon_path, '/images/users/')) {
@@ -119,7 +119,7 @@ class MyCafeController extends Controller
                 if (is_file($old)) @unlink($old);
             }
 
-            $file = $request->file('icon_path');
+            $file = $request->file('icon');
 
             // 拡張子（安全に）
             $ext = $file->getClientOriginalExtension();

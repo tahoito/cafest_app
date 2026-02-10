@@ -5,6 +5,11 @@ cd /var/www/html/src
 
 mkdir -p bootstrap/cache storage/framework/cache storage/framework/sessions storage/framework/views storage/logs
 
+# public/storage のシンボリックリンクが無いと /storage/... が 404 になる
+if [ ! -e public/storage ]; then
+  php artisan storage:link || true
+fi
+
 php artisan package:discover --ansi || true
 
 # 本番だけキャッシュを生成して高速化（ローカルは従来通りクリア）

@@ -4,8 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Store;
-use App\Models\UserFavorite;
-use Illuminate\Support\Facades\DB;
+use App\Models\FavoriteFolder;
 
 class FavoriteController extends Controller
 {
