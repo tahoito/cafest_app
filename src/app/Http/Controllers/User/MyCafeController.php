@@ -103,13 +103,33 @@ class MyCafeController extends Controller
         $user->name = $validated['username'];
         $user->email = $validated['email'];
 
-        if ($request->hasFile('icon_path')){
-            if($user->avatar_path){
-                Storage::disk('public')->delete($user->icon_path);
+        if ($request->hasFile('icon_path')) {
+
+            // 古い画像を消す（public運用）
+            if ($user->icon_path && str_starts_with($user->icon_path, '/images/users/')) {
+                $old = public_path(ltrim($user->icon_path, '/'));
+                if (is_file($old)) @unlink($old);
             }
-            $path = $request->file('icon_path')->store('user_icon', 'public');
-            $user->icon_path = $path;
+
+            $file = $request->file('icon_path');
+
+            // 拡張子（安全に）
+            $ext = $file->getClientOriginalExtension();
+            $ext = in_array(strtolower($ext), ['jpg','jpeg','png','webp']) ? strtolower($ext) : 'jpg';
+
+            // ファイル名固定（上書きで管理がラク）
+            $filename = 'user_'.$user->id.'.'.$ext;
+
+            // 保存先
+            $dir = public_path('images/users');
+            if (!is_dir($dir)) mkdir($dir, 0755, true);
+
+            $file->move($dir, $filename);
+
+            // DBにはURLパスを入れる
+            $user->icon_path = '/images/users/'.$filename;
         }
+
 
         $user->save();
 

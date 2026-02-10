@@ -19,13 +19,20 @@ class TopController extends Controller
     {
         
         $allStores = Store::query()
-            ->with(['latestImage'])
+            ->with([
+                // カード用に必要な画像だけ（is_used_on_card優先）
+                'slideImages' => fn($q) => $q->where('type','slide')->orderBy('sort_order'),
+            ])
             ->withAvg('reviews', 'rating')
             ->orderByDesc('created_at')
+            ->take(30)
             ->get();
 
         
-        $recommendedStores = $storeService->recommended(4);
+        $recommendedStores = $storeService->recommended(4)->load([
+            'slideImages' => fn($q) => $q->where('type','slide')->orderBy('sort_order'),
+        ])->loadAvg('reviews','rating');
+
         $reviews = Review::with(['user','store','tags'])->latest()->take(6)->get();
         
         $user = auth('user')->user();
@@ -34,11 +41,15 @@ class TopController extends Controller
             ->where('name','お気に入り')
             ->value('id');
 
-        $favIds = $defaultFolderId
-            ? Store::whereHas('favoriteFolders', function($q) use ($defaultFolderId) {
-                $q->where('favorite_folders.id', $defaultFolderId);
-            })->pluck('stores.id')->all()
-            : [];
+        $favIds = [];
+
+        if ($defaultFolderId) {
+            $favIds = \DB::table('favorite_folders_store')
+                ->where('favorite_folder_id', $defaultFolderId)
+                ->pluck('store_id')
+                ->all();
+        }
+
 
         return view('pages.user.top', [
             'recommendedStores' => $recommendedStores,

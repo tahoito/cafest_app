@@ -18,10 +18,14 @@ class StoreController extends Controller
 {
     public function show(Store $store, StoreRecommendService $service)
     {
-        $store->load(['hours', 'reviews', 'slideImages', 'galleryImages','socialLinks'])
-            ->loadAvg('reviews','rating');
-        
         $userId = auth('user')->id();
+
+        $store->load([
+            'hours',
+            'slideImages' => fn($q) => $q->where('type', 'slide')->orderBy('sort_order'),
+            'galleryImages' => fn($q) => $q->where('type', 'gallery')->orderBy('sort_order'),
+            'socialLinks',
+        ])->loadAvg('reviews', 'rating');
 
         if ($userId) {
             ViewHistory::updateOrCreate(
@@ -30,7 +34,9 @@ class StoreController extends Controller
             );
         }
 
-        $reviews = Review::with(['user','store'])
+        $reviews = Review::query()
+            ->select(['id','store_id','user_id','rating','comment','created_at']) // カラム名は合わせて
+            ->with(['user:id,name,icon_path']) // アイコン表示用
             ->where('store_id', $store->id)
             ->latest()
             ->take(10)
@@ -41,23 +47,19 @@ class StoreController extends Controller
             ->count();
 
         $posts = ReviewImage::query()
-            ->whereHas('review', fn($q) => $q->where('store_id',$store->id))
+            ->whereHas('review', fn($q) => $q->where('store_id', $store->id))
             ->orderByDesc('id')
             ->take(3)
             ->get()
             ->map(fn($img) => (object)[
                 'review_id' => $img->review_id,
-                'image' => Storage::url($img->path),
+                'image' => str_starts_with($img->path, '/images/') ? $img->path : Storage::url($img->path),
             ]);
-        
-        $store->load(['slideImages','galleryImages','hours','reviews'])
-            ->loadAvg('reviews','rating')
-            ->findOrFail($store->id);
 
-        $faved = $store->favoriteFolders()
-            ->where('favorite_folders.user_id', $userId)
-            ->exists();
-        
+        $faved = $userId
+            ? $store->favoriteFolders()->where('favorite_folders.user_id', $userId)->exists()
+            : false;
+
         return view('pages.user.stores.show', [
             'store' => $store,
             'reviews' => $reviews,

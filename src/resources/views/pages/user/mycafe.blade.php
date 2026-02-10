@@ -9,8 +9,9 @@
       use Illuminate\Support\Facades\Storage;
 
       $iconUrl = $user->icon_path
-        ? Storage::url($user->icon_path)
-        : Storage::url('users/user1.jpg');
+      ? $user->icon_path
+      : asset('images/users/default.png');
+
     @endphp
 
     <a href="{{ route('user.mycafe.edit') }}">
