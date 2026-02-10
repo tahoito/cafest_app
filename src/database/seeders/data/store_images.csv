@@ -1,217 +1,217 @@
 store_email,path,sort_order,type,is_used_on_card
-wakuwaku@example.com,/images/stores/cafe01.jpg,1,slide,1
-wakuwaku@example.com,/images/stores/cafe02.jpg,2,gallery,0
-wakuwaku@example.com,/images/stores/cafe03.jpg,3,gallery,0
+wakuwaku@example.com,/images/stores/cafe01.png,1,slide,1
+wakuwaku@example.com,/images/stores/cafe02.png,2,gallery,0
+wakuwaku@example.com,/images/stores/cafe03.png,3,gallery,0
 
-coffee_inko@example.com,/images/stores/cafe04.jpg,1,slide,1
-coffee_inko@example.com,/images/stores/cafe05.jpg,2,gallery,0
-coffee_inko@example.com,/images/stores/cafe06.jpg,3,gallery,0
+coffee_inko@example.com,/images/stores/cafe04.png,1,slide,1
+coffee_inko@example.com,/images/stores/cafe05.png,2,gallery,0
+coffee_inko@example.com,/images/stores/cafe06.png,3,gallery,0
 
-threecafe@example.com,/images/stores/cafe07.jpg,1,slide,1
-threecafe@example.com,/images/stores/cafe08.jpg,2,gallery,0
-threecafe@example.com,/images/stores/cafe09.jpg,3,gallery,0
+threecafe@example.com,/images/stores/cafe07.png,1,slide,1
+threecafe@example.com,/images/stores/cafe08.png,2,gallery,0
+threecafe@example.com,/images/stores/cafe09.png,3,gallery,0
 
-sleeping@example.com,/images/stores/cafe10.jpg,1,slide,1
-sleeping@example.com,/images/stores/cafe11.jpg,2,gallery,0
-sleeping@example.com,/images/stores/cafe12.jpg,3,gallery,0
+sleeping@example.com,/images/stores/cafe10.png,1,slide,1
+sleeping@example.com,/images/stores/cafe11.png,2,gallery,0
+sleeping@example.com,/images/stores/cafe12.png,3,gallery,0
 
-higashimiti@example.com,/images/stores/cafe02.jpg,1,slide,1
-higashimiti@example.com,/images/stores/cafe04.jpg,2,gallery,0
-higashimiti@example.com,/images/stores/cafe07.jpg,3,gallery,0
+higashimiti@example.com,/images/stores/cafe02.png,1,slide,1
+higashimiti@example.com,/images/stores/cafe04.png,2,gallery,0
+higashimiti@example.com,/images/stores/cafe07.png,3,gallery,0
 
-damonde@example.com,/images/stores/cafe05.jpg,1,slide,1
-damonde@example.com,/images/stores/cafe08.jpg,2,gallery,0
-damonde@example.com,/images/stores/cafe11.jpg,3,gallery,0
+damonde@example.com,/images/stores/cafe05.png,1,slide,1
+damonde@example.com,/images/stores/cafe08.png,2,gallery,0
+damonde@example.com,/images/stores/cafe11.png,3,gallery,0
 
-graph@example.com,/images/stores/cafe03.jpg,1,slide,1
-graph@example.com,/images/stores/cafe06.jpg,2,gallery,0
-graph@example.com,/images/stores/cafe09.jpg,3,gallery,0
+graph@example.com,/images/stores/cafe03.png,1,slide,1
+graph@example.com,/images/stores/cafe06.png,2,gallery,0
+graph@example.com,/images/stores/cafe09.png,3,gallery,0
 
-shop_cafe@example.com,/images/stores/cafe01.jpg,1,slide,1
-shop_cafe@example.com,/images/stores/cafe10.jpg,2,gallery,0
-shop_cafe@example.com,/images/stores/cafe12.jpg,3,gallery,0
+shop_cafe@example.com,/images/stores/cafe01.png,1,slide,1
+shop_cafe@example.com,/images/stores/cafe10.png,2,gallery,0
+shop_cafe@example.com,/images/stores/cafe12.png,3,gallery,0
 
-tea@example.com,/images/stores/cafe06.jpg,1,slide,1
-tea@example.com,/images/stores/cafe08.jpg,2,gallery,0
-tea@example.com,/images/stores/cafe04.jpg,3,gallery,0
+tea@example.com,/images/stores/cafe06.png,1,slide,1
+tea@example.com,/images/stores/cafe08.png,2,gallery,0
+tea@example.com,/images/stores/cafe04.png,3,gallery,0
 
-can_coffee@example.com,/images/stores/cafe09.jpg,1,slide,1
-can_coffee@example.com,/images/stores/cafe02.jpg,2,gallery,0
-can_coffee@example.com,/images/stores/cafe05.jpg,3,gallery,0
+can_coffee@example.com,/images/stores/cafe09.png,1,slide,1
+can_coffee@example.com,/images/stores/cafe02.png,2,gallery,0
+can_coffee@example.com,/images/stores/cafe05.png,3,gallery,0
 
-happy@example.com,/images/stores/cafe01.jpg,1,slide,1
-happy@example.com,/images/stores/cafe03.jpg,2,gallery,0
-happy@example.com,/images/stores/cafe06.jpg,3,gallery,0
+happy@example.com,/images/stores/cafe01.png,1,slide,1
+happy@example.com,/images/stores/cafe03.png,2,gallery,0
+happy@example.com,/images/stores/cafe06.png,3,gallery,0
 
-coffee_karasu@example.com,/images/stores/cafe04.jpg,1,slide,1
-coffee_karasu@example.com,/images/stores/cafe12.jpg,2,gallery,0
-coffee_karasu@example.com,/images/stores/cafe08.jpg,3,gallery,0
+coffee_karasu@example.com,/images/stores/cafe04.png,1,slide,1
+coffee_karasu@example.com,/images/stores/cafe12.png,2,gallery,0
+coffee_karasu@example.com,/images/stores/cafe08.png,3,gallery,0
 
-muddyshop@example.com,/images/stores/cafe07.jpg,1,slide,1
-muddyshop@example.com,/images/stores/cafe09.jpg,2,gallery,0
-muddyshop@example.com,/images/stores/cafe11.jpg,3,gallery,0
+muddyshop@example.com,/images/stores/cafe07.png,1,slide,1
+muddyshop@example.com,/images/stores/cafe09.png,2,gallery,0
+muddyshop@example.com,/images/stores/cafe11.png,3,gallery,0
 
-walking@example.com,/images/stores/cafe10.jpg,1,slide,1
-walking@example.com,/images/stores/cafe06.jpg,2,gallery,0
-walking@example.com,/images/stores/cafe02.jpg,3,gallery,0
+walking@example.com,/images/stores/cafe10.png,1,slide,1
+walking@example.com,/images/stores/cafe06.png,2,gallery,0
+walking@example.com,/images/stores/cafe02.png,3,gallery,0
 
-nishishop@example.com,/images/stores/cafe05.jpg,1,slide,1
-nishishop@example.com,/images/stores/cafe08.jpg,2,gallery,0
-nishishop@example.com,/images/stores/cafe12.jpg,3,gallery,0
+nishishop@example.com,/images/stores/cafe05.png,1,slide,1
+nishishop@example.com,/images/stores/cafe08.png,2,gallery,0
+nishishop@example.com,/images/stores/cafe12.png,3,gallery,0
 
-neckless@example.com,/images/stores/cafe03.jpg,1,slide,1
-neckless@example.com,/images/stores/cafe09.jpg,2,gallery,0
-neckless@example.com,/images/stores/cafe04.jpg,3,gallery,0
+neckless@example.com,/images/stores/cafe03.png,1,slide,1
+neckless@example.com,/images/stores/cafe09.png,2,gallery,0
+neckless@example.com,/images/stores/cafe04.png,3,gallery,0
 
-circle@example.com,/images/stores/cafe11.jpg,1,slide,1
-circle@example.com,/images/stores/cafe01.jpg,2,gallery,0
-circle@example.com,/images/stores/cafe07.jpg,3,gallery,0
+circle@example.com,/images/stores/cafe11.png,1,slide,1
+circle@example.com,/images/stores/cafe01.png,2,gallery,0
+circle@example.com,/images/stores/cafe07.png,3,gallery,0
 
-shop_cafe_yaba@example.com,/images/stores/cafe10.jpg,1,slide,1
-shop_cafe_yaba@example.com,/images/stores/cafe03.jpg,2,gallery,0
-shop_cafe_yaba@example.com,/images/stores/cafe15.jpg,3,gallery,0
+shop_cafe_yaba@example.com,/images/stores/cafe10.png,1,slide,1
+shop_cafe_yaba@example.com,/images/stores/cafe03.png,2,gallery,0
+shop_cafe_yaba@example.com,/images/stores/cafe15.png,3,gallery,0
 
-yaba_tea@example.com,/images/stores/cafe08.jpg,1,slide,1
-yaba_tea@example.com,/images/stores/cafe02.jpg,2,gallery,0
-yaba_tea@example.com,/images/stores/cafe06.jpg,3,gallery,0
+yaba_tea@example.com,/images/stores/cafe08.png,1,slide,1
+yaba_tea@example.com,/images/stores/cafe02.png,2,gallery,0
+yaba_tea@example.com,/images/stores/cafe06.png,3,gallery,0
 
-ran_coffee@example.com,/images/stores/cafe09.jpg,1,slide,1
-ran_coffee@example.com,/images/stores/cafe11.jpg,2,gallery,0
-ran_coffee@example.com,/images/stores/cafe05.jpg,3,gallery,0
+ran_coffee@example.com,/images/stores/cafe09.png,1,slide,1
+ran_coffee@example.com,/images/stores/cafe11.png,2,gallery,0
+ran_coffee@example.com,/images/stores/cafe05.png,3,gallery,0
 
-cozy_beans@example.com,/images/stores/cafe13.jpg,1,slide,1
-cozy_beans@example.com,/images/stores/cafe04.jpg,2,gallery,0
-cozy_beans@example.com,/images/stores/cafe07.jpg,3,gallery,0
+cozy_beans@example.com,/images/stores/cafe13.png,1,slide,1
+cozy_beans@example.com,/images/stores/cafe04.png,2,gallery,0
+cozy_beans@example.com,/images/stores/cafe07.png,3,gallery,0
 
-lunatea@example.com,/images/stores/cafe14.jpg,1,slide,1
-lunatea@example.com,/images/stores/cafe01.jpg,2,gallery,0
-lunatea@example.com,/images/stores/cafe08.jpg,3,gallery,0
+lunatea@example.com,/images/stores/cafe14.png,1,slide,1
+lunatea@example.com,/images/stores/cafe01.png,2,gallery,0
+lunatea@example.com,/images/stores/cafe08.png,3,gallery,0
 
-midnight@example.com,/images/stores/cafe15.jpg,1,slide,1
-midnight@example.com,/images/stores/cafe10.jpg,2,gallery,0
-midnight@example.com,/images/stores/cafe12.jpg,3,gallery,0
+midnight@example.com,/images/stores/cafe15.png,1,slide,1
+midnight@example.com,/images/stores/cafe10.png,2,gallery,0
+midnight@example.com,/images/stores/cafe12.png,3,gallery,0
 
-knotworks@example.com,/images/stores/cafe16.jpg,1,slide,1
-knotworks@example.com,/images/stores/cafe06.jpg,2,gallery,0
-knotworks@example.com,/images/stores/cafe09.jpg,3,gallery,0
+knotworks@example.com,/images/stores/cafe16.png,1,slide,1
+knotworks@example.com,/images/stores/cafe06.png,2,gallery,0
+knotworks@example.com,/images/stores/cafe09.png,3,gallery,0
 
-retro_tsuru@example.com,/images/stores/cafe17.jpg,1,slide,1
-retro_tsuru@example.com,/images/stores/cafe01.jpg,2,gallery,0
-retro_tsuru@example.com,/images/stores/cafe05.jpg,3,gallery,0
+retro_tsuru@example.com,/images/stores/cafe17.png,1,slide,1
+retro_tsuru@example.com,/images/stores/cafe01.png,2,gallery,0
+retro_tsuru@example.com,/images/stores/cafe05.png,3,gallery,0
 
-petitsucre@example.com,/images/stores/cafe18.jpg,1,slide,1
-petitsucre@example.com,/images/stores/cafe02.jpg,2,gallery,0
-petitsucre@example.com,/images/stores/cafe08.jpg,3,gallery,0
+petitsucre@example.com,/images/stores/cafe18.png,1,slide,1
+petitsucre@example.com,/images/stores/cafe02.png,2,gallery,0
+petitsucre@example.com,/images/stores/cafe08.png,3,gallery,0
 
-hygge@example.com,/images/stores/cafe19.jpg,1,slide,1
-hygge@example.com,/images/stores/cafe04.jpg,2,gallery,0
-hygge@example.com,/images/stores/cafe11.jpg,3,gallery,0
+hygge@example.com,/images/stores/cafe19.png,1,slide,1
+hygge@example.com,/images/stores/cafe04.png,2,gallery,0
+hygge@example.com,/images/stores/cafe11.png,3,gallery,0
 
 store_email,path,sort_order,type,is_used_on_card
-datebeans@example.com,/images/stores/cafe20.jpg,1,slide,1
-datebeans@example.com,/images/stores/cafe09.jpg,2,gallery,0
-datebeans@example.com,/images/stores/cafe15.jpg,3,gallery,0
+datebeans@example.com,/images/stores/cafe20.png,1,slide,1
+datebeans@example.com,/images/stores/cafe09.png,2,gallery,0
+datebeans@example.com,/images/stores/cafe15.png,3,gallery,0
 
-pawpaw@example.com,/images/stores/cafe21.jpg,1,slide,1
-pawpaw@example.com,/images/stores/cafe03.jpg,2,gallery,0
-pawpaw@example.com,/images/stores/cafe12.jpg,3,gallery,0
+pawpaw@example.com,/images/stores/cafe21.png,1,slide,1
+pawpaw@example.com,/images/stores/cafe03.png,2,gallery,0
+pawpaw@example.com,/images/stores/cafe12.png,3,gallery,0
 
-koreanmood@example.com,/images/stores/cafe22.jpg,1,slide,1
-koreanmood@example.com,/images/stores/cafe01.jpg,2,gallery,0
-koreanmood@example.com,/images/stores/cafe16.jpg,3,gallery,0
+koreanmood@example.com,/images/stores/cafe22.png,1,slide,1
+koreanmood@example.com,/images/stores/cafe01.png,2,gallery,0
+koreanmood@example.com,/images/stores/cafe16.png,3,gallery,0
 
-meieki_kissa@example.com,/images/stores/cafe23.jpg,1,slide,1
-meieki_kissa@example.com,/images/stores/cafe07.jpg,2,gallery,0
-meieki_kissa@example.com,/images/stores/cafe10.jpg,3,gallery,0
+meieki_kissa@example.com,/images/stores/cafe23.png,1,slide,1
+meieki_kissa@example.com,/images/stores/cafe07.png,2,gallery,0
+meieki_kissa@example.com,/images/stores/cafe10.png,3,gallery,0
 
-roastlab@example.com,/images/stores/cafe24.jpg,1,slide,1
-roastlab@example.com,/images/stores/cafe04.jpg,2,gallery,0
-roastlab@example.com,/images/stores/cafe11.jpg,3,gallery,0
+roastlab@example.com,/images/stores/cafe24.png,1,slide,1
+roastlab@example.com,/images/stores/cafe04.png,2,gallery,0
+roastlab@example.com,/images/stores/cafe11.png,3,gallery,0
 
-amado@example.com,/images/stores/cafe25.jpg,1,slide,1
-amado@example.com,/images/stores/cafe02.jpg,2,gallery,0
-amado@example.com,/images/stores/cafe08.jpg,3,gallery,0
+amado@example.com,/images/stores/cafe25.png,1,slide,1
+amado@example.com,/images/stores/cafe02.png,2,gallery,0
+amado@example.com,/images/stores/cafe08.png,3,gallery,0
 
-latetrain@example.com,/images/stores/cafe26.jpg,1,slide,1
-latetrain@example.com,/images/stores/cafe06.jpg,2,gallery,0
-latetrain@example.com,/images/stores/cafe13.jpg,3,gallery,0
+latetrain@example.com,/images/stores/cafe26.png,1,slide,1
+latetrain@example.com,/images/stores/cafe06.png,2,gallery,0
+latetrain@example.com,/images/stores/cafe13.png,3,gallery,0
 
-shosai@example.com,/images/stores/cafe27.jpg,1,slide,1
-shosai@example.com,/images/stores/cafe05.jpg,2,gallery,0
-shosai@example.com,/images/stores/cafe17.jpg,3,gallery,0
+shosai@example.com,/images/stores/cafe27.png,1,slide,1
+shosai@example.com,/images/stores/cafe05.png,2,gallery,0
+shosai@example.com,/images/stores/cafe17.png,3,gallery,0
 
-tea_musubi@example.com,/images/stores/cafe28.jpg,1,slide,1
-tea_musubi@example.com,/images/stores/cafe14.jpg,2,gallery,0
-tea_musubi@example.com,/images/stores/cafe09.jpg,3,gallery,0
+tea_musubi@example.com,/images/stores/cafe28.png,1,slide,1
+tea_musubi@example.com,/images/stores/cafe14.png,2,gallery,0
+tea_musubi@example.com,/images/stores/cafe09.png,3,gallery,0
 
-asahi@example.com,/images/stores/cafe29.jpg,1,slide,1
-asahi@example.com,/images/stores/cafe01.jpg,2,gallery,0
-asahi@example.com,/images/stores/cafe18.jpg,3,gallery,0
+asahi@example.com,/images/stores/cafe29.png,1,slide,1
+asahi@example.com,/images/stores/cafe01.png,2,gallery,0
+asahi@example.com,/images/stores/cafe18.png,3,gallery,0
 
-osubeans@example.com,/images/stores/cafe30.jpg,1,slide,1
-osubeans@example.com,/images/stores/cafe03.jpg,2,gallery,0
-osubeans@example.com,/images/stores/cafe10.jpg,3,gallery,0
+osubeans@example.com,/images/stores/cafe30.png,1,slide,1
+osubeans@example.com,/images/stores/cafe03.png,2,gallery,0
+osubeans@example.com,/images/stores/cafe10.png,3,gallery,0
 
-hanayori@example.com,/images/stores/cafe19.jpg,1,slide,1
-hanayori@example.com,/images/stores/cafe07.jpg,2,gallery,0
-hanayori@example.com,/images/stores/cafe12.jpg,3,gallery,0
+hanayori@example.com,/images/stores/cafe19.png,1,slide,1
+hanayori@example.com,/images/stores/cafe07.png,2,gallery,0
+hanayori@example.com,/images/stores/cafe12.png,3,gallery,0
 
-yonfuke@example.com,/images/stores/cafe16.jpg,1,slide,1
-yonfuke@example.com,/images/stores/cafe02.jpg,2,gallery,0
-yonfuke@example.com,/images/stores/cafe11.jpg,3,gallery,0
+yonfuke@example.com,/images/stores/cafe16.png,1,slide,1
+yonfuke@example.com,/images/stores/cafe02.png,2,gallery,0
+yonfuke@example.com,/images/stores/cafe11.png,3,gallery,0
 
-benkyo@example.com,/images/stores/cafe17.jpg,1,slide,1
-benkyo@example.com,/images/stores/cafe05.jpg,2,gallery,0
-benkyo@example.com,/images/stores/cafe14.jpg,3,gallery,0
+benkyo@example.com,/images/stores/cafe17.png,1,slide,1
+benkyo@example.com,/images/stores/cafe05.png,2,gallery,0
+benkyo@example.com,/images/stores/cafe14.png,3,gallery,0
 
-iroha@example.com,/images/stores/cafe18.jpg,1,slide,1
-iroha@example.com,/images/stores/cafe08.jpg,2,gallery,0
-iroha@example.com,/images/stores/cafe04.jpg,3,gallery,0
+iroha@example.com,/images/stores/cafe18.png,1,slide,1
+iroha@example.com,/images/stores/cafe08.png,2,gallery,0
+iroha@example.com,/images/stores/cafe04.png,3,gallery,0
 
-kanayama_lab@example.com,/images/stores/cafe15.jpg,1,slide,1
-kanayama_lab@example.com,/images/stores/cafe06.jpg,2,gallery,0
-kanayama_lab@example.com,/images/stores/cafe13.jpg,3,gallery,0
+kanayama_lab@example.com,/images/stores/cafe15.png,1,slide,1
+kanayama_lab@example.com,/images/stores/cafe06.png,2,gallery,0
+kanayama_lab@example.com,/images/stores/cafe13.png,3,gallery,0
 
-mitsuha@example.com,/images/stores/cafe14.jpg,1,slide,1
-mitsuha@example.com,/images/stores/cafe02.jpg,2,gallery,0
-mitsuha@example.com,/images/stores/cafe09.jpg,3,gallery,0
+mitsuha@example.com,/images/stores/cafe14.png,1,slide,1
+mitsuha@example.com,/images/stores/cafe02.png,2,gallery,0
+mitsuha@example.com,/images/stores/cafe09.png,3,gallery,0
 
-nightbrew@example.com,/images/stores/cafe13.jpg,1,slide,1
-nightbrew@example.com,/images/stores/cafe10.jpg,2,gallery,0
-nightbrew@example.com,/images/stores/cafe01.jpg,3,gallery,0
+nightbrew@example.com,/images/stores/cafe13.png,1,slide,1
+nightbrew@example.com,/images/stores/cafe10.png,2,gallery,0
+nightbrew@example.com,/images/stores/cafe01.png,3,gallery,0
 
-shosai_k@example.com,/images/stores/cafe12.jpg,1,slide,1
-shosai_k@example.com,/images/stores/cafe04.jpg,2,gallery,0
-shosai_k@example.com,/images/stores/cafe07.jpg,3,gallery,0
+shosai_k@example.com,/images/stores/cafe12.png,1,slide,1
+shosai_k@example.com,/images/stores/cafe04.png,2,gallery,0
+shosai_k@example.com,/images/stores/cafe07.png,3,gallery,0
 
-engawa@example.com,/images/stores/cafe11.jpg,1,slide,1
-engawa@example.com,/images/stores/cafe03.jpg,2,gallery,0
-engawa@example.com,/images/stores/cafe08.jpg,3,gallery,0
+engawa@example.com,/images/stores/cafe11.png,1,slide,1
+engawa@example.com,/images/stores/cafe03.png,2,gallery,0
+engawa@example.com,/images/stores/cafe08.png,3,gallery,0
 
-nihonbiyori@example.com,/images/stores/cafe10.jpg,1,slide,1
-nihonbiyori@example.com,/images/stores/cafe05.jpg,2,gallery,0
-nihonbiyori@example.com,/images/stores/cafe02.jpg,3,gallery,0
+nihonbiyori@example.com,/images/stores/cafe10.png,1,slide,1
+nihonbiyori@example.com,/images/stores/cafe05.png,2,gallery,0
+nihonbiyori@example.com,/images/stores/cafe02.png,3,gallery,0
 
-yohaku@example.com,/images/stores/cafe09.jpg,1,slide,1
-yohaku@example.com,/images/stores/cafe01.jpg,2,gallery,0
-yohaku@example.com,/images/stores/cafe06.jpg,3,gallery,0
+yohaku@example.com,/images/stores/cafe09.png,1,slide,1
+yohaku@example.com,/images/stores/cafe01.png,2,gallery,0
+yohaku@example.com,/images/stores/cafe06.png,3,gallery,0
 
-sakaeroast@example.com,/images/stores/cafe08.jpg,1,slide,1
-sakaeroast@example.com,/images/stores/cafe11.jpg,2,gallery,0
-sakaeroast@example.com,/images/stores/cafe03.jpg,3,gallery,0
+sakaeroast@example.com,/images/stores/cafe08.png,1,slide,1
+sakaeroast@example.com,/images/stores/cafe11.png,2,gallery,0
+sakaeroast@example.com,/images/stores/cafe03.png,3,gallery,0
 
-akari@example.com,/images/stores/cafe07.jpg,1,slide,1
-akari@example.com,/images/stores/cafe12.jpg,2,gallery,0
-akari@example.com,/images/stores/cafe02.jpg,3,gallery,0
+akari@example.com,/images/stores/cafe07.png,1,slide,1
+akari@example.com,/images/stores/cafe12.png,2,gallery,0
+akari@example.com,/images/stores/cafe02.png,3,gallery,0
 
-yaso@example.com,/images/stores/cafe06.jpg,1,slide,1
-yaso@example.com,/images/stores/cafe09.jpg,2,gallery,0
-yaso@example.com,/images/stores/cafe01.jpg,3,gallery,0
+yaso@example.com,/images/stores/cafe06.png,1,slide,1
+yaso@example.com,/images/stores/cafe09.png,2,gallery,0
+yaso@example.com,/images/stores/cafe01.png,3,gallery,0
 
-soyon@example.com,/images/stores/cafe05.jpg,1,slide,1
-soyon@example.com,/images/stores/cafe10.jpg,2,gallery,0
-soyon@example.com,/images/stores/cafe03.jpg,3,gallery,0
+soyon@example.com,/images/stores/cafe05.png,1,slide,1
+soyon@example.com,/images/stores/cafe10.png,2,gallery,0
+soyon@example.com,/images/stores/cafe03.png,3,gallery,0
 
-saketea@example.com,/images/stores/cafe04.jpg,1,slide,1
-saketea@example.com,/images/stores/cafe08.jpg,2,gallery,0
-saketea@example.com,/images/stores/cafe11.jpg,3,gallery,0
+saketea@example.com,/images/stores/cafe04.png,1,slide,1
+saketea@example.com,/images/stores/cafe08.png,2,gallery,0
+saketea@example.com,/images/stores/cafe11.png,3,gallery,0

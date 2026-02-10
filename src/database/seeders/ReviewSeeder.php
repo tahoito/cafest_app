@@ -11,21 +11,37 @@ class ReviewSeeder extends Seeder
 {
     public function run(): void
     {
-        $userIds = User::pluck('id')->all();
-        $storeIds = Store::pluck('id')->all();
+        $path = database_path('seeders/data/reviews.csv');
 
-        if (empty($userIds) || empty($storeIds)) {
-            return; // どっちか0なら作れないので終了
+        if (!is_file($path)) {
+            throw new \RuntimeException("reviews.csv not found");
         }
 
-        // 例：30件作る
-        for ($i = 0; $i < 30; $i++) {
-            Review::create([
-                'user_id' => fake()->randomElement($userIds),
-                'store_id' => fake()->randomElement($storeIds),
-                'rating' => fake()->numberBetween(1, 5),
-                'body' => fake()->realText(80),
-            ]);
+        $rows = array_map('str_getcsv', file($path));
+        if (count($rows) < 2) return;
+
+        $header = array_map('trim', array_shift($rows));
+
+        foreach ($rows as $row) {
+            if (count($row) !== count($header)) continue;
+
+            $data = array_combine($header, $row);
+
+            $user = User::where('email', trim($data['user_email'] ?? ''))->first();
+            $store = Store::where('email', trim($data['store_email'] ?? ''))->first();
+
+            if (!$user || !$store) continue;
+
+            Review::updateOrCreate(
+                [
+                    'user_id'  => $user->id,
+                    'store_id' => $store->id,
+                    'body'     => trim($data['body'] ?? ''),
+                ],
+                [
+                    'rating' => (float) ($data['rating'] ?? 0),
+                ]
+            );
         }
     }
 }
