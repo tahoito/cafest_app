@@ -1,5 +1,7 @@
 # ☕️ Cafest
 
+https://cafest-app.onrender.com
+
 **名古屋カフェ特化型 SNS Webアプリ**
 
 ユーザーはカフェを探し、写真やレビューを投稿できます。  
@@ -11,9 +13,10 @@
 ## 📱 アプリイメージ
 
 <p align="center">
-  <img src="images/top.png" width="250" />
-  <img src="images/search.png" width="250" />
-  <img src="images/map.png" width="250" />
+  <img src="src/public/images/screenshots/top.png" width="200" />
+  <img src="src/public/images/screenshots/search.png" width="200" />
+  <img src="src/public/images/screenshots/detail.png" width="200" />
+  <img src="src/public/images/screenshots/mycafe.png" width="200" />
 </p>
 
 ---
@@ -123,7 +126,10 @@ SNSのように写真やレビューから直感的に探せる
 
 ### Backend
 - Laravel
-- MySQL
+- PostgreSQL 
 
 ### Infrastructure / Environment
 - Docker
+
+### Deploy
+- Render
