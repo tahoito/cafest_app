@@ -25,18 +25,21 @@
     </header>
 
     @php
-      use Illuminate\Support\Facades\Storage;
-
       $photos = $menuPhotos->take(3)->values();
 
       $toPublicUrl = function ($path) {
         if (!$path) return null;
+
+        // すでに public 側のURLならそのまま返す
         if (str_starts_with($path, '/storage/')) return $path;
 
+        // "storage/xxx" や "/storage/xxx" を "xxx" に揃える
         $path = preg_replace('#^storage/#', '', ltrim($path, '/'));
-        return Storage::url($path);
+
+        return \Illuminate\Support\Facades\Storage::url($path);
       };
     @endphp
+
 
     <div class="flex-1 overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
       <div class="w-full max-w-md mx-auto px-5 pt-6 pb-28 space-y-6">

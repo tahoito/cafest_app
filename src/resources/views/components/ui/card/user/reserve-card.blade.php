@@ -10,9 +10,7 @@
 ])
 
 @php
-  use Illuminate\Support\Facades\Storage;
-
-  $defaultCard = Storage::url('images/store/card.png');
+  $defaultCard = asset('images/store/card.png');
   $store = data_get($reservation, 'store');
 
   $shopName = $shopName
@@ -43,6 +41,7 @@
 
   $cancelAction = $onCancel ?: (data_get($reservation,'id') ? route('user.reserve.destroy', data_get($reservation,'id')) : '#');
 @endphp
+
 
 <div x-data="{ confirmOpen: false }" class="w-[344px] rounded-lg border border-line bg-form p-5 shadow-[0_2px_10px_rgba(0,0,0,0.12)]">
   <div class="flex gap-5">

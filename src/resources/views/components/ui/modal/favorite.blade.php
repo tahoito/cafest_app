@@ -1,19 +1,17 @@
 @props(['store'])
-
 @php
-  use Illuminate\Support\Facades\Storage;
-
-  $storeId  = (int) data_get($store, 'id');
-  $name     = data_get($store, 'name', 'No Name');
+  $storeId = (int) data_get($store, 'id');
+  $name    = data_get($store, 'name', 'No Name');
 
   $defaultCardPath = 'store/card.png';
-  $defaultCardUrl  = Storage::disk('public')->url($defaultCardPath);
+  $defaultCardUrl  = \Illuminate\Support\Facades\Storage::disk('public')
+    ->url(ltrim($defaultCardPath, '/'));
 
   $imageUrl =
-    optional(collect(data_get($store, 'slideImages', []))->firstWhere('is_used_on_card', true))->url
+    optional(collect(data_get($store, 'slideImages', []))
+      ->firstWhere('is_used_on_card', true))->url
     ?? optional(collect(data_get($store, 'slideImages', []))->first())->url
     ?? $defaultCardUrl;
-
 @endphp
 
 

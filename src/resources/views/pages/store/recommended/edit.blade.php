@@ -6,9 +6,9 @@
 
 @section('content')
 @php
-  use Illuminate\Support\Facades\Storage;
-
-  $imgUrl = $recommendedItem->image ? Storage::url($recommendedItem->image) : null;
+  $imgUrl = $recommendedItem->image
+    ? \Illuminate\Support\Facades\Storage::url(ltrim($recommendedItem->image, '/'))
+    : null;
 @endphp
 
 <div class="h-screen bg-base_color">

@@ -30,8 +30,6 @@
   </header>
 
   @php
-    use Illuminate\Support\Facades\Storage;
-
     $dummy = asset('images/store/menu.png');
     $hasDummy = file_exists(public_path('images/store/menu.png'));
   @endphp

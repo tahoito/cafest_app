@@ -1,27 +1,23 @@
 @props(['review'])
 
 @php
-  use Illuminate\Support\Str;
-  use Illuminate\Support\Facades\Storage;
-
   $imgUrl = function ($raw) {
     if (!$raw) return null;
 
-    if (is_string($raw) && Str::startsWith($raw, ['http://', 'https://'])) {
+    if (is_string($raw) && \Illuminate\Support\Str::startsWith($raw, ['http://', 'https://'])) {
       return $raw;
     }
 
-    if (is_string($raw) && Str::startsWith($raw, 'storage/')) {
+    if (is_string($raw) && \Illuminate\Support\Str::startsWith($raw, 'storage/')) {
       return asset($raw);
     }
 
-    if (is_string($raw) && Str::startsWith($raw, '/')) {
+    if (is_string($raw) && \Illuminate\Support\Str::startsWith($raw, '/')) {
       return asset(ltrim($raw, '/'));
     }
 
-   $path = ltrim((string) $raw, '/');
-
-   return Storage::url($path);
+    $path = ltrim((string) $raw, '/');
+    return \Illuminate\Support\Facades\Storage::url($path);
   };
 
   $userIconPath =
@@ -30,7 +26,7 @@
     ?? data_get($review,'icon_path')
     ?? null;
 
-  $fallbackAvatar = Storage::url('images/users/user1.jpg');
+  $fallbackAvatar = \Illuminate\Support\Facades\Storage::url('images/users/user1.jpg');
   $userIconUrl = $imgUrl($userIconPath) ?? $fallbackAvatar;
 
   // review images
@@ -64,25 +60,25 @@
     ?? data_get($review, 'store.id')
     ?? data_get($review, 'shop.id');
 
-  $moreUrl = ($storeId && $reviewId) 
+  $moreUrl = ($storeId && $reviewId)
       ? route('store.reviews.show', ['review' => $reviewId])
       : null;
 
   $endpoint = ($storeId && $reviewId)
       ? $moreUrl . '?format=json'
-      :null;
+      : null;
 
   $tagsRaw = data_get($review, 'tags')
       ?? data_get($review, 'review_tags')
       ?? data_get($review, 'tag_names')
       ?? [];
-      
+
   $tags = collect($tagsRaw)
       ->map(fn($t) => is_string($t) ? $t : (data_get($t, 'name') ?? data_get($t,'label')))
       ->filter()
       ->values();
-
 @endphp
+
 
 <div
   x-data="{ open: false }"

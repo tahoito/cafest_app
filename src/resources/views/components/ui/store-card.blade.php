@@ -6,8 +6,7 @@
 ])
 
 @php
-  use Illuminate\Support\Facades\Storage;
-  $defaultCard = Storage::url('images/store/card.png');
+  $defaultCard = \Illuminate\Support\Facades\Storage::url('images/store/card.png');
 
   $url = $href ?? '#';
 
@@ -23,30 +22,29 @@
   $meta = trim($area) !== '' && trim($mood) !== ''
     ? "{$area}・{$mood}"
     : (trim($area) !== '' ? $area : $mood);
-
 @endphp
 
 <a href="{{ $url }}"
    class="block w-[170px] h-[210px] rounded-lg bg-form ring-1 ring-black/5 shadow-[0_2px_10px_rgba(0,0,0,0.12)] overflow-hidden">
 
-  {{-- image --}}
   <div class="relative px-4 pt-3 pb-2">
     <div class="w-full aspect-square max-w-[138px] mx-auto overflow-hidden bg-base">
       <img
-        src="{{ $imageUrl ? Storage::url($imageUrl) : $defaultCard }}"
+        src="{{ $imageUrl ? \Illuminate\Support\Facades\Storage::url($imageUrl) : $defaultCard }}"
         alt="{{ $name }}"
         loading="lazy"
         class="w-full h-full object-cover"
       >
     </div>
 
-    <button type="button"
-      @click.stop
-      class="absolute top-2 right-2 grid h-8 w-8 place-items-center rounded-full bg-accent"
-      aria-label="お気に入り"
-    >
-      <x-icons.heart class="w-8 h-8" />
-    </button>
+    </div>
+      <button type="button"
+        @click.stop
+        class="absolute top-2 right-2 grid h-8 w-8 place-items-center rounded-full bg-accent"
+        aria-label="お気に入り"
+      >
+        <x-icons.heart class="w-8 h-8" />
+      </button>
   </div>
 
   <div class="px-4 pt-1 pb-5">

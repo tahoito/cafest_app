@@ -6,16 +6,13 @@
 ])
 
 @php
-  use Illuminate\Support\Facades\Storage;
-
-  $defaultCard = Storage::url('store/card.png');
   $url = $href ?? '#';
 
   $name = data_get($store, 'name', 'No Name');
   $areaKey = data_get($store, 'area', '');
   $area = $areaKey !== '' ? (config('cafest.areas')[$areaKey] ?? $areaKey) : '';
   $mood = data_get($store, 'mood', '');
-  
+
   $rating = (float) data_get($store, 'reviews_avg_rating', data_get($store, 'rating', 0));
   $rating = max(0, min(5, $rating));
   $filled = (int) round($rating);
@@ -24,6 +21,7 @@
     ? "{$area}・{$mood}"
     : (trim($area) !== '' ? $area : $mood);
 
+  // ✅ default は asset でOK（Storage不要）
   $defaultCard = asset('images/store/card.png');
 
   $imageUrl = data_get(
@@ -38,14 +36,13 @@
     if (str_starts_with($imageUrl, 'http')) {
       $imageSrc = $imageUrl;
     } elseif (str_starts_with($imageUrl, '/images/')) {
-      $imageSrc = $imageUrl; // ✅ public画像はそのまま
+      $imageSrc = $imageUrl;
     } elseif (str_starts_with($imageUrl, '/storage/')) {
       $imageSrc = $imageUrl;
     } else {
-      $imageSrc = Storage::url(ltrim($imageUrl, '/'));
+      $imageSrc = \Illuminate\Support\Facades\Storage::url(ltrim($imageUrl, '/'));
     }
-  }  
-  
+  }
 @endphp
 
 <a href="{{ $url }}"

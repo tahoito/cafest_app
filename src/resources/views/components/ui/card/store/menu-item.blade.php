@@ -8,8 +8,6 @@
 ])
 
 @php
-  use Illuminate\Support\Facades\Storage;
-
   $name = (string) data_get($item, 'name', '');
   $price = data_get($item, 'price');
   $description = (string) data_get($item, 'description', '');
@@ -21,10 +19,13 @@
     ?? data_get($item, 'image')
     ?? null;
 
-  $imageUrl = $photoPath ? Storage::url($photoPath) : '';
+  $imageUrl = $photoPath
+    ? \Illuminate\Support\Facades\Storage::url(ltrim($photoPath, '/'))
+    : '';
 
   $resolvedEditUrl = $editUrl ?? ($id ? route('store.menu.recommended.edit', $id) : null);
 @endphp
+
 
 <div class="w-[353px] rounded-lg border border-main2 bg-form">
   {{-- 編集だけ：paddingなしで右端 --}}

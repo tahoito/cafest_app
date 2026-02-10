@@ -24,15 +24,19 @@
     </header>
 
     @php
-      use Illuminate\Support\Facades\Storage;
-
       $toPublicUrl = function ($path) {
         if (!$path) return null;
+
+        // すでに public 側URLならそのまま
         if (str_starts_with($path, '/storage/')) return $path;
+
+        // "storage/xxx" / "/storage/xxx" を正規化
         $path = preg_replace('#^storage/#', '', ltrim($path, '/'));
-        return Storage::url($path);
+
+        return \Illuminate\Support\Facades\Storage::url($path);
       };
     @endphp
+
 
     <div class="h-full overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
       <div class="w-full max-w-md mx-auto pt-5 space-y-6 pb-4">

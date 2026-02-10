@@ -5,7 +5,6 @@
 ])
 
 @php
-  use Illuminate\Support\Facades\Storage;
   $userName = data_get($review, 'user.name', data_get($review, 'username', ''));
   $userIcon = data_get($review, 'user.icon_path', data_get($review, 'icon_path', null));
 
@@ -93,29 +92,23 @@
       <div class="flex items-center gap-3 min-w-0">
         <div class="{{ $avatarSize }} rounded-full bg-base overflow-hidden shrink-0">
 @php
-  use Illuminate\Support\Facades\Storage;
-
   $userIconUrl = null;
 
   if ($userIcon) {
     $icon = (string) $userIcon;
 
-    if (str_starts_with($icon, 'http')) {
-      // 外部URL
+    if (str_starts_with($icon, ['http://', 'https://'])) {
       $userIconUrl = $icon;
 
     } elseif (str_starts_with($icon, '/images/')) {
-      // ✅ public配下の固定画像
       $userIconUrl = asset(ltrim($icon, '/'));
 
     } elseif (str_starts_with($icon, '/storage/')) {
-      // すでに公開URL
       $userIconUrl = $icon;
 
     } else {
-      // user_icons/xxx.png みたいな storage 相対パス想定
       $path = preg_replace('#^storage/#', '', ltrim($icon, '/'));
-      $userIconUrl = Storage::url($path); // => /storage/...
+      $userIconUrl = \Illuminate\Support\Facades\Storage::url($path);
     }
   }
 @endphp

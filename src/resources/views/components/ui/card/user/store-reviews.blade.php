@@ -5,25 +5,26 @@
 ])
 
 @php
-  use Illuminate\Support\Facades\Storage;
   $userName = (string) data_get($review, 'user.name', data_get($review, 'username', ''));
   $userHandle = (string) data_get($review, 'user.handle', '');
 
   // user icon (storage / absolute url 対応)
   $userIconPath = data_get($review,'user.icon_path', data_get($review,'icon_path', null));
   $userIconUrl = null;
+
   if ($userIconPath) {
-    if (is_string($userIconPath) && str_starts_with($userIconPath, 'http')) {
+    if (is_string($userIconPath) && str_starts_with($userIconPath, ['http://', 'https://'])) {
       $userIconUrl = $userIconPath;
 
-    } elseif (is_string($userIconPath) && str_starts_with($userIconPath, '/storage/')) {
-      $userIconUrl = $userIconPath;
+    } elseif (is_string($userIconPath) && str_starts_with($userIconPath, ['/storage/', 'storage/'])) {
+      $userIconUrl = asset(ltrim($userIconPath, '/'));
 
     } else {
-      $path = preg_replace('#^storage/#', '', ltrim((string)$userIconPath, '/'));
-      $userIconUrl = Storage::url($path);
+      $path = preg_replace('#^storage/#', '', ltrim((string) $userIconPath, '/'));
+      $userIconUrl = \Illuminate\Support\Facades\Storage::url($path);
     }
   }
+
 
   // store (review->store をwithしてる想定)
   $store     = data_get($review, 'store', data_get($review, 'shop', null));

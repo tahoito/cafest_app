@@ -5,27 +5,22 @@
 <div class="relative pt-6 pb-6 bg-base_color">
 
   <div class="px-4">
-    @php
-      use Illuminate\Support\Facades\Storage;
+  @php
+    $iconPath = $user->icon_path ?? null;
 
-      $iconPath = $user->icon_path;
+    if ($iconPath && str_starts_with($iconPath, '/images/')) {
+      $iconUrl = asset(ltrim($iconPath, '/'));
+    } elseif ($iconPath && str_starts_with($iconPath, '/storage/')) {
+      $iconUrl = $iconPath;
+    } elseif ($iconPath && str_starts_with($iconPath, ['http://', 'https://'])) {
+      $iconUrl = $iconPath;
+    } elseif ($iconPath) {
+      $iconUrl = \Illuminate\Support\Facades\Storage::url(ltrim($iconPath, '/')); // => /storage/...
+    } else {
+      $iconUrl = asset('images/users/user01.png');
+    }
+  @endphp
 
-      if ($iconPath && str_starts_with($iconPath, '/images/')) {
-          $iconUrl = asset(ltrim($iconPath, '/'));
-      }
-      
-      elseif ($iconPath && str_starts_with($iconPath, '/storage/')) {
-          $iconUrl = $iconPath;
-      }
-      
-      elseif ($iconPath) {
-          $iconUrl = Storage::url($iconPath); // => /storage/...
-      }
-     
-      else {
-          $iconUrl = asset('images/users/user01.png');
-      }
-    @endphp
 
 
     <a href="{{ route('user.mycafe.edit') }}">

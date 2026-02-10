@@ -3,14 +3,16 @@
 ])
 
 @php
-  use Illuminate\Support\Facades\Storage;
-
   $photoPath = data_get($item,'image');
   $name = (string) data_get($item, 'name', '');
   $price = data_get($item, 'price');
   $description = (string) data_get($item, 'description', '');
-  $imageUrl = $photoPath ? Storage::url($photoPath) : null;
+
+  $imageUrl = $photoPath
+    ? \Illuminate\Support\Facades\Storage::url(ltrim($photoPath, '/'))
+    : null;
 @endphp
+
 
 <div class="w-[353px] h-[175px] rounded-lg border border-main bg-base p-5">
   <div class="flex gap-5">
