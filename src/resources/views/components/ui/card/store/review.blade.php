@@ -3,21 +3,7 @@
 @php
   $imgUrl = function ($raw) {
     if (!$raw) return null;
-
-    if (is_string($raw) && \Illuminate\Support\Str::startsWith($raw, ['http://', 'https://'])) {
-      return $raw;
-    }
-
-    if (is_string($raw) && \Illuminate\Support\Str::startsWith($raw, 'storage/')) {
-      return asset($raw);
-    }
-
-    if (is_string($raw) && \Illuminate\Support\Str::startsWith($raw, '/')) {
-      return asset(ltrim($raw, '/'));
-    }
-
-    $path = ltrim((string) $raw, '/');
-    return \Illuminate\Support\Facades\Storage::url($path);
+    return \App\Support\MediaUrl::from(is_string($raw) ? $raw : (string) $raw);
   };
 
   $userIconPath =
@@ -26,7 +12,7 @@
     ?? data_get($review,'icon_path')
     ?? null;
 
-  $fallbackAvatar = \Illuminate\Support\Facades\Storage::url('images/users/user1.jpg');
+  $fallbackAvatar = asset('images/users/user01.png');
   $userIconUrl = $imgUrl($userIconPath) ?? $fallbackAvatar;
 
   // review images

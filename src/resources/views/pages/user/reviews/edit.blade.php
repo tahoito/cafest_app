@@ -25,9 +25,8 @@
 
   @php 
     $iconPath = $review->user->icon_path ?? null;
-    $iconSrc = $iconPath 
-      ? Storage::url($iconPath)
-      : asset('/users/user1.jpg')
+    $iconSrc = \App\Support\MediaUrl::from($iconPath)
+      ?? asset('images/users/user01.png');
   @endphp
 
   {{-- Body --}}
@@ -178,7 +177,7 @@
               @foreach($review->images as $img)
                 <label class="block">
                   <div class="w-full aspect-[16/10] overflow-hidden rounded-xl bg-form shadow-[0_2px_6px_rgba(0,0,0,0.15)]">
-                    <img src="{{ Storage::url($img->path) }}" class="w-full h-full object-cover" alt="">
+                    <img src="{{ \App\Support\MediaUrl::from($img->path) }}" class="w-full h-full object-cover" alt="">
                   </div>
 
                   <div class="mt-2 flex items-center gap-2">

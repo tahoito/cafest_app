@@ -6,7 +6,7 @@
 ])
 
 @php
-  $defaultCard = \Illuminate\Support\Facades\Storage::url('images/store/card.png');
+  $defaultCard = \App\Support\MediaUrl::from('images/stores/card.png');
 
   $url = $href ?? '#';
 
@@ -14,6 +14,7 @@
   $area = data_get($store, 'area', '');
   $mood = data_get($store, 'mood', '');
   $imageUrl = data_get($store, 'image_url');
+  $imageSrc = \App\Support\MediaUrl::from($imageUrl) ?? $defaultCard;
 
   $rating = (float) data_get($store, 'rating', 0);
   $rating = max(0, min(5, $rating));
@@ -30,7 +31,7 @@
   <div class="relative px-4 pt-3 pb-2">
     <div class="w-full aspect-square max-w-[138px] mx-auto overflow-hidden bg-base">
       <img
-        src="{{ $imageUrl ? \Illuminate\Support\Facades\Storage::url($imageUrl) : $defaultCard }}"
+        src="{{ $imageSrc }}"
         alt="{{ $name }}"
         loading="lazy"
         class="w-full h-full object-cover"

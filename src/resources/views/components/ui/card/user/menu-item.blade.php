@@ -9,7 +9,7 @@
   $description = (string) data_get($item, 'description', '');
 
   $imageUrl = $photoPath
-    ? \Illuminate\Support\Facades\Storage::url(ltrim($photoPath, '/'))
+    ? \App\Support\MediaUrl::from($photoPath)
     : null;
 @endphp
 

@@ -35,9 +35,8 @@
                                 <div class="aspect-square overflow-hidden">
                                     <img
                                         id="avatarPreview"
-                                        src="{{ $user->icon_path
-                                            ? \Illuminate\Support\Facades\Storage::url($user->icon_path)
-                                            : \Illuminate\Support\Facades\Storage::url('users/user1.jpg') }}"
+                                        src="{{ \App\Support\MediaUrl::from($user->icon_path)
+                                            ?? asset('images/users/user01.png') }}"
                                         class="w-full h-full object-cover"
                                     />
                                 </div>

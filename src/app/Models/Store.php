@@ -9,7 +9,7 @@ use App\Models\MenuPhoto;
 use App\Models\RecommendedItem;
 use App\Models\FavoriteFolder;
 use App\Models\StoreSocialLink;
-use Illuminate\Support\Facades\Storage;
+use App\Support\MediaUrl;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -138,17 +138,8 @@ class Store extends Authenticatable
         $value = trim((string) $img->path);
         if ($value === '') return $default;
 
-        // 外部URL
-        if (str_starts_with($value, 'http://') || str_starts_with($value, 'https://')) return $value;
-
-        // public配下の絶対パス（あなたのCSVはこれ）
-        if (str_starts_with($value, '/images/')) return $value;
-
-        // storageリンク経由のパス
-        if (str_starts_with($value, '/storage/')) return $value;
-
-        // それ以外は storage 扱い
-        return Storage::url(ltrim($value, '/'));
+        $resolved = MediaUrl::from($value);
+        return $resolved ?: $default;
     }
 
 

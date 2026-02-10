@@ -13,14 +13,7 @@
   $userIconUrl = null;
 
   if ($userIconPath) {
-    if (is_string($userIconPath) && str_starts_with($userIconPath, ['http://', 'https://'])) {
-      $userIconUrl = $userIconPath;
-    } elseif (is_string($userIconPath) && str_starts_with($userIconPath, ['/storage/', 'storage/'])) {
-      $userIconUrl = asset(ltrim($userIconPath, '/'));
-    } else {
-      $path = preg_replace('#^storage/#', '', ltrim((string) $userIconPath, '/'));
-      $userIconUrl = \Illuminate\Support\Facades\Storage::url($path);
-    }
+    $userIconUrl = \App\Support\MediaUrl::from((string) $userIconPath);
   }
   
   // store

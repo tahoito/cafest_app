@@ -27,17 +27,7 @@
     @php
       $photos = $menuPhotos->take(3)->values();
 
-      $toPublicUrl = function ($path) {
-        if (!$path) return null;
-
-        // すでに public 側のURLならそのまま返す
-        if (str_starts_with($path, '/storage/')) return $path;
-
-        // "storage/xxx" や "/storage/xxx" を "xxx" に揃える
-        $path = preg_replace('#^storage/#', '', ltrim($path, '/'));
-
-        return \Illuminate\Support\Facades\Storage::url($path);
-      };
+      $toPublicUrl = fn ($path) => \App\Support\MediaUrl::from($path);
     @endphp
 
 
@@ -64,7 +54,7 @@
                   <div class="relative w-[260px]">
                     <div class="overflow-hidden bg-base_color rounded-md shadow-[0_2px_10px_rgba(0,0,0,0.12)]">
                       <img
-                        src="{{ Storage::url($photo->photo_path) }}"
+                        src="{{ $toPublicUrl($photo->photo_path) }}"
                         class="w-full aspect-[3/4] object-cover"
                         alt=""
                       >

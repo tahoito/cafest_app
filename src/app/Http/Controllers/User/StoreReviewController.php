@@ -9,7 +9,7 @@ use App\Services\StoreRecommendService;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Reservation;
-use Illuminate\Support\Facades\Storage;
+use App\Support\MediaUrl;
 
 
 
@@ -59,19 +59,7 @@ class StoreReviewController extends Controller
                         ->pluck('path')
                             ->map(function ($p) {
                                 $p = (string) $p;
-
-                                // /images/... は public
-                                if (str_starts_with($p, '/images/')) {
-                                    return asset(ltrim($p, '/'));
-                                }
-
-                                // /storage/... はそのまま
-                                if (str_starts_with($p, '/storage/')) {
-                                    return $p;
-                                }
-
-                                // それ以外は storage相対
-                                return Storage::url(ltrim($p, '/'));
+                                return MediaUrl::from($p);
                             })
                             ->values();
                     }
@@ -80,19 +68,7 @@ class StoreReviewController extends Controller
             }
 
             $iconPath = data_get($review, 'user.icon_path');
-            $avatarUrl = null;
-
-            if ($iconPath) {
-                $iconPath = (string) $iconPath;
-
-                if (str_starts_with($iconPath, '/images/')) {
-                    $avatarUrl = asset(ltrim($iconPath, '/'));
-                } elseif (str_starts_with($iconPath, '/storage/')) {
-                    $avatarUrl = $iconPath;
-                } else {
-                    $avatarUrl = Storage::url(ltrim($iconPath, '/'));
-                }
-            }
+            $avatarUrl = MediaUrl::from($iconPath);
 
             return response()->json([
                 'id' => $review->id,
@@ -100,9 +76,7 @@ class StoreReviewController extends Controller
                 'user' => [
                     'name' => data_get($review, 'user.name'),
                     'handle' => data_get($review, 'user.handle'),
-                    'avatar_url' => data_get($review, 'user.icon_path')
-                        ? Storage::url(ltrim($review->user->icon_path, '/'))
-                        : null,
+                    'avatar_url' => MediaUrl::from(data_get($review, 'user.icon_path')),
                 ],
                 'created_at' => optional($review->created_at)->format('Y/m/d'),
                 'rating' => (float) $review->rating,

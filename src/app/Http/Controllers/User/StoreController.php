@@ -11,7 +11,7 @@ use App\Services\StoreRecommendService;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Reservation;
-use Illuminate\Support\Facades\Storage;
+use App\Support\MediaUrl;
 
 
 class StoreController extends Controller
@@ -57,7 +57,7 @@ class StoreController extends Controller
             ->get()
             ->map(fn($img) => (object)[
                 'review_id' => $img->review_id,
-                'image' => str_starts_with($img->path, '/images/') ? $img->path : Storage::url($img->path),
+                'image' => MediaUrl::from($img->path),
             ]);
 
         $faved = $userId

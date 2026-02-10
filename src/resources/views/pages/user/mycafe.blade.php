@@ -7,20 +7,8 @@
   <div class="px-4">
   @php
     $iconPath = $user->icon_path ?? null;
-
-    if ($iconPath && str_starts_with($iconPath, '/images/')) {
-      $iconUrl = asset(ltrim($iconPath, '/'));
-    } elseif ($iconPath && str_starts_with($iconPath, '/storage/')) {
-      $iconUrl = $iconPath;
-    } elseif ($iconPath && \Illuminate\Support\Str::startsWith($iconPath, ['http://', 'https://'])) {
-      $iconUrl = $iconPath;
-    } elseif ($iconPath && str_starts_with($iconPath, 'storage/')) {
-      $iconUrl = asset($iconPath);
-    } elseif ($iconPath) {
-      $iconUrl = \Illuminate\Support\Facades\Storage::url(ltrim($iconPath, '/')); // => /storage/...
-    } else {
-      $iconUrl = asset('images/users/user01.png');
-    }
+    $iconUrl = \App\Support\MediaUrl::from($iconPath)
+      ?? asset('images/users/user01.png');
   @endphp
 
 

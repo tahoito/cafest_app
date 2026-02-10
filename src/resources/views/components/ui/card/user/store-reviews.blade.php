@@ -12,16 +12,7 @@
   $userIconUrl = null;
 
   if ($userIconPath) {
-    if (is_string($userIconPath) && \Illuminate\Support\Str::startsWith($userIconPath, ['http://', 'https://'])) {
-      $userIconUrl = $userIconPath;
-
-    } elseif (is_string($userIconPath) && (\Illuminate\Support\Str::startsWith($userIconPath, ['/storage/', 'storage/']))) {
-      $userIconUrl = asset(ltrim($userIconPath, '/'));
-
-    } else {
-      $path = preg_replace('#^storage/#', '', ltrim((string) $userIconPath, '/'));
-      $userIconUrl = \Illuminate\Support\Facades\Storage::url($path);
-    }
+    $userIconUrl = \App\Support\MediaUrl::from((string) $userIconPath);
   }
 
   // store (review->store をwithしてる想定)

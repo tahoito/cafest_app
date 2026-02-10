@@ -22,7 +22,7 @@
     : (trim($area) !== '' ? $area : $mood);
 
   // ✅ default は asset でOK（Storage不要）
-  $defaultCard = asset('images/store/card.png');
+  $defaultCard = asset('images/stores/card.png');
 
   $imageUrl = data_get(
     collect(data_get($store, 'slideImages', []))->firstWhere('is_used_on_card', true)
@@ -30,19 +30,7 @@
     'path'
   );
 
-  $imageSrc = $defaultCard;
-
-  if ($imageUrl) {
-    if (str_starts_with($imageUrl, 'http')) {
-      $imageSrc = $imageUrl;
-    } elseif (str_starts_with($imageUrl, '/images/')) {
-      $imageSrc = $imageUrl;
-    } elseif (str_starts_with($imageUrl, '/storage/')) {
-      $imageSrc = $imageUrl;
-    } else {
-      $imageSrc = \Illuminate\Support\Facades\Storage::url(ltrim($imageUrl, '/'));
-    }
-  }
+  $imageSrc = \App\Support\MediaUrl::from($imageUrl) ?? $defaultCard;
 @endphp
 
 <a href="{{ $url }}"

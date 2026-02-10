@@ -95,21 +95,7 @@
   $userIconUrl = null;
 
   if ($userIcon) {
-    $icon = (string) $userIcon;
-
-    if (\Illuminate\Support\Str::startsWith($icon, ['http://', 'https://'])) {
-      $userIconUrl = $icon;
-
-    } elseif (str_starts_with($icon, '/images/')) {
-      $userIconUrl = asset(ltrim($icon, '/'));
-
-    } elseif (str_starts_with($icon, '/storage/')) {
-      $userIconUrl = $icon;
-
-    } else {
-      $path = preg_replace('#^storage/#', '', ltrim($icon, '/'));
-      $userIconUrl = \Illuminate\Support\Facades\Storage::url($path);
-    }
+    $userIconUrl = \App\Support\MediaUrl::from((string) $userIcon);
   }
 @endphp
 

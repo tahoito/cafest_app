@@ -70,8 +70,8 @@
           @forelse($menuPhotos as $i => $photo)
             @php
               $url =
-                data_get($photo, 'image_url')
-                ?? (data_get($photo, 'photo_path') ? Storage::url(data_get($photo, 'photo_path')) : null);
+                \App\Support\MediaUrl::from(data_get($photo, 'image_url'))
+                ?? \App\Support\MediaUrl::from(data_get($photo, 'photo_path'));
 
               // image_urlもphoto_pathも無い場合
               if (!$url) {

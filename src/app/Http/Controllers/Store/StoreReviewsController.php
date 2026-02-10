@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Review;
 use Carbon\Carbon;
+use App\Support\MediaUrl;
 
 class StoreReviewsController extends Controller
 {
@@ -93,12 +94,12 @@ class StoreReviewsController extends Controller
 
                 'user' => [
                     'name' => data_get($review, 'user.name', 'Anonymous'),
-                    'avatar_url' => data_get($review, 'user.icon_path') ? \Storage::url(ltrim(preg_replace('#^storage/#','', data_get($review,'user.icon_path')), '/')) : null,
+                    'avatar_url' => MediaUrl::from(data_get($review, 'user.icon_path')),
                 ],
 
                 'images' => $review->images->map(function ($img) {
                     $path = data_get($img, 'path', data_get($img, 'image_path'));
-                    return $path ? \Storage::url(ltrim(preg_replace('#^storage/#','', $path), '/')) : null;
+                    return MediaUrl::from($path);
                 })->filter()->values(),
             ]);
         }

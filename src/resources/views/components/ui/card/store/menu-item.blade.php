@@ -20,7 +20,7 @@
     ?? null;
 
   $imageUrl = $photoPath
-    ? \Illuminate\Support\Facades\Storage::url(ltrim($photoPath, '/'))
+    ? \App\Support\MediaUrl::from($photoPath)
     : '';
 
   $resolvedEditUrl = $editUrl ?? ($id ? route('store.menu.recommended.edit', $id) : null);

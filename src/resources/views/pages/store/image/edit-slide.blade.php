@@ -27,17 +27,7 @@
     @php
       $slides = $store->slideImages->take(5)->values();
 
-      $toPublicUrl = function ($path) {
-        if (!$path) return null;
-
-        // すでに public 側URLならそのまま
-        if (str_starts_with($path, '/storage/')) return $path;
-
-        // "storage/xxx" や "/storage/xxx" を正規化
-        $path = preg_replace('#^storage/#', '', ltrim($path, '/'));
-
-        return \Illuminate\Support\Facades\Storage::url($path);
-      };
+      $toPublicUrl = fn ($path) => \App\Support\MediaUrl::from($path);
     @endphp
 
     <div class="flex-1 overflow-y-auto overscroll-contain pt-[calc(env(safe-area-inset-top)+4rem)]">
