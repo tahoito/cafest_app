@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             RecommendedItemSeeder::class,
             MenuPhotoSeeder::class,
             StoreImageSeeder::class,
+            ReviewCsvSeeder::class,
         ]);
 
     }

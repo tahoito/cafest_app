@@ -23,7 +23,7 @@
       }
      
       else {
-          $iconUrl = asset('images/users/user01.jpg');
+          $iconUrl = asset('images/users/user01.png');
       }
     @endphp
 

@@ -33,9 +33,11 @@ class StoreReviewController extends Controller
         return view('pages.user.stores.reviews', compact('store', 'reviews','faved'));
     }
 
-    public function show(Store $store, Review $review)
+    public function show(Store $store, Review $review, Request $request )
     {
         if ($review->store_id !== $store->id) abort(404);
+        $review->load(['user:id,name,icon_path,handle', 'store:id,name']);
+        
 
         if (request()->query('format') === 'json') {
 
@@ -55,17 +57,46 @@ class StoreReviewController extends Controller
                     $images = $review->images()
                         ->orderBy('sort')
                         ->pluck('path')
-                        ->map(fn ($p) => Storage::url(ltrim($p, '/')))
-                        ->values();
-                }
-            } catch (\Throwable $e) {
-                $images = [];
+                            ->map(function ($p) {
+                                $p = (string) $p;
+
+                                // /images/... は public
+                                if (str_starts_with($p, '/images/')) {
+                                    return asset(ltrim($p, '/'));
+                                }
+
+                                // /storage/... はそのまま
+                                if (str_starts_with($p, '/storage/')) {
+                                    return $p;
+                                }
+
+                                // それ以外は storage相対
+                                return Storage::url(ltrim($p, '/'));
+                            })
+                            ->values();
+                    }
+                } catch (\Throwable $e) {
+                    $images = [];
             }
 
+            $iconPath = data_get($review, 'user.icon_path');
+            $avatarUrl = null;
+
+            if ($iconPath) {
+                $iconPath = (string) $iconPath;
+
+                if (str_starts_with($iconPath, '/images/')) {
+                    $avatarUrl = asset(ltrim($iconPath, '/'));
+                } elseif (str_starts_with($iconPath, '/storage/')) {
+                    $avatarUrl = $iconPath;
+                } else {
+                    $avatarUrl = Storage::url(ltrim($iconPath, '/'));
+                }
+            }
 
             return response()->json([
                 'id' => $review->id,
-                'store' => ['name' => $store->name],
+                'store' => ['id' => $store->id, 'name' => $store->name],
                 'user' => [
                     'name' => data_get($review, 'user.name'),
                     'handle' => data_get($review, 'user.handle'),
