@@ -78,6 +78,11 @@ class User extends Authenticatable
         if ($path === '') return;
 
         $normalized = ltrim($path, '/');
+
+        if (Str::startsWith($normalized, 'images/users/')) {
+            return;
+        }
+
         if (!Str::startsWith($normalized, ['storage/user_icons/', 'user_icons/'])) {
             return;
         }
@@ -90,24 +95,6 @@ class User extends Authenticatable
             $this->icon_path = null;
             $this->save();
             return;
-        }
-
-        $ext = strtolower(pathinfo($storageRel, PATHINFO_EXTENSION) ?: 'jpg');
-        if (!in_array($ext, ['jpg','jpeg','png','webp'], true)) $ext = 'jpg';
-
-        $filename = 'user_'.$this->id.'.'.$ext;
-        $destRel = 'images/users/'.$filename;
-        $destAbs = public_path($destRel);
-        $destDir = dirname($destAbs);
-
-        if (!is_dir($destDir)) mkdir($destDir, 0755, true);
-
-        $sourceAbs = Storage::disk('public')->path($storageRel);
-        @copy($sourceAbs, $destAbs);
-
-        if (is_file($destAbs)) {
-            $this->icon_path = '/'.$destRel;
-            $this->save();
         }
     }
 }

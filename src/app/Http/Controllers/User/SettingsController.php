@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 use App\Http\Requests\User\SettingsRequest;
 
@@ -45,18 +46,16 @@ class SettingsController extends Controller
         if ($request->hasFile('icon')) {
             $file = $request->file('icon');
 
-            $ext = $file->getClientOriginalExtension();
-            $ext = in_array(strtolower($ext), ['jpg','jpeg','png','webp']) ? strtolower($ext) : 'jpg';
+            $ext = strtolower($file->getClientOriginalExtension());
+            $ext = in_array($ext, ['jpg','jpeg','png','webp'], true) ? $ext : 'jpg';
 
             $filename = 'user_'.$user->id.'.'.$ext;
 
-            $dir = public_path('images/users');
-            if (!is_dir($dir)) mkdir($dir, 0755, true);
-
-            $file->move($dir, $filename);
-
-            $user->icon_path = '/images/users/'.$filename;
-            $user->save();
+            $path = $file->storeAs('user_icons', $filename, 'public');
+            if ($path) {
+                $user->icon_path = '/storage/'.$path;
+                $user->save();
+            }
         }
 
         Auth::guard('user')->login($user);
