@@ -10,7 +10,7 @@
 ])
 
 @php
-  $defaultCard = asset('images/store/card.png');
+  $defaultCard = asset('images/stores/card.png');
   $store = data_get($reservation, 'store');
 
   $shopName = $shopName

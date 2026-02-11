@@ -3,15 +3,15 @@
   $storeId = (int) data_get($store, 'id');
   $name    = data_get($store, 'name', 'No Name');
 
-  $defaultCardPath = 'store/card.png';
-  $defaultCardUrl  = \Illuminate\Support\Facades\Storage::disk('public')
-    ->url(ltrim($defaultCardPath, '/'));
+  $defaultCardPath = 'images/stores/card.png';
+  $defaultCardUrl  = asset($defaultCardPath);
 
   $imageUrl =
-    optional(collect(data_get($store, 'slideImages', []))
-      ->firstWhere('is_used_on_card', true))->url
-    ?? optional(collect(data_get($store, 'slideImages', []))->first())->url
-    ?? $defaultCardUrl;
+    \App\Support\MediaUrl::from(
+      optional(collect(data_get($store, 'slideImages', []))
+        ->firstWhere('is_used_on_card', true))->url
+      ?? optional(collect(data_get($store, 'slideImages', []))->first())->url
+    ) ?? $defaultCardUrl;
 @endphp
 
 

@@ -18,6 +18,8 @@ class MyCafeController extends Controller
         $user = Auth::guard('user')->user();
         $userId = $user->id;
 
+        $user->migrateStorageIconToPublic();
+
         $slideImages = fn ($q) => $q->where('type', 'slide')->orderBy('sort_order');
 
         $favoritesAll = $user->favorites()

@@ -6,6 +6,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 
 class User extends Authenticatable
@@ -68,5 +70,44 @@ class User extends Authenticatable
 
     public function favoriteByUsers() {
         return $this->belongsToMany(User::class, 'user_favorites');
+    }
+
+    public function migrateStorageIconToPublic(): void
+    {
+        $path = (string) ($this->icon_path ?? '');
+        if ($path === '') return;
+
+        $normalized = ltrim($path, '/');
+        if (!Str::startsWith($normalized, ['storage/user_icons/', 'user_icons/'])) {
+            return;
+        }
+
+        $storageRel = preg_replace('#^storage/#', '', $normalized);
+        $storageRel = ltrim($storageRel ?? '', '/');
+
+        if ($storageRel === '' || !Storage::disk('public')->exists($storageRel)) {
+            // 参照先が無いならデフォルトに戻す
+            $this->icon_path = null;
+            $this->save();
+            return;
+        }
+
+        $ext = strtolower(pathinfo($storageRel, PATHINFO_EXTENSION) ?: 'jpg');
+        if (!in_array($ext, ['jpg','jpeg','png','webp'], true)) $ext = 'jpg';
+
+        $filename = 'user_'.$this->id.'.'.$ext;
+        $destRel = 'images/users/'.$filename;
+        $destAbs = public_path($destRel);
+        $destDir = dirname($destAbs);
+
+        if (!is_dir($destDir)) mkdir($destDir, 0755, true);
+
+        $sourceAbs = Storage::disk('public')->path($storageRel);
+        @copy($sourceAbs, $destAbs);
+
+        if (is_file($destAbs)) {
+            $this->icon_path = '/'.$destRel;
+            $this->save();
+        }
     }
 }
