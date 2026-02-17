@@ -141,7 +141,7 @@
             <div class="flex items-center justify-between py-3">
               <div class="flex items-center gap-3">
                 <img
-                  :src="toPublicUrl(folder.latest_store?.image_url) || defaultThumb"
+                  :src="toPublicUrl((folder.thumb_urls && folder.thumb_urls[0]) || folder.latest_store?.image_url) || defaultThumb"
                   class="w-[85px] h-[85px] rounded-lg object-cover"
                   alt=""
                 >

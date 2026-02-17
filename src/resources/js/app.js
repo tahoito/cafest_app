@@ -115,6 +115,8 @@ document.addEventListener('alpine:init', () => {
     toPublicUrl(path) {
       if (!path) return null
       if (path.startsWith('http://') || path.startsWith('https://')) return path
+      if (path.startsWith('/images/')) return path
+      if (path.startsWith('images/')) return '/' + path
       if (path.startsWith('/storage/')) return path
       if (path.startsWith('storage/')) return '/' + path
       return '/storage/' + String(path).replace(/^\/+/, '')

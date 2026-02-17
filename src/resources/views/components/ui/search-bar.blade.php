@@ -20,6 +20,9 @@
   }
 
   $tagIds = array_values(array_unique(array_filter(array_map('intval', $tagIds))));
+  $requestKeyword = (string) request($name, '');
+  $prefillTagName = (string) data_get($tag, 'name', '');
+  $prefillFromTag = $requestKeyword === '' && $prefillTagName !== '';
   $resolvedAction = $action;
   if (!$resolvedAction) {
     $resolvedAction = \Illuminate\Support\Facades\Route::has('user.search')
@@ -31,20 +34,38 @@
 
 <form
   x-data="{
+    keyword: @js($requestKeyword),
+    prefill: @js($prefillTagName),
+    fromTag: @js($prefillFromTag),
+    dirty: false,
+    init() {
+      if (!this.fromTag) {
+        $store.search.keyword = this.keyword;
+      }
+    },
+    onInput(e) {
+      this.dirty = true;
+      this.keyword = e.target.value;
+      $store.search.keyword = this.keyword;
+    },
     submitSearch() {
-      const form = document.getElementById('searchForm');
-      if (form) {
-        if (typeof form.requestSubmit === 'function') form.requestSubmit();
-        else form.submit();
+      const external = document.getElementById('searchForm');
+      if (external && typeof external.submit === 'function') {
+        external.submit();
         return;
       }
-      this.$el.submit();
+      const selfForm = this.$refs?.form || this.$el;
+      if (selfForm && typeof selfForm.submit === 'function') {
+        selfForm.submit();
+      }
     },
   }"
   action="{{ $resolvedAction }}"
   method="{{ $method }}"
   class="w-full"
+  x-init="init()"
   @submit.prevent="submitSearch()"
+  x-ref="form"
 >
   @foreach($tagIds as $id)
     <input type="hidden" name="tags[]" value="{{ $id }}">
@@ -57,9 +78,8 @@
     <input
       type="search"
       name="{{ $name }}"
-      value="{{ request($name) ?: ($tag?->name ?? '') }}"
-      x-init="$store.search.keyword = $el.value"
-      x-model="$store.search.keyword"
+      value="{{ $prefillFromTag ? $prefillTagName : $requestKeyword }}"
+      @input="onInput($event)"
       @keydown.enter.prevent="submitSearch()"
       placeholder="{{ $placeholder }}"
       class="w-full bg-transparent placeholder:text-placeholder focus:outline-none"

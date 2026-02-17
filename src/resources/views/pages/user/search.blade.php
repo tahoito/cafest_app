@@ -25,7 +25,17 @@
       <div class="w-full max-w-md mx-auto pt-6 space-y-5 pb-3">
 
         <section class="px-4">
-          <x-ui.search-bar />
+          @php
+            $selectedTagId = request('tag');
+            $tagsParam = (array) request('tags', []);
+            if (!$selectedTagId && !empty($tagsParam)) {
+              $selectedTagId = $tagsParam[0];
+            }
+            $selectedTag = $selectedTagId
+              ? $tags->firstWhere('id', (int) $selectedTagId)
+              : null;
+          @endphp
+          <x-ui.search-bar :tag="$selectedTag" />
         </section>
 
         @php
