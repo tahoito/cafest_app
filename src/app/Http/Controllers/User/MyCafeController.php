@@ -67,7 +67,7 @@ class MyCafeController extends Controller
             ->whereHas('store', fn ($q) => $q->where('is_public', true))
             ->with([
                 'store:id,name',
-                'user:id,name,icon_path,handle',
+                'user:id,name,icon_path',
             ])
             ->latest()
             ->get();

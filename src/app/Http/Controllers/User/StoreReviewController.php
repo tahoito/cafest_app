@@ -36,7 +36,7 @@ class StoreReviewController extends Controller
     public function show(Store $store, Review $review, Request $request )
     {
         if ($review->store_id !== $store->id) abort(404);
-        $review->load(['user:id,name,icon_path,handle', 'store:id,name']);
+        $review->load(['user:id,name,icon_path', 'store:id,name']);
         
 
         if (request()->query('format') === 'json') {
