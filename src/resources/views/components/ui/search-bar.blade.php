@@ -20,10 +20,32 @@
   }
 
   $tagIds = array_values(array_unique(array_filter(array_map('intval', $tagIds))));
+  $resolvedAction = $action;
+  if (!$resolvedAction) {
+    $resolvedAction = \Illuminate\Support\Facades\Route::has('user.search')
+      ? route('user.search')
+      : url()->current();
+  }
 @endphp
 
 
-<form action="{{ $action ?? url()->current() }}" method="{{ $method }}" class="w-full">
+<form
+  x-data="{
+    submitSearch() {
+      const form = document.getElementById('searchForm');
+      if (form) {
+        if (typeof form.requestSubmit === 'function') form.requestSubmit();
+        else form.submit();
+        return;
+      }
+      this.$el.submit();
+    },
+  }"
+  action="{{ $resolvedAction }}"
+  method="{{ $method }}"
+  class="w-full"
+  @submit.prevent="submitSearch()"
+>
   @foreach($tagIds as $id)
     <input type="hidden" name="tags[]" value="{{ $id }}">
   @endforeach
@@ -38,6 +60,7 @@
       value="{{ request($name) ?: ($tag?->name ?? '') }}"
       x-init="$store.search.keyword = $el.value"
       x-model="$store.search.keyword"
+      @keydown.enter.prevent="submitSearch()"
       placeholder="{{ $placeholder }}"
       class="w-full bg-transparent placeholder:text-placeholder focus:outline-none"
     />

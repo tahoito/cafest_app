@@ -16,7 +16,10 @@ class StoreMenuController extends Controller
             ->where('favorite_folders.user_id', $userId)
             ->exists();
 
-        $menuPhotos = $store->menuPhotos()->take(3)->get();
+        $menuPhotos = $store->menuPhotos()
+            ->orderBy('sort_order')
+            ->take(3)
+            ->get();
         $recommendedItems = $store->recommendedItems()->take(3)->get();
 
         return view('pages.user.stores.menu', compact('store', 'menuPhotos', 'recommendedItems','faved'));

@@ -16,7 +16,10 @@ class StoreMenuManegeController extends Controller
     {
         $store = auth('store')->user();
 
-        $menuPhotos = $store->menuPhotos;
+        $menuPhotos = $store->menuPhotos()
+            ->orderBy('sort_order')
+            ->take(3)
+            ->get();
         $recommendedItems = $store->recommendedItems()->orderBy('sort_order')->take(3)->get();
 
         return view('pages.store.menu', compact('store','menuPhotos','recommendedItems'));

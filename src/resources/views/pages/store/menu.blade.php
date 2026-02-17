@@ -40,9 +40,20 @@
                             <div class="space-y-3">
                                 @foreach ($menuPhotos as $photo)
                                     <div class="aspect-[3/4] overflow-hidden rounded-lg">
-                                        <img src="{{ asset('storage/' . $photo->photo_path) }}"
-                                            alt="メニュー画像"
-                                            class="w-full h-full object-cover">
+                                        @php
+                                            $photoUrl = \App\Support\MediaUrl::from(data_get($photo, 'photo_path'));
+                                        @endphp
+                                        @if($photoUrl)
+                                            <img
+                                                src="{{ $photoUrl }}"
+                                                alt="メニュー画像"
+                                                class="w-full h-full object-cover"
+                                            >
+                                        @else
+                                            <div class="w-full h-full grid place-items-center text-placeholder">
+                                                メニュー画像がありません
+                                            </div>
+                                        @endif
                                     </div>
                                 @endforeach    
                             </div>
